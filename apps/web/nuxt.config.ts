@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
-  modules: ['@nuxt/fonts', '@nuxt/eslint', '@nuxt/test-utils', '@vueuse/motion/nuxt'],
+  modules: ['@nuxt/fonts', '@nuxt/eslint', '@vueuse/motion/nuxt'],
 
   fonts: {
     families: [
