@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import * as d3 from 'd3'
+import { select } from 'd3-selection'
+import 'd3-transition'
+import { geoAlbersUsa, geoPath } from 'd3-geo'
+import { easeBackOut } from 'd3-ease'
 import type { Driver, DriverStatus } from '@motive/shared'
 
 const props = defineProps<{
@@ -59,19 +62,18 @@ function drawMap() {
   const width = container.clientWidth
   const height = container.clientHeight || 260
 
-  d3.select(svgRef.value).selectAll('*').remove()
+  select(svgRef.value).selectAll('*').remove()
 
-  const svg = d3
-    .select(svgRef.value)
+  const svg = select(svgRef.value)
     .attr('width', width)
     .attr('height', height)
     .attr('role', 'img')
     .attr('aria-label', 'Live fleet location map showing truck positions across the US')
 
   // Projection — AlbersUSA handles contiguous + AK + HI
-  const projection = d3.geoAlbersUsa().fitSize([width, height], geoData.value.states)
+  const projection = geoAlbersUsa().fitSize([width, height], geoData.value.states)
 
-  const pathGen = d3.geoPath().projection(projection)
+  const pathGen = geoPath().projection(projection)
 
   // State fills
   svg
@@ -138,7 +140,7 @@ function drawMap() {
     .transition()
     .delay((_, i) => i * 40)
     .duration(250)
-    .ease(d3.easeBackOut)
+    .ease(easeBackOut)
     .attr('r', 6)
 
   // Invisible hover targets (larger hit area)

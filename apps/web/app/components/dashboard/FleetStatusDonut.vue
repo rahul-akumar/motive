@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import * as d3 from 'd3'
+import { select } from 'd3-selection'
+import 'd3-transition'
+import { pie, arc } from 'd3-shape'
+import type { PieArcDatum } from 'd3-shape'
+import { easeQuadOut } from 'd3-ease'
+import { interpolate } from 'd3-interpolate'
 import type { FleetStatusCount } from '@motive/shared'
 
 const props = defineProps<{
@@ -50,10 +55,9 @@ function drawChart() {
   const innerRadius = radius * 0.62
   const outerRadius = radius * 0.92
 
-  d3.select(svgRef.value).selectAll('*').remove()
+  select(svgRef.value).selectAll('*').remove()
 
-  const svg = d3
-    .select(svgRef.value)
+  const svg = select(svgRef.value)
     .attr('width', size)
     .attr('height', size)
     .attr('role', 'img')
@@ -64,23 +68,20 @@ function drawChart() {
 
   const g = svg.append('g').attr('transform', `translate(${radius},${radius})`)
 
-  const pie = d3
-    .pie<(typeof currentSegments)[0]>()
+  const pieLayout = pie<(typeof currentSegments)[0]>()
     .value((d) => d.value)
     .sort(null)
     .padAngle(0.03)
 
-  const arc = d3
-    .arc<d3.PieArcDatum<(typeof currentSegments)[0]>>()
+  const arcGen = arc<PieArcDatum<(typeof currentSegments)[0]>>()
     .innerRadius(innerRadius)
     .outerRadius(outerRadius)
 
-  const arcHover = d3
-    .arc<d3.PieArcDatum<(typeof currentSegments)[0]>>()
+  const arcHover = arc<PieArcDatum<(typeof currentSegments)[0]>>()
     .innerRadius(innerRadius)
     .outerRadius(outerRadius + 3)
 
-  const arcs = pie(currentSegments)
+  const arcs = pieLayout(currentSegments)
 
   // Draw arcs
   g.selectAll('.arc')
@@ -92,22 +93,21 @@ function drawChart() {
     .style('cursor', 'pointer')
     .style('transition', 'opacity 150ms ease')
     .on('mouseenter', function (_, d) {
-      d3.select(this)
+      select(this)
         .transition()
         .duration(150)
         .attr('d', arcHover(d) || '')
         .attr('opacity', 1)
     })
     .on('mouseleave', function (_, d) {
-      d3.select(this)
+      select(this)
         .transition()
         .duration(150)
-        .attr('d', arc(d) || '')
+        .attr('d', arcGen(d) || '')
         .attr('opacity', 0.85)
     })
     .attr('d', (d) => {
-      const startArc = d3
-        .arc<d3.PieArcDatum<(typeof currentSegments)[0]>>()
+      const startArc = arc<PieArcDatum<(typeof currentSegments)[0]>>()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius)
       return startArc({ ...d, endAngle: d.startAngle }) || ''
@@ -115,12 +115,12 @@ function drawChart() {
     .transition()
     .duration(900)
     .delay((_, i) => i * 80)
-    .ease(d3.easeQuadOut)
+    .ease(easeQuadOut)
     .attrTween('d', function (d) {
-      const interpolate = d3.interpolate(d.startAngle, d.endAngle)
+      const interp = interpolate(d.startAngle, d.endAngle)
       return (t: number) => {
-        const arcData = { ...d, endAngle: interpolate(t) }
-        return arc(arcData) || ''
+        const arcData = { ...d, endAngle: interp(t) }
+        return arcGen(arcData) || ''
       }
     })
 

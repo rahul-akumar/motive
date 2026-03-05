@@ -13,13 +13,10 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@motive/tsconfig": "*",
-    "vitest": "^3.0.0",
     "typescript": "^5.7.0"
   }
 }

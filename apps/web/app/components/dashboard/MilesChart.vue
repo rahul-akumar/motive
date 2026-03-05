@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import * as d3 from 'd3'
+import { select } from 'd3-selection'
+import 'd3-transition'
+import { scaleBand, scaleLinear } from 'd3-scale'
+import { max } from 'd3-array'
+import { area, line, curveCatmullRom } from 'd3-shape'
+import { easeQuadOut } from 'd3-ease'
+import { axisBottom, axisLeft } from 'd3-axis'
 import type { DailyMilesData } from '@motive/shared'
 
 const props = defineProps<{
@@ -32,10 +38,9 @@ function drawChart() {
   const innerHeight = height - margin.top - margin.bottom
 
   // Clear previous
-  d3.select(svgRef.value).selectAll('*').remove()
+  select(svgRef.value).selectAll('*').remove()
 
-  const svg = d3
-    .select(svgRef.value)
+  const svg = select(svgRef.value)
     .attr('width', width)
     .attr('height', height)
     .attr('role', 'img')
@@ -44,15 +49,13 @@ function drawChart() {
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
 
   // Scales
-  const xScale = d3
-    .scaleBand()
+  const xScale = scaleBand()
     .domain(props.data.map((d) => d.label))
     .range([0, innerWidth])
     .padding(0.3)
 
-  const yMax = d3.max(props.data, (d) => d.miles) || 0
-  const yScale = d3
-    .scaleLinear()
+  const yMax = max(props.data, (d) => d.miles) || 0
+  const yScale = scaleLinear()
     .domain([0, yMax * 1.15])
     .range([innerHeight, 0])
 
@@ -71,21 +74,19 @@ function drawChart() {
     .attr('stroke-width', 1)
 
   // Area — flat fill, no gradient
-  const area = d3
-    .area<DailyMilesData>()
+  const areaGen = area<DailyMilesData>()
     .x((d) => (xScale(d.label) || 0) + xScale.bandwidth() / 2)
     .y0(innerHeight)
     .y1((d) => yScale(d.miles))
-    .curve(d3.curveCatmullRom.alpha(0.5))
+    .curve(curveCatmullRom.alpha(0.5))
 
-  g.append('path').datum(props.data).attr('fill', `${accentColor}08`).attr('d', area)
+  g.append('path').datum(props.data).attr('fill', `${accentColor}08`).attr('d', areaGen)
 
   // Line
-  const line = d3
-    .line<DailyMilesData>()
+  const lineGen = line<DailyMilesData>()
     .x((d) => (xScale(d.label) || 0) + xScale.bandwidth() / 2)
     .y((d) => yScale(d.miles))
-    .curve(d3.curveCatmullRom.alpha(0.5))
+    .curve(curveCatmullRom.alpha(0.5))
 
   const linePath = g
     .append('path')
@@ -93,7 +94,7 @@ function drawChart() {
     .attr('fill', 'none')
     .attr('stroke', accentColor)
     .attr('stroke-width', 2)
-    .attr('d', line)
+    .attr('d', lineGen)
 
   // Animate line draw
   const totalLength = (linePath.node() as SVGPathElement)?.getTotalLength() || 0
@@ -102,7 +103,7 @@ function drawChart() {
     .attr('stroke-dashoffset', totalLength)
     .transition()
     .duration(1200)
-    .ease(d3.easeQuadOut)
+    .ease(easeQuadOut)
     .attr('stroke-dashoffset', 0)
 
   // Today's highlight line (last data point)
@@ -166,7 +167,7 @@ function drawChart() {
   // X Axis
   g.append('g')
     .attr('transform', `translate(0,${innerHeight})`)
-    .call(d3.axisBottom(xScale).tickSize(0))
+    .call(axisBottom(xScale).tickSize(0))
     .call((g) => g.select('.domain').remove())
     .selectAll('text')
     .attr('fill', textMuted)
@@ -177,8 +178,7 @@ function drawChart() {
   // Y Axis
   g.append('g')
     .call(
-      d3
-        .axisLeft(yScale)
+      axisLeft(yScale)
         .ticks(4)
         .tickSize(0)
         .tickFormat((d) => `${(+d / 1000).toFixed(0)}k`),
