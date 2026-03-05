@@ -1,0 +1,231 @@
+/**
+ * Motive Design System - Tailwind v4 CSS Theme
+ *
+ * Import this in your app's main CSS file:
+ * @import "@motive/tailwind-config/theme.css";
+ */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Brand Colors */
+  --color-motive-primary: #1b4dff;
+  --color-motive-primary-50: #ebf0ff;
+  --color-motive-primary-100: #d6e0ff;
+  --color-motive-primary-200: #adc1ff;
+  --color-motive-primary-300: #85a3ff;
+  --color-motive-primary-400: #5c84ff;
+  --color-motive-primary-500: #1b4dff;
+  --color-motive-primary-600: #0037e6;
+  --color-motive-primary-700: #002ab3;
+  --color-motive-primary-800: #001d80;
+  --color-motive-primary-900: #00104d;
+
+  --color-motive-secondary: #6b7280;
+  --color-motive-secondary-50: #f9fafb;
+  --color-motive-secondary-100: #f3f4f6;
+  --color-motive-secondary-200: #e5e7eb;
+  --color-motive-secondary-300: #d1d5db;
+  --color-motive-secondary-400: #9ca3af;
+  --color-motive-secondary-500: #6b7280;
+  --color-motive-secondary-600: #4b5563;
+  --color-motive-secondary-700: #374151;
+  --color-motive-secondary-800: #1f2937;
+  --color-motive-secondary-900: #111827;
+
+  /* Semantic Colors */
+  --color-motive-success: #10b981;
+  --color-motive-success-50: #ecfdf5;
+  --color-motive-success-500: #10b981;
+  --color-motive-success-700: #047857;
+
+  --color-motive-warning: #f59e0b;
+  --color-motive-warning-50: #fffbeb;
+  --color-motive-warning-500: #f59e0b;
+  --color-motive-warning-700: #b45309;
+
+  --color-motive-danger: #ef4444;
+  --color-motive-danger-50: #fef2f2;
+  --color-motive-danger-500: #ef4444;
+  --color-motive-danger-700: #b91c1c;
+
+  --color-motive-info: #3b82f6;
+  --color-motive-info-50: #eff6ff;
+  --color-motive-info-500: #3b82f6;
+  --color-motive-info-700: #1d4ed8;
+
+  /* UI Colors - Light Mode */
+  --color-motive-background: #ffffff;
+  --color-motive-foreground: #111827;
+  --color-motive-muted: #f3f4f6;
+  --color-motive-border: #e5e7eb;
+  --color-motive-ring: #1b4dff;
+
+  /* Font Families */
+  --font-family-sans: 'Barlow', system-ui, -apple-system, sans-serif;
+  --font-family-condensed: 'Barlow Condensed', system-ui, sans-serif;
+  --font-family-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+}
+
+/* ============================================================
+   THEME SYSTEM — CSS Custom Properties
+   Applied via html[data-theme="..."] attribute
+   ============================================================ */
+
+/* Default / Stealth — monochrome white-on-charcoal */
+:root,
+html[data-theme='stealth'] {
+  --bg-base: #0d0d0d;
+  --bg-card: #111111;
+  --bg-elevated: #161616;
+  --bg-hover: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(255, 255, 255, 0.18);
+  --accent: #e2e2e2;
+  --accent-rgb: 226, 226, 226;
+  --accent-dim: rgba(255, 255, 255, 0.05);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(255, 255, 255, 0.03);
+  --accent-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #e2e2e2;
+  --text-secondary: #8a8a8a;
+  --text-muted: #666666;
+  --text-dim: #555555;
+  --scrollbar-thumb: #2a2a2a;
+  --scrollbar-thumb-hover: #3a3a3a;
+  --logo-bg: #e2e2e2;
+  --logo-text: #0d0d0d;
+  --sidebar-active-bg: transparent;
+  --sidebar-active-border: #e2e2e2;
+  --sidebar-active-icon: #e2e2e2;
+  --avatar-bg: rgba(255, 255, 255, 0.08);
+  --avatar-text: #9a9a9a;
+  --focus-ring: #e2e2e2;
+  --table-sorted-color: #e2e2e2;
+  --search-focus-border: rgba(255, 255, 255, 0.2);
+  --search-focus-shadow: transparent;
+}
+
+/* Danger Red — critical ops, red-on-charcoal */
+html[data-theme='danger-red'] {
+  --bg-base: #0d0d0d;
+  --bg-card: #111111;
+  --bg-elevated: #161616;
+  --bg-hover: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(220, 38, 38, 0.3);
+  --accent: #dc2626;
+  --accent-rgb: 220, 38, 38;
+  --accent-dim: rgba(220, 38, 38, 0.08);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(220, 38, 38, 0.04);
+  --accent-border: rgba(220, 38, 38, 0.2);
+  --text-primary: #e2e2e2;
+  --text-secondary: #8a8a8a;
+  --text-muted: #666666;
+  --text-dim: #555555;
+  --scrollbar-thumb: #2a2a2a;
+  --scrollbar-thumb-hover: #3a3a3a;
+  --logo-bg: #dc2626;
+  --logo-text: #ffffff;
+  --sidebar-active-bg: transparent;
+  --sidebar-active-border: #dc2626;
+  --sidebar-active-icon: #dc2626;
+  --avatar-bg: rgba(220, 38, 38, 0.1);
+  --avatar-text: #dc2626;
+  --focus-ring: #dc2626;
+  --table-sorted-color: #dc2626;
+  --search-focus-border: rgba(220, 38, 38, 0.3);
+  --search-focus-shadow: transparent;
+}
+
+/* Amber Ops — muted amber on carbon */
+html[data-theme='amber-ops'] {
+  --bg-base: #0d0d0d;
+  --bg-card: #111111;
+  --bg-elevated: #161616;
+  --bg-hover: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(217, 119, 6, 0.3);
+  --accent: #d97706;
+  --accent-rgb: 217, 119, 6;
+  --accent-dim: rgba(217, 119, 6, 0.08);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(217, 119, 6, 0.04);
+  --accent-border: rgba(217, 119, 6, 0.2);
+  --text-primary: #e2e2e2;
+  --text-secondary: #8a8a8a;
+  --text-muted: #666666;
+  --text-dim: #555555;
+  --scrollbar-thumb: #2a2a2a;
+  --scrollbar-thumb-hover: #3a3a3a;
+  --logo-bg: #d97706;
+  --logo-text: #0d0d0d;
+  --sidebar-active-bg: transparent;
+  --sidebar-active-border: #d97706;
+  --sidebar-active-icon: #d97706;
+  --avatar-bg: rgba(217, 119, 6, 0.1);
+  --avatar-text: #d97706;
+  --focus-ring: #d97706;
+  --table-sorted-color: #d97706;
+  --search-focus-border: rgba(217, 119, 6, 0.3);
+  --search-focus-shadow: transparent;
+}
+
+/* Slate — blue-grey on near-black */
+html[data-theme='slate'] {
+  --bg-base: #0d0d0d;
+  --bg-card: #111111;
+  --bg-elevated: #161616;
+  --bg-hover: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(100, 116, 139, 0.35);
+  --accent: #64748b;
+  --accent-rgb: 100, 116, 139;
+  --accent-dim: rgba(100, 116, 139, 0.1);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(100, 116, 139, 0.05);
+  --accent-border: rgba(100, 116, 139, 0.2);
+  --text-primary: #e2e2e2;
+  --text-secondary: #8a8a8a;
+  --text-muted: #666666;
+  --text-dim: #555555;
+  --scrollbar-thumb: #2a2a2a;
+  --scrollbar-thumb-hover: #3a3a3a;
+  --logo-bg: #64748b;
+  --logo-text: #ffffff;
+  --sidebar-active-bg: transparent;
+  --sidebar-active-border: #64748b;
+  --sidebar-active-icon: #64748b;
+  --avatar-bg: rgba(100, 116, 139, 0.12);
+  --avatar-text: #64748b;
+  --focus-ring: #64748b;
+  --table-sorted-color: #64748b;
+  --search-focus-border: rgba(100, 116, 139, 0.35);
+  --search-focus-shadow: transparent;
+}

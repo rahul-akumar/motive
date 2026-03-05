@@ -1,0 +1,27 @@
+{
+  "name": "@motive/storybook",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build -o storybook-static"
+  },
+  "dependencies": {
+    "@motive/ui": "*",
+    "@motive/tailwind-config": "*"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.5.0",
+    "@storybook/addon-interactions": "^8.5.0",
+    "@storybook/addon-links": "^8.5.0",
+    "@storybook/blocks": "^8.5.0",
+    "@storybook/vue3": "^8.5.0",
+    "@storybook/vue3-vite": "^8.5.0",
+    "storybook": "^8.5.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "vue": "^3.5.29"
+  }
+}
