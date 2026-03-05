@@ -29,7 +29,8 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    plugins: tailwindcss() as any,
   },
 
   css: ['~/assets/css/main.css', 'leaflet/dist/leaflet.css'],

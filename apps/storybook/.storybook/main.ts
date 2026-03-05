@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
 
 const config: StorybookConfig = {
   stories: [
@@ -17,7 +18,7 @@ const config: StorybookConfig = {
   },
   viteFinal(config) {
     config.plugins = config.plugins ?? []
-    config.plugins.push(tailwindcss())
+    config.plugins.push(vue(), tailwindcss())
     return config
   },
 }
