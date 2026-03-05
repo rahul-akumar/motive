@@ -1,0 +1,349 @@
+<script setup lang="ts">
+import L from 'leaflet'
+import type { Driver, DriverStatus } from '@motive/shared'
+
+const props = defineProps<{
+  drivers: Driver[]
+  selectedDriverId: string | null
+  fitAllTrigger: number
+}>()
+
+const emit = defineEmits<{
+  selectDriver: [id: string | null]
+  hoverDriver: [id: string | null]
+}>()
+
+// ── Theme detection ───────────────────────────────────────────
+function isDarkTheme(): boolean {
+  if (!import.meta.client) return true
+  return document.documentElement.getAttribute('data-theme') !== 'light'
+}
+
+const TILE_DARK = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+const TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+
+// ── Status colors ─────────────────────────────────────────────
+const STATUS_COLORS: Record<DriverStatus, string> = {
+  driving: '#4ade80',
+  idle: '#fbbf24',
+  alert: '#f87171',
+  offline: '#525252',
+  sleeper: '#a78bfa',
+}
+
+// ── Map instance ──────────────────────────────────────────────
+const mapRef = ref<HTMLDivElement | null>(null)
+let map: L.Map | null = null
+let tileLayer: L.TileLayer | null = null
+const markers = new Map<string, L.Marker>()
+
+function getTileUrl(): string {
+  return isDarkTheme() ? TILE_DARK : TILE_LIGHT
+}
+
+function createMarkerIcon(driver: Driver, isSelected: boolean): L.DivIcon {
+  const color = STATUS_COLORS[driver.status]
+  const size = isSelected ? 36 : 28
+  const borderWidth = isSelected ? 3 : 2
+  const borderColor = isSelected ? '#ffffff' : 'rgba(0,0,0,0.5)'
+  const pulseRing =
+    driver.status === 'alert'
+      ? `<div class="fv-marker-ring" style="border-color:${color}"></div>`
+      : ''
+
+  return L.divIcon({
+    className: '',
+    html: `
+      <div class="fv-marker-wrap" style="width:${size}px;height:${size}px">
+        ${pulseRing}
+        <div class="fv-marker-dot" style="
+          width:${size}px;
+          height:${size}px;
+          background:${color};
+          border:${borderWidth}px solid ${borderColor};
+          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        "></div>
+        <div class="fv-marker-initials" style="font-size:${isSelected ? 10 : 8}px">${driver.initials}</div>
+      </div>
+    `,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -(size / 2 + 4)],
+  })
+}
+
+function createPopupContent(driver: Driver): string {
+  const color = STATUS_COLORS[driver.status]
+  const hosText = driver.hos.hasViolation
+    ? '<span style="color:#f87171">HOS Violation</span>'
+    : `<span style="color:#4ade80">${driver.hos.drivingRemaining.toFixed(1)}h drive left</span>`
+  const loadText = driver.currentLoad
+    ? `<div style="color:#94a3b8;font-size:10px;margin-top:2px">${driver.currentLoad}</div>`
+    : ''
+  const etaText = driver.etaNextStop
+    ? `<div style="color:#94a3b8;font-size:10px">ETA ${driver.etaNextStop}</div>`
+    : ''
+
+  return `
+    <div class="fv-popup">
+      <div class="fv-popup__name">${driver.name}</div>
+      <div class="fv-popup__status" style="color:${color}">${driver.status.toUpperCase()}</div>
+      <div class="fv-popup__location">${driver.currentLocation.city}, ${driver.currentLocation.state}</div>
+      ${loadText}
+      ${etaText}
+      <div class="fv-popup__hos">${hosText}</div>
+    </div>
+  `
+}
+
+function addOrUpdateMarker(driver: Driver) {
+  if (!map) return
+  const isSelected = driver.id === props.selectedDriverId
+  const icon = createMarkerIcon(driver, isSelected)
+  const latlng: L.LatLngExpression = [driver.currentLocation.lat, driver.currentLocation.lng]
+
+  if (markers.has(driver.id)) {
+    const marker = markers.get(driver.id)!
+    marker.setLatLng(latlng)
+    marker.setIcon(icon)
+    marker.getPopup()?.setContent(createPopupContent(driver))
+  } else {
+    const marker = L.marker(latlng, { icon })
+    marker.bindPopup(createPopupContent(driver), {
+      closeButton: false,
+      className: 'fv-leaflet-popup',
+      offset: [0, -4],
+    })
+    marker.on('mouseover', () => {
+      marker.openPopup()
+      emit('hoverDriver', driver.id)
+    })
+    marker.on('mouseout', () => {
+      marker.closePopup()
+      emit('hoverDriver', null)
+    })
+    marker.on('click', () => {
+      emit('selectDriver', driver.id === props.selectedDriverId ? null : driver.id)
+    })
+    marker.addTo(map)
+    markers.set(driver.id, marker)
+  }
+}
+
+function removeStaleMarkers(currentIds: Set<string>) {
+  for (const [id, marker] of markers) {
+    if (!currentIds.has(id)) {
+      marker.remove()
+      markers.delete(id)
+    }
+  }
+}
+
+function syncMarkers() {
+  const currentIds = new Set(props.drivers.map((d) => d.id))
+  removeStaleMarkers(currentIds)
+  for (const driver of props.drivers) {
+    addOrUpdateMarker(driver)
+  }
+}
+
+function fitAllBounds() {
+  if (!map || props.drivers.length === 0) return
+  const bounds = L.latLngBounds(
+    props.drivers.map((d) => [d.currentLocation.lat, d.currentLocation.lng] as L.LatLngExpression),
+  )
+  map.fitBounds(bounds, { padding: [60, 60], maxZoom: 10 })
+}
+
+function updateTileLayer() {
+  if (!map) return
+  if (tileLayer) {
+    tileLayer.setUrl(getTileUrl())
+  }
+}
+
+onMounted(() => {
+  if (!mapRef.value) return
+
+  map = L.map(mapRef.value, {
+    center: [39.5, -98.35],
+    zoom: 4,
+    zoomControl: false, // we use custom controls
+    attributionControl: true,
+  })
+
+  tileLayer = L.tileLayer(getTileUrl(), {
+    attribution: TILE_ATTRIBUTION,
+    maxZoom: 19,
+    subdomains: 'abcd',
+  }).addTo(map)
+
+  syncMarkers()
+  fitAllBounds()
+
+  // Watch theme changes
+  const themeObserver = new MutationObserver(updateTileLayer)
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+  onUnmounted(() => themeObserver.disconnect())
+})
+
+onUnmounted(() => {
+  map?.remove()
+  map = null
+})
+
+// Reactive watchers
+watch(() => props.drivers, syncMarkers, { deep: true })
+
+watch(
+  () => props.selectedDriverId,
+  () => syncMarkers(),
+)
+
+watch(
+  () => props.fitAllTrigger,
+  (val, old) => {
+    if (val !== old) fitAllBounds()
+  },
+)
+
+// Expose map zoom methods for controls
+function zoomIn() {
+  map?.zoomIn()
+}
+function zoomOut() {
+  map?.zoomOut()
+}
+
+defineExpose({ zoomIn, zoomOut, fitAllBounds })
+</script>
+
+<template>
+  <div ref="mapRef" class="fv-map" aria-label="Live fleet map showing truck positions" role="img" />
+</template>
+
+<style>
+/* Global styles needed for Leaflet DivIcon and popup — cannot be scoped */
+
+.fv-map {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-base);
+}
+
+/* Marker wrapper */
+.fv-marker-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fv-marker-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition: transform 150ms ease;
+}
+
+.fv-marker-initials {
+  position: absolute;
+  color: rgba(0, 0, 0, 0.75);
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1;
+}
+
+/* Alert pulse ring */
+.fv-marker-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid;
+  animation: fv-ring-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes fv-ring-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Leaflet popup override */
+.fv-leaflet-popup .leaflet-popup-content-wrapper {
+  background: var(--bg-elevated, #1a1a1a);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.12));
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  padding: 0;
+}
+
+.fv-leaflet-popup .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}
+
+.fv-leaflet-popup .leaflet-popup-tip-container {
+  display: none;
+}
+
+.fv-popup {
+  padding: 10px 12px;
+  min-width: 150px;
+}
+
+.fv-popup__name {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #e2e2e2);
+  margin-bottom: 2px;
+}
+
+.fv-popup__status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.fv-popup__location {
+  font-size: 11px;
+  color: var(--text-secondary, #8a8a8a);
+  margin-bottom: 2px;
+}
+
+.fv-popup__hos {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+/* Override Leaflet attribution */
+.leaflet-control-attribution {
+  font-size: 9px !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 2px 0 0 0 !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+</style>

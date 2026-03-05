@@ -45,7 +45,7 @@ function drawChart() {
     { key: 'alert', label: 'Alert', value: props.status.alert, color: '#dc2626' },
   ]
 
-  const size = 160
+  const size = 200
   const radius = size / 2
   const innerRadius = radius * 0.62
   const outerRadius = radius * 0.92
@@ -231,19 +231,22 @@ watch(() => props.status, drawChart, { deep: true })
 
 .fleet-donut__body {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .fleet-donut__chart-wrap {
-  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .fleet-donut__legend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
 }
 
 .fleet-donut__legend-item {

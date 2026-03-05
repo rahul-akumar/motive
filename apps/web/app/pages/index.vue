@@ -26,12 +26,12 @@ const { dailyMiles } = useMilesData()
     <!-- Charts Row -->
     <section class="charts-row" aria-label="Fleet analytics charts">
       <ClientOnly>
-        <DashboardMilesChart
-          :data="dailyMiles"
-          class="charts-row__miles animate-card-enter animate-card-enter-5"
+        <DashboardFleetStatusDonut
+          :status="fleetStatus"
+          class="charts-row__donut animate-card-enter animate-card-enter-5"
         />
         <template #fallback>
-          <div class="chart-skeleton fleet-card charts-row__miles" aria-hidden="true" />
+          <div class="chart-skeleton fleet-card charts-row__donut" aria-hidden="true" />
         </template>
       </ClientOnly>
 
@@ -46,12 +46,12 @@ const { dailyMiles } = useMilesData()
       </ClientOnly>
 
       <ClientOnly>
-        <DashboardFleetStatusDonut
-          :status="fleetStatus"
-          class="charts-row__donut animate-card-enter animate-card-enter-6"
+        <DashboardMilesChart
+          :data="dailyMiles"
+          class="charts-row__miles animate-card-enter animate-card-enter-6"
         />
         <template #fallback>
-          <div class="chart-skeleton fleet-card" aria-hidden="true" />
+          <div class="chart-skeleton fleet-card charts-row__miles" aria-hidden="true" />
         </template>
       </ClientOnly>
     </section>
@@ -109,12 +109,16 @@ const { dailyMiles } = useMilesData()
 /* Charts Row */
 .charts-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 320px;
+  grid-template-columns: 320px 1fr 1.5fr;
   gap: 1rem;
 }
 
 .charts-row__miles,
 .charts-row__map {
+  min-height: 280px;
+}
+
+.charts-row__donut {
   min-height: 280px;
 }
 
@@ -164,10 +168,10 @@ const { dailyMiles } = useMilesData()
 /* Responsive */
 @media (max-width: 1400px) {
   .charts-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 320px 1fr;
   }
 
-  .charts-row__donut {
+  .charts-row__miles {
     grid-column: 1 / -1;
   }
 }
@@ -181,7 +185,7 @@ const { dailyMiles } = useMilesData()
     grid-template-columns: 1fr;
   }
 
-  .charts-row__donut {
+  .charts-row__miles {
     grid-column: auto;
   }
 
