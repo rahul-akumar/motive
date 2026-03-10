@@ -114,29 +114,38 @@ function toggleCollapsed() {
 
     <!-- Logo -->
     <div class="sidebar__logo">
-      <div class="sidebar__logo-icon" aria-hidden="true">
+      <div class="sidebar__logo-wrap">
         <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
+          class="sidebar__logo-svg"
+          aria-label="Motive"
           fill="none"
+          viewBox="0 0 86 20"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect width="24" height="24" rx="0" fill="var(--logo-bg)" />
-          <path d="M3 16L6 9H18L21 16H3Z" fill="var(--logo-text)" opacity="0.9" />
-          <circle cx="8" cy="17.5" r="2" fill="var(--logo-text)" />
-          <circle cx="16" cy="17.5" r="2" fill="var(--logo-text)" />
+          <path
+            d="M14.6003 4.89116H10.0753L3.31154 16.3393H0V19.7259H5.28792L10.8221 10.3504V19.7192H15.2862L20.7945 10.3233V19.7192H24.5823V4.89116H20.037L14.6003 14.0866V4.89116Z"
+            fill="white"
+          />
+          <path
+            d="M33.4728 4.71886H33.4444C29.3713 4.71886 26.1003 8.10547 26.1003 12.3049C26.1003 16.5043 29.3713 19.8909 33.4444 19.8909H33.4728C37.5473 19.8909 40.7885 16.4718 40.7885 12.3049C40.7885 8.13797 37.5473 4.71886 33.4728 4.71886ZM33.4728 16.0979H33.4444C31.4369 16.0979 29.888 14.4033 29.888 12.3049C29.888 10.2066 31.4369 8.51191 33.4444 8.51191H33.4728C35.4235 8.51191 37.0049 10.235 37.0049 12.3049C37.0022 14.4005 35.4533 16.0952 33.4728 16.0952V16.0979Z"
+            fill="white"
+          />
+          <path
+            d="M47.0964 16.3398V8.19564H50.4242V4.89571H47.0964V0H43.3087V4.89299H41.1578V8.19293H43.3101V19.7197H50.4242V16.333L47.0964 16.3398Z"
+            fill="white"
+          />
+          <path d="M55.8138 4.89116H52.0261V19.7192H55.8138V4.89251V4.89116Z" fill="white" />
+          <path d="M55.8099 0H52.0317V3.3785H55.8099V0Z" fill="white" />
+          <path
+            d="M68.4504 4.89543L64.8412 14.5947L61.2321 4.89543H57.1819L62.9109 19.7208H66.7229L72.4856 4.90356H68.4504C68.4504 4.90356 68.4504 4.89407 68.4504 4.89543Z"
+            fill="white"
+          />
+          <path
+            d="M79.2198 16.5222C80.7422 16.5222 81.6902 15.6323 81.9482 14.8547H85.7364C85.5928 16.0915 83.9561 19.8885 79.217 19.8885C74.9385 19.8885 71.7773 16.6672 71.7773 12.2944C71.7773 8.00958 75.0238 4.70155 79.1012 4.70155C82.9782 4.70155 86 8.09492 86 12.2375C86 12.6682 85.9715 13.072 85.9431 13.3591H75.6619C75.9178 15.1717 77.0095 16.5222 79.2198 16.5222ZM75.7784 10.6552H82.2721C81.8657 9.16515 80.8649 8.06652 79.113 8.06652C77.2772 8.06652 76.2084 9.13126 75.7826 10.6552H75.7784Z"
+            fill="white"
+          />
         </svg>
       </div>
-      <span class="sidebar__logo-text font-mono-data">MOTIVE</span>
-      <button
-        type="button"
-        class="sidebar__collapse-btn"
-        :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-        @click="toggleCollapsed"
-      >
-        <component :is="collapsed ? PanelLeftOpen : PanelLeftClose" :size="14" aria-hidden="true" />
-      </button>
     </div>
 
     <!-- Main Nav -->
@@ -177,6 +186,25 @@ function toggleCollapsed() {
             >
               <Settings :size="16" :stroke-width="1.5" aria-hidden="true" class="sidebar__icon" />
               <span class="sidebar__label">Settings</span>
+            </button>
+          </MTooltip>
+        </li>
+        <li>
+          <MTooltip :content="collapsed ? 'Expand sidebar' : 'Collapse sidebar'" placement="right">
+            <button
+              type="button"
+              class="sidebar-nav-item sidebar-nav-item--btn"
+              :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+              @click="toggleCollapsed"
+            >
+              <component
+                :is="collapsed ? PanelLeftOpen : PanelLeftClose"
+                :size="16"
+                :stroke-width="1.5"
+                aria-hidden="true"
+                class="sidebar__icon"
+              />
+              <span class="sidebar__label">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
             </button>
           </MTooltip>
         </li>
@@ -233,23 +261,17 @@ function toggleCollapsed() {
     padding 220ms ease-in-out;
 }
 
-.sidebar__logo-icon {
+.sidebar__logo-wrap {
+  overflow: hidden;
+  max-width: 70px;
   flex-shrink: 0;
+  transition: max-width 220ms ease-in-out;
 }
 
-.sidebar__logo-text {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  /* animate width and opacity in sync with the sidebar */
-  max-width: 200px;
-  opacity: 1;
-  transition:
-    max-width 220ms ease-in-out,
-    opacity 180ms ease-in-out;
+.sidebar__logo-svg {
+  height: 16px;
+  width: 69px; /* 86/20 * 16 */
+  display: block;
 }
 
 .sidebar__nav {
@@ -264,13 +286,13 @@ function toggleCollapsed() {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 8px;
 }
 
 .sidebar__icon {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Nav item padding/gap animate in sync with sidebar width */
@@ -280,10 +302,12 @@ function toggleCollapsed() {
     padding 220ms ease-in-out,
     color 100ms ease,
     background-color 100ms ease;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar__label {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
@@ -374,48 +398,29 @@ function toggleCollapsed() {
   letter-spacing: 0.03em;
 }
 
-/* Collapse toggle button */
-.sidebar__collapse-btn {
-  margin-left: auto;
-  flex-shrink: 0;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  transition:
-    color 100ms ease,
-    background-color 100ms ease;
-}
-
-.sidebar__collapse-btn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
-}
-
 /* ── Collapsed state: all transitions already defined above ── */
 
 /* Shrink labels to zero — CSS transition does the animation */
-.sidebar--collapsed .sidebar__logo-text,
 .sidebar--collapsed .sidebar__label,
 .sidebar--collapsed .sidebar__user-info {
   max-width: 0;
   opacity: 0;
 }
 
-/* Remove gap so icon centers via padding alone */
+/* Clip logo to just the M */
+.sidebar--collapsed .sidebar__logo-wrap {
+  max-width: 20px;
+}
+
+/* Minimize logo area when collapsed */
 .sidebar--collapsed .sidebar__logo {
   gap: 0;
   padding: 1rem 0.75rem;
 }
 
-/* Padding centers the 16px icon in the 48px rail: (48 - 16) / 2 = 16px */
 .sidebar--collapsed .sidebar-nav-item {
   gap: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.875rem;
 }
 
 .sidebar--collapsed .sidebar__user {
@@ -460,10 +465,6 @@ function toggleCollapsed() {
 
   .sidebar__close-btn:hover {
     color: var(--text-primary);
-  }
-
-  .sidebar__collapse-btn {
-    display: none;
   }
 }
 </style>

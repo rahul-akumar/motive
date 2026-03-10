@@ -1,0 +1,37 @@
+/* Slate — Enterprise Terminal. Cool blue-black, Bloomberg Terminal meets corporate authority. */
+html[data-theme='slate'] {
+  --bg-base: #0b0d0f;
+  --bg-card: #10131a;
+  --bg-elevated: #141820;
+  --bg-hover: #181d26;
+  --border: rgba(100, 116, 139, 0.12);
+  --border-strong: rgba(100, 116, 139, 0.22);
+  --border-accent: rgba(100, 116, 139, 0.35);
+  --accent: #64748b;
+  --accent-rgb: 100, 116, 139;
+  --accent-dim: rgba(100, 116, 139, 0.1);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(100, 116, 139, 0.05);
+  --accent-border: rgba(100, 116, 139, 0.2);
+  --text-primary: #dde3ec;
+  --text-secondary: #7a8899;
+  --text-muted: #546070;
+  --text-dim: #3e4c5e;
+  --scrollbar-thumb: #1e2530;
+  --scrollbar-thumb-hover: #28333f;
+  --logo-bg: #64748b;
+  --logo-text: #ffffff;
+  --sidebar-active-bg: rgba(100, 116, 139, 0.1);
+  --sidebar-active-border: #64748b;
+  --sidebar-active-icon: #94a3b8;
+  --sidebar-active-glow: none;
+  --avatar-bg: rgba(100, 116, 139, 0.12);
+  --avatar-text: #64748b;
+  --focus-ring: #94a3b8;
+  --table-sorted-color: #94a3b8;
+  --search-focus-border: rgba(100, 116, 139, 0.4);
+  --search-focus-shadow: 0 0 0 3px rgba(100, 116, 139, 0.08);
+  --card-radius: 8px;
+  --badge-radius: 3px;
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.45), 0 1px 4px rgba(0, 0, 0, 0.3);
+}

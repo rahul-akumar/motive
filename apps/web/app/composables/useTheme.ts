@@ -1,4 +1,4 @@
-export type ThemeId = 'stealth' | 'danger-red' | 'amber-ops' | 'slate'
+export type ThemeId = 'stealth' | 'danger-red' | 'amber-ops' | 'slate' | 'arc'
 
 export interface Theme {
   id: ThemeId
@@ -14,38 +14,47 @@ export const THEMES: Theme[] = [
   {
     id: 'stealth',
     name: 'Stealth',
-    description: 'Monochrome. White on charcoal. Zero color.',
+    description: 'Precision black. Surgical, zero noise, razor-sharp.',
     accent: '#e2e2e2',
-    bgBase: '#0d0d0d',
-    bgCard: '#111111',
-    textPrimary: '#e2e2e2',
+    bgBase: '#0a0a0a',
+    bgCard: '#0f0f0f',
+    textPrimary: '#d8d8d8',
   },
   {
     id: 'danger-red',
     name: 'Danger Red',
-    description: 'Critical ops. Red accent on near-black.',
+    description: 'Alert command. Warm-red surfaces, command center on alert.',
     accent: '#dc2626',
-    bgBase: '#0d0d0d',
-    bgCard: '#111111',
-    textPrimary: '#e2e2e2',
+    bgBase: '#0e0b0b',
+    bgCard: '#130f0f',
+    textPrimary: '#ede8e8',
   },
   {
     id: 'amber-ops',
     name: 'Amber Ops',
-    description: 'Muted amber on carbon. Field operations.',
+    description: 'Night vision. Cockpit phosphor warmth, AN/PVS aesthetic.',
     accent: '#d97706',
-    bgBase: '#0d0d0d',
-    bgCard: '#111111',
-    textPrimary: '#e2e2e2',
+    bgBase: '#0d0b08',
+    bgCard: '#121009',
+    textPrimary: '#e8d9bc',
   },
   {
     id: 'slate',
     name: 'Slate',
-    description: 'Blue-grey on near-black. Low visibility.',
+    description: 'Enterprise terminal. Cool blue-black, Bloomberg authority.',
     accent: '#64748b',
-    bgBase: '#0d0d0d',
-    bgCard: '#111111',
-    textPrimary: '#e2e2e2',
+    bgBase: '#0b0d0f',
+    bgCard: '#10131a',
+    textPrimary: '#dde3ec',
+  },
+  {
+    id: 'arc',
+    name: 'Arc',
+    description: 'Futurist HUD. Deep violet-black, Blade Runner glow.',
+    accent: '#7c3aed',
+    bgBase: '#0a090f',
+    bgCard: '#0f0d18',
+    textPrimary: '#e0dcf0',
   },
 ]
 

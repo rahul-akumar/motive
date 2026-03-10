@@ -214,6 +214,7 @@ onMounted(() => {
 
 .topbar__search:focus-within {
   border-color: var(--search-focus-border);
+  box-shadow: var(--search-focus-shadow);
 }
 
 .topbar__search-icon {

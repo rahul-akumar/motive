@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  app: {
+    head: {
+      title: 'Motive',
+      link: [{ rel: 'icon', type: 'image/jpeg', href: '/motive-wordmark.jpeg' }],
+    },
+  },
+
   runtimeConfig: {
     public: {
       tomtomApiKey: '', // reads NUXT_PUBLIC_TOMTOM_API_KEY from .env

@@ -1,0 +1,38 @@
+/* Stealth — Precision Black. Surgical, military intelligence. Zero noise. */
+:root,
+html[data-theme='stealth'] {
+  --bg-base: #0a0a0a;
+  --bg-card: #0f0f0f;
+  --bg-elevated: #141414;
+  --bg-hover: #181818;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --border-accent: rgba(255, 255, 255, 0.18);
+  --accent: #e2e2e2;
+  --accent-rgb: 226, 226, 226;
+  --accent-dim: rgba(255, 255, 255, 0.05);
+  --accent-glow: transparent;
+  --accent-subtle: rgba(255, 255, 255, 0.03);
+  --accent-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #d8d8d8;
+  --text-secondary: #787878;
+  --text-muted: #555555;
+  --text-dim: #444444;
+  --scrollbar-thumb: #1e1e1e;
+  --scrollbar-thumb-hover: #2a2a2a;
+  --logo-bg: #e2e2e2;
+  --logo-text: #0a0a0a;
+  --sidebar-active-bg: transparent;
+  --sidebar-active-border: #e2e2e2;
+  --sidebar-active-icon: #e2e2e2;
+  --sidebar-active-glow: none;
+  --avatar-bg: rgba(255, 255, 255, 0.08);
+  --avatar-text: #9a9a9a;
+  --focus-ring: #e2e2e2;
+  --table-sorted-color: #e2e2e2;
+  --search-focus-border: rgba(255, 255, 255, 0.2);
+  --search-focus-shadow: none;
+  --card-radius: 0px;
+  --badge-radius: 0px;
+  --shadow-card: none;
+}

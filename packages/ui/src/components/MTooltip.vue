@@ -111,7 +111,7 @@ function hide() {
   /* High-contrast: white bg, dark text — reads clearly on any dark map/surface */
   background: #ffffff;
   color: #111111;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 500;
   letter-spacing: 0.04em;

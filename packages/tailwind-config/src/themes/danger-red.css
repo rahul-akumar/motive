@@ -1,0 +1,37 @@
+/* Danger Red — Alert Command. Warm-red tinted surfaces, command center on alert. */
+html[data-theme='danger-red'] {
+  --bg-base: #0e0b0b;
+  --bg-card: #130f0f;
+  --bg-elevated: #181212;
+  --bg-hover: #1e1515;
+  --border: rgba(220, 38, 38, 0.1);
+  --border-strong: rgba(220, 38, 38, 0.18);
+  --border-accent: rgba(220, 38, 38, 0.3);
+  --accent: #dc2626;
+  --accent-rgb: 220, 38, 38;
+  --accent-dim: rgba(220, 38, 38, 0.08);
+  --accent-glow: rgba(220, 38, 38, 0.2);
+  --accent-subtle: rgba(220, 38, 38, 0.04);
+  --accent-border: rgba(220, 38, 38, 0.2);
+  --text-primary: #ede8e8;
+  --text-secondary: #8a7a7a;
+  --text-muted: #664444;
+  --text-dim: #4d3333;
+  --scrollbar-thumb: #2e1a1a;
+  --scrollbar-thumb-hover: #3d2222;
+  --logo-bg: #dc2626;
+  --logo-text: #ffffff;
+  --sidebar-active-bg: rgba(220, 38, 38, 0.12);
+  --sidebar-active-border: #dc2626;
+  --sidebar-active-icon: #dc2626;
+  --sidebar-active-glow: inset 2px 0 8px rgba(220, 38, 38, 0.15);
+  --avatar-bg: rgba(220, 38, 38, 0.1);
+  --avatar-text: #dc2626;
+  --focus-ring: #dc2626;
+  --table-sorted-color: #dc2626;
+  --search-focus-border: rgba(220, 38, 38, 0.4);
+  --search-focus-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  --card-radius: 2px;
+  --badge-radius: 0px;
+  --shadow-card: 0 2px 12px rgba(220, 38, 38, 0.06);
+}
