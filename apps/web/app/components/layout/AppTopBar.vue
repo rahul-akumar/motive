@@ -3,6 +3,7 @@ import { Search, Bell, ChevronRight, Menu } from 'lucide-vue-next'
 
 const props = defineProps<{
   title?: string
+  moduleName?: string
   alertCount?: number
 }>()
 
@@ -50,11 +51,11 @@ onMounted(() => {
     <!-- Left: Title + Breadcrumb -->
     <div class="topbar__left">
       <div class="topbar__breadcrumb">
-        <span class="topbar__breadcrumb-root">Fleet</span>
+        <span class="topbar__breadcrumb-root">{{ moduleName || 'App' }}</span>
         <ChevronRight :size="12" aria-hidden="true" class="topbar__breadcrumb-sep" />
         <span class="topbar__breadcrumb-current">{{ title || 'Overview' }}</span>
       </div>
-      <h1 class="topbar__title font-condensed">{{ title || 'Fleet Overview' }}</h1>
+      <h1 class="topbar__title font-condensed">{{ title || moduleName || 'Overview' }}</h1>
     </div>
 
     <!-- Center: Search -->

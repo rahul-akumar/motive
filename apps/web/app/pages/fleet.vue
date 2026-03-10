@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import type { OverlayDef } from '~/composables/useTomTomOverlays'
+
 definePageMeta({
   layout: 'fleet',
+  title: 'Fleet View',
+  moduleName: 'Fleet',
 })
 
 const {
@@ -21,6 +25,28 @@ const {
   fitAllTrigger,
   fitAllTrucks,
 } = useFleetView()
+
+// TomTom overlay state
+const { allOverlays, activeOverlayIds, toggleOverlay } = useTomTomOverlays()
+const config = useRuntimeConfig()
+const tomtomKey = config.public.tomtomApiKey as string
+
+function isDark(): boolean {
+  if (!import.meta.client) return true
+  return document.documentElement.getAttribute('data-theme') !== 'light'
+}
+
+const activeOverlayDefs = computed(() => {
+  const dark = isDark()
+  return allOverlays
+    .filter((o: OverlayDef) => activeOverlayIds.value.has(o.id))
+    .map((o: OverlayDef) => ({
+      id: o.id,
+      tileUrl: o.tileUrl(tomtomKey, dark),
+      opacity: o.opacity,
+      zIndex: o.zIndex,
+    }))
+})
 
 // Ref to the map component for zoom controls
 const mapRef = ref<{ zoomIn: () => void; zoomOut: () => void; fitAllBounds: () => void } | null>(
@@ -45,6 +71,7 @@ function handleZoomOut() {
         :drivers="filteredDrivers"
         :selected-driver-id="selectedDriverId"
         :fit-all-trigger="fitAllTrigger"
+        :overlays="activeOverlayDefs"
         class="fv-page__map"
         @select-driver="selectDriver"
       />
@@ -77,11 +104,14 @@ function handleZoomOut() {
       @close="selectDriver(null)"
     />
 
-    <!-- Map controls (floating bottom-right) -->
+    <!-- Map controls (floating bottom-center, includes layers) -->
     <FleetViewMapControls
+      :overlays="allOverlays"
+      :active-ids="activeOverlayIds"
       @zoom-in="handleZoomIn"
       @zoom-out="handleZoomOut"
       @fit-all="fitAllTrucks"
+      @toggle="toggleOverlay"
     />
   </div>
 </template>

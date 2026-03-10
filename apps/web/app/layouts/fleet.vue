@@ -36,7 +36,12 @@ watch(
     />
 
     <div class="fleet-main">
-      <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
+      <LayoutAppTopBar
+        :title="route.meta.title as string"
+        :module-name="route.meta.moduleName as string"
+        :alert-count="alertCount"
+        @toggle-sidebar="toggleSidebar"
+      />
       <!-- No padding, no overflow — map fills this area directly -->
       <main class="fleet-content" id="main-content">
         <slot />

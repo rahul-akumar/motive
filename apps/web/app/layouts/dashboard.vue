@@ -4,6 +4,7 @@ const alertCount = computed(() => activeAlerts.value.length)
 
 const themeModalOpen = ref(false)
 const sidebarOpen = ref(false)
+const route = useRoute()
 
 function toggleSidebar() {
   sidebarOpen.value = !sidebarOpen.value
@@ -14,7 +15,6 @@ function closeSidebar() {
 }
 
 // Close sidebar on route change (mobile nav)
-const route = useRoute()
 watch(
   () => route.path,
   () => {
@@ -37,7 +37,12 @@ watch(
     />
 
     <div class="dashboard-main">
-      <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
+      <LayoutAppTopBar
+        :title="route.meta.title as string"
+        :module-name="route.meta.moduleName as string"
+        :alert-count="alertCount"
+        @toggle-sidebar="toggleSidebar"
+      />
       <main class="dashboard-content bg-dot-grid" id="main-content">
         <div
           v-motion

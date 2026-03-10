@@ -6,6 +6,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  runtimeConfig: {
+    public: {
+      tomtomApiKey: '', // reads NUXT_PUBLIC_TOMTOM_API_KEY from .env
+    },
+  },
+
   modules: ['@nuxt/fonts', '@nuxt/eslint', '@vueuse/motion/nuxt'],
 
   fonts: {

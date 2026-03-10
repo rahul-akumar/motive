@@ -6,6 +6,7 @@ const props = defineProps<{
   drivers: Driver[]
   selectedDriverId: string | null
   fitAllTrigger: number
+  overlays: Array<{ id: string; tileUrl: string; opacity: number; zIndex: number }>
 }>()
 
 const emit = defineEmits<{
@@ -38,6 +39,7 @@ const mapRef = ref<HTMLDivElement | null>(null)
 let map: L.Map | null = null
 let tileLayer: L.TileLayer | null = null
 const markers = new Map<string, L.Marker>()
+const overlayLayers = new Map<string, L.TileLayer>()
 
 function getTileUrl(): string {
   return isDarkTheme() ? TILE_DARK : TILE_LIGHT
@@ -162,6 +164,35 @@ function updateTileLayer() {
   if (tileLayer) {
     tileLayer.setUrl(getTileUrl())
   }
+  // Re-apply incident overlay URLs when theme changes (s1 vs s2 style)
+  syncOverlays(props.overlays)
+}
+
+function syncOverlays(overlays: typeof props.overlays) {
+  if (!map) return
+  const incomingIds = new Set(overlays.map((o) => o.id))
+
+  // Remove layers no longer active
+  for (const [id, layer] of overlayLayers) {
+    if (!incomingIds.has(id)) {
+      layer.remove()
+      overlayLayers.delete(id)
+    }
+  }
+
+  // Add or update layers
+  for (const overlay of overlays) {
+    if (overlayLayers.has(overlay.id)) {
+      overlayLayers.get(overlay.id)!.setUrl(overlay.tileUrl)
+    } else {
+      const layer = L.tileLayer(overlay.tileUrl, {
+        opacity: overlay.opacity,
+        zIndex: overlay.zIndex,
+        maxZoom: 19,
+      }).addTo(map)
+      overlayLayers.set(overlay.id, layer)
+    }
+  }
 }
 
 onMounted(() => {
@@ -193,11 +224,13 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  overlayLayers.clear()
   map?.remove()
   map = null
 })
 
 // Reactive watchers
+watch(() => props.overlays, syncOverlays, { deep: true })
 watch(() => props.drivers, syncMarkers, { deep: true })
 
 watch(
