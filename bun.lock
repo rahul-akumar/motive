@@ -19,6 +19,7 @@
       "dependencies": {
         "@motive/tailwind-config": "*",
         "@motive/ui": "*",
+        "@vueuse/motion": "^3.0.3",
       },
       "devDependencies": {
         "@storybook/addon-essentials": "^8.5.0",

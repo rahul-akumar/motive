@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Plus, Minus, Maximize2, Layers } from 'lucide-vue-next'
 import { Gauge, AlertTriangle, Globe } from 'lucide-vue-next'
+import { MTooltip } from '@motive/ui'
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
 
 const props = defineProps<{
@@ -44,16 +45,17 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
     <div class="fv-controls__bar fleet-card">
       <!-- Layers button with popup -->
       <div class="fv-controls__layers-wrap">
-        <button
-          type="button"
-          class="fv-controls__btn fv-controls__btn--layers"
-          :class="{ 'fv-controls__btn--active': layersOpen || props.activeIds.size > 0 }"
-          aria-label="Toggle map layers"
-          title="Layers"
-          @click.stop="toggleLayers"
-        >
-          <Layers :size="14" aria-hidden="true" />
-        </button>
+        <MTooltip content="Layers" placement="top">
+          <button
+            type="button"
+            class="fv-controls__btn fv-controls__btn--layers"
+            :class="{ 'fv-controls__btn--active': layersOpen || props.activeIds.size > 0 }"
+            aria-label="Toggle map layers"
+            @click.stop="toggleLayers"
+          >
+            <Layers :size="14" aria-hidden="true" />
+          </button>
+        </MTooltip>
 
         <!-- Layers dropdown (opens upward) -->
         <Transition name="fv-layers">
@@ -80,29 +82,39 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
       <div class="fv-controls__divider" aria-hidden="true" />
 
       <!-- Zoom in -->
-      <button type="button" class="fv-controls__btn" aria-label="Zoom in" @click="emit('zoomIn')">
-        <Plus :size="14" aria-hidden="true" />
-      </button>
+      <MTooltip content="Zoom in" placement="top">
+        <button type="button" class="fv-controls__btn" aria-label="Zoom in" @click="emit('zoomIn')">
+          <Plus :size="14" aria-hidden="true" />
+        </button>
+      </MTooltip>
 
       <div class="fv-controls__divider" aria-hidden="true" />
 
       <!-- Zoom out -->
-      <button type="button" class="fv-controls__btn" aria-label="Zoom out" @click="emit('zoomOut')">
-        <Minus :size="14" aria-hidden="true" />
-      </button>
+      <MTooltip content="Zoom out" placement="top">
+        <button
+          type="button"
+          class="fv-controls__btn"
+          aria-label="Zoom out"
+          @click="emit('zoomOut')"
+        >
+          <Minus :size="14" aria-hidden="true" />
+        </button>
+      </MTooltip>
 
       <div class="fv-controls__divider" aria-hidden="true" />
 
       <!-- Fit all trucks -->
-      <button
-        type="button"
-        class="fv-controls__btn"
-        aria-label="Fit all trucks in view"
-        title="Fit all trucks"
-        @click="emit('fitAll')"
-      >
-        <Maximize2 :size="13" aria-hidden="true" />
-      </button>
+      <MTooltip content="Fit all" placement="top">
+        <button
+          type="button"
+          class="fv-controls__btn"
+          aria-label="Fit all trucks in view"
+          @click="emit('fitAll')"
+        >
+          <Maximize2 :size="13" aria-hidden="true" />
+        </button>
+      </MTooltip>
     </div>
 
     <!-- Live indicator -->
