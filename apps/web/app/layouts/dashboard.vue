@@ -25,33 +25,35 @@ watch(
 
 <template>
   <div class="dashboard-shell">
-    <!-- Mobile overlay backdrop -->
-    <Transition name="overlay">
-      <div v-if="sidebarOpen" class="sidebar-overlay" aria-hidden="true" @click="closeSidebar" />
-    </Transition>
+    <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
 
-    <LayoutAppSidebar
-      :is-open="sidebarOpen"
-      @open-settings="themeModalOpen = true"
-      @close="closeSidebar"
-    />
+    <div class="dashboard-body">
+      <!-- Mobile overlay backdrop -->
+      <Transition name="overlay">
+        <div v-if="sidebarOpen" class="sidebar-overlay" aria-hidden="true" @click="closeSidebar" />
+      </Transition>
 
-    <div class="dashboard-main">
-      <LayoutAppTopBar
-        :title="route.meta.title as string"
-        :module-name="route.meta.moduleName as string"
-        :alert-count="alertCount"
-        @toggle-sidebar="toggleSidebar"
+      <LayoutAppSidebar
+        :is-open="sidebarOpen"
+        @open-settings="themeModalOpen = true"
+        @close="closeSidebar"
       />
-      <main class="dashboard-content bg-dot-grid" id="main-content">
-        <div
-          v-motion
-          :initial="{ opacity: 0, y: 8 }"
-          :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
-        >
-          <slot />
+
+      <div class="dashboard-main">
+        <div class="dashboard-page-header">
+          <p class="dashboard-page-module">{{ route.meta.moduleName as string }}</p>
+          <h1 class="dashboard-page-title font-condensed">{{ route.meta.title as string }}</h1>
         </div>
-      </main>
+        <main class="dashboard-content bg-dot-grid" id="main-content">
+          <div
+            v-motion
+            :initial="{ opacity: 0, y: 8 }"
+            :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
+          >
+            <slot />
+          </div>
+        </main>
+      </div>
     </div>
 
     <!-- Theme Settings Modal -->
@@ -62,9 +64,17 @@ watch(
 <style scoped>
 .dashboard-shell {
   display: flex;
-  min-height: 100vh;
+  flex-direction: column;
+  height: 100vh;
   background-color: var(--bg-base);
   transition: background-color 0.25s ease;
+}
+
+.dashboard-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  overflow: hidden;
 }
 
 .dashboard-main {
@@ -73,11 +83,38 @@ watch(
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
+  margin: 0rem 0.5rem 0.5rem 0;
+  border-radius: 10px;
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+}
+
+.dashboard-page-header {
+  padding: 1rem 1.25rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-page-module {
+  font-size: 1.25rem;
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.dashboard-page-title {
+  font-size: 0rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin: 0;
 }
 
 .dashboard-content {
   flex: 1;
-  padding: 1.5rem;
+  padding: 1.25rem;
   overflow-y: auto;
   overflow-x: hidden;
 }

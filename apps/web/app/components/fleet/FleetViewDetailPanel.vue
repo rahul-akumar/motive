@@ -106,7 +106,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Location -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <MapPin :size="11" aria-hidden="true" />
+            <MapPin :size="20" aria-hidden="true" />
             Location
           </div>
           <div class="fv-detail__value">
@@ -117,14 +117,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
         <!-- HOS Violation Banner -->
         <div v-if="driver.hos.hasViolation" class="fv-detail__violation" role="alert">
-          <AlertTriangle :size="13" aria-hidden="true" />
+          <AlertTriangle :size="20" aria-hidden="true" />
           <span>HOS Violation — Immediate action required</span>
         </div>
 
         <!-- HOS Gauges -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Clock :size="11" aria-hidden="true" />
+            <Clock :size="20" aria-hidden="true" />
             Hours of Service
           </div>
 
@@ -232,7 +232,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Load & ETA -->
         <section v-if="driver.currentLoad || driver.etaNextStop" class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Package :size="11" aria-hidden="true" />
+            <Package :size="20" aria-hidden="true" />
             Current Load
           </div>
           <div v-if="driver.currentLoad" class="fv-detail__value">{{ driver.currentLoad }}</div>
@@ -248,7 +248,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Vehicle -->
         <section v-if="vehicle" class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Truck :size="11" aria-hidden="true" />
+            <Truck :size="20" aria-hidden="true" />
             Vehicle
           </div>
           <div class="fv-detail__value">
@@ -337,13 +337,13 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 .fv-detail__avatar {
   width: 36px;
   height: 36px;
-  border-radius: 2px;
+  border-radius: 6px;
   border: 2px solid;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
   background: var(--bg-elevated);
@@ -357,8 +357,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__name {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -370,17 +370,17 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   align-items: center;
   gap: 0.3rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-top: 2px;
 }
 
 .fv-detail__status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 25%;
   flex-shrink: 0;
 }
 
@@ -388,8 +388,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 29px;
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 2px;
@@ -428,7 +428,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   align-items: center;
   gap: 0.3rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -437,21 +437,21 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__value {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 2px;
 }
 
 .fv-detail__meta {
-  font-size: 0.6875rem;
+  font-size: 1rem;
   color: var(--text-secondary);
 }
 
 .fv-detail__eta {
   color: var(--text-primary);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6875rem;
+  font-size: 1rem;
 }
 
 /* Violation banner */
@@ -463,7 +463,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   background: rgba(220, 38, 38, 0.1);
   border-bottom: 1px solid rgba(220, 38, 38, 0.2);
   color: #f87171;
-  font-size: 0.6875rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -484,7 +484,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-name {
-  font-size: 0.6875rem;
+  font-size: 1rem;
   color: var(--text-secondary);
 }
 
@@ -524,14 +524,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-breakdown-label {
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .fv-detail__hos-breakdown-val {
-  font-size: 0.6875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -583,7 +583,6 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   align-items: center;
   justify-content: space-between;
   padding: 3px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .fv-detail__info-row:last-child {
@@ -591,12 +590,12 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__info-key {
-  font-size: 0.6875rem;
+  font-size: 1rem;
   color: var(--text-muted);
 }
 
 .fv-detail__info-val {
-  font-size: 0.625rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
 }

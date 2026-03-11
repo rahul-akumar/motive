@@ -219,7 +219,7 @@ const localSearch = computed({
 }
 
 .fv-panel__title {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.04em;
@@ -227,7 +227,7 @@ const localSearch = computed({
 }
 
 .fv-panel__count {
-  font-size: 0.625rem;
+  font-size: 0.725rem;
   font-weight: 700;
   color: var(--text-muted);
   background: rgba(255, 255, 255, 0.06);
@@ -277,7 +277,7 @@ const localSearch = computed({
   border: 1px solid var(--border);
   border-radius: 2px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5625rem;
+  font-size: 0.725rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--text-muted);
@@ -330,7 +330,7 @@ const localSearch = computed({
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   border-radius: 2px;
-  font-size: 0.6875rem;
+  font-size: 1rem;
   color: var(--text-primary);
   outline: none;
   transition: border-color 120ms ease;

@@ -290,7 +290,7 @@ function formatHos(driver: Driver): string {
 
 .fleet-map__title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
@@ -298,10 +298,10 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__subtitle {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin: 2px 0 0;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.09em;
 }
 
 /* Live indicator */
@@ -312,9 +312,9 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 25%;
   background-color: #4ade80;
   animation: live-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
@@ -333,7 +333,7 @@ function formatHos(driver: Driver): string {
 
 .fleet-map__live-label {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -453,14 +453,14 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__legend-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .fleet-map__legend-label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-family: 'IBM Plex Mono', monospace;
   letter-spacing: 0.02em;

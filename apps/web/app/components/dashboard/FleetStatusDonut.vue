@@ -215,7 +215,7 @@ watch(() => props.status, drawChart, { deep: true })
 
 .fleet-donut__title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
@@ -223,7 +223,7 @@ watch(() => props.status, drawChart, { deep: true })
 }
 
 .fleet-donut__subtitle {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin: 2px 0 0;
   letter-spacing: 0.04em;
@@ -269,14 +269,14 @@ watch(() => props.status, drawChart, { deep: true })
 }
 
 .fleet-donut__legend-label {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--text-secondary);
 }
 
 .fleet-donut__legend-value {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
 </style>

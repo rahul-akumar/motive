@@ -272,7 +272,7 @@ watch(() => props.data, drawChart, { deep: true })
 
 .miles-chart__title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
@@ -280,7 +280,7 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .miles-chart__subtitle {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin: 2px 0 0;
   letter-spacing: 0.04em;
@@ -293,9 +293,9 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .miles-chart__legend-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 25%;
   flex-shrink: 0;
   background-color: var(--accent);
 }
@@ -305,7 +305,7 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .miles-chart__legend-label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
@@ -328,19 +328,19 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .tooltip__label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   margin-bottom: 2px;
 }
 
 .tooltip__value {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .tooltip__trips {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   margin-top: 1px;
 }

@@ -9,6 +9,7 @@ import {
   Minus,
 } from 'lucide-vue-next'
 import type { KpiMetric } from '@motive/shared'
+import { MIcon } from '@motive/ui'
 
 const props = defineProps<{
   metric: KpiMetric
@@ -36,7 +37,7 @@ const deltaColor = computed(() => {
     <div class="kpi-card__header">
       <span class="kpi-card__title font-mono-data">{{ metric.title }}</span>
       <div class="kpi-card__icon-wrap" aria-hidden="true">
-        <component :is="iconMap[metric.icon] || Truck" :size="14" :stroke-width="1.5" />
+        <MIcon :icon="iconMap[metric.icon] || Truck" :size="20" />
       </div>
     </div>
 
@@ -55,21 +56,21 @@ const deltaColor = computed(() => {
 
     <!-- Delta -->
     <div class="kpi-card__delta" :style="{ color: deltaColor }">
-      <TrendingUp
+      <MIcon
         v-if="metric.deltaType === 'increase'"
-        :size="11"
+        :icon="TrendingUp"
+        :size="16"
         :color="deltaColor"
         :stroke-width="2"
-        aria-hidden="true"
       />
-      <TrendingDown
+      <MIcon
         v-else-if="metric.deltaType === 'decrease'"
-        :size="11"
+        :icon="TrendingDown"
+        :size="16"
         :color="deltaColor"
         :stroke-width="2"
-        aria-hidden="true"
       />
-      <Minus v-else :size="11" :color="deltaColor" :stroke-width="2" aria-hidden="true" />
+      <MIcon v-else :icon="Minus" :size="16" :color="deltaColor" :stroke-width="2" />
       <span class="kpi-card__delta-label">{{ metric.deltaLabel }}</span>
     </div>
   </article>
@@ -91,8 +92,8 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__title {
-  font-size: 0.6875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -101,13 +102,10 @@ const deltaColor = computed(() => {
 .kpi-card__icon-wrap {
   width: 28px;
   height: 28px;
-  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
   color: var(--text-secondary);
 }
 
@@ -126,7 +124,7 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__unit {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--text-secondary);
   margin-left: 0.25rem;
@@ -134,7 +132,7 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__subtitle {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   letter-spacing: 0.03em;
 }
@@ -147,7 +145,7 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__delta-label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   font-family: 'IBM Plex Mono', monospace;
   letter-spacing: 0.03em;

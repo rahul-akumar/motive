@@ -121,7 +121,7 @@ function hosStatusColor(driver: Driver): string {
 
 .hos-bar__title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
@@ -129,7 +129,7 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__subtitle {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin: 2px 0 0;
   letter-spacing: 0.04em;
@@ -157,12 +157,12 @@ function hosStatusColor(driver: Driver): string {
 .hos-bar__avatar {
   width: 24px;
   height: 24px;
-  border-radius: 2px;
+  border-radius: 25%;
   background-color: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   color: var(--text-secondary);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   display: flex;
@@ -179,7 +179,7 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__driver-name {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
@@ -188,7 +188,7 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__status {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -226,18 +226,18 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__hours-driven {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .hos-bar__hours-sep {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 .hos-bar__hours-remaining {
-  font-size: 0.6875rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 </style>

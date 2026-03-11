@@ -24,28 +24,25 @@ watch(
 
 <template>
   <div class="fleet-shell">
-    <!-- Mobile overlay backdrop -->
-    <Transition name="overlay">
-      <div v-if="sidebarOpen" class="sidebar-overlay" aria-hidden="true" @click="closeSidebar" />
-    </Transition>
+    <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
 
-    <LayoutAppSidebar
-      :is-open="sidebarOpen"
-      @open-settings="themeModalOpen = true"
-      @close="closeSidebar"
-    />
+    <div class="fleet-body">
+      <Transition name="overlay">
+        <div v-if="sidebarOpen" class="sidebar-overlay" aria-hidden="true" @click="closeSidebar" />
+      </Transition>
 
-    <div class="fleet-main">
-      <LayoutAppTopBar
-        :title="route.meta.title as string"
-        :module-name="route.meta.moduleName as string"
-        :alert-count="alertCount"
-        @toggle-sidebar="toggleSidebar"
+      <LayoutAppSidebar
+        :is-open="sidebarOpen"
+        @open-settings="themeModalOpen = true"
+        @close="closeSidebar"
       />
-      <!-- No padding, no overflow — map fills this area directly -->
-      <main class="fleet-content" id="main-content">
-        <slot />
-      </main>
+
+      <div class="fleet-main">
+        <!-- No padding, no overflow — map fills this area directly -->
+        <main class="fleet-content" id="main-content">
+          <slot />
+        </main>
+      </div>
     </div>
 
     <LayoutThemeModal :open="themeModalOpen" @close="themeModalOpen = false" />
@@ -55,10 +52,18 @@ watch(
 <style scoped>
 .fleet-shell {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
   background-color: var(--bg-base);
   transition: background-color 0.25s ease;
+}
+
+.fleet-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  overflow: hidden;
 }
 
 .fleet-main {
@@ -67,7 +72,10 @@ watch(
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  height: 100vh;
+  margin: 0 0.5rem 0.5rem 0;
+  border-radius: 10px;
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
 }
 
 /* No padding, no overflow-y — the map fills this completely */

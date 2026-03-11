@@ -321,7 +321,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table-card__title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
@@ -378,7 +378,7 @@ function hosColor(driver: Driver): string {
   border: 1px solid var(--border);
   color: var(--text-secondary);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   display: flex;
@@ -388,44 +388,44 @@ function hosColor(driver: Driver): string {
 }
 
 .fleet-table__driver-name {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
 }
 
 .fleet-table__driver-id {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   letter-spacing: 0.03em;
 }
 
 .fleet-table__location {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .fleet-table__vehicle {
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   letter-spacing: 0.04em;
 }
 
 .fleet-table__miles {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--text-primary);
   letter-spacing: 0.04em;
 }
 
 .fleet-table__hos {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .fleet-table__eta {
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   letter-spacing: 0.04em;
 }

@@ -180,7 +180,7 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card__name {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -190,14 +190,14 @@ function formatLastUpdated(date: Date): string {
 
 .fv-driver-card__status {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5625rem;
+  font-size: 0.725rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   flex-shrink: 0;
 }
 
 .fv-driver-card__location {
-  font-size: 0.6875rem;
+  font-size: 0.725rem;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -241,7 +241,7 @@ function formatLastUpdated(date: Date): string {
 /* Updated time */
 .fv-driver-card__updated {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5625rem;
+  font-size: 0.725rem;
   color: var(--text-muted);
   flex-shrink: 0;
   align-self: flex-start;
