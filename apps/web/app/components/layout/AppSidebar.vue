@@ -123,7 +123,7 @@ function toggleCollapsed() {
               :aria-current="isActive(item.href) ? 'page' : undefined"
               @click="handleNavClick"
             >
-              <MIcon :icon="item.icon" :size="16" class="sidebar__icon" />
+              <MIcon :icon="item.icon" :size="18" class="sidebar__icon" />
               <span class="sidebar__label">{{ item.label }}</span>
             </NuxtLink>
           </MTooltip>
@@ -142,7 +142,7 @@ function toggleCollapsed() {
               aria-label="Open appearance settings"
               @click="emit('openSettings')"
             >
-              <MIcon :icon="Settings" :size="20" class="sidebar__icon" />
+              <MIcon :icon="Settings" :size="18" class="sidebar__icon" />
               <span class="sidebar__label">Settings</span>
             </button>
           </MTooltip>
@@ -157,7 +157,7 @@ function toggleCollapsed() {
             >
               <MIcon
                 :icon="collapsed ? PanelLeftOpen : PanelLeftClose"
-                :size="20"
+                :size="18"
                 class="sidebar__icon"
               />
               <span class="sidebar__label">{{ collapsed ? 'Expand' : 'Collapse' }}</span>

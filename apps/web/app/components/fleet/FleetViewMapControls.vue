@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Plus, Minus, Maximize2, Layers } from 'lucide-vue-next'
 import { Gauge, AlertTriangle, Globe } from 'lucide-vue-next'
-import { MTooltip } from '@motive/ui'
+import { MTooltip, MIcon } from '@motive/ui'
+import type { Component } from 'vue'
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
 
 const props = defineProps<{
@@ -16,9 +17,9 @@ const emit = defineEmits<{
   toggle: [id: string]
 }>()
 
-const ICONS: Record<string, unknown> = { Gauge, AlertTriangle, Globe }
-function iconComponent(name: string) {
-  return ICONS[name]
+const ICONS: Record<string, Component> = { Gauge, AlertTriangle, Globe }
+function iconComponent(name: string): Component {
+  return ICONS[name] ?? Gauge
 }
 
 const layersOpen = ref(false)
@@ -53,7 +54,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
             aria-label="Toggle map layers"
             @click.stop="toggleLayers"
           >
-            <Layers :size="14" aria-hidden="true" />
+            <MIcon :icon="Layers" :size="14" />
           </button>
         </MTooltip>
 
@@ -72,7 +73,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
               :aria-checked="props.activeIds.has(overlay.id)"
               @click="emit('toggle', overlay.id)"
             >
-              <component :is="iconComponent(overlay.icon)" :size="13" aria-hidden="true" />
+              <MIcon :icon="iconComponent(overlay.icon)" :size="13" />
               <span>{{ overlay.label }}</span>
             </button>
           </div>
@@ -84,7 +85,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
       <!-- Zoom in -->
       <MTooltip content="Zoom in" placement="top">
         <button type="button" class="fv-controls__btn" aria-label="Zoom in" @click="emit('zoomIn')">
-          <Plus :size="14" aria-hidden="true" />
+          <MIcon :icon="Plus" :size="14" />
         </button>
       </MTooltip>
 
@@ -98,7 +99,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
           aria-label="Zoom out"
           @click="emit('zoomOut')"
         >
-          <Minus :size="14" aria-hidden="true" />
+          <MIcon :icon="Minus" :size="14" />
         </button>
       </MTooltip>
 
@@ -112,7 +113,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
           aria-label="Fit all trucks in view"
           @click="emit('fitAll')"
         >
-          <Maximize2 :size="13" aria-hidden="true" />
+          <MIcon :icon="Maximize2" :size="13" />
         </button>
       </MTooltip>
     </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { TriangleAlert, Info, X, ChevronRight, CheckCircle2 } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 import type { FleetAlert } from '@motive/shared'
 
 const props = defineProps<{
@@ -85,7 +86,7 @@ const severityConfig = computed(() => {
     </div>
 
     <div v-if="alerts.length === 0" class="alerts-panel__empty" role="status" aria-live="polite">
-      <CheckCircle2 :size="32" color="#334155" :stroke-width="1.5" aria-hidden="true" />
+      <MIcon :icon="CheckCircle2" :size="32" color="#334155" :stroke-width="1.5" />
       <p class="alerts-panel__empty-text">No active alerts</p>
     </div>
 
@@ -107,20 +108,20 @@ const severityConfig = computed(() => {
           <div class="alert-card__header">
             <div class="alert-card__title-row">
               <!-- Severity icon -->
-              <TriangleAlert
+              <MIcon
                 v-if="alert.severity === 'critical' || alert.severity === 'warning'"
+                :icon="TriangleAlert"
                 :size="14"
                 :color="severityConfig[alert.severity].iconColor"
                 :stroke-width="2"
-                aria-hidden="true"
                 class="alert-card__icon"
               />
-              <Info
+              <MIcon
                 v-else
+                :icon="Info"
                 :size="14"
                 :color="severityConfig[alert.severity].iconColor"
                 :stroke-width="2"
-                aria-hidden="true"
                 class="alert-card__icon"
               />
               <span
@@ -143,7 +144,7 @@ const severityConfig = computed(() => {
                 @click="emit('dismiss', alert.id)"
                 :aria-label="`Dismiss alert: ${alert.title}`"
               >
-                <X :size="12" :stroke-width="2.5" aria-hidden="true" />
+                <MIcon :icon="X" :size="12" :stroke-width="2.5" />
               </button>
             </div>
           </div>
@@ -154,7 +155,7 @@ const severityConfig = computed(() => {
           <div v-if="alert.actionLabel" class="alert-card__footer">
             <button class="alert-card__action-btn" type="button">
               {{ alert.actionLabel }}
-              <ChevronRight :size="12" :stroke-width="2" aria-hidden="true" />
+              <MIcon :icon="ChevronRight" :size="12" :stroke-width="2" />
             </button>
           </div>
         </div>

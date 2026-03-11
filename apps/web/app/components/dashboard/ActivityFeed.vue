@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ArrowRight, Check, TriangleAlert, XCircle, MapPin } from 'lucide-vue-next'
+import { ArrowRight, Check, TriangleAlert, XCircle, MapPin, Circle } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 import type { ActivityEvent, ActivityEventType, ActivitySeverity } from '@motive/shared'
 
 const props = defineProps<{
@@ -77,22 +78,36 @@ function getConfig(type: ActivityEventType) {
           :style="{ backgroundColor: getConfig(event.type).bg, color: getConfig(event.type).color }"
           aria-hidden="true"
         >
-          <ArrowRight v-if="event.type === 'trip_started'" :size="10" :stroke-width="2.5" />
-          <Check v-else-if="event.type === 'trip_completed'" :size="10" :stroke-width="2.5" />
-          <TriangleAlert
+          <MIcon
+            v-if="event.type === 'trip_started'"
+            :icon="ArrowRight"
+            :size="10"
+            :stroke-width="2.5"
+          />
+          <MIcon
+            v-else-if="event.type === 'trip_completed'"
+            :icon="Check"
+            :size="10"
+            :stroke-width="2.5"
+          />
+          <MIcon
             v-else-if="
               event.type === 'hos_warning' ||
               event.type === 'alert_triggered' ||
               event.type === 'vehicle_idle'
             "
+            :icon="TriangleAlert"
             :size="10"
             :stroke-width="2.5"
           />
-          <XCircle v-else-if="event.type === 'hos_violation'" :size="10" :stroke-width="2.5" />
+          <MIcon
+            v-else-if="event.type === 'hos_violation'"
+            :icon="XCircle"
+            :size="10"
+            :stroke-width="2.5"
+          />
           <!-- Default dot -->
-          <svg v-else width="6" height="6" viewBox="0 0 6 6" fill="currentColor" aria-hidden="true">
-            <circle cx="3" cy="3" r="3" />
-          </svg>
+          <MIcon v-else :icon="Circle" :size="10" :stroke-width="2.5" />
         </div>
 
         <!-- Content -->
@@ -115,7 +130,7 @@ function getConfig(type: ActivityEventType) {
           <div class="activity-feed__meta">
             <span class="activity-feed__driver">{{ event.driverName }}</span>
             <span v-if="event.location" class="activity-feed__location">
-              <MapPin :size="10" :stroke-width="2" aria-hidden="true" />
+              <MIcon :icon="MapPin" :size="10" :stroke-width="2" />
               {{ event.location }}
             </span>
           </div>

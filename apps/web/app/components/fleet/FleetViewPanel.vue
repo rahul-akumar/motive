@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight, Search, Truck } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 import type { Driver, DriverStatus } from '@motive/shared'
 
 const props = defineProps<{
@@ -55,9 +56,9 @@ const localSearch = computed({
       aria-label="Open driver list panel"
       @click="emit('togglePanel')"
     >
-      <Truck :size="14" aria-hidden="true" />
+      <MIcon :icon="Truck" :size="14" />
       <span class="fv-panel-toggle__count">{{ drivers.length }}</span>
-      <ChevronRight :size="12" aria-hidden="true" />
+      <MIcon :icon="ChevronRight" :size="12" />
     </button>
   </Transition>
 
@@ -67,7 +68,7 @@ const localSearch = computed({
       <!-- Header -->
       <div class="fv-panel__header">
         <div class="fv-panel__header-left">
-          <Truck :size="14" aria-hidden="true" class="fv-panel__header-icon" />
+          <MIcon :icon="Truck" :size="14" class="fv-panel__header-icon" />
           <span class="fv-panel__title font-condensed">Fleet</span>
           <span class="fv-panel__count font-mono-data">{{ drivers.length }}</span>
         </div>
@@ -77,7 +78,7 @@ const localSearch = computed({
           aria-label="Collapse driver list panel"
           @click="emit('togglePanel')"
         >
-          <ChevronLeft :size="14" aria-hidden="true" />
+          <MIcon :icon="ChevronLeft" :size="14" />
         </button>
       </div>
 
@@ -116,7 +117,7 @@ const localSearch = computed({
 
       <!-- Search -->
       <div class="fv-panel__search">
-        <Search :size="12" aria-hidden="true" class="fv-panel__search-icon" />
+        <MIcon :icon="Search" :size="12" class="fv-panel__search-icon" />
         <input
           v-model="localSearch"
           type="search"

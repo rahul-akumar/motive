@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { X, MapPin, Package, Clock, Truck, Fuel, AlertTriangle } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 import type { Driver, Vehicle, DriverStatus } from '@motive/shared'
 
 const props = defineProps<{
@@ -97,7 +98,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
           aria-label="Close driver details"
           @click="emit('close')"
         >
-          <X :size="14" aria-hidden="true" />
+          <MIcon :icon="X" :size="18" />
         </button>
       </div>
 
@@ -106,7 +107,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Location -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <MapPin :size="20" aria-hidden="true" />
+            <MIcon :icon="MapPin" :size="18" />
             Location
           </div>
           <div class="fv-detail__value">
@@ -117,14 +118,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
         <!-- HOS Violation Banner -->
         <div v-if="driver.hos.hasViolation" class="fv-detail__violation" role="alert">
-          <AlertTriangle :size="20" aria-hidden="true" />
+          <MIcon :icon="AlertTriangle" :size="18" />
           <span>HOS Violation — Immediate action required</span>
         </div>
 
         <!-- HOS Gauges -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Clock :size="20" aria-hidden="true" />
+            <MIcon :icon="Clock" :size="18" />
             Hours of Service
           </div>
 
@@ -232,7 +233,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Load & ETA -->
         <section v-if="driver.currentLoad || driver.etaNextStop" class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Package :size="20" aria-hidden="true" />
+            <MIcon :icon="Package" :size="16" />
             Current Load
           </div>
           <div v-if="driver.currentLoad" class="fv-detail__value">{{ driver.currentLoad }}</div>
@@ -248,7 +249,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
         <!-- Vehicle -->
         <section v-if="vehicle" class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <Truck :size="20" aria-hidden="true" />
+            <MIcon :icon="Truck" :size="18" />
             Vehicle
           </div>
           <div class="fv-detail__value">
@@ -261,7 +262,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
           <!-- Fuel level -->
           <div class="fv-detail__fuel">
             <div class="fv-detail__fuel-row">
-              <Fuel :size="10" aria-hidden="true" class="fv-detail__fuel-icon" />
+              <MIcon :icon="Fuel" :size="18" class="fv-detail__fuel-icon" />
               <span class="fv-detail__fuel-label">Fuel</span>
               <span class="fv-detail__fuel-value font-mono-data">{{ vehicle.fuelLevel }}%</span>
             </div>
@@ -313,7 +314,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--bg-card) 97%, transparent);
+  background: color-mix(in srgb, var(--bg-card) 95%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-left: 1px solid var(--border);
@@ -329,8 +330,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  padding: 0.875rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+  padding: 0.875rem 1rem;
   flex-shrink: 0;
 }
 
@@ -372,14 +372,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.75rem;
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-top: 2px;
 }
 
 .fv-detail__status-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 25%;
   flex-shrink: 0;
 }
@@ -391,7 +391,6 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   width: 28px;
   height: 29px;
   background: transparent;
-  border: 1px solid var(--border);
   border-radius: 2px;
   color: var(--text-muted);
   cursor: pointer;
@@ -408,15 +407,21 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 /* Body */
 .fv-detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-top: 2rem;
 }
 
 /* Sections */
 .fv-detail__section {
-  padding: 0.75rem 0.875rem;
-  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem;
 }
 
 .fv-detail__section--last {
@@ -426,10 +431,11 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 .fv-detail__section-label {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem;
+  line-height: 1;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -469,7 +475,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 /* HOS items */
 .fv-detail__hos-item {
-  margin-bottom: 0.625rem;
+  margin-bottom: 1rem;
 }
 
 .fv-detail__hos-item:last-of-type {
@@ -489,7 +495,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-value {
-  font-size: 0.625rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -512,9 +518,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.375rem;
-  margin-top: 0.625rem;
-  padding-top: 0.625rem;
-  border-top: 1px solid var(--border);
+  margin-top: 1rem;
+  padding-top: 1rem;
 }
 
 .fv-detail__hos-breakdown-item {
@@ -524,7 +529,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-breakdown-label {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -553,7 +558,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__fuel-label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   flex: 1;
 }

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Gauge, AlertTriangle, Globe } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
+import type { Component } from 'vue'
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
 
 const props = defineProps<{
@@ -11,10 +13,10 @@ const emit = defineEmits<{
   toggle: [id: string]
 }>()
 
-const ICONS: Record<string, unknown> = { Gauge, AlertTriangle, Globe }
+const ICONS: Record<string, Component> = { Gauge, AlertTriangle, Globe }
 
-function iconComponent(name: string) {
-  return ICONS[name]
+function iconComponent(name: string): Component {
+  return ICONS[name] ?? Gauge
 }
 </script>
 
@@ -29,7 +31,7 @@ function iconComponent(name: string) {
       :title="overlay.label"
       @click="emit('toggle', overlay.id)"
     >
-      <component :is="iconComponent(overlay.icon)" class="fv-overlay-ctrl__icon" :size="16" />
+      <MIcon :icon="iconComponent(overlay.icon)" :size="16" class="fv-overlay-ctrl__icon" />
       <span class="fv-overlay-ctrl__label">{{ overlay.label }}</span>
     </button>
   </div>
