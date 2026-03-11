@@ -6,10 +6,6 @@ const themeModalOpen = ref(false)
 const sidebarOpen = ref(false)
 const route = useRoute()
 
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
 function closeSidebar() {
   sidebarOpen.value = false
 }
@@ -25,7 +21,7 @@ watch(
 
 <template>
   <div class="dashboard-shell">
-    <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
+    <LayoutAppTopBar :alert-count="alertCount" />
 
     <div class="dashboard-body">
       <!-- Mobile overlay backdrop -->
@@ -84,7 +80,7 @@ watch(
   min-width: 0;
   overflow: hidden;
   margin: 0rem 0.5rem 0.5rem 0;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   background-color: var(--bg-main);
   border: 1px solid var(--border);
 }

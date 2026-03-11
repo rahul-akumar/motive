@@ -31,7 +31,7 @@ html[data-theme='stealth'] {
   --avatar-text: hsl(0, 0%, 60%);
   --focus-ring: hsl(0, 0%, 89%);
   --table-sorted-color: hsl(0, 0%, 89%);
-  --search-focus-border: hsla(0, 0%, 100%, 0.2);
+  --search-focus-border: hsl(207, 72%, 55%);
   --search-focus-shadow: none;
   --card-radius: 8px;
   --badge-radius: 0px;

@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { Search, Bell, Menu } from 'lucide-vue-next'
+import { Search, Bell } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 
 const props = defineProps<{
   alertCount?: number
-}>()
-
-const emit = defineEmits<{
-  toggleSidebar: []
 }>()
 
 const currentTime = ref('')
@@ -36,16 +33,8 @@ onMounted(() => {
 
 <template>
   <header class="topbar">
-    <!-- Left: Logo + hamburger on mobile -->
+    <!-- Left: Logo -->
     <div class="topbar__left">
-      <button
-        type="button"
-        class="topbar__hamburger"
-        aria-label="Open navigation menu"
-        @click="emit('toggleSidebar')"
-      >
-        <Menu :size="18" :stroke-width="1.5" aria-hidden="true" />
-      </button>
       <svg
         class="topbar__logo"
         aria-label="Motive"
@@ -82,7 +71,7 @@ onMounted(() => {
     <div class="topbar__search-wrap">
       <label for="topbar-search" class="sr-only">Search drivers, vehicles, loads</label>
       <div class="topbar__search">
-        <Search :size="14" aria-hidden="true" class="topbar__search-icon" />
+        <MIcon :icon="Search" :size="14" aria-hidden="true" class="topbar__search-icon" />
         <input
           id="topbar-search"
           type="search"
@@ -114,7 +103,7 @@ onMounted(() => {
         type="button"
         aria-label="`${alertCount || 0} active alerts`"
       >
-        <Bell :size="20" :stroke-width="1.75" aria-hidden="true" />
+        <MIcon :icon="Bell" :size="20" :stroke-width="1.75" aria-hidden="true" />
         <span v-if="alertCount && alertCount > 0" class="topbar__notif-badge" aria-hidden="true">
           {{ alertCount > 9 ? '9+' : alertCount }}
         </span>
@@ -129,7 +118,7 @@ onMounted(() => {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 1.25rem;
-  height: 52px;
+  height: 64px;
   width: 100%;
   background-color: var(--bg-base);
   position: sticky;
@@ -148,39 +137,16 @@ onMounted(() => {
 }
 
 .topbar__logo {
-  height: 16px;
+  height: 24px;
   width: auto;
   color: var(--text-primary);
   flex-shrink: 0;
 }
 
-/* Hamburger: hidden on desktop, shown on mobile */
-.topbar__hamburger {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition:
-    color 100ms ease,
-    background-color 100ms ease,
-    border-color 100ms ease;
-}
-
-.topbar__hamburger:hover {
-  color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.03);
-  border-color: var(--border-strong);
-}
-
 .topbar__search-wrap {
   width: 380px;
+  height: 100%;
+  padding: 0.75rem 0;
 }
 
 .topbar__search {
@@ -189,9 +155,9 @@ onMounted(() => {
   gap: 0.5rem;
   background-color: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   padding: 0 0.75rem;
-  height: 32px;
+  height: 100%;
   transition: border-color 100ms ease;
 }
 
@@ -210,7 +176,7 @@ onMounted(() => {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--text-primary);
   font-family: 'Barlow', sans-serif;
 }
@@ -221,7 +187,7 @@ onMounted(() => {
 
 .topbar__search-kbd {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
@@ -259,7 +225,7 @@ onMounted(() => {
 }
 
 .topbar__date {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
@@ -277,9 +243,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   background: transparent;
-  border: 1px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
   transition:
@@ -290,7 +255,7 @@ onMounted(() => {
 
 .topbar__notif-btn:hover {
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(255, 255, 255, 0.3);
   border-color: var(--border-strong);
 }
 
@@ -328,14 +293,6 @@ onMounted(() => {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .topbar {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .topbar__hamburger {
-    display: flex;
-  }
-
   /* Hide search bar on mobile — too cramped */
   .topbar__search-wrap {
     display: none;

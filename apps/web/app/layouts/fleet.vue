@@ -5,10 +5,6 @@ const alertCount = computed(() => activeAlerts.value.length)
 const themeModalOpen = ref(false)
 const sidebarOpen = ref(false)
 
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
 function closeSidebar() {
   sidebarOpen.value = false
 }
@@ -24,7 +20,7 @@ watch(
 
 <template>
   <div class="fleet-shell">
-    <LayoutAppTopBar :alert-count="alertCount" @toggle-sidebar="toggleSidebar" />
+    <LayoutAppTopBar :alert-count="alertCount" />
 
     <div class="fleet-body">
       <Transition name="overlay">
