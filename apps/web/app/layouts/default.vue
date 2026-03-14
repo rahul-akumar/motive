@@ -6,25 +6,25 @@ const themeModalOpen = ref(false)
 const sidebarOpen = ref(false)
 const route = useRoute()
 
-function closeSidebar() {
-  sidebarOpen.value = false
-}
+const isMapMode = computed(() => route.meta.layoutMode === 'map')
 
-// Close sidebar on route change (mobile nav)
 watch(
   () => route.path,
   () => {
     sidebarOpen.value = false
   },
 )
+
+function closeSidebar() {
+  sidebarOpen.value = false
+}
 </script>
 
 <template>
-  <div class="dashboard-shell">
+  <div class="app-shell">
     <LayoutAppTopBar :alert-count="alertCount" />
 
-    <div class="dashboard-body">
-      <!-- Mobile overlay backdrop -->
+    <div class="app-body">
       <Transition name="overlay">
         <div v-if="sidebarOpen" class="sidebar-overlay" aria-hidden="true" @click="closeSidebar" />
       </Transition>
@@ -35,30 +35,38 @@ watch(
         @close="closeSidebar"
       />
 
-      <div class="dashboard-main">
-        <div class="dashboard-page-header">
-          <p class="dashboard-page-module">{{ route.meta.moduleName as string }}</p>
-          <h1 class="dashboard-page-title font-condensed">{{ route.meta.title as string }}</h1>
+      <div class="app-main">
+        <!-- Page header: shown in standard mode only -->
+        <div v-if="!isMapMode" class="app-page-header">
+          <p class="app-page-module">{{ route.meta.moduleName as string }}</p>
+          <h1 class="app-page-title font-condensed">{{ route.meta.title as string }}</h1>
         </div>
-        <main class="dashboard-content bg-dot-grid" id="main-content">
+
+        <main
+          :class="['app-content', { 'app-content--map': isMapMode, 'bg-dot-grid': !isMapMode }]"
+          id="main-content"
+        >
+          <!-- Standard mode: entrance animation -->
           <div
+            v-if="!isMapMode"
             v-motion
             :initial="{ opacity: 0, y: 8 }"
             :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
           >
             <slot />
           </div>
+          <!-- Map mode: slot fills container directly -->
+          <slot v-else />
         </main>
       </div>
     </div>
 
-    <!-- Theme Settings Modal -->
     <LayoutThemeModal :open="themeModalOpen" @close="themeModalOpen = false" />
   </div>
 </template>
 
 <style scoped>
-.dashboard-shell {
+.app-shell {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -66,14 +74,14 @@ watch(
   transition: background-color 0.25s ease;
 }
 
-.dashboard-body {
+.app-body {
   display: flex;
   flex-direction: row;
   flex: 1;
   overflow: hidden;
 }
 
-.dashboard-main {
+.app-main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -85,12 +93,12 @@ watch(
   border: 1px solid var(--border);
 }
 
-.dashboard-page-header {
-  padding: 1rem 1.25rem 0.5rem;
+.app-page-header {
+  padding: 1rem 1.25rem 0;
   flex-shrink: 0;
 }
 
-.dashboard-page-module {
+.app-page-module {
   font-size: 1.25rem;
   font-family: 'IBM Plex Mono', monospace;
   text-transform: uppercase;
@@ -99,7 +107,7 @@ watch(
   margin: 0 0 2px;
 }
 
-.dashboard-page-title {
+.app-page-title {
   font-size: 0rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -108,11 +116,28 @@ watch(
   margin: 0;
 }
 
-.dashboard-content {
+.app-content {
   flex: 1;
   padding: 1.25rem;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.app-content--map {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Nuxt wraps the page slot in a div in map mode — make it fill the flex container */
+.app-content--map :deep(> div) {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  height: 100%;
 }
 
 /* Mobile overlay backdrop */
@@ -135,13 +160,13 @@ watch(
 }
 
 @media (max-width: 768px) {
-  .dashboard-content {
+  .app-content:not(.app-content--map) {
     padding: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-content {
+  .app-content:not(.app-content--map) {
     padding: 0.75rem;
   }
 }

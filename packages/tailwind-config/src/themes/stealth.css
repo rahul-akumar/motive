@@ -23,7 +23,7 @@ html[data-theme='stealth'] {
   --scrollbar-thumb-hover: hsl(0, 0%, 16%);
   --logo-bg: hsl(0, 0%, 89%);
   --logo-text: hsl(0, 0%, 10%);
-  --sidebar-active-bg: transparent;
+  --sidebar-active-bg: hsla(0, 0%, 100%, 0.09);
   --sidebar-active-border: hsl(0, 0%, 89%);
   --sidebar-active-icon: hsl(0, 0%, 89%);
   --sidebar-active-glow: none;

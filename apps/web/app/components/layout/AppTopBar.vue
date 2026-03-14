@@ -137,7 +137,7 @@ onMounted(() => {
 }
 
 .topbar__logo {
-  height: 24px;
+  height: 20px;
   width: auto;
   color: var(--text-primary);
   flex-shrink: 0;

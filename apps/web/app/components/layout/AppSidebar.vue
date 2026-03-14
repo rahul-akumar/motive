@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import {
-  LayoutDashboard,
-  Truck,
-  Users,
-  Route,
-  Clock,
-  FileBarChart2,
-  Settings,
-  X,
-  PanelLeftClose,
-  PanelLeftOpen,
-} from 'lucide-vue-next'
-import { useMotion } from '@vueuse/motion'
+import { LayoutDashboard, Truck, Settings, X, PanelLeftClose, PanelLeftOpen } from 'lucide-vue-next'
 import { MIcon, MTooltip } from '@motive/ui'
+import { useMotion } from '@vueuse/motion'
 
 const route = useRoute()
 
@@ -38,30 +27,6 @@ const navItems = [
     href: '/fleet',
     icon: Truck,
   },
-  {
-    id: 'drivers',
-    label: 'Drivers',
-    href: '/drivers',
-    icon: Users,
-  },
-  {
-    id: 'trips',
-    label: 'Trips & Loads',
-    href: '/trips',
-    icon: Route,
-  },
-  {
-    id: 'eld',
-    label: 'ELD / HOS',
-    href: '/eld',
-    icon: Clock,
-  },
-  {
-    id: 'reports',
-    label: 'Reports',
-    href: '/reports',
-    icon: FileBarChart2,
-  },
 ]
 
 function isActive(href: string) {
@@ -82,8 +47,14 @@ const sidebarRef = ref<HTMLElement | null>(null)
 
 const { variant: sidebarVariant } = useMotion(sidebarRef, {
   initial: { width: collapsed.value ? 48 : 220 },
-  expanded: { width: 220, transition: { duration: 220, ease: 'easeInOut' } },
-  collapsed: { width: 48, transition: { duration: 220, ease: 'easeInOut' } },
+  expanded: {
+    width: 220,
+    transition: { type: 'spring', stiffness: 320, damping: 28, mass: 1 },
+  },
+  collapsed: {
+    width: 48,
+    transition: { type: 'spring', stiffness: 320, damping: 28, mass: 1 },
+  },
 })
 
 onMounted(() => {
@@ -184,14 +155,15 @@ function toggleCollapsed() {
 .sidebar {
   display: flex;
   flex-direction: column;
-  min-width: 48px;
-  max-width: 220px;
   background-color: var(--bg-base);
   padding-inline: 6px;
   flex-shrink: 0;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  will-change: width;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
@@ -203,7 +175,7 @@ function toggleCollapsed() {
 
 .sidebar__nav {
   flex: 1;
-  padding: 0.75rem 0;
+  padding: 0.125rem 0;
   overflow-y: auto;
 }
 
@@ -217,15 +189,14 @@ function toggleCollapsed() {
 }
 
 .sidebar__icon {
-  flex-shrink: 0;
+  justify-self: center;
 }
 
-/* Nav item padding/gap animate in sync with sidebar width */
 .sidebar-nav-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0;
   border-radius: 4px;
   color: var(--text-secondary);
   font-size: 0.875rem;
@@ -235,15 +206,13 @@ function toggleCollapsed() {
   white-space: nowrap;
   overflow: hidden;
   transition:
-    gap 220ms ease-in-out,
-    padding 220ms ease-in-out,
     color 100ms ease,
     background-color 100ms ease;
 }
 
 .sidebar-nav-item:hover {
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: hsla(0, 0%, 100%, 0.09);
 }
 
 .sidebar-nav-item.active {
@@ -261,12 +230,12 @@ function toggleCollapsed() {
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
-  /* animate width and opacity in sync with the sidebar */
-  max-width: 200px;
   opacity: 1;
+  transform: translateX(0);
+  /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    max-width 220ms ease-in-out,
-    opacity 180ms ease-in-out;
+    opacity 160ms ease-out 60ms,
+    transform 180ms ease-out 60ms;
 }
 
 .sidebar__bottom {
@@ -283,21 +252,20 @@ function toggleCollapsed() {
 }
 
 .sidebar__user {
-  display: flex;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 0.875rem;
+  padding: 0.5rem 0;
   margin-top: 0.25rem;
   cursor: pointer;
   position: relative;
-  transition:
-    gap 220ms ease-in-out,
-    padding 220ms ease-in-out,
-    background-color 100ms ease;
+  transition: background-color 100ms ease;
+  gap: 0.5rem;
+  border-radius: 4px;
 }
 
 .sidebar__user:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.09);
 }
 
 .sidebar__user-avatar {
@@ -313,18 +281,18 @@ function toggleCollapsed() {
   font-size: 0.625rem;
   font-weight: 700;
   color: var(--avatar-text);
-  flex-shrink: 0;
+  justify-self: center;
   letter-spacing: 0.04em;
 }
 
 .sidebar__user-info {
   overflow: hidden;
-  /* animate width and opacity in sync with the sidebar */
-  max-width: 200px;
   opacity: 1;
+  transform: translateX(0);
+  /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    max-width 220ms ease-in-out,
-    opacity 180ms ease-in-out;
+    opacity 160ms ease-out 60ms,
+    transform 180ms ease-out 60ms;
 }
 
 .sidebar__user-name {
@@ -346,30 +314,38 @@ function toggleCollapsed() {
   letter-spacing: 0.03em;
 }
 
-/* ── Collapsed state: all transitions already defined above ── */
+/* ── Collapsed state ── */
 
-/* Shrink labels to zero — CSS transition does the animation */
+/* Collapsing: sidebar shrinks — width handled by useMotion spring */
+.sidebar--collapsed {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Collapsing: labels slide left and fade out immediately */
 .sidebar--collapsed .sidebar__label,
 .sidebar--collapsed .sidebar__user-info {
-  max-width: 0;
   opacity: 0;
-}
-
-.sidebar--collapsed .sidebar-nav-item {
-  gap: 0;
-  justify-content: center;
-}
-
-.sidebar--collapsed .sidebar__user {
-  gap: 0;
-  padding: 0.625rem 0.625rem;
-  justify-content: center;
+  transform: translateX(-8px);
+  /* Exit: no delay, fast ease-in so it's out of the way before sidebar shrinks */
+  transition:
+    opacity 100ms ease-in 0ms,
+    transform 110ms ease-in 0ms;
 }
 
 /* ── Mobile: sidebar becomes a fixed overlay drawer ── */
 @media (max-width: 768px) {
-  .sidebar {
+  .sidebar,
+  .sidebar--collapsed {
     width: 220px !important;
+    transition:
+      transform 0.25s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -377,10 +353,6 @@ function toggleCollapsed() {
     min-height: unset;
     z-index: 50;
     transform: translateX(-100%);
-    transition:
-      transform 0.25s ease,
-      background-color 0.2s ease,
-      border-color 0.2s ease;
     box-shadow: none;
   }
 

@@ -2,9 +2,9 @@
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
 
 definePageMeta({
-  layout: 'fleet',
   title: 'Fleet View',
   moduleName: 'Fleet',
+  layoutMode: 'map',
 })
 
 const {
