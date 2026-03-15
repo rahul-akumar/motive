@@ -9,7 +9,7 @@ export interface MIconProps {
 
 const props = withDefaults(defineProps<MIconProps>(), {
   size: 16,
-  strokeWidth: 1.75,
+  strokeWidth: 1.5,
 })
 </script>
 
