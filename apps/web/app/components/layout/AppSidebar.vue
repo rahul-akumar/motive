@@ -74,7 +74,6 @@ const collapsed = ref(
 )
 
 const sidebarRef = ref<HTMLElement | null>(null)
-const searchPanelRef = ref<{ focus: () => void } | null>(null)
 
 const logoLetterM = ref<SVGElement | null>(null)
 const logoLetterO = ref<SVGElement | null>(null)
@@ -145,16 +144,6 @@ function toggleCollapsed() {
   })
   localStorage.setItem('sidebar-collapsed', String(collapsed.value))
 }
-
-function handleSearchCollapsedClick() {
-  collapsed.value = false
-  sidebarVariant.value = 'expanded'
-  letterVariants.forEach((lv) => {
-    lv.value = 'expanded'
-  })
-  localStorage.setItem('sidebar-collapsed', 'false')
-  searchPanelRef.value?.focus()
-}
 </script>
 
 <template>
@@ -220,11 +209,7 @@ function handleSearchCollapsedClick() {
     </div>
 
     <!-- Search -->
-    <LayoutAppSearchPanel
-      ref="searchPanelRef"
-      :collapsed="collapsed"
-      @expand="handleSearchCollapsedClick"
-    />
+    <LayoutAppSearchPanel :collapsed="collapsed" />
 
     <!-- Mobile close button -->
     <button

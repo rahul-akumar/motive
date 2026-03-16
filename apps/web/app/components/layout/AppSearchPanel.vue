@@ -11,7 +11,6 @@ const props = withDefaults(defineProps<AppSearchPanelProps>(), {
 })
 
 const emit = defineEmits<{
-  expand: []
   search: [query: string]
 }>()
 
@@ -22,7 +21,8 @@ onMounted(loadRecentSearches)
 
 const query = ref('')
 const isOpen = ref(false)
-const triggerRef = ref<HTMLElement | null>(null)
+const buttonRef = ref<HTMLElement | null>(null) // collapsed icon button
+const triggerRef = ref<HTMLElement | null>(null) // expanded bar wrapper
 const overlayRef = ref<HTMLElement | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 
@@ -36,8 +36,10 @@ let triggerRect: DOMRect | null = null
 let measuredHeight = 0
 
 async function openPanel() {
-  if (!triggerRef.value) return
-  triggerRect = triggerRef.value.getBoundingClientRect()
+  // Use whichever element is visible as the morph origin
+  const anchor = props.collapsed ? buttonRef.value : triggerRef.value
+  if (!anchor) return
+  triggerRect = anchor.getBoundingClientRect()
   overlayStyle.value = {
     left: `${triggerRect.left}px`,
     top: `${triggerRect.top}px`,
@@ -247,106 +249,107 @@ function onLeave(el: Element, done: () => void) {
 </script>
 
 <template>
-  <!-- Collapsed: icon-only button -->
+  <!-- Collapsed: icon-only button — opens overlay without expanding sidebar -->
   <MTooltip v-if="collapsed" content="Search" placement="right">
     <button
+      ref="buttonRef"
       type="button"
       class="sidebar-nav-item sidebar-nav-item--btn"
       aria-label="Search"
-      @click="emit('expand')"
+      @click="openPanel"
     >
       <MIcon :icon="Search" class="sidebar__icon" />
       <span class="sidebar__label">Search</span>
     </button>
   </MTooltip>
 
-  <!-- Expanded: in-flow trigger + teleported morphing overlay -->
+  <!-- Expanded: in-flow trigger bar (keeps sidebar layout space) -->
   <div v-else ref="triggerRef" class="search-trigger" @click="openPanel">
-    <!-- In-flow bar: keeps sidebar layout space, hides when overlay is open -->
     <div :class="['search-trigger__bar', { 'search-trigger__bar--hidden': isOpen }]">
       <MIcon :icon="Search" class="search-trigger__icon" />
       <span class="search-trigger__placeholder">Find</span>
       <kbd class="search-trigger__kbd" aria-label="Keyboard shortcut: Command F">F</kbd>
     </div>
+  </div>
 
-    <!-- Morphing overlay — teleported to body to escape sidebar's transform context -->
-    <Teleport to="body">
-      <Transition :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
-        <div
-          v-if="isOpen"
-          ref="overlayRef"
-          class="search-overlay"
-          :style="overlayStyle"
-          @focusout="handleFocusOut"
-        >
-          <!-- Input row -->
-          <div class="search-overlay__bar">
-            <MIcon :icon="Search" class="search-overlay__icon" />
-            <label for="app-search" class="sr-only">Search drivers, vehicles, loads</label>
-            <input
-              id="app-search"
-              ref="inputRef"
-              v-model="query"
-              type="search"
-              placeholder="Find..."
-              class="search-overlay__input"
-              autocomplete="off"
-              @keydown.enter.prevent="handleEnter"
-              @keydown.escape.prevent="handleEscape"
-              @keydown.arrow-down.prevent="handleInputArrowDown"
-            />
-            <kbd class="search-overlay__esc">Esc</kbd>
-          </div>
+  <!-- Morphing overlay — lives on body so it escapes sidebar's transform context,
+       and is available in both collapsed and expanded sidebar states -->
+  <Teleport to="body">
+    <Transition :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
+      <div
+        v-if="isOpen"
+        ref="overlayRef"
+        class="search-overlay"
+        :style="overlayStyle"
+        @focusout="handleFocusOut"
+      >
+        <!-- Input row -->
+        <div class="search-overlay__bar">
+          <MIcon :icon="Search" class="search-overlay__icon" />
+          <label for="app-search" class="sr-only">Search drivers, vehicles, loads</label>
+          <input
+            id="app-search"
+            ref="inputRef"
+            v-model="query"
+            type="search"
+            placeholder="Find..."
+            class="search-overlay__input"
+            autocomplete="off"
+            @keydown.enter.prevent="handleEnter"
+            @keydown.escape.prevent="handleEscape"
+            @keydown.arrow-down.prevent="handleInputArrowDown"
+          />
+          <kbd class="search-overlay__esc">Esc</kbd>
+        </div>
 
-          <!-- Results (animated separately inside onEnter/onLeave) -->
-          <div class="search-overlay__body">
-            <div class="search-overlay__section-label">Recent</div>
-            <template v-if="recentSearches.length > 0">
-              <div
-                v-for="(item, i) in recentSearches"
-                :key="item"
-                class="search-overlay__row"
-                tabindex="0"
-                data-panel-item
-                @click="handleRecentClick(item)"
-                @keydown.enter.prevent="handleRecentClick(item)"
-                @keydown="handleItemKeydown($event, i)"
-              >
-                <MIcon :icon="Clock" class="search-overlay__row-icon" />
-                <span class="search-overlay__row-label">{{ item }}</span>
-                <button
-                  type="button"
-                  class="search-overlay__row-remove"
-                  :aria-label="`Remove ${item} from recent searches`"
-                  @click.stop="removeRecentSearch(item)"
-                >
-                  <MIcon :icon="X" :size="12" />
-                </button>
-              </div>
-            </template>
-            <div v-else class="search-overlay__empty">No recent searches</div>
-
-            <div class="search-overlay__divider" />
-
-            <div class="search-overlay__section-label">Quick Actions</div>
+        <!-- Results (animated separately inside onEnter/onLeave) -->
+        <div class="search-overlay__body">
+          <div class="search-overlay__section-label">Recent</div>
+          <template v-if="recentSearches.length > 0">
             <div
-              v-for="(action, i) in quickActions"
-              :key="action.href"
+              v-for="(item, i) in recentSearches"
+              :key="item"
               class="search-overlay__row"
               tabindex="0"
               data-panel-item
-              @click="handleQuickAction(action.href)"
-              @keydown.enter.prevent="handleQuickAction(action.href)"
-              @keydown="handleItemKeydown($event, recentSearches.length + i)"
+              @click="handleRecentClick(item)"
+              @keydown.enter.prevent="handleRecentClick(item)"
+              @keydown="handleItemKeydown($event, i)"
             >
-              <MIcon :icon="action.icon" class="search-overlay__row-icon" />
-              <span class="search-overlay__row-label">{{ action.label }}</span>
+              <MIcon :icon="Clock" class="search-overlay__row-icon" />
+              <span class="search-overlay__row-label">{{ item }}</span>
+              <button
+                type="button"
+                class="search-overlay__row-remove"
+                :aria-label="`Remove ${item} from recent searches`"
+                @click.stop="removeRecentSearch(item)"
+              >
+                <MIcon :icon="X" :size="12" />
+              </button>
             </div>
+          </template>
+          <div v-else class="search-overlay__empty">No recent searches</div>
+
+          <div class="search-overlay__divider" />
+
+          <div class="search-overlay__section-label">Quick Actions</div>
+          <div
+            v-for="(action, i) in quickActions"
+            :key="action.href"
+            class="search-overlay__row"
+            tabindex="0"
+            data-panel-item
+            @click="handleQuickAction(action.href)"
+            @keydown.enter.prevent="handleQuickAction(action.href)"
+            @keydown="handleItemKeydown($event, recentSearches.length + i)"
+          >
+            <MIcon :icon="action.icon" class="search-overlay__row-icon" />
+            <span class="search-overlay__row-label">{{ action.label }}</span>
           </div>
         </div>
-      </Transition>
-    </Teleport>
-  </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>
