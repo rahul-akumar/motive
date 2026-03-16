@@ -9,6 +9,13 @@ import {
   PanelLeftOpen,
   Search,
   Bell,
+  ShieldCheck,
+  ClipboardCheck,
+  Fuel,
+  CreditCard,
+  Wrench,
+  Users,
+  Radio,
 } from 'lucide-vue-next'
 import { MIcon, MTooltip } from '@motive/ui'
 import { useMotion } from '@vueuse/motion'
@@ -44,6 +51,13 @@ const navItems = [
     href: '/fleet-3d',
     icon: Globe,
   },
+  { id: 'safety', label: 'Safety', href: '/safety', icon: ShieldCheck },
+  { id: 'compliance', label: 'Compliance', href: '/compliance', icon: ClipboardCheck },
+  { id: 'fuel', label: 'Fuel', href: '/fuel', icon: Fuel },
+  { id: 'cards', label: 'Cards', href: '/cards', icon: CreditCard },
+  { id: 'maintenance', label: 'Maintenance', href: '/maintenance', icon: Wrench },
+  { id: 'workforce', label: 'Workforce', href: '/workforce', icon: Users },
+  { id: 'dispatch', label: 'Dispatch', href: '/dispatch', icon: Radio },
 ]
 
 function isActive(href: string) {
@@ -453,7 +467,7 @@ function handleSearchCollapsedClick() {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.0625rem;
 }
 
 .sidebar__icon {
