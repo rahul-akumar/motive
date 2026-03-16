@@ -7,7 +7,6 @@ import {
   X,
   PanelLeftClose,
   PanelLeftOpen,
-  Search,
   Bell,
   ShieldCheck,
   ClipboardCheck,
@@ -75,7 +74,7 @@ const collapsed = ref(
 )
 
 const sidebarRef = ref<HTMLElement | null>(null)
-const searchInputRef = ref<HTMLInputElement | null>(null)
+const searchPanelRef = ref<{ focus: () => void } | null>(null)
 
 const logoLetterM = ref<SVGElement | null>(null)
 const logoLetterO = ref<SVGElement | null>(null)
@@ -154,9 +153,7 @@ function handleSearchCollapsedClick() {
     lv.value = 'expanded'
   })
   localStorage.setItem('sidebar-collapsed', 'false')
-  nextTick(() => {
-    searchInputRef.value?.focus()
-  })
+  searchPanelRef.value?.focus()
 }
 </script>
 
@@ -223,33 +220,11 @@ function handleSearchCollapsedClick() {
     </div>
 
     <!-- Search -->
-    <div class="sidebar__search-wrap">
-      <MTooltip content="Search" placement="right" :disabled="!collapsed">
-        <button
-          v-if="collapsed"
-          type="button"
-          class="sidebar-nav-item sidebar-nav-item--btn"
-          aria-label="Search"
-          @click="handleSearchCollapsedClick"
-        >
-          <MIcon :icon="Search" class="sidebar__icon" />
-          <span class="sidebar__label">Search</span>
-        </button>
-        <div v-else class="sidebar__search">
-          <label for="sidebar-search" class="sr-only">Search drivers, vehicles, loads</label>
-          <MIcon :icon="Search" class="sidebar__search-icon" />
-          <input
-            id="sidebar-search"
-            ref="searchInputRef"
-            type="search"
-            placeholder="Find"
-            class="sidebar__search-input"
-            aria-label="Search drivers, vehicles, loads"
-          />
-          <kbd class="sidebar__search-kbd" aria-label="Keyboard shortcut: Command F">F</kbd>
-        </div>
-      </MTooltip>
-    </div>
+    <LayoutAppSearchPanel
+      ref="searchPanelRef"
+      :collapsed="collapsed"
+      @expand="handleSearchCollapsedClick"
+    />
 
     <!-- Mobile close button -->
     <button
@@ -395,60 +370,6 @@ function handleSearchCollapsedClick() {
   flex-shrink: 0;
   margin-left: 9px;
   /* opacity, transform, transition removed — owned by useMotion on each path */
-}
-
-/* ── Search ── */
-.sidebar__search-wrap {
-  padding: 0;
-  flex-shrink: 0;
-}
-
-.sidebar__search {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  padding: 0 0.5rem;
-  height: 36px;
-  transition: border-color 100ms ease;
-}
-
-.sidebar__search:focus-within {
-  border-color: var(--search-focus-border);
-  box-shadow: var(--search-focus-shadow);
-}
-
-.sidebar__search-icon {
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.sidebar__search-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  font-family: 'Barlow', sans-serif;
-  min-width: 0;
-}
-
-.sidebar__search-input::placeholder {
-  color: var(--text-muted);
-}
-
-.sidebar__search-kbd {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 1px 4px;
-  flex-shrink: 0;
 }
 
 .sidebar__close-btn {
