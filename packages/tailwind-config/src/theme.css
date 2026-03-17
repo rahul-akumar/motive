@@ -36,23 +36,55 @@
   /* Semantic Colors */
   --color-motive-success: #10b981;
   --color-motive-success-50: #ecfdf5;
+  --color-motive-success-100: #d1fae5;
+  --color-motive-success-200: #a7f3d0;
+  --color-motive-success-300: #6ee7b7;
+  --color-motive-success-400: #34d399;
   --color-motive-success-500: #10b981;
+  --color-motive-success-600: #059669;
   --color-motive-success-700: #047857;
+  --color-motive-success-800: #065f46;
+  --color-motive-success-900: #064e3b;
+  --color-motive-success-950: #022c22;
 
   --color-motive-warning: #f59e0b;
   --color-motive-warning-50: #fffbeb;
+  --color-motive-warning-100: #fef3c7;
+  --color-motive-warning-200: #fde68a;
+  --color-motive-warning-300: #fcd34d;
+  --color-motive-warning-400: #fbbf24;
   --color-motive-warning-500: #f59e0b;
+  --color-motive-warning-600: #d97706;
   --color-motive-warning-700: #b45309;
+  --color-motive-warning-800: #92400e;
+  --color-motive-warning-900: #78350f;
+  --color-motive-warning-950: #451a03;
 
   --color-motive-danger: #ef4444;
   --color-motive-danger-50: #fef2f2;
+  --color-motive-danger-100: #fee2e2;
+  --color-motive-danger-200: #fecaca;
+  --color-motive-danger-300: #fca5a5;
+  --color-motive-danger-400: #f87171;
   --color-motive-danger-500: #ef4444;
+  --color-motive-danger-600: #dc2626;
   --color-motive-danger-700: #b91c1c;
+  --color-motive-danger-800: #991b1b;
+  --color-motive-danger-900: #7f1d1d;
+  --color-motive-danger-950: #450a0a;
 
   --color-motive-info: #3b82f6;
   --color-motive-info-50: #eff6ff;
+  --color-motive-info-100: #dbeafe;
+  --color-motive-info-200: #bfdbfe;
+  --color-motive-info-300: #93c5fd;
+  --color-motive-info-400: #60a5fa;
   --color-motive-info-500: #3b82f6;
+  --color-motive-info-600: #2563eb;
   --color-motive-info-700: #1d4ed8;
+  --color-motive-info-800: #1e40af;
+  --color-motive-info-900: #1e3a8a;
+  --color-motive-info-950: #172554;
 
   /* UI Colors - Light Mode */
   --color-motive-background: #ffffff;
@@ -98,3 +130,4 @@
 @import './themes/amber-ops.css';
 @import './themes/slate.css';
 @import './themes/arc.css';
+@import './themes/console.css';

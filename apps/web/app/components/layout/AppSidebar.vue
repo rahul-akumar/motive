@@ -16,7 +16,7 @@ import {
   Users,
   Radio,
 } from 'lucide-vue-next'
-import { MIcon, MTooltip } from '@motive/ui'
+import { MIcon, MTooltip, MBadge } from '@motive/ui'
 import { useMotion } from '@vueuse/motion'
 
 const route = useRoute()
@@ -46,17 +46,18 @@ const navItems = [
   },
   {
     id: 'fleet-3d',
-    label: 'Fleet 3D',
+    label: 'Fleet',
     href: '/fleet-3d',
     icon: Globe,
+    badge: { label: 'Beta', color: 'info' } as const,
   },
-  { id: 'safety', label: 'Safety', href: '/safety', icon: ShieldCheck },
-  { id: 'compliance', label: 'Compliance', href: '/compliance', icon: ClipboardCheck },
-  { id: 'fuel', label: 'Fuel', href: '/fuel', icon: Fuel },
-  { id: 'cards', label: 'Cards', href: '/cards', icon: CreditCard },
-  { id: 'maintenance', label: 'Maintenance', href: '/maintenance', icon: Wrench },
-  { id: 'workforce', label: 'Workforce', href: '/workforce', icon: Users },
-  { id: 'dispatch', label: 'Dispatch', href: '/dispatch', icon: Radio },
+  { id: 'safety', label: 'Safety', href: '/safety', icon: ShieldCheck, wip: true },
+  { id: 'compliance', label: 'Compliance', href: '/compliance', icon: ClipboardCheck, wip: true },
+  { id: 'fuel', label: 'Fuel', href: '/fuel', icon: Fuel, wip: true },
+  { id: 'cards', label: 'Cards', href: '/cards', icon: CreditCard, wip: true },
+  { id: 'maintenance', label: 'Maintenance', href: '/maintenance', icon: Wrench, wip: true },
+  { id: 'workforce', label: 'Workforce', href: '/workforce', icon: Users, wip: true },
+  { id: 'dispatch', label: 'Dispatch', href: '/dispatch', icon: Radio, wip: true },
 ]
 
 function isActive(href: string) {
@@ -233,7 +234,17 @@ function toggleCollapsed() {
               @click="handleNavClick"
             >
               <MIcon :icon="item.icon" class="sidebar__icon" />
-              <span class="sidebar__label">{{ item.label }}</span>
+              <span class="sidebar__label">
+                {{ item.label }}
+                <MBadge
+                  v-if="item.badge"
+                  variant="text"
+                  :label="item.badge.label"
+                  size="sm"
+                  :color="item.badge.color"
+                />
+                <MBadge v-else-if="item.wip" variant="text" label="WIP" size="sm" color="warning" />
+              </span>
             </NuxtLink>
           </MTooltip>
         </li>
@@ -444,6 +455,9 @@ function toggleCollapsed() {
 }
 
 .sidebar__label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
   font-size: 0.9375rem;
   font-weight: 500;
   white-space: nowrap;
