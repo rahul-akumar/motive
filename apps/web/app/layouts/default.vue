@@ -2,7 +2,8 @@
 const { activeAlerts } = useAlerts()
 const alertCount = computed(() => activeAlerts.value.length)
 
-const themeModalOpen = ref(false)
+const preferencesModalOpen = ref(false)
+const preferencesInitialSection = ref('notifications')
 const sidebarOpen = ref(false)
 
 watch(
@@ -15,6 +16,11 @@ watch(
 function closeSidebar() {
   sidebarOpen.value = false
 }
+
+function openPreferences(section?: string) {
+  preferencesInitialSection.value = section ?? 'notifications'
+  preferencesModalOpen.value = true
+}
 </script>
 
 <template>
@@ -26,7 +32,7 @@ function closeSidebar() {
     <LayoutAppSidebar
       :is-open="sidebarOpen"
       :alert-count="alertCount"
-      @open-settings="themeModalOpen = true"
+      @open-preferences="openPreferences"
       @close="closeSidebar"
     />
 
@@ -34,7 +40,11 @@ function closeSidebar() {
       <slot />
     </LayoutAppMain>
 
-    <LayoutThemeModal :open="themeModalOpen" @close="themeModalOpen = false" />
+    <LayoutAppPreferencesModal
+      :open="preferencesModalOpen"
+      :initial-section="preferencesInitialSection"
+      @close="preferencesModalOpen = false"
+    />
   </div>
 </template>
 

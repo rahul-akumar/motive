@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Truck,
   Globe,
-  Settings,
   X,
   PanelLeftClose,
   PanelLeftOpen,
@@ -27,7 +26,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  openSettings: []
+  openPreferences: [section?: string]
   close: []
 }>()
 
@@ -75,6 +74,11 @@ const collapsed = ref(
 )
 
 const sidebarRef = ref<HTMLElement | null>(null)
+const userMenuRef = ref<{ open: (anchorEl: HTMLElement) => void } | null>(null)
+
+function openUserMenu(e: MouseEvent) {
+  userMenuRef.value?.open(e.currentTarget as HTMLElement)
+}
 
 const logoLetterM = ref<SVGElement | null>(null)
 const logoLetterO = ref<SVGElement | null>(null)
@@ -279,30 +283,18 @@ function toggleCollapsed() {
             </button>
           </MTooltip>
         </li>
-        <li>
-          <MTooltip content="Settings" placement="right" :disabled="!collapsed">
-            <button
-              type="button"
-              class="sidebar-nav-item sidebar-nav-item--btn"
-              aria-label="Open appearance settings"
-              @click="emit('openSettings')"
-            >
-              <MIcon :icon="Settings" :size="18" class="sidebar__icon" />
-              <span class="sidebar__label">Settings</span>
-            </button>
-          </MTooltip>
-        </li>
       </ul>
 
       <!-- User Profile -->
       <MTooltip content="John Dispatch" placement="right" :disabled="!collapsed">
-        <div class="sidebar__user">
+        <div class="sidebar__user" role="button" tabindex="0" @click="openUserMenu">
           <div class="sidebar__user-avatar" aria-hidden="true">JD</div>
           <div class="sidebar__user-info">
             <div class="sidebar__user-name">John Dispatch</div>
           </div>
         </div>
       </MTooltip>
+      <LayoutAppUserMenu ref="userMenuRef" @open-preferences="emit('openPreferences')" />
     </div>
   </aside>
 </template>

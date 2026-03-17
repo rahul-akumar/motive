@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { X, Check, Sliders } from 'lucide-vue-next'
+import { MModal } from '@motive/ui'
 import { useTheme } from '~/composables/useTheme'
 
 const props = defineProps<{
@@ -15,161 +16,105 @@ const { currentTheme, themes, applyTheme } = useTheme()
 function selectTheme(id: string) {
   applyTheme(id as any)
 }
-
-function handleBackdropClick(e: MouseEvent) {
-  if (e.target === e.currentTarget) emit('close')
-}
-
-function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') emit('close')
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-})
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="modal">
-      <div
-        v-if="open"
-        class="modal-backdrop"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Theme settings"
-        @click="handleBackdropClick"
-      >
-        <div class="modal-panel">
-          <!-- Header -->
-          <div class="modal-header">
-            <div class="modal-header__left">
-              <div class="modal-header__icon" aria-hidden="true">
-                <Sliders :size="14" />
-              </div>
-              <div>
-                <h2 class="modal-title font-mono-data">APPEARANCE</h2>
-                <p class="modal-subtitle font-mono-data">Select interface theme</p>
-              </div>
-            </div>
-            <button
-              class="modal-close"
-              type="button"
-              aria-label="Close theme settings"
-              @click="emit('close')"
-            >
-              <X :size="14" />
-            </button>
-          </div>
-
-          <!-- Theme Grid -->
-          <div class="theme-grid" role="radiogroup" aria-label="Available themes">
-            <button
-              v-for="theme in themes"
-              :key="theme.id"
-              class="theme-card"
-              :class="{ 'theme-card--active': currentTheme === theme.id }"
-              :style="{
-                '--card-accent': theme.accent,
-                '--card-bg': theme.bgBase,
-                '--card-surface': theme.bgCard,
-                '--card-text': theme.textPrimary,
-              }"
-              type="button"
-              role="radio"
-              :aria-checked="currentTheme === theme.id"
-              :aria-label="`${theme.name}: ${theme.description}`"
-              @click="selectTheme(theme.id)"
-            >
-              <!-- Mini preview -->
-              <div
-                class="theme-preview"
-                :class="{ 'theme-preview--flat': theme.layout === 'flat' }"
-                aria-hidden="true"
-              >
-                <!-- Preview sidebar strip -->
-                <div class="theme-preview__sidebar">
-                  <div class="theme-preview__logo" />
-                  <div class="theme-preview__nav-item theme-preview__nav-item--active" />
-                  <div class="theme-preview__nav-item" />
-                  <div class="theme-preview__nav-item" />
-                  <div class="theme-preview__nav-item" />
-                </div>
-                <!-- Preview content area -->
-                <div class="theme-preview__content">
-                  <div class="theme-preview__topbar" />
-                  <div class="theme-preview__cards">
-                    <div class="theme-preview__card" />
-                    <div class="theme-preview__card" />
-                    <div class="theme-preview__card theme-preview__card--accent" />
-                    <div class="theme-preview__card" />
-                  </div>
-                  <div class="theme-preview__chart" />
-                </div>
-              </div>
-
-              <!-- Theme info -->
-              <div class="theme-info">
-                <div class="theme-info__row">
-                  <span class="theme-info__name font-mono-data">{{ theme.name }}</span>
-                  <div
-                    v-if="currentTheme === theme.id"
-                    class="theme-info__check"
-                    aria-hidden="true"
-                  >
-                    <Check :size="10" />
-                  </div>
-                </div>
-                <p class="theme-info__desc font-mono-data">{{ theme.description }}</p>
-                <!-- Accent swatch -->
-                <div class="theme-info__swatch" aria-hidden="true">
-                  <div class="theme-info__swatch-dot" />
-                  <span class="theme-info__swatch-label font-mono-data">{{ theme.accent }}</span>
-                </div>
-              </div>
-            </button>
-          </div>
-
-          <!-- Footer -->
-          <div class="modal-footer">
-            <span class="modal-footer__hint font-mono-data"
-              >Changes apply instantly and persist across sessions</span
-            >
-          </div>
+  <MModal :open="open" max-width="520px" @close="emit('close')">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-header__left">
+        <div class="modal-header__icon" aria-hidden="true">
+          <Sliders :size="14" />
+        </div>
+        <div>
+          <h2 class="modal-title font-mono-data">APPEARANCE</h2>
+          <p class="modal-subtitle font-mono-data">Select interface theme</p>
         </div>
       </div>
-    </Transition>
-  </Teleport>
+      <button
+        class="modal-close"
+        type="button"
+        aria-label="Close theme settings"
+        @click="emit('close')"
+      >
+        <X :size="14" />
+      </button>
+    </div>
+
+    <!-- Theme Grid -->
+    <div class="theme-grid" role="radiogroup" aria-label="Available themes">
+      <button
+        v-for="theme in themes"
+        :key="theme.id"
+        class="theme-card"
+        :class="{ 'theme-card--active': currentTheme === theme.id }"
+        :style="{
+          '--card-accent': theme.accent,
+          '--card-bg': theme.bgBase,
+          '--card-surface': theme.bgCard,
+          '--card-text': theme.textPrimary,
+        }"
+        type="button"
+        role="radio"
+        :aria-checked="currentTheme === theme.id"
+        :aria-label="`${theme.name}: ${theme.description}`"
+        @click="selectTheme(theme.id)"
+      >
+        <!-- Mini preview -->
+        <div
+          class="theme-preview"
+          :class="{ 'theme-preview--flat': theme.layout === 'flat' }"
+          aria-hidden="true"
+        >
+          <!-- Preview sidebar strip -->
+          <div class="theme-preview__sidebar">
+            <div class="theme-preview__logo" />
+            <div class="theme-preview__nav-item theme-preview__nav-item--active" />
+            <div class="theme-preview__nav-item" />
+            <div class="theme-preview__nav-item" />
+            <div class="theme-preview__nav-item" />
+          </div>
+          <!-- Preview content area -->
+          <div class="theme-preview__content">
+            <div class="theme-preview__topbar" />
+            <div class="theme-preview__cards">
+              <div class="theme-preview__card" />
+              <div class="theme-preview__card" />
+              <div class="theme-preview__card theme-preview__card--accent" />
+              <div class="theme-preview__card" />
+            </div>
+            <div class="theme-preview__chart" />
+          </div>
+        </div>
+
+        <!-- Theme info -->
+        <div class="theme-info">
+          <div class="theme-info__row">
+            <span class="theme-info__name font-mono-data">{{ theme.name }}</span>
+            <div v-if="currentTheme === theme.id" class="theme-info__check" aria-hidden="true">
+              <Check :size="10" />
+            </div>
+          </div>
+          <p class="theme-info__desc font-mono-data">{{ theme.description }}</p>
+          <!-- Accent swatch -->
+          <div class="theme-info__swatch" aria-hidden="true">
+            <div class="theme-info__swatch-dot" />
+            <span class="theme-info__swatch-label font-mono-data">{{ theme.accent }}</span>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <span class="modal-footer__hint font-mono-data"
+        >Changes apply instantly and persist across sessions</span
+      >
+    </div>
+  </MModal>
 </template>
 
 <style scoped>
-/* ── Backdrop ── */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-
-/* ── Panel ── */
-.modal-panel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: 2px;
-  width: 100%;
-  max-width: 520px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-}
-
 /* ── Header ── */
 .modal-header {
   display: flex;
@@ -433,16 +378,5 @@ onUnmounted(() => {
   font-size: 0.5rem;
   color: var(--text-muted);
   letter-spacing: 0.05em;
-}
-
-/* ── Transitions ── */
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 150ms ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
 }
 </style>
