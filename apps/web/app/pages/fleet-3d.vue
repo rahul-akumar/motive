@@ -7,6 +7,7 @@ definePageMeta({
 
 const {
   drivers,
+  vehicles,
   filteredDrivers,
   statusCounts,
   activeFilters,
@@ -20,6 +21,8 @@ const {
   selectDriver,
   isPanelOpen,
   togglePanel,
+  fitAllTrigger,
+  fitAllTrucks,
 } = useFleetView()
 </script>
 
@@ -29,7 +32,9 @@ const {
     <ClientOnly>
       <Fleet3dGlobe
         :drivers="filteredDrivers"
+        :vehicles="vehicles"
         :selected-driver-id="selectedDriverId"
+        :fit-all-trigger="fitAllTrigger"
         class="f3d-page__globe"
         @select-driver="selectDriver"
       />
@@ -58,6 +63,9 @@ const {
       :vehicle="selectedVehicle"
       @close="selectDriver(null)"
     />
+
+    <!-- Fit All button -->
+    <button class="f3d-fit-btn" @click="fitAllTrucks">⊡ Fit All</button>
   </div>
 </template>
 
@@ -76,5 +84,30 @@ const {
   width: 100%;
   height: 100%;
   z-index: 0;
+}
+
+.f3d-fit-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10;
+  background: rgba(20, 20, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: #e2e2e2;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.f3d-fit-btn:hover {
+  background: rgba(40, 40, 60, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 </style>
