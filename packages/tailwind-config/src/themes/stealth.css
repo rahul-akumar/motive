@@ -36,4 +36,6 @@ html[data-theme='stealth'] {
   --card-radius: 8px;
   --badge-radius: 0px;
   --shadow-card: none;
+  --main-margin: 0.5rem 0.5rem 0.5rem 0;
+  --main-radius: var(--card-radius);
 }

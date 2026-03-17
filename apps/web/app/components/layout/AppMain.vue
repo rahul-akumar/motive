@@ -38,8 +38,8 @@ const isDefault = computed(() => variant.value === 'default')
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  margin: 0.5rem 0.5rem 0.5rem 0;
-  border-radius: var(--card-radius);
+  margin: var(--main-margin, 0.5rem 0.5rem 0.5rem 0);
+  border-radius: var(--main-radius, var(--card-radius));
   background-color: var(--bg-main);
   border: 1px solid var(--border);
 }

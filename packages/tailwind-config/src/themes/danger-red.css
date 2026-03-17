@@ -34,4 +34,6 @@ html[data-theme='danger-red'] {
   --card-radius: 2px;
   --badge-radius: 0px;
   --shadow-card: 0 2px 12px rgba(220, 38, 38, 0.06);
+  --main-margin: 0.5rem 0.5rem 0.5rem 0;
+  --main-radius: var(--card-radius);
 }

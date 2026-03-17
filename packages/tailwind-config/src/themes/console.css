@@ -1,0 +1,41 @@
+/* Console — Flat dark. Edge-to-edge, zero elevation, data-dense. */
+html[data-theme='console'] {
+  --bg-base: #000000;
+  --bg-main: #0a0a0a;
+  --bg-card: #111111;
+  --bg-elevated: #161616;
+  --bg-hover: #1a1a1a;
+  --border: hsla(0, 0%, 100%, 0.09);
+  --border-strong: hsla(0, 0%, 100%, 0.14);
+  --border-accent: hsla(221, 100%, 63%, 0.4);
+  --accent: #3b82f6;
+  --accent-rgb: 59, 130, 246;
+  --accent-dim: hsla(221, 100%, 63%, 0.08);
+  --accent-glow: transparent;
+  --accent-subtle: hsla(221, 100%, 63%, 0.04);
+  --accent-border: hsla(221, 100%, 63%, 0.2);
+  --text-primary: hsl(0, 0%, 90%);
+  --text-secondary: hsl(0, 0%, 50%);
+  --text-muted: hsl(0, 0%, 30%);
+  --text-dim: hsl(0, 0%, 20%);
+  --scrollbar-thumb: #1a1a1a;
+  --scrollbar-thumb-hover: #222222;
+  --logo-bg: #3b82f6;
+  --logo-text: #ffffff;
+  --sidebar-active-bg: hsla(221, 100%, 63%, 0.1);
+  --sidebar-active-border: #3b82f6;
+  --sidebar-active-icon: #3b82f6;
+  --sidebar-active-glow: none;
+  --avatar-bg: hsla(0, 0%, 100%, 0.06);
+  --avatar-text: hsl(0, 0%, 60%);
+  --focus-ring: #3b82f6;
+  --table-sorted-color: #3b82f6;
+  --search-focus-border: #3b82f6;
+  --search-focus-shadow: none;
+  --card-radius: 4px;
+  --badge-radius: 4px;
+  --shadow-card: none;
+  /* Layout geometry — flat, edge-to-edge */
+  --main-margin: 0;
+  --main-radius: 0;
+}

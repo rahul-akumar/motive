@@ -34,4 +34,6 @@ html[data-theme='amber-ops'] {
   --card-radius: 3px;
   --badge-radius: 0px;
   --shadow-card: 0 2px 16px rgba(217, 119, 6, 0.05), 0 1px 4px rgba(0, 0, 0, 0.4);
+  --main-margin: 0.5rem 0.5rem 0.5rem 0;
+  --main-radius: var(--card-radius);
 }

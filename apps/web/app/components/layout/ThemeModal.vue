@@ -86,7 +86,11 @@ onUnmounted(() => {
               @click="selectTheme(theme.id)"
             >
               <!-- Mini preview -->
-              <div class="theme-preview" aria-hidden="true">
+              <div
+                class="theme-preview"
+                :class="{ 'theme-preview--flat': theme.layout === 'flat' }"
+                aria-hidden="true"
+              >
                 <!-- Preview sidebar strip -->
                 <div class="theme-preview__sidebar">
                   <div class="theme-preview__logo" />
@@ -310,6 +314,15 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 3px;
   overflow: hidden;
+}
+
+/* Flat layout: no gap between sidebar and content */
+.theme-preview--flat .theme-preview__sidebar {
+  border-right-color: rgba(255, 255, 255, 0.09);
+}
+
+.theme-preview--flat .theme-preview__content {
+  padding: 4px 4px 4px 4px;
 }
 
 .theme-preview__topbar {

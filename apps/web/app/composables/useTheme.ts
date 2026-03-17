@@ -1,4 +1,4 @@
-export type ThemeId = 'stealth' | 'danger-red' | 'amber-ops' | 'slate' | 'arc'
+export type ThemeId = 'stealth' | 'danger-red' | 'amber-ops' | 'slate' | 'arc' | 'console'
 
 export interface Theme {
   id: ThemeId
@@ -8,6 +8,7 @@ export interface Theme {
   bgBase: string
   bgCard: string
   textPrimary: string
+  layout?: 'card' | 'flat'
 }
 
 export const THEMES: Theme[] = [
@@ -55,6 +56,16 @@ export const THEMES: Theme[] = [
     bgBase: '#0a090f',
     bgCard: '#0f0d18',
     textPrimary: '#e0dcf0',
+  },
+  {
+    id: 'console',
+    name: 'Console',
+    description: 'Flat dark. Edge-to-edge layout, blue accent, zero elevation.',
+    accent: '#3b82f6',
+    bgBase: '#000000',
+    bgCard: '#111111',
+    textPrimary: '#e5e5e5',
+    layout: 'flat',
   },
 ]
 
