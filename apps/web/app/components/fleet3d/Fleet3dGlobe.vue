@@ -126,7 +126,7 @@ const routeProgress = new Map<string, number>()
 let moveInterval: ReturnType<typeof setInterval> | null = null
 
 // Each driving driver completes their full route in this many ms (demo speed)
-const DEMO_CYCLE_MS = 1_800_000
+const DEMO_CYCLE_MS = 7_200_000
 
 // Interpolate a position and heading at fraction t (0–1) along a polyline
 function interpolateRoute(
@@ -826,36 +826,36 @@ watch(
 }
 
 .f3d-popup__name {
-  font-family: 'Barlow', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: #e2e2e2;
   margin-bottom: 2px;
 }
 
 .f3d-popup__status {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-loose);
   margin-bottom: 4px;
 }
 
 .f3d-popup__location {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: #8a8a8a;
   margin-bottom: 2px;
 }
 
 .f3d-popup__meta {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: #94a3b8;
   margin-top: 2px;
 }
 
 .f3d-popup__hos {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
   margin-top: 4px;
 }
 </style>

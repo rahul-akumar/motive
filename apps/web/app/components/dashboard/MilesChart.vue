@@ -172,7 +172,10 @@ function drawChart() {
     .selectAll('text')
     .attr('fill', textMuted)
     .attr('font-size', '11px')
-    .attr('font-family', '"IBM Plex Mono", monospace')
+    .attr(
+      'font-family',
+      getComputedStyle(document.documentElement).getPropertyValue('--font-family-mono').trim(),
+    )
     .attr('dy', '1.2em')
 
   // Y Axis
@@ -187,7 +190,10 @@ function drawChart() {
     .selectAll('text')
     .attr('fill', textMuted)
     .attr('font-size', '11px')
-    .attr('font-family', '"IBM Plex Mono", monospace')
+    .attr(
+      'font-family',
+      getComputedStyle(document.documentElement).getPropertyValue('--font-family-mono').trim(),
+    )
     .attr('dx', '-0.5em')
 }
 
@@ -271,19 +277,19 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .miles-chart__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-family-condensed);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .miles-chart__subtitle {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin: 2px 0 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .miles-chart__legend {
@@ -305,7 +311,7 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .miles-chart__legend-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
 }
 
@@ -328,19 +334,19 @@ watch(() => props.data, drawChart, { deep: true })
 }
 
 .tooltip__label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   margin-bottom: 2px;
 }
 
 .tooltip__value {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
 .tooltip__trips {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   margin-top: 1px;
 }

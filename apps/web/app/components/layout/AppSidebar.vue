@@ -60,7 +60,8 @@ const navItems = [
 ]
 
 function isActive(href: string) {
-  return route.path === href
+  if (href === '/') return route.path === '/'
+  return route.path === href || route.path.startsWith(href + '/')
 }
 
 function handleNavClick() {
@@ -402,9 +403,9 @@ function toggleCollapsed() {
   height: 15px;
   background-color: #dc2626;
   color: white;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   border-radius: 2px;
   display: flex;
   align-items: center;
@@ -420,8 +421,8 @@ function toggleCollapsed() {
   height: 36px;
   border-radius: 4px;
   color: var(--text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
@@ -450,8 +451,8 @@ function toggleCollapsed() {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   overflow: hidden;
   opacity: 1;
@@ -501,12 +502,12 @@ function toggleCollapsed() {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--avatar-text);
   justify-self: center;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .sidebar__user-info {
@@ -520,8 +521,8 @@ function toggleCollapsed() {
 }
 
 .sidebar__user-name {
-  font-size: 0.9375rem;
-  font-weight: 400;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;

@@ -172,9 +172,9 @@ const localSearch = computed({
 }
 
 .fv-panel-toggle__count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -220,22 +220,22 @@ const localSearch = computed({
 }
 
 .fv-panel__title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
 }
 
 .fv-panel__count {
-  font-size: 0.725rem;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border);
   border-radius: 2px;
   padding: 1px 5px;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .fv-panel__collapse-btn {
@@ -277,10 +277,10 @@ const localSearch = computed({
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 2px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.725rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wider);
   color: var(--text-muted);
   cursor: pointer;
   transition: all 120ms ease;
@@ -305,7 +305,7 @@ const localSearch = computed({
 
 .fv-filter-chip__count {
   color: var(--text-muted);
-  font-size: 0.5rem;
+  font-size: var(--font-size-2xs);
 }
 
 /* Search */
@@ -331,7 +331,7 @@ const localSearch = computed({
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   border-radius: 2px;
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-primary);
   outline: none;
   transition: border-color 120ms ease;
@@ -355,7 +355,7 @@ const localSearch = computed({
 .fv-panel__empty {
   padding: 2rem 1rem;
   text-align: center;
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 

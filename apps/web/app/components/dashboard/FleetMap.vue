@@ -289,19 +289,19 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-family-condensed);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .fleet-map__subtitle {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin: 2px 0 0;
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-widest);
 }
 
 /* Live indicator */
@@ -332,10 +332,10 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__live-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-loose);
   color: var(--text-muted);
 }
 
@@ -412,26 +412,26 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__tooltip-name {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: 2px;
 }
 
 .fleet-map__tooltip-location {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .fleet-map__tooltip-load {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin-bottom: 2px;
 }
 
 .fleet-map__tooltip-hos {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: #4ade80;
 }
 
@@ -460,10 +460,10 @@ function formatHos(driver: Driver): string {
 }
 
 .fleet-map__legend-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: 0.02em;
+  font-family: var(--font-family-mono);
+  letter-spacing: var(--tracking-tight);
 }
 
 /* Tooltip transition */

@@ -95,9 +95,9 @@ const {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   color: #e2e2e2;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--tracking-wider);
   padding: 6px 12px;
   cursor: pointer;
   backdrop-filter: blur(8px);

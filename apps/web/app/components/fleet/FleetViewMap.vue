@@ -287,12 +287,12 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 .fv-marker-initials {
   position: absolute;
   color: rgba(0, 0, 0, 0.75);
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
   pointer-events: none;
   z-index: 1;
-  line-height: 1;
+  line-height: var(--leading-none);
 }
 
 /* Alert pulse ring */
@@ -341,30 +341,30 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 }
 
 .fv-popup__name {
-  font-family: 'Barlow', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #e2e2e2);
   margin-bottom: 2px;
 }
 
 .fv-popup__status {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-loose);
   margin-bottom: 4px;
 }
 
 .fv-popup__location {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary, #8a8a8a);
   margin-bottom: 2px;
 }
 
 .fv-popup__hos {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
   margin-top: 4px;
 }
 

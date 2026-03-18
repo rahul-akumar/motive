@@ -390,15 +390,15 @@ function onLeave(el: Element, done: () => void) {
 
 .search-trigger__placeholder {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
-  font-family: 'Barlow', sans-serif;
+  font-family: var(--font-family-sans);
   user-select: none;
 }
 
 .search-trigger__kbd {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.8125rem;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
@@ -441,9 +441,9 @@ function onLeave(el: Element, done: () => void) {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-base);
   color: var(--text-primary);
-  font-family: 'Barlow', sans-serif;
+  font-family: var(--font-family-sans);
   min-width: 0;
 }
 
@@ -456,15 +456,15 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .search-overlay__esc {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6875rem;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 3px;
   padding: 2px 6px;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   white-space: nowrap;
 }
 
@@ -474,9 +474,9 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .search-overlay__section-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--text-muted);
   padding: 6px 12px 3px;
@@ -492,7 +492,7 @@ function onLeave(el: Element, done: () => void) {
   border-radius: 4px;
   margin: 0 4px;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   outline: none;
   transition:
     color 80ms ease,
@@ -550,7 +550,7 @@ function onLeave(el: Element, done: () => void) {
 
 .search-overlay__empty {
   padding: 4px 12px 2px;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
   font-style: italic;
 }
@@ -569,8 +569,8 @@ function onLeave(el: Element, done: () => void) {
   height: 36px;
   border-radius: 4px;
   color: var(--text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
@@ -597,8 +597,8 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .sidebar__label {
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   overflow: hidden;
   opacity: 1;

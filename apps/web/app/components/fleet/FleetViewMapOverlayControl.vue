@@ -58,9 +58,9 @@ function iconComponent(name: string): Component {
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
   border-radius: 4px;
   color: var(--text-secondary, #8a8a8a);
-  font-family: 'Barlow', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   backdrop-filter: blur(8px);
   transition:
@@ -93,6 +93,6 @@ function iconComponent(name: string): Component {
 }
 
 .fv-overlay-ctrl__label {
-  line-height: 1;
+  line-height: var(--leading-none);
 }
 </style>

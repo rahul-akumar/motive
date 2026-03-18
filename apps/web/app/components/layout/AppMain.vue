@@ -2,6 +2,37 @@
 const route = useRoute()
 const variant = computed(() => route.meta.mainVariant ?? 'default')
 const isDefault = computed(() => variant.value === 'default')
+
+type SubNavTab = { label: string; href: string }
+// Values are either a flat tab array (no groups) or an array of groups (renders dividers between groups).
+const subNavMap: Record<string, SubNavTab[] | SubNavTab[][]> = {
+  '/safety': [
+    { label: 'Overview', href: '/safety/overview' },
+    { label: 'Drivers', href: '/safety/drivers' },
+    { label: 'Events', href: '/safety/events' },
+    { label: 'Speeding', href: '/safety/speeding' },
+    { label: 'Requests', href: '/safety/requests' },
+    { label: 'Cameras', href: '/safety/camera' },
+  ],
+  '/fuel': [
+    [
+      { label: 'Overview', href: '/fuel/overview' },
+      { label: 'Drivers', href: '/fuel/drivers' },
+      { label: 'Vehicles', href: '/fuel/vehicles' },
+    ],
+    [
+      { label: 'IFTA Summary', href: '/fuel/ifta-summary' },
+      { label: 'Trip Reports', href: '/fuel/trip-reports' },
+      { label: 'Fuel Purchases', href: '/fuel/fuel-purchases' },
+    ],
+    [{ label: 'Idling Events', href: '/fuel/idling-events' }],
+  ],
+}
+
+const subNavTabs = computed(() => {
+  const prefix = Object.keys(subNavMap).find((k) => route.path.startsWith(k))
+  return prefix ? subNavMap[prefix] : null
+})
 </script>
 
 <template>
@@ -11,6 +42,9 @@ const isDefault = computed(() => variant.value === 'default')
       <p class="app-page-module">{{ route.meta.moduleName as string }}</p>
       <h1 class="app-page-title font-condensed">{{ route.meta.title as string }}</h1>
     </div>
+
+    <!-- Sub-navigation tab strip -->
+    <LayoutAppSubNav v-if="isDefault && subNavTabs" :tabs="subNavTabs" />
 
     <main
       :class="['app-content', `app-content--${variant}`, { 'bg-dot-grid': isDefault }]"
@@ -50,25 +84,24 @@ const isDefault = computed(() => variant.value === 'default')
 }
 
 .app-page-header {
-  padding: 1rem 1.25rem 0;
+  padding: 1rem 2rem 0;
   flex-shrink: 0;
 }
 
 .app-page-module {
   font-size: 1.25rem;
-  font-family: 'IBM Plex Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.01em;
   color: var(--text-primary);
   margin: 0 0 2px;
 }
 
 .app-page-title {
   font-size: 0rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.03em;
-  line-height: 1;
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-none);
   margin: 0;
 }
 

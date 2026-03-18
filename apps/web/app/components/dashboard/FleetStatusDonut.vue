@@ -129,7 +129,10 @@ function drawChart() {
     .attr('text-anchor', 'middle')
     .attr('dy', '-0.2em')
     .attr('fill', textPrimary)
-    .attr('font-family', '"Barlow Condensed", sans-serif')
+    .attr(
+      'font-family',
+      getComputedStyle(document.documentElement).getPropertyValue('--font-family-condensed').trim(),
+    )
     .attr('font-size', '28px')
     .attr('font-weight', '700')
     .text(props.status.total)
@@ -138,7 +141,10 @@ function drawChart() {
     .attr('text-anchor', 'middle')
     .attr('dy', '1.2em')
     .attr('fill', textMuted)
-    .attr('font-family', '"IBM Plex Mono", monospace')
+    .attr(
+      'font-family',
+      getComputedStyle(document.documentElement).getPropertyValue('--font-family-mono').trim(),
+    )
     .attr('font-size', '9px')
     .attr('letter-spacing', '0.08em')
     .text('VEHICLES')
@@ -214,19 +220,19 @@ watch(() => props.status, drawChart, { deep: true })
 }
 
 .fleet-donut__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-family-condensed);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .fleet-donut__subtitle {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin: 2px 0 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .fleet-donut__body {
@@ -269,14 +275,14 @@ watch(() => props.status, drawChart, { deep: true })
 }
 
 .fleet-donut__legend-label {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-secondary);
 }
 
 .fleet-donut__legend-value {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-widest);
 }
 </style>

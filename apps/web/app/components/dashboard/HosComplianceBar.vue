@@ -120,19 +120,19 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-family-condensed);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .hos-bar__subtitle {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin: 2px 0 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .hos-bar__list {
@@ -161,10 +161,10 @@ function hosStatusColor(driver: Driver): string {
   background-color: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-wider);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,8 +179,8 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__driver-name {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -188,9 +188,9 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__status {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-widest);
 }
 
 .hos-bar__track {
@@ -226,18 +226,18 @@ function hosStatusColor(driver: Driver): string {
 }
 
 .hos-bar__hours-driven {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
 .hos-bar__hours-sep {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 
 .hos-bar__hours-remaining {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
 }
 </style>

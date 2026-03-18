@@ -346,7 +346,7 @@ function selectTheme(id: string) {
 .pref-modal {
   display: flex;
   flex-direction: column;
-  height: 560px;
+  height: 800px;
 }
 
 /* ── Header ── */
@@ -360,9 +360,9 @@ function selectTheme(id: string) {
 }
 
 .pref-header__title {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-loosest);
   color: var(--text-secondary);
   margin: 0;
 }
@@ -372,7 +372,6 @@ function selectTheme(id: string) {
   height: 28px;
   border-radius: 2px;
   background: transparent;
-  border: 1px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
@@ -399,7 +398,7 @@ function selectTheme(id: string) {
 
 /* ── Left Nav ── */
 .pref-nav {
-  width: 180px;
+  width: 200px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
   padding: 0.5rem 0;
@@ -449,9 +448,9 @@ function selectTheme(id: string) {
 }
 
 .pref-nav__label {
-  font-size: 0.9375rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--tracking-wide);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -477,17 +476,17 @@ function selectTheme(id: string) {
 }
 
 .pref-section__title {
-  font-size: 0.9375rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--tracking-looser);
   color: var(--text-primary);
   margin: 0 0 4px;
 }
 
 .pref-section__desc {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-normal);
   margin: 0;
 }
 
@@ -502,9 +501,9 @@ function selectTheme(id: string) {
 
 /* ── Notifications ── */
 .pref-group-label {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-loose);
   color: var(--text-muted);
   margin: 0 0 0.625rem;
 }
@@ -559,16 +558,16 @@ function selectTheme(id: string) {
 }
 
 .pref-radio__label {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
   color: var(--text-primary);
 }
 
 .pref-radio__hint {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-normal);
 }
 
 /* ── Placeholder rows (non-notification sections) ── */
@@ -585,16 +584,16 @@ function selectTheme(id: string) {
 }
 
 .pref-row__label {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-normal);
   color: var(--text-primary);
 }
 
 .pref-row__value {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-normal);
 }
 
 .pref-row__value--danger {
@@ -726,9 +725,9 @@ function selectTheme(id: string) {
 }
 
 .theme-info__name {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-widest);
   color: var(--text-primary);
   text-transform: uppercase;
 }
@@ -746,10 +745,10 @@ function selectTheme(id: string) {
 }
 
 .theme-info__desc {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
-  line-height: 1.4;
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
   margin: 0;
 }
 
@@ -768,16 +767,16 @@ function selectTheme(id: string) {
 }
 
 .theme-info__swatch-label {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
 }
 
 .pref-hint {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-wider);
   margin: 0;
 }
 </style>

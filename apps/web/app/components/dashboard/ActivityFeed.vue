@@ -160,11 +160,11 @@ function getConfig(type: ActivityEventType) {
 }
 
 .activity-feed__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-family-condensed);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
@@ -175,9 +175,9 @@ function getConfig(type: ActivityEventType) {
 }
 
 .activity-feed__live-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-loose);
   color: var(--text-secondary);
 }
 
@@ -224,23 +224,23 @@ function getConfig(type: ActivityEventType) {
 }
 
 .activity-feed__event-type {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
 }
 
 .activity-feed__time {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-normal);
   flex-shrink: 0;
 }
 
 .activity-feed__description {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: var(--leading-snug);
   margin: 0 0 0.375rem;
 }
 
@@ -251,8 +251,8 @@ function getConfig(type: ActivityEventType) {
 }
 
 .activity-feed__driver {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
@@ -260,7 +260,7 @@ function getConfig(type: ActivityEventType) {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 
@@ -271,14 +271,14 @@ function getConfig(type: ActivityEventType) {
   border: 1px solid var(--border);
   border-radius: 2px;
   color: var(--text-secondary);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition:
     color 100ms ease,
     background-color 100ms ease;
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: 0.06em;
+  font-family: var(--font-family-mono);
+  letter-spacing: var(--tracking-wider);
 }
 
 .activity-feed__load-more:hover {

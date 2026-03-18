@@ -92,9 +92,9 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__title {
-  font-size: 0.75rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -116,25 +116,25 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__value {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  line-height: 1;
-  letter-spacing: -0.01em;
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-tighter);
 }
 
 .kpi-card__unit {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-normal);
   color: var(--text-secondary);
   margin-left: 0.25rem;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-family-mono);
 }
 
 .kpi-card__subtitle {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-normal);
 }
 
 .kpi-card__delta {
@@ -145,9 +145,9 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__delta-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: 0.03em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-mono);
+  letter-spacing: var(--tracking-normal);
 }
 </style>

@@ -154,13 +154,13 @@ function formatLastUpdated(date: Date): string {
   display: none;
   align-items: center;
   justify-content: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5625rem;
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   background: var(--bg-elevated);
   flex-shrink: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 /* Info block */
@@ -180,8 +180,8 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card__name {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -189,15 +189,15 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card__status {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-widest);
   flex-shrink: 0;
 }
 
 .fv-driver-card__location {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -231,17 +231,17 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card__hos-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.625rem;
-  font-weight: 600;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
   flex-shrink: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 /* Updated time */
 .fv-driver-card__updated {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   flex-shrink: 0;
   align-self: flex-start;

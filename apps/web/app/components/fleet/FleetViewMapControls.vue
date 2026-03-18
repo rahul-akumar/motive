@@ -217,9 +217,9 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   background: transparent;
   border: none;
   color: var(--text-secondary);
-  font-family: 'Barlow', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   white-space: nowrap;
   transition:
@@ -288,9 +288,9 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 }
 
 .fv-controls__live-label {
-  font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-looser);
   color: var(--text-muted);
 }
 

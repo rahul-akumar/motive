@@ -342,13 +342,13 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   background: var(--bg-elevated);
   flex-shrink: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .fv-detail__header-info {
@@ -357,8 +357,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__name {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-normal);
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -369,10 +369,10 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--tracking-loose);
   text-transform: uppercase;
   margin-top: 2px;
 }
@@ -432,32 +432,32 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  line-height: 1;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  line-height: var(--leading-none);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--tracking-loose);
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
 
 .fv-detail__value {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: 2px;
 }
 
 .fv-detail__meta {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-secondary);
 }
 
 .fv-detail__eta {
   color: var(--text-primary);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1rem;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-md);
 }
 
 /* Violation banner */
@@ -469,8 +469,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   background: rgba(220, 38, 38, 0.1);
   border-bottom: 1px solid rgba(220, 38, 38, 0.2);
   color: #f87171;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* HOS items */
@@ -490,14 +490,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-name {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-secondary);
 }
 
 .fv-detail__hos-value {
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-wide);
 }
 
 .fv-detail__hos-track {
@@ -529,15 +529,15 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__hos-breakdown-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-wider);
 }
 
 .fv-detail__hos-breakdown-val {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -558,14 +558,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__fuel-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   flex: 1;
 }
 
 .fv-detail__fuel-value {
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -595,14 +595,14 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__info-key {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-muted);
 }
 
 .fv-detail__info-val {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-tight);
 }
 
 /* ── Transition ───────────────────────────────────────────────── */
