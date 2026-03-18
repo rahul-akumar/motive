@@ -4,9 +4,10 @@ import { onMounted, onUnmounted } from 'vue'
 export interface MModalProps {
   open: boolean
   maxWidth?: string
+  ariaLabel?: string
 }
 
-withDefaults(defineProps<MModalProps>(), {
+const props = withDefaults(defineProps<MModalProps>(), {
   maxWidth: '520px',
 })
 
@@ -39,6 +40,7 @@ onUnmounted(() => {
         class="m-modal-backdrop"
         role="dialog"
         aria-modal="true"
+        :aria-label="props.ariaLabel"
         @click="handleBackdropClick"
       >
         <div class="m-modal-panel" :style="{ maxWidth: maxWidth }">
