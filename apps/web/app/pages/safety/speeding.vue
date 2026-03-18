@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Overview',
+  title: 'Speeding',
   moduleName: 'Safety',
 })
 </script>
