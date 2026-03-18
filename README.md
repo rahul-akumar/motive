@@ -48,6 +48,18 @@ bun run format
 - **Component Previews:** Storybook + Histoire
 - **DX:** ESLint, Prettier, Husky, lint-staged, commitlint
 
+## Environment Variables
+
+Copy `apps/web/.env.example` to `apps/web/.env` and fill in the values:
+
+```bash
+cp apps/web/.env.example apps/web/.env
+```
+
+| Variable                     | Description                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| `NUXT_PUBLIC_TOMTOM_API_KEY` | TomTom API key for map rendering ([get one here](https://developer.tomtom.com)) |
+
 ## Commit Convention
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/).
