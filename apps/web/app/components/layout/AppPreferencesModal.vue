@@ -12,6 +12,7 @@ import {
 } from 'lucide-vue-next'
 import { MModal } from '@motive/ui'
 import { useTheme } from '~/composables/useTheme'
+import { useLocalePreferences } from '~/composables/useLocalePreferences'
 
 export interface AppPreferencesModalProps {
   open: boolean
@@ -27,16 +28,18 @@ const emit = defineEmits<{
 }>()
 
 const { currentTheme, themes, applyTheme } = useTheme()
+const { currentLocale, availableLocales, applyLocale } = useLocalePreferences()
+const { t } = useI18n()
 
-const sections = [
-  { key: 'notifications', label: 'Notifications', icon: Bell },
-  { key: 'appearance', label: 'Appearance', icon: Sliders },
-  { key: 'sidebar', label: 'Sidebar', icon: PanelLeft },
-  { key: 'language', label: 'Language & Region', icon: Globe },
-  { key: 'accessibility', label: 'Accessibility', icon: Accessibility },
-  { key: 'ai', label: 'AI', icon: Sparkles },
-  { key: 'advanced', label: 'Advanced', icon: Settings2 },
-]
+const sections = computed(() => [
+  { key: 'notifications', label: t('preferences.sections.notifications'), icon: Bell },
+  { key: 'appearance', label: t('preferences.sections.appearance'), icon: Sliders },
+  { key: 'sidebar', label: t('preferences.sections.sidebar'), icon: PanelLeft },
+  { key: 'language', label: t('preferences.sections.language'), icon: Globe },
+  { key: 'accessibility', label: t('preferences.sections.accessibility'), icon: Accessibility },
+  { key: 'ai', label: t('preferences.sections.ai'), icon: Sparkles },
+  { key: 'advanced', label: t('preferences.sections.advanced'), icon: Settings2 },
+])
 
 const activeSection = ref(props.initialSection)
 
@@ -66,11 +69,11 @@ function selectTheme(id: string) {
     <div class="pref-modal">
       <!-- Header -->
       <div class="pref-header">
-        <h2 class="pref-header__title">PREFERENCES</h2>
+        <h2 class="pref-header__title">{{ t('preferences.title') }}</h2>
         <button
           class="pref-header__close"
           type="button"
-          aria-label="Close preferences"
+          :aria-label="t('preferences.close')"
           @click="emit('close')"
         >
           <X :size="14" />
@@ -100,11 +103,11 @@ function selectTheme(id: string) {
           <!-- Notifications -->
           <div v-if="activeSection === 'notifications'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">NOTIFICATIONS</h3>
-              <p class="pref-section__desc">Control when and how you receive notifications.</p>
+              <h3 class="pref-section__title">{{ t('preferences.notifications.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.notifications.desc') }}</p>
             </div>
             <div class="pref-section__body">
-              <p class="pref-group-label">NOTIFY ME ABOUT</p>
+              <p class="pref-group-label">{{ t('preferences.notifications.notifyAbout') }}</p>
               <div class="pref-radio-group" role="radiogroup" aria-label="Notification level">
                 <label class="pref-radio-row">
                   <input
@@ -115,8 +118,12 @@ function selectTheme(id: string) {
                   />
                   <div class="pref-radio__dot" aria-hidden="true" />
                   <div class="pref-radio__text">
-                    <span class="pref-radio__label">All new messages</span>
-                    <span class="pref-radio__hint">Every alert, update, and message</span>
+                    <span class="pref-radio__label">{{
+                      t('preferences.notifications.allMessages')
+                    }}</span>
+                    <span class="pref-radio__hint">{{
+                      t('preferences.notifications.allMessagesHint')
+                    }}</span>
                   </div>
                 </label>
                 <label class="pref-radio-row">
@@ -128,8 +135,12 @@ function selectTheme(id: string) {
                   />
                   <div class="pref-radio__dot" aria-hidden="true" />
                   <div class="pref-radio__text">
-                    <span class="pref-radio__label">Direct messages, mentions &amp; keywords</span>
-                    <span class="pref-radio__hint">Only messages addressed to you</span>
+                    <span class="pref-radio__label">{{
+                      t('preferences.notifications.dmMentions')
+                    }}</span>
+                    <span class="pref-radio__hint">{{
+                      t('preferences.notifications.dmMentionsHint')
+                    }}</span>
                   </div>
                 </label>
                 <label class="pref-radio-row">
@@ -141,8 +152,12 @@ function selectTheme(id: string) {
                   />
                   <div class="pref-radio__dot" aria-hidden="true" />
                   <div class="pref-radio__text">
-                    <span class="pref-radio__label">Nothing</span>
-                    <span class="pref-radio__hint">Pause all notifications indefinitely</span>
+                    <span class="pref-radio__label">{{
+                      t('preferences.notifications.nothing')
+                    }}</span>
+                    <span class="pref-radio__hint">{{
+                      t('preferences.notifications.nothingHint')
+                    }}</span>
                   </div>
                 </label>
               </div>
@@ -152,8 +167,8 @@ function selectTheme(id: string) {
           <!-- Appearance -->
           <div v-else-if="activeSection === 'appearance'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">APPEARANCE</h3>
-              <p class="pref-section__desc">Select interface theme.</p>
+              <h3 class="pref-section__title">{{ t('preferences.appearance.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.appearance.desc') }}</p>
             </div>
             <div class="pref-section__body">
               <div class="theme-grid" role="radiogroup" aria-label="Available themes">
@@ -216,28 +231,32 @@ function selectTheme(id: string) {
                   </div>
                 </button>
               </div>
-              <p class="pref-hint">Changes apply instantly and persist across sessions.</p>
+              <p class="pref-hint">{{ t('preferences.appearance.hint') }}</p>
             </div>
           </div>
 
           <!-- Sidebar -->
           <div v-else-if="activeSection === 'sidebar'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">SIDEBAR</h3>
-              <p class="pref-section__desc">Customize sidebar behavior and visible items.</p>
+              <h3 class="pref-section__title">{{ t('preferences.sidebarSection.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.sidebarSection.desc') }}</p>
             </div>
             <div class="pref-section__body">
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Default sidebar state</span>
-                <span class="pref-row__value">Expanded</span>
+                <span class="pref-row__label">{{
+                  t('preferences.sidebarSection.defaultState')
+                }}</span>
+                <span class="pref-row__value">{{ t('preferences.sidebarSection.expanded') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Show WIP items</span>
-                <span class="pref-row__value">On</span>
+                <span class="pref-row__label">{{ t('preferences.sidebarSection.showWip') }}</span>
+                <span class="pref-row__value">{{ t('preferences.sidebarSection.on') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Pin frequently visited</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{
+                  t('preferences.sidebarSection.pinFrequent')
+                }}</span>
+                <span class="pref-row__value">{{ t('preferences.sidebarSection.off') }}</span>
               </div>
             </div>
           </div>
@@ -245,27 +264,40 @@ function selectTheme(id: string) {
           <!-- Language & Region -->
           <div v-else-if="activeSection === 'language'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">LANGUAGE &amp; REGION</h3>
-              <p class="pref-section__desc">
-                Set your language, timezone, and date format preferences.
-              </p>
+              <h3 class="pref-section__title">{{ t('preferences.language.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.language.desc') }}</p>
             </div>
             <div class="pref-section__body">
-              <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Language</span>
-                <span class="pref-row__value">English (US)</span>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-language-select">{{
+                  t('preferences.language.language')
+                }}</label>
+                <select
+                  id="pref-language-select"
+                  class="pref-select"
+                  :value="currentLocale"
+                  @change="applyLocale(($event.target as HTMLSelectElement).value as any)"
+                >
+                  <option
+                    v-for="locale in availableLocales"
+                    :key="locale.code"
+                    :value="locale.code"
+                  >
+                    {{ locale.name }}
+                  </option>
+                </select>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Timezone</span>
+                <span class="pref-row__label">{{ t('preferences.language.timezone') }}</span>
                 <span class="pref-row__value">America/Chicago</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Date format</span>
+                <span class="pref-row__label">{{ t('preferences.language.dateFormat') }}</span>
                 <span class="pref-row__value">MM/DD/YYYY</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Distance unit</span>
-                <span class="pref-row__value">Miles</span>
+                <span class="pref-row__label">{{ t('preferences.language.distanceUnit') }}</span>
+                <span class="pref-row__value">{{ t('preferences.language.miles') }}</span>
               </div>
             </div>
           </div>
@@ -273,21 +305,25 @@ function selectTheme(id: string) {
           <!-- Accessibility -->
           <div v-else-if="activeSection === 'accessibility'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">ACCESSIBILITY</h3>
-              <p class="pref-section__desc">Options to improve usability and reduce motion.</p>
+              <h3 class="pref-section__title">{{ t('preferences.accessibility.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.accessibility.desc') }}</p>
             </div>
             <div class="pref-section__body">
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Reduce motion</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{
+                  t('preferences.accessibility.reduceMotion')
+                }}</span>
+                <span class="pref-row__value">{{ t('preferences.accessibility.off') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">High contrast mode</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{
+                  t('preferences.accessibility.highContrast')
+                }}</span>
+                <span class="pref-row__value">{{ t('preferences.accessibility.off') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Font size</span>
-                <span class="pref-row__value">Default</span>
+                <span class="pref-row__label">{{ t('preferences.accessibility.fontSize') }}</span>
+                <span class="pref-row__value">{{ t('preferences.accessibility.default') }}</span>
               </div>
             </div>
           </div>
@@ -295,21 +331,21 @@ function selectTheme(id: string) {
           <!-- AI -->
           <div v-else-if="activeSection === 'ai'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">AI</h3>
-              <p class="pref-section__desc">Configure AI-assisted features and data usage.</p>
+              <h3 class="pref-section__title">{{ t('preferences.ai.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.ai.desc') }}</p>
             </div>
             <div class="pref-section__body">
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">AI suggestions</span>
-                <span class="pref-row__value">Enabled</span>
+                <span class="pref-row__label">{{ t('preferences.ai.suggestions') }}</span>
+                <span class="pref-row__value">{{ t('preferences.ai.enabled') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Smart alerts</span>
-                <span class="pref-row__value">Enabled</span>
+                <span class="pref-row__label">{{ t('preferences.ai.smartAlerts') }}</span>
+                <span class="pref-row__value">{{ t('preferences.ai.enabled') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Usage data sharing</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{ t('preferences.ai.usageSharing') }}</span>
+                <span class="pref-row__value">{{ t('preferences.ai.off') }}</span>
               </div>
             </div>
           </div>
@@ -317,21 +353,23 @@ function selectTheme(id: string) {
           <!-- Advanced -->
           <div v-else-if="activeSection === 'advanced'" class="pref-section">
             <div class="pref-section__head">
-              <h3 class="pref-section__title">ADVANCED</h3>
-              <p class="pref-section__desc">Developer tools and experimental features.</p>
+              <h3 class="pref-section__title">{{ t('preferences.advanced.title') }}</h3>
+              <p class="pref-section__desc">{{ t('preferences.advanced.desc') }}</p>
             </div>
             <div class="pref-section__body">
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Developer mode</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{ t('preferences.advanced.devMode') }}</span>
+                <span class="pref-row__value">{{ t('preferences.advanced.off') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Experimental features</span>
-                <span class="pref-row__value">Off</span>
+                <span class="pref-row__label">{{ t('preferences.advanced.experimental') }}</span>
+                <span class="pref-row__value">{{ t('preferences.advanced.off') }}</span>
               </div>
               <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">Reset all settings</span>
-                <span class="pref-row__value pref-row__value--danger">Reset…</span>
+                <span class="pref-row__label">{{ t('preferences.advanced.reset') }}</span>
+                <span class="pref-row__value pref-row__value--danger">{{
+                  t('preferences.advanced.resetAction')
+                }}</span>
               </div>
             </div>
           </div>
@@ -365,6 +403,7 @@ function selectTheme(id: string) {
   letter-spacing: var(--tracking-loosest);
   color: var(--mtv-color-foreground-muted);
   margin: 0;
+  text-transform: uppercase;
 }
 
 .pref-header__close {
@@ -481,6 +520,7 @@ function selectTheme(id: string) {
   letter-spacing: var(--tracking-looser);
   color: var(--mtv-color-foreground-default);
   margin: 0 0 4px;
+  text-transform: uppercase;
 }
 
 .pref-section__desc {
@@ -506,6 +546,7 @@ function selectTheme(id: string) {
   letter-spacing: var(--tracking-loose);
   color: var(--mtv-color-foreground-subtle);
   margin: 0 0 0.625rem;
+  text-transform: uppercase;
 }
 
 .pref-radio-group {
@@ -599,6 +640,38 @@ function selectTheme(id: string) {
 .pref-row__value--danger {
   color: #ef4444;
   cursor: pointer;
+}
+
+/* ── Language select ── */
+.pref-select {
+  appearance: none;
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
+  border-radius: 2px;
+  color: var(--mtv-color-foreground-default);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--tracking-normal);
+  padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  transition: border-color 100ms ease;
+}
+
+.pref-select:hover {
+  border-color: var(--mtv-color-border-strong);
+}
+
+.pref-select:focus {
+  outline: none;
+  border-color: var(--mtv-color-brand-default);
+}
+
+.pref-select option {
+  background-color: var(--mtv-color-surface-raised);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* ── Appearance / Theme Grid ── */

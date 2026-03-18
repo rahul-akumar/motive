@@ -14,6 +14,7 @@ const emit = defineEmits<{
   search: [query: string]
 }>()
 
+const { t } = useI18n()
 const router = useRouter()
 const { recentSearches, loadRecentSearches, addRecentSearch, removeRecentSearch } = useSearch()
 
@@ -111,13 +112,13 @@ async function handleQuickAction(href: string) {
   await router.push(href)
 }
 
-const quickActions = [
-  { label: 'Fleet', href: '/fleet', icon: Truck },
-  { label: 'Alerts', href: '/alerts', icon: Bell },
-  { label: 'Drivers', href: '/workforce', icon: Users },
-  { label: 'Fuel', href: '/fuel', icon: Fuel },
-  { label: 'Fleet 3D Globe', href: '/fleet-3d', icon: Globe },
-]
+const quickActions = computed(() => [
+  { label: t('nav.fleet'), href: '/fleet', icon: Truck },
+  { label: t('nav.alerts'), href: '/alerts', icon: Bell },
+  { label: t('nav.workforce'), href: '/workforce', icon: Users },
+  { label: t('nav.fuel'), href: '/fuel', icon: Fuel },
+  { label: t('pages.titles.fleet3d'), href: '/fleet-3d', icon: Globe },
+])
 
 // ── JS Transition Hooks ─────────────────────────────────────────────────────
 // Morph: overlay starts at trigger-bar rect, expands to natural full size.
@@ -250,16 +251,16 @@ function onLeave(el: Element, done: () => void) {
 
 <template>
   <!-- Collapsed: icon-only button — opens overlay without expanding sidebar -->
-  <MTooltip v-if="collapsed" content="Search" placement="right">
+  <MTooltip v-if="collapsed" :content="t('search.label')" placement="right">
     <button
       ref="buttonRef"
       type="button"
       class="sidebar-nav-item sidebar-nav-item--btn"
-      aria-label="Search"
+      :aria-label="t('search.label')"
       @click="openPanel"
     >
       <MIcon :icon="Search" class="sidebar__icon" />
-      <span class="sidebar__label">Search</span>
+      <span class="sidebar__label">{{ t('search.label') }}</span>
     </button>
   </MTooltip>
 
@@ -267,7 +268,7 @@ function onLeave(el: Element, done: () => void) {
   <div v-else ref="triggerRef" class="search-trigger" @click="openPanel">
     <div :class="['search-trigger__bar', { 'search-trigger__bar--hidden': isOpen }]">
       <MIcon :icon="Search" class="search-trigger__icon" />
-      <span class="search-trigger__placeholder">Find</span>
+      <span class="search-trigger__placeholder">{{ t('search.placeholder') }}</span>
       <kbd class="search-trigger__kbd" aria-label="Keyboard shortcut: Command F">F</kbd>
     </div>
   </div>
@@ -286,13 +287,13 @@ function onLeave(el: Element, done: () => void) {
         <!-- Input row -->
         <div class="search-overlay__bar">
           <MIcon :icon="Search" class="search-overlay__icon" />
-          <label for="app-search" class="sr-only">Search drivers, vehicles, loads</label>
+          <label for="app-search" class="sr-only">{{ t('search.inputLabel') }}</label>
           <input
             id="app-search"
             ref="inputRef"
             v-model="query"
             type="search"
-            placeholder="Find..."
+            :placeholder="t('search.inputPlaceholder')"
             class="search-overlay__input"
             autocomplete="off"
             @keydown.enter.prevent="handleEnter"
@@ -304,7 +305,7 @@ function onLeave(el: Element, done: () => void) {
 
         <!-- Results (animated separately inside onEnter/onLeave) -->
         <div class="search-overlay__body">
-          <div class="search-overlay__section-label">Recent</div>
+          <div class="search-overlay__section-label">{{ t('search.recent') }}</div>
           <template v-if="recentSearches.length > 0">
             <div
               v-for="(item, i) in recentSearches"
@@ -321,18 +322,18 @@ function onLeave(el: Element, done: () => void) {
               <button
                 type="button"
                 class="search-overlay__row-remove"
-                :aria-label="`Remove ${item} from recent searches`"
+                :aria-label="t('search.removeRecent', { query: item })"
                 @click.stop="removeRecentSearch(item)"
               >
                 <MIcon :icon="X" :size="12" />
               </button>
             </div>
           </template>
-          <div v-else class="search-overlay__empty">No recent searches</div>
+          <div v-else class="search-overlay__empty">{{ t('search.noRecentSearches') }}</div>
 
           <div class="search-overlay__divider" />
 
-          <div class="search-overlay__section-label">Quick Actions</div>
+          <div class="search-overlay__section-label">{{ t('search.quickActions') }}</div>
           <div
             v-for="(action, i) in quickActions"
             :key="action.href"
