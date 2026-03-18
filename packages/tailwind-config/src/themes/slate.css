@@ -35,6 +35,7 @@ html[data-theme='slate'] {
   --card-radius: 8px;
   --badge-radius: 3px;
   --shadow-card: 0 4px 20px hsla(0, 0%, 0%, 0.45), 0 1px 4px hsla(0, 0%, 0%, 0.3);
+  --font-family-sans: 'JetBrains Mono', monospace;
   --main-margin: 0.5rem 0.5rem 0.5rem 0;
   --main-radius: var(--card-radius);
 }

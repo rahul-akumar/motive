@@ -1,7 +1,7 @@
 /* Console — Flat dark. Edge-to-edge, zero elevation, data-dense. */
 html[data-theme='console'] {
   --bg-base: #000000;
-  --bg-main: #0a0a0a;
+  --bg-main: var(--bg-base);
   --bg-card: #111111;
   --bg-elevated: #161616;
   --bg-hover: #1a1a1a;
@@ -35,6 +35,7 @@ html[data-theme='console'] {
   --card-radius: 4px;
   --badge-radius: 4px;
   --shadow-card: none;
+  --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
   /* Layout geometry — flat, edge-to-edge */
   --main-margin: 0;
   --main-radius: 0;
