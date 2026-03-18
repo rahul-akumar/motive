@@ -1,37 +1,78 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const route = useRoute()
 const variant = computed(() => route.meta.mainVariant ?? 'default')
 const isDefault = computed(() => variant.value === 'default')
 
 type SubNavTab = { label: string; href: string }
 // Values are either a flat tab array (no groups) or an array of groups (renders dividers between groups).
-const subNavMap: Record<string, SubNavTab[] | SubNavTab[][]> = {
+const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
   '/safety': [
-    { label: 'Overview', href: '/safety/overview' },
-    { label: 'Drivers', href: '/safety/drivers' },
-    { label: 'Events', href: '/safety/events' },
-    { label: 'Speeding', href: '/safety/speeding' },
-    { label: 'Requests', href: '/safety/requests' },
-    { label: 'Cameras', href: '/safety/camera' },
+    { label: t('pages.titles.overview'), href: '/safety/overview' },
+    { label: t('pages.titles.drivers'), href: '/safety/drivers' },
+    { label: t('pages.titles.events'), href: '/safety/events' },
+    { label: t('pages.titles.speeding'), href: '/safety/speeding' },
+    { label: t('pages.titles.requests'), href: '/safety/requests' },
+    { label: t('pages.titles.cameras'), href: '/safety/camera' },
   ],
   '/fuel': [
     [
-      { label: 'Overview', href: '/fuel/overview' },
-      { label: 'Drivers', href: '/fuel/drivers' },
-      { label: 'Vehicles', href: '/fuel/vehicles' },
+      { label: t('pages.titles.overview'), href: '/fuel/overview' },
+      { label: t('pages.titles.drivers'), href: '/fuel/drivers' },
+      { label: t('pages.titles.vehicles'), href: '/fuel/vehicles' },
     ],
     [
-      { label: 'IFTA Summary', href: '/fuel/ifta-summary' },
-      { label: 'Trip Reports', href: '/fuel/trip-reports' },
-      { label: 'Fuel Purchases', href: '/fuel/fuel-purchases' },
+      { label: t('pages.titles.iftaSummary'), href: '/fuel/ifta-summary' },
+      { label: t('pages.titles.tripReports'), href: '/fuel/trip-reports' },
+      { label: t('pages.titles.fuelPurchases'), href: '/fuel/fuel-purchases' },
     ],
-    [{ label: 'Idling Events', href: '/fuel/idling-events' }],
+    [{ label: t('pages.titles.idlingEvents'), href: '/fuel/idling-events' }],
   ],
+}))
+
+const moduleKeyMap: Record<string, string> = {
+  Fleet: 'nav.fleet',
+  'Fleet 3D': 'nav.fleet3d',
+  Safety: 'nav.safety',
+  Fuel: 'nav.fuel',
+  Dispatch: 'nav.dispatch',
+  Maintenance: 'nav.maintenance',
+  Compliance: 'nav.compliance',
+  Workforce: 'nav.workforce',
+  Cards: 'nav.cards',
 }
 
+const titleKeyMap: Record<string, string> = {
+  'Fleet View': 'pages.titles.fleetView',
+  'Fleet 3D': 'pages.titles.fleet3d',
+  Overview: 'pages.titles.overview',
+  Events: 'pages.titles.events',
+  Speeding: 'pages.titles.speeding',
+  Drivers: 'pages.titles.drivers',
+  Cameras: 'pages.titles.cameras',
+  Requests: 'pages.titles.requests',
+  'Trip Reports': 'pages.titles.tripReports',
+  'IFTA Summary': 'pages.titles.iftaSummary',
+  Vehicles: 'pages.titles.vehicles',
+  'Fuel Purchases': 'pages.titles.fuelPurchases',
+  'Idling Events': 'pages.titles.idlingEvents',
+}
+
+const moduleNameDisplay = computed(() => {
+  const raw = route.meta.moduleName as string
+  const key = moduleKeyMap[raw]
+  return key ? t(key) : raw
+})
+
+const pageTitleDisplay = computed(() => {
+  const raw = route.meta.title as string
+  const key = titleKeyMap[raw]
+  return key ? t(key) : raw
+})
+
 const subNavTabs = computed(() => {
-  const prefix = Object.keys(subNavMap).find((k) => route.path.startsWith(k))
-  return prefix ? subNavMap[prefix] : null
+  const prefix = Object.keys(subNavMap.value).find((k) => route.path.startsWith(k))
+  return prefix ? subNavMap.value[prefix] : null
 })
 </script>
 
@@ -39,8 +80,8 @@ const subNavTabs = computed(() => {
   <div :class="['app-main', `app-main--${variant}`]">
     <!-- Page header: shown in default mode only -->
     <div v-if="isDefault" class="app-page-header">
-      <p class="app-page-module">{{ route.meta.moduleName as string }}</p>
-      <h1 class="app-page-title font-condensed">{{ route.meta.title as string }}</h1>
+      <p class="app-page-module">{{ moduleNameDisplay }}</p>
+      <h1 class="app-page-title font-condensed">{{ pageTitleDisplay }}</h1>
     </div>
 
     <!-- Sub-navigation tab strip -->

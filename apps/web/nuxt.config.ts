@@ -19,7 +19,19 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/fonts', '@nuxt/eslint', '@vueuse/motion/nuxt'],
+  modules: ['@nuxt/fonts', '@nuxt/eslint', '@vueuse/motion/nuxt', '@nuxtjs/i18n'],
+
+  i18n: {
+    strategy: 'no_prefix',
+    defaultLocale: 'en-US',
+    detectBrowserLanguage: false,
+    locales: [
+      { code: 'en-US', name: 'English (US)', file: 'en-US.json' },
+      { code: 'en-GB', name: 'English (UK)', file: 'en-GB.json' },
+      { code: 'pt-BR', name: 'Português (Brasil)', file: 'pt-BR.json' },
+    ],
+    langDir: 'locales/',
+  },
 
   fonts: {
     families: [

@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "fleet": "Fleet",
+    "fleet3d": "Fleet",
+    "safety": "Safety",
+    "compliance": "Compliance",
+    "fuel": "Fuel",
+    "cards": "Cards",
+    "maintenance": "Maintenance",
+    "workforce": "Workforce",
+    "dispatch": "Dispatch",
+    "alerts": "Alerts"
+  },
+  "sidebar": {
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "closeNavigation": "Close navigation",
+    "activeAlerts": "{count} active alerts"
+  },
+  "pages": {
+    "titles": {
+      "fleetView": "Fleet View",
+      "fleet3d": "Fleet 3D",
+      "overview": "Overview",
+      "events": "Events",
+      "speeding": "Speeding",
+      "drivers": "Drivers",
+      "cameras": "Cameras",
+      "requests": "Requests",
+      "tripReports": "Trip Reports",
+      "iftaSummary": "IFTA Summary",
+      "vehicles": "Vehicles",
+      "fuelPurchases": "Fuel Purchases",
+      "idlingEvents": "Idling Events"
+    }
+  },
+  "search": {
+    "label": "Search",
+    "placeholder": "Find",
+    "inputPlaceholder": "Find...",
+    "inputLabel": "Search drivers, vehicles, loads",
+    "recent": "Recent",
+    "noRecentSearches": "No recent searches",
+    "quickActions": "Quick Actions",
+    "removeRecent": "Remove {query} from recent searches"
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "preferences": "Preferences",
+    "pauseNotifications": "Pause notifications",
+    "thirtyMinutes": "30 minutes",
+    "oneHour": "1 hour",
+    "twoHours": "2 hours",
+    "untilTomorrow": "Until tomorrow",
+    "untilNextWeek": "Until next week",
+    "custom": "Custom…",
+    "signOut": "Sign out"
+  },
+  "themeModal": {
+    "title": "Appearance",
+    "subtitle": "Select interface theme",
+    "closeLabel": "Close theme settings",
+    "availableThemes": "Available themes",
+    "hint": "Changes apply instantly and persist across sessions"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "close": "Close preferences",
+    "sections": {
+      "notifications": "Notifications",
+      "appearance": "Appearance",
+      "sidebar": "Sidebar",
+      "language": "Language & Region",
+      "accessibility": "Accessibility",
+      "ai": "AI",
+      "advanced": "Advanced"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "desc": "Control when and how you receive notifications.",
+      "notifyAbout": "Notify Me About",
+      "allMessages": "All new messages",
+      "allMessagesHint": "Every alert, update, and message",
+      "dmMentions": "Direct messages, mentions & keywords",
+      "dmMentionsHint": "Only messages addressed to you",
+      "nothing": "Nothing",
+      "nothingHint": "Pause all notifications indefinitely"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "desc": "Select interface theme.",
+      "hint": "Changes apply instantly and persist across sessions."
+    },
+    "sidebarSection": {
+      "title": "Sidebar",
+      "desc": "Customise sidebar behaviour and visible items.",
+      "defaultState": "Default sidebar state",
+      "showWip": "Show WIP items",
+      "pinFrequent": "Pin frequently visited",
+      "expanded": "Expanded",
+      "on": "On",
+      "off": "Off"
+    },
+    "language": {
+      "title": "Language & Region",
+      "desc": "Set your language, timezone, and date format preferences.",
+      "language": "Language",
+      "timezone": "Timezone",
+      "dateFormat": "Date format",
+      "distanceUnit": "Distance unit",
+      "miles": "Miles"
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "desc": "Options to improve usability and reduce motion.",
+      "reduceMotion": "Reduce motion",
+      "highContrast": "High contrast mode",
+      "fontSize": "Font size",
+      "default": "Default",
+      "off": "Off"
+    },
+    "ai": {
+      "title": "AI",
+      "desc": "Configure AI-assisted features and data usage.",
+      "suggestions": "AI suggestions",
+      "smartAlerts": "Smart alerts",
+      "usageSharing": "Usage data sharing",
+      "enabled": "Enabled",
+      "off": "Off"
+    },
+    "advanced": {
+      "title": "Advanced",
+      "desc": "Developer tools and experimental features.",
+      "devMode": "Developer mode",
+      "experimental": "Experimental features",
+      "reset": "Reset all settings",
+      "resetAction": "Reset…",
+      "off": "Off"
+    }
+  }
+}

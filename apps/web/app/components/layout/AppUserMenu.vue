@@ -6,41 +6,43 @@ const emit = defineEmits<{
   openPreferences: []
 }>()
 
+const { t } = useI18n()
+
 const isOpen = ref(false)
 const triggerEl = ref<HTMLElement | null>(null)
 
-const menuItems: MDropdownItem[] = [
+const menuItems = computed<MDropdownItem[]>(() => [
   {
-    label: 'Profile',
+    label: t('userMenu.profile'),
     icon: User,
     action: () => {},
   },
   {
-    label: 'Preferences',
+    label: t('userMenu.preferences'),
     icon: Settings,
     action: () => emit('openPreferences'),
   },
   {
-    label: 'Pause notifications',
+    label: t('userMenu.pauseNotifications'),
     icon: BellOff,
     divider: true,
     items: [
-      { label: '30 minutes', action: () => {} },
-      { label: '1 hour', action: () => {} },
-      { label: '2 hours', action: () => {} },
-      { label: 'Until tomorrow', action: () => {} },
-      { label: 'Until next week', action: () => {} },
-      { label: 'Custom…', action: () => {} },
+      { label: t('userMenu.thirtyMinutes'), action: () => {} },
+      { label: t('userMenu.oneHour'), action: () => {} },
+      { label: t('userMenu.twoHours'), action: () => {} },
+      { label: t('userMenu.untilTomorrow'), action: () => {} },
+      { label: t('userMenu.untilNextWeek'), action: () => {} },
+      { label: t('userMenu.custom'), action: () => {} },
     ],
   },
   {
-    label: 'Sign out',
+    label: t('userMenu.signOut'),
     icon: LogOut,
     variant: 'danger',
     divider: true,
     action: () => {},
   },
-]
+])
 
 function open(anchorElement: HTMLElement) {
   triggerEl.value = anchorElement

@@ -12,6 +12,7 @@ const emit = defineEmits<{
 }>()
 
 const { currentTheme, themes, applyTheme } = useTheme()
+const { t } = useI18n()
 
 function selectTheme(id: string) {
   applyTheme(id as any)
@@ -27,14 +28,14 @@ function selectTheme(id: string) {
           <Sliders :size="14" />
         </div>
         <div>
-          <h2 class="modal-title font-mono-data">APPEARANCE</h2>
-          <p class="modal-subtitle font-mono-data">Select interface theme</p>
+          <h2 class="modal-title font-mono-data">{{ t('themeModal.title') }}</h2>
+          <p class="modal-subtitle font-mono-data">{{ t('themeModal.subtitle') }}</p>
         </div>
       </div>
       <button
         class="modal-close"
         type="button"
-        aria-label="Close theme settings"
+        :aria-label="t('themeModal.closeLabel')"
         @click="emit('close')"
       >
         <X :size="14" />
@@ -42,7 +43,7 @@ function selectTheme(id: string) {
     </div>
 
     <!-- Theme Grid -->
-    <div class="theme-grid" role="radiogroup" aria-label="Available themes">
+    <div class="theme-grid" role="radiogroup" :aria-label="t('themeModal.availableThemes')">
       <button
         v-for="theme in themes"
         :key="theme.id"
@@ -53,6 +54,7 @@ function selectTheme(id: string) {
           '--card-bg': theme.bgBase,
           '--card-surface': theme.bgCard,
           '--card-text': theme.textPrimary,
+          '--card-sidebar': theme.sidebarBg,
         }"
         type="button"
         role="radio"
@@ -107,9 +109,7 @@ function selectTheme(id: string) {
 
     <!-- Footer -->
     <div class="modal-footer">
-      <span class="modal-footer__hint font-mono-data"
-        >Changes apply instantly and persist across sessions</span
-      >
+      <span class="modal-footer__hint font-mono-data">{{ t('themeModal.hint') }}</span>
     </div>
   </MModal>
 </template>
@@ -150,6 +150,7 @@ function selectTheme(id: string) {
   color: var(--mtv-color-foreground-default);
   margin: 0;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .modal-subtitle {
@@ -222,7 +223,7 @@ function selectTheme(id: string) {
 
 .theme-preview__sidebar {
   width: 24px;
-  background-color: color-mix(in srgb, var(--card-bg, #0d0d0d) 85%, white 15%);
+  background-color: var(--card-sidebar, color-mix(in srgb, var(--card-bg, #0d0d0d) 85%, white 15%));
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   padding: 5px 3px;
   display: flex;

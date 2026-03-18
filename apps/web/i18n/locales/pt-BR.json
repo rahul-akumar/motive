@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "dashboard": "Painel",
+    "fleet": "Frota",
+    "fleet3d": "Frota",
+    "safety": "Segurança",
+    "compliance": "Conformidade",
+    "fuel": "Combustível",
+    "cards": "Cartões",
+    "maintenance": "Manutenção",
+    "workforce": "Equipe",
+    "dispatch": "Despacho",
+    "alerts": "Alertas"
+  },
+  "sidebar": {
+    "expandSidebar": "Expandir barra lateral",
+    "collapseSidebar": "Recolher barra lateral",
+    "closeNavigation": "Fechar navegação",
+    "activeAlerts": "{count} alertas ativos"
+  },
+  "pages": {
+    "titles": {
+      "fleetView": "Visualização de Frota",
+      "fleet3d": "Frota 3D",
+      "overview": "Visão Geral",
+      "events": "Eventos",
+      "speeding": "Excesso de Velocidade",
+      "drivers": "Motoristas",
+      "cameras": "Câmeras",
+      "requests": "Solicitações",
+      "tripReports": "Relatórios de Viagem",
+      "iftaSummary": "Resumo IFTA",
+      "vehicles": "Veículos",
+      "fuelPurchases": "Compras de Combustível",
+      "idlingEvents": "Eventos de Marcha Lenta"
+    }
+  },
+  "search": {
+    "label": "Pesquisar",
+    "placeholder": "Buscar",
+    "inputPlaceholder": "Buscar...",
+    "inputLabel": "Buscar motoristas, veículos, cargas",
+    "recent": "Recente",
+    "noRecentSearches": "Nenhuma pesquisa recente",
+    "quickActions": "Ações Rápidas",
+    "removeRecent": "Remover {query} das pesquisas recentes"
+  },
+  "userMenu": {
+    "profile": "Perfil",
+    "preferences": "Preferências",
+    "pauseNotifications": "Pausar notificações",
+    "thirtyMinutes": "30 minutos",
+    "oneHour": "1 hora",
+    "twoHours": "2 horas",
+    "untilTomorrow": "Até amanhã",
+    "untilNextWeek": "Até a próxima semana",
+    "custom": "Personalizado…",
+    "signOut": "Sair"
+  },
+  "themeModal": {
+    "title": "Aparência",
+    "subtitle": "Selecione o tema da interface",
+    "closeLabel": "Fechar configurações de tema",
+    "availableThemes": "Temas disponíveis",
+    "hint": "As alterações são aplicadas imediatamente e persistem entre sessões"
+  },
+  "preferences": {
+    "title": "Preferências",
+    "close": "Fechar preferências",
+    "sections": {
+      "notifications": "Notificações",
+      "appearance": "Aparência",
+      "sidebar": "Barra Lateral",
+      "language": "Idioma e Região",
+      "accessibility": "Acessibilidade",
+      "ai": "IA",
+      "advanced": "Avançado"
+    },
+    "notifications": {
+      "title": "Notificações",
+      "desc": "Controle quando e como recebe notificações.",
+      "notifyAbout": "Notificar Sobre",
+      "allMessages": "Todas as novas mensagens",
+      "allMessagesHint": "Todos os alertas, atualizações e mensagens",
+      "dmMentions": "Mensagens diretas, menções e palavras-chave",
+      "dmMentionsHint": "Apenas mensagens endereçadas a você",
+      "nothing": "Nada",
+      "nothingHint": "Pausar todas as notificações indefinidamente"
+    },
+    "appearance": {
+      "title": "Aparência",
+      "desc": "Selecione o tema da interface.",
+      "hint": "As alterações são aplicadas imediatamente e persistem entre sessões."
+    },
+    "sidebarSection": {
+      "title": "Barra Lateral",
+      "desc": "Personalize o comportamento e os itens visíveis da barra lateral.",
+      "defaultState": "Estado padrão da barra lateral",
+      "showWip": "Exibir itens em desenvolvimento",
+      "pinFrequent": "Fixar itens visitados com frequência",
+      "expanded": "Expandida",
+      "on": "Ativado",
+      "off": "Desativado"
+    },
+    "language": {
+      "title": "Idioma e Região",
+      "desc": "Defina suas preferências de idioma, fuso horário e formato de data.",
+      "language": "Idioma",
+      "timezone": "Fuso horário",
+      "dateFormat": "Formato de data",
+      "distanceUnit": "Unidade de distância",
+      "miles": "Milhas"
+    },
+    "accessibility": {
+      "title": "Acessibilidade",
+      "desc": "Opções para melhorar a usabilidade e reduzir o movimento.",
+      "reduceMotion": "Reduzir movimento",
+      "highContrast": "Modo de alto contraste",
+      "fontSize": "Tamanho da fonte",
+      "default": "Padrão",
+      "off": "Desativado"
+    },
+    "ai": {
+      "title": "IA",
+      "desc": "Configure os recursos assistidos por IA e o uso de dados.",
+      "suggestions": "Sugestões de IA",
+      "smartAlerts": "Alertas inteligentes",
+      "usageSharing": "Compartilhamento de dados de uso",
+      "enabled": "Ativado",
+      "off": "Desativado"
+    },
+    "advanced": {
+      "title": "Avançado",
+      "desc": "Ferramentas de desenvolvedor e recursos experimentais.",
+      "devMode": "Modo desenvolvedor",
+      "experimental": "Recursos experimentais",
+      "reset": "Redefinir todas as configurações",
+      "resetAction": "Redefinir…",
+      "off": "Desativado"
+    }
+  }
+}

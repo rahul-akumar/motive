@@ -18,6 +18,7 @@ import {
 import { MIcon, MTooltip, MBadge } from '@motive/ui'
 import { useMotion } from '@vueuse/motion'
 
+const { t } = useI18n()
 const route = useRoute()
 
 const props = defineProps<{
@@ -30,34 +31,46 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const navItems = [
+const navItems = computed(() => [
   {
     id: 'dashboard',
-    label: 'Dashboard',
+    label: t('nav.dashboard'),
     href: '/',
     icon: LayoutDashboard,
   },
   {
     id: 'fleet',
-    label: 'Fleet',
+    label: t('nav.fleet'),
     href: '/fleet',
     icon: Truck,
   },
   {
     id: 'fleet-3d',
-    label: 'Fleet',
+    label: t('nav.fleet3d'),
     href: '/fleet-3d',
     icon: Globe,
     badge: { label: 'Beta', color: 'info' } as const,
   },
-  { id: 'safety', label: 'Safety', href: '/safety', icon: ShieldCheck, wip: true },
-  { id: 'compliance', label: 'Compliance', href: '/compliance', icon: ClipboardCheck, wip: true },
-  { id: 'fuel', label: 'Fuel', href: '/fuel', icon: Fuel, wip: true },
-  { id: 'cards', label: 'Cards', href: '/cards', icon: CreditCard, wip: true },
-  { id: 'maintenance', label: 'Maintenance', href: '/maintenance', icon: Wrench, wip: true },
-  { id: 'workforce', label: 'Workforce', href: '/workforce', icon: Users, wip: true },
-  { id: 'dispatch', label: 'Dispatch', href: '/dispatch', icon: Radio, wip: true },
-]
+  { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck, wip: true },
+  {
+    id: 'compliance',
+    label: t('nav.compliance'),
+    href: '/compliance',
+    icon: ClipboardCheck,
+    wip: true,
+  },
+  { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel, wip: true },
+  { id: 'cards', label: t('nav.cards'), href: '/cards', icon: CreditCard, wip: true },
+  {
+    id: 'maintenance',
+    label: t('nav.maintenance'),
+    href: '/maintenance',
+    icon: Wrench,
+    wip: true,
+  },
+  { id: 'workforce', label: t('nav.workforce'), href: '/workforce', icon: Users, wip: true },
+  { id: 'dispatch', label: t('nav.dispatch'), href: '/dispatch', icon: Radio, wip: true },
+])
 
 function isActive(href: string) {
   if (href === '/') return route.path === '/'
@@ -199,14 +212,14 @@ function toggleCollapsed() {
         />
       </svg>
       <MTooltip
-        :content="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        :content="collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')"
         placement="right"
         :disabled="!collapsed"
       >
         <button
           type="button"
           class="sidebar__collapse-btn"
-          :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+          :aria-label="collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')"
           @click="toggleCollapsed"
         >
           <MIcon :icon="collapsed ? PanelLeftOpen : PanelLeftClose" />
@@ -221,7 +234,7 @@ function toggleCollapsed() {
     <button
       type="button"
       class="sidebar__close-btn"
-      aria-label="Close navigation"
+      :aria-label="t('sidebar.closeNavigation')"
       @click="emit('close')"
     >
       <MIcon :icon="X" :size="16" />
@@ -261,14 +274,22 @@ function toggleCollapsed() {
       <ul role="list" class="sidebar__nav-list">
         <li>
           <MTooltip
-            :content="alertCount && alertCount > 0 ? `${alertCount} active alerts` : 'Alerts'"
+            :content="
+              alertCount && alertCount > 0
+                ? t('sidebar.activeAlerts', { count: alertCount })
+                : t('nav.alerts')
+            "
             placement="right"
             :disabled="!collapsed"
           >
             <button
               type="button"
               class="sidebar-nav-item sidebar-nav-item--btn sidebar__alerts-btn"
-              :aria-label="alertCount && alertCount > 0 ? `${alertCount} active alerts` : 'Alerts'"
+              :aria-label="
+                alertCount && alertCount > 0
+                  ? t('sidebar.activeAlerts', { count: alertCount })
+                  : t('nav.alerts')
+              "
             >
               <span class="sidebar__icon-wrap">
                 <MIcon :icon="Bell" :size="18" class="sidebar__icon" />
@@ -280,7 +301,7 @@ function toggleCollapsed() {
                   {{ alertCount > 9 ? '9+' : alertCount }}
                 </span>
               </span>
-              <span class="sidebar__label">Alerts</span>
+              <span class="sidebar__label">{{ t('nav.alerts') }}</span>
             </button>
           </MTooltip>
         </li>
