@@ -111,10 +111,10 @@ function hide() {
   /* High-contrast: white bg, dark text — reads clearly on any dark map/surface */
   background: #ffffff;
   color: #111111;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.025em;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--tracking-tight);
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);

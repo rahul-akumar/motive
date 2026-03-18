@@ -141,33 +141,33 @@ const rootAriaLabel = computed(() => {
 }
 
 .m-badge--success {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.success.500) 12%, transparent);
-  --_badge-text: theme(colors.motive.success.700);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.success.500) 35%, transparent);
+  --_badge-bg: color-mix(in srgb, theme(colors.motive.success.800) 30%, transparent);
+  --_badge-text: theme(colors.motive.success.600);
+  --_badge-border: color-mix(in srgb, theme(colors.motive.success.500) 1%, transparent);
 }
 
 .m-badge--warning {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.warning.900) 20%, transparent);
-  --_badge-text: theme(colors.motive.warning.700);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.warning.500) 4%, transparent);
+  --_badge-bg: color-mix(in srgb, theme(colors.motive.warning.800) 30%, transparent);
+  --_badge-text: theme(colors.motive.warning.600);
+  --_badge-border: color-mix(in srgb, theme(colors.motive.warning.500) 1%, transparent);
 }
 
 .m-badge--danger {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.danger.500) 12%, transparent);
-  --_badge-text: theme(colors.motive.danger.700);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.danger.500) 35%, transparent);
+  --_badge-bg: color-mix(in srgb, theme(colors.motive.danger.800) 20%, transparent);
+  --_badge-text: theme(colors.motive.danger.500);
+  --_badge-border: color-mix(in srgb, theme(colors.motive.danger.500) 1%, transparent);
 }
 
 .m-badge--error {
-  --_badge-bg: color-mix(in srgb, theme(colors.fuchsia.500) 12%, transparent);
-  --_badge-text: theme(colors.fuchsia.700);
-  --_badge-border: color-mix(in srgb, theme(colors.rose.500) 40%, transparent);
+  --_badge-bg: color-mix(in srgb, theme(colors.fuchsia.900) 20%, transparent);
+  --_badge-text: theme(colors.fuchsia.600);
+  --_badge-border: color-mix(in srgb, theme(colors.rose.500) 1%, transparent);
 }
 
 .m-badge--info {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.info.900) 30%, transparent);
-  --_badge-text: theme(colors.motive.info.600);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.info.500) 4%, transparent);
+  --_badge-bg: color-mix(in srgb, theme(colors.motive.info.800) 50%, transparent);
+  --_badge-text: theme(colors.motive.info.500);
+  --_badge-border: color-mix(in srgb, theme(colors.motive.info.500) 1%, transparent);
 }
 
 .m-badge--accent {
@@ -180,12 +180,13 @@ const rootAriaLabel = computed(() => {
 .m-badge--text {
   @apply gap-1;
   border-radius: 4px;
-  font-weight: 400;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-normal);
 }
 
 .m-badge--text.m-badge--sm {
   height: 18px;
-  @apply px-2 text-[12px];
+  @apply px-1 text-xs;
 }
 
 .m-badge--text.m-badge--md,
@@ -202,14 +203,14 @@ const rootAriaLabel = computed(() => {
 .m-badge--number.m-badge--sm {
   width: 18px;
   height: 18px;
-  @apply text-[10px];
+  font-size: var(--font-size-2xs);
 }
 
 .m-badge--number.m-badge--md,
 .m-badge--number.m-badge--lg {
   width: 22px;
   height: 22px;
-  @apply text-[11px];
+  @apply text-xs;
 }
 
 /* ── Score variant ───────────────────────────────────────── */
@@ -232,7 +233,7 @@ const rootAriaLabel = computed(() => {
   align-items: center;
   justify-content: center;
   @apply font-bold;
-  line-height: 1;
+  line-height: var(--leading-none);
   pointer-events: none;
   color: #fff;
 }
@@ -240,7 +241,7 @@ const rootAriaLabel = computed(() => {
 .m-badge--score.m-badge--score--sm {
   width: 32px;
   height: 32px;
-  @apply text-[11px];
+  @apply text-xs;
 }
 
 .m-badge--score.m-badge--score--md {
