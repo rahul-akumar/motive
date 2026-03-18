@@ -94,20 +94,45 @@ export const tokens = {
     64: '16rem',
   },
 
-  fontFamily: {
-    sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-    mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+  fontSize: {
+    '2xs': ['0.5rem', { lineHeight: '0.75rem' }],
+    xs: ['0.6875rem', { lineHeight: '1rem' }],
+    sm: ['0.8125rem', { lineHeight: '1.25rem' }],
+    base: ['0.9375rem', { lineHeight: '1.5rem' }],
+    md: ['1rem', { lineHeight: '1.5rem' }],
+    lg: ['1.25rem', { lineHeight: '1.75rem' }],
+    xl: ['1.75rem', { lineHeight: '2rem' }],
+    '2xl': ['2rem', { lineHeight: '2.5rem' }],
+    '3xl': ['3rem', { lineHeight: '3.5rem' }],
   },
 
-  fontSize: {
-    xs: ['0.75rem', { lineHeight: '1rem' }],
-    sm: ['0.875rem', { lineHeight: '1.25rem' }],
-    base: ['1rem', { lineHeight: '1.5rem' }],
-    lg: ['1.125rem', { lineHeight: '1.75rem' }],
-    xl: ['1.25rem', { lineHeight: '1.75rem' }],
-    '2xl': ['1.5rem', { lineHeight: '2rem' }],
-    '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-    '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+  fontWeight: {
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+    extrabold: '800',
+    black: '900',
+  },
+
+  lineHeight: {
+    none: '1',
+    tight: '1.3',
+    snug: '1.4',
+    normal: '1.5',
+    relaxed: '1.6',
+  },
+
+  letterSpacing: {
+    tighter: '-0.01em',
+    tight: '0.02em',
+    normal: '0.03em',
+    wide: '0.04em',
+    wider: '0.06em',
+    widest: '0.08em',
+    loose: '0.10em',
+    looser: '0.12em',
+    loosest: '0.14em',
   },
 
   borderRadius: {
