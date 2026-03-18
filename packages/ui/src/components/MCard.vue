@@ -16,8 +16,8 @@ withDefaults(defineProps<MCardProps>(), {
 
 <style scoped>
 .m-card {
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 8px;
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.25),

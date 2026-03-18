@@ -56,23 +56,51 @@ defineEmits<{
 
 /* Variants */
 .m-button--primary {
-  @apply bg-motive-primary text-white hover:bg-motive-primary/90 focus-visible:ring-motive-primary;
+  background-color: var(--mtv-color-brand-default);
+  color: var(--mtv-color-foreground-on-accent);
+  --tw-ring-color: var(--mtv-color-brand-ring);
+}
+.m-button--primary:hover {
+  background-color: var(--mtv-color-brand-hover);
 }
 
 .m-button--secondary {
-  @apply bg-motive-secondary text-white hover:bg-motive-secondary/90 focus-visible:ring-motive-secondary;
+  background-color: var(--mtv-color-surface-raised);
+  color: var(--mtv-color-foreground-default);
+  border: 1px solid var(--mtv-color-border-default);
+  --tw-ring-color: var(--mtv-color-brand-ring);
+}
+.m-button--secondary:hover {
+  background-color: var(--mtv-color-surface-overlay);
 }
 
 .m-button--outline {
-  @apply border border-motive-border bg-transparent hover:bg-motive-muted focus-visible:ring-motive-primary;
+  background-color: transparent;
+  color: var(--mtv-color-foreground-default);
+  border: 1px solid var(--mtv-color-border-default);
+  --tw-ring-color: var(--mtv-color-brand-ring);
+}
+.m-button--outline:hover {
+  background-color: var(--mtv-color-surface-accent);
+  border-color: var(--mtv-color-border-strong);
 }
 
 .m-button--ghost {
-  @apply bg-transparent hover:bg-motive-muted focus-visible:ring-motive-primary;
+  background-color: transparent;
+  color: var(--mtv-color-foreground-default);
+  --tw-ring-color: var(--mtv-color-brand-ring);
+}
+.m-button--ghost:hover {
+  background-color: var(--mtv-color-surface-accent);
 }
 
 .m-button--danger {
-  @apply bg-motive-danger text-white hover:bg-motive-danger/90 focus-visible:ring-motive-danger;
+  background-color: var(--mtv-color-status-critical);
+  color: var(--mtv-color-foreground-on-accent);
+  --tw-ring-color: var(--mtv-color-status-critical);
+}
+.m-button--danger:hover {
+  background-color: color-mix(in srgb, var(--mtv-color-status-critical) 85%, transparent);
 }
 
 /* Loading spinner */

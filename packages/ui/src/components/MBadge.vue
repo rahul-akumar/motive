@@ -135,45 +135,45 @@ const rootAriaLabel = computed(() => {
 
 /* ── Colors ──────────────────────────────────────────────── */
 .m-badge--default {
-  --_badge-bg: var(--bg-elevated);
-  --_badge-text: var(--text-secondary);
-  --_badge-border: var(--border);
+  --_badge-bg: var(--mtv-color-surface-raised);
+  --_badge-text: var(--mtv-color-foreground-muted);
+  --_badge-border: var(--mtv-color-border-default);
 }
 
 .m-badge--success {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.success.800) 30%, transparent);
-  --_badge-text: theme(colors.motive.success.600);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.success.500) 1%, transparent);
+  --_badge-bg: var(--mtv-color-status-success-subtle);
+  --_badge-text: var(--mtv-color-status-success);
+  --_badge-border: var(--mtv-color-status-success-subtle);
 }
 
 .m-badge--warning {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.warning.800) 30%, transparent);
-  --_badge-text: theme(colors.motive.warning.600);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.warning.500) 1%, transparent);
+  --_badge-bg: var(--mtv-color-status-warning-subtle);
+  --_badge-text: var(--mtv-color-status-warning);
+  --_badge-border: var(--mtv-color-status-warning-subtle);
 }
 
 .m-badge--danger {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.danger.800) 20%, transparent);
-  --_badge-text: theme(colors.motive.danger.500);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.danger.500) 1%, transparent);
+  --_badge-bg: var(--mtv-color-status-critical-subtle);
+  --_badge-text: var(--mtv-color-status-critical);
+  --_badge-border: var(--mtv-color-status-critical-subtle);
 }
 
 .m-badge--error {
-  --_badge-bg: color-mix(in srgb, theme(colors.fuchsia.900) 20%, transparent);
-  --_badge-text: theme(colors.fuchsia.600);
-  --_badge-border: color-mix(in srgb, theme(colors.rose.500) 1%, transparent);
+  --_badge-bg: var(--mtv-color-status-critical-subtle);
+  --_badge-text: var(--mtv-color-status-critical);
+  --_badge-border: var(--mtv-color-status-critical-subtle);
 }
 
 .m-badge--info {
-  --_badge-bg: color-mix(in srgb, theme(colors.motive.info.800) 50%, transparent);
-  --_badge-text: theme(colors.motive.info.500);
-  --_badge-border: color-mix(in srgb, theme(colors.motive.info.500) 1%, transparent);
+  --_badge-bg: var(--mtv-color-status-info-subtle);
+  --_badge-text: var(--mtv-color-status-info);
+  --_badge-border: var(--mtv-color-status-info-subtle);
 }
 
 .m-badge--accent {
-  --_badge-bg: var(--accent-dim);
-  --_badge-text: var(--accent);
-  --_badge-border: var(--accent-border);
+  --_badge-bg: var(--mtv-color-surface-accent);
+  --_badge-text: var(--mtv-color-brand-default);
+  --_badge-border: var(--mtv-color-border-default);
 }
 
 /* ── Text variant ─────────────────────────────────────────── */

@@ -62,8 +62,8 @@ onUnmounted(() => {
 }
 
 .m-modal-panel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-strong);
+  background-color: var(--mtv-color-surface-default);
+  border: 1px solid var(--mtv-color-border-strong);
   border-radius: 2px;
   width: 100%;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);

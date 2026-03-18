@@ -277,7 +277,7 @@ onUnmounted(() => {
 
 .m-dropdown__divider {
   height: 1px;
-  background-color: var(--border);
+  background-color: var(--mtv-color-border-default);
   margin: 4px 0;
 }
 
@@ -289,7 +289,7 @@ onUnmounted(() => {
   border-radius: 5px;
   border: none;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   font-size: var(--font-size-sm);
   font-family: inherit;
   font-weight: var(--font-weight-normal);
@@ -315,7 +315,7 @@ onUnmounted(() => {
 
 .m-dropdown__item-icon {
   flex-shrink: 0;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .m-dropdown__item--danger .m-dropdown__item-icon {
@@ -329,7 +329,7 @@ onUnmounted(() => {
 
 .m-dropdown__item-chevron {
   flex-shrink: 0;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 /* Main menu transition */
