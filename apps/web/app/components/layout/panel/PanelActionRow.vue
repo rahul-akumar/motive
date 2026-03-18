@@ -1,0 +1,102 @@
+<script setup lang="ts">
+import { ChevronRight } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
+import type { Component } from 'vue'
+
+defineProps<{
+  icon: Component
+  label: string
+  count: number
+  severity: 'critical' | 'warning' | 'info'
+  href: string
+}>()
+</script>
+
+<template>
+  <NuxtLink :to="href" class="panel-action-row">
+    <span :class="['panel-action-row__icon', `panel-action-row__icon--${severity}`]">
+      <MIcon :icon="icon" :size="13" />
+    </span>
+    <span class="panel-action-row__label">{{ label }}</span>
+    <span :class="['panel-action-row__count', `panel-action-row__count--${severity}`]">{{
+      count
+    }}</span>
+    <MIcon :icon="ChevronRight" :size="14" class="panel-action-row__chevron" />
+  </NuxtLink>
+</template>
+
+<style scoped>
+.panel-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.4375rem 1.25rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  transition:
+    background-color 100ms ease,
+    color 100ms ease;
+}
+
+.panel-action-row:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.panel-action-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.panel-action-row__icon--critical {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+.panel-action-row__icon--warning {
+  background-color: rgba(217, 119, 6, 0.1);
+  color: #d97706;
+}
+.panel-action-row__icon--info {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.panel-action-row__label {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-action-row__count {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border-radius: 2px;
+  padding: 0 0.3rem;
+  line-height: var(--leading-relaxed);
+  flex-shrink: 0;
+}
+
+.panel-action-row__count--critical {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+.panel-action-row__count--warning {
+  background-color: rgba(217, 119, 6, 0.1);
+  color: #d97706;
+}
+.panel-action-row__count--info {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.panel-action-row__chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+</style>
