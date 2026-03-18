@@ -8,92 +8,208 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Brand Colors */
-  --color-motive-primary: #1b4dff;
-  --color-motive-primary-50: #ebf0ff;
-  --color-motive-primary-100: #d6e0ff;
-  --color-motive-primary-200: #adc1ff;
-  --color-motive-primary-300: #85a3ff;
-  --color-motive-primary-400: #5c84ff;
-  --color-motive-primary-500: #1b4dff;
-  --color-motive-primary-600: #0037e6;
-  --color-motive-primary-700: #002ab3;
-  --color-motive-primary-800: #001d80;
-  --color-motive-primary-900: #00104d;
+  /* ================================================================
+     LAYER 1 — Primitive Palettes
+     Static named hue ramps. Never change between themes.
+     ================================================================ */
 
-  --color-motive-secondary: #6b7280;
-  --color-motive-secondary-50: #f9fafb;
-  --color-motive-secondary-100: #f3f4f6;
-  --color-motive-secondary-200: #e5e7eb;
-  --color-motive-secondary-300: #d1d5db;
-  --color-motive-secondary-400: #9ca3af;
-  --color-motive-secondary-500: #6b7280;
-  --color-motive-secondary-600: #4b5563;
-  --color-motive-secondary-700: #374151;
-  --color-motive-secondary-800: #1f2937;
-  --color-motive-secondary-900: #111827;
+  /* Neutral (cool gray) */
+  --mtv-color-neutral-50: #f9fafb;
+  --mtv-color-neutral-100: #f3f4f6;
+  --mtv-color-neutral-200: #e5e7eb;
+  --mtv-color-neutral-300: #d1d5db;
+  --mtv-color-neutral-400: #9ca3af;
+  --mtv-color-neutral-500: #6b7280;
+  --mtv-color-neutral-600: #4b5563;
+  --mtv-color-neutral-700: #374151;
+  --mtv-color-neutral-800: #1f2937;
+  --mtv-color-neutral-900: #111827;
+  --mtv-color-neutral-950: #080d14;
+  --mtv-color-neutral-1000: #03060a;
 
-  /* Semantic Colors */
-  --color-motive-success: #10b981;
-  --color-motive-success-50: #ecfdf5;
-  --color-motive-success-100: #d1fae5;
-  --color-motive-success-200: #a7f3d0;
-  --color-motive-success-300: #6ee7b7;
-  --color-motive-success-400: #34d399;
-  --color-motive-success-500: #10b981;
-  --color-motive-success-600: #059669;
-  --color-motive-success-700: #047857;
-  --color-motive-success-800: #065f46;
-  --color-motive-success-900: #064e3b;
-  --color-motive-success-950: #022c22;
+  /* Blue (electric instrument blue — brand primary) */
+  --mtv-color-blue-50: #eef3ff;
+  --mtv-color-blue-100: #dde7ff;
+  --mtv-color-blue-200: #bad0ff;
+  --mtv-color-blue-300: #8db5ff;
+  --mtv-color-blue-400: #5590ff;
+  --mtv-color-blue-500: #1b4dff;
+  --mtv-color-blue-600: #1038e0;
+  --mtv-color-blue-700: #0a27b3;
+  --mtv-color-blue-800: #071a80;
+  --mtv-color-blue-900: #050f52;
+  --mtv-color-blue-950: #030a3d;
+  --mtv-color-blue-1000: #01041f;
 
-  --color-motive-warning: #f59e0b;
-  --color-motive-warning-50: #fffbeb;
-  --color-motive-warning-100: #fef3c7;
-  --color-motive-warning-200: #fde68a;
-  --color-motive-warning-300: #fcd34d;
-  --color-motive-warning-400: #fbbf24;
-  --color-motive-warning-500: #f59e0b;
-  --color-motive-warning-600: #d97706;
-  --color-motive-warning-700: #b45309;
-  --color-motive-warning-800: #92400e;
-  --color-motive-warning-900: #78350f;
-  --color-motive-warning-950: #451a03;
+  /* Purple */
+  --mtv-color-purple-50: #f3eeff;
+  --mtv-color-purple-100: #e7ddff;
+  --mtv-color-purple-200: #cdbdff;
+  --mtv-color-purple-300: #ae95ff;
+  --mtv-color-purple-400: #8e66ff;
+  --mtv-color-purple-500: #6e3aee;
+  --mtv-color-purple-600: #5a27d6;
+  --mtv-color-purple-700: #451bad;
+  --mtv-color-purple-800: #311487;
+  --mtv-color-purple-900: #200e5c;
+  --mtv-color-purple-950: #160940;
+  --mtv-color-purple-1000: #0a041f;
 
-  --color-motive-danger: #ef4444;
-  --color-motive-danger-50: #fef2f2;
-  --color-motive-danger-100: #fee2e2;
-  --color-motive-danger-200: #fecaca;
-  --color-motive-danger-300: #fca5a5;
-  --color-motive-danger-400: #f87171;
-  --color-motive-danger-500: #ef4444;
-  --color-motive-danger-600: #dc2626;
-  --color-motive-danger-700: #b91c1c;
-  --color-motive-danger-800: #991b1b;
-  --color-motive-danger-900: #7f1d1d;
-  --color-motive-danger-950: #450a0a;
+  /* Magenta */
+  --mtv-color-magenta-50: #fdf0fa;
+  --mtv-color-magenta-100: #fae0f5;
+  --mtv-color-magenta-200: #f5bfeb;
+  --mtv-color-magenta-300: #ed8fdc;
+  --mtv-color-magenta-400: #e155c6;
+  --mtv-color-magenta-500: #c92da8;
+  --mtv-color-magenta-600: #a81f8a;
+  --mtv-color-magenta-700: #85166b;
+  --mtv-color-magenta-800: #600f4e;
+  --mtv-color-magenta-900: #3e0a33;
+  --mtv-color-magenta-950: #2a0722;
+  --mtv-color-magenta-1000: #150410;
 
-  --color-motive-info: #3b82f6;
-  --color-motive-info-50: #eff6ff;
-  --color-motive-info-100: #dbeafe;
-  --color-motive-info-200: #bfdbfe;
-  --color-motive-info-300: #93c5fd;
-  --color-motive-info-400: #60a5fa;
-  --color-motive-info-500: #3b82f6;
-  --color-motive-info-600: #2563eb;
-  --color-motive-info-700: #1d4ed8;
-  --color-motive-info-800: #1e40af;
-  --color-motive-info-900: #1e3a8a;
-  --color-motive-info-950: #172554;
+  /* Gold (amber) */
+  --mtv-color-gold-50: #fffaeb;
+  --mtv-color-gold-100: #fef2c7;
+  --mtv-color-gold-200: #fde488;
+  --mtv-color-gold-300: #fcd04a;
+  --mtv-color-gold-400: #f5b913;
+  --mtv-color-gold-500: #d97706;
+  --mtv-color-gold-600: #b55d04;
+  --mtv-color-gold-700: #8f4503;
+  --mtv-color-gold-800: #6b3002;
+  --mtv-color-gold-900: #451e01;
+  --mtv-color-gold-950: #2e1400;
+  --mtv-color-gold-1000: #170a00;
 
-  /* UI Colors - Light Mode */
-  --color-motive-background: #ffffff;
-  --color-motive-foreground: #111827;
-  --color-motive-muted: #f3f4f6;
-  --color-motive-border: #e5e7eb;
-  --color-motive-ring: #1b4dff;
+  /* Green */
+  --mtv-color-green-50: #ecfdf5;
+  --mtv-color-green-100: #d0faeb;
+  --mtv-color-green-200: #a3f3d5;
+  --mtv-color-green-300: #60e7b3;
+  --mtv-color-green-400: #27cf89;
+  --mtv-color-green-500: #10b462;
+  --mtv-color-green-600: #0a9150;
+  --mtv-color-green-700: #07703d;
+  --mtv-color-green-800: #054f2c;
+  --mtv-color-green-900: #03311b;
+  --mtv-color-green-950: #022011;
+  --mtv-color-green-1000: #010f08;
 
-  /* Font Families */
+  /* Red */
+  --mtv-color-red-50: #fff1f1;
+  --mtv-color-red-100: #ffe2e2;
+  --mtv-color-red-200: #ffc5c5;
+  --mtv-color-red-300: #ff9393;
+  --mtv-color-red-400: #f85656;
+  --mtv-color-red-500: #e52222;
+  --mtv-color-red-600: #c21717;
+  --mtv-color-red-700: #9d1111;
+  --mtv-color-red-800: #770d0d;
+  --mtv-color-red-900: #590909;
+  --mtv-color-red-950: #420606;
+  --mtv-color-red-1000: #1e0202;
+
+  /* Tan */
+  --mtv-color-tan-50: #faf8f5;
+  --mtv-color-tan-100: #f3ede6;
+  --mtv-color-tan-200: #e5d9cb;
+  --mtv-color-tan-300: #d0bda7;
+  --mtv-color-tan-400: #b59a80;
+  --mtv-color-tan-500: #9a7a5e;
+  --mtv-color-tan-600: #7d5e46;
+  --mtv-color-tan-700: #604534;
+  --mtv-color-tan-800: #452f22;
+  --mtv-color-tan-900: #2e1e13;
+  --mtv-color-tan-950: #180f09;
+  --mtv-color-tan-1000: #0b0503;
+
+  /* Berry */
+  --mtv-color-berry-50: #fdf3f8;
+  --mtv-color-berry-100: #fce6f1;
+  --mtv-color-berry-200: #f9cce4;
+  --mtv-color-berry-300: #f3a0cc;
+  --mtv-color-berry-400: #e86aac;
+  --mtv-color-berry-500: #d43d8a;
+  --mtv-color-berry-600: #ad2a6e;
+  --mtv-color-berry-700: #871d54;
+  --mtv-color-berry-800: #60143c;
+  --mtv-color-berry-900: #3f0c28;
+  --mtv-color-berry-950: #2e0619;
+  --mtv-color-berry-1000: #160309;
+
+  /* Coral */
+  --mtv-color-coral-50: #fff4f0;
+  --mtv-color-coral-100: #ffe7df;
+  --mtv-color-coral-200: #ffcfbf;
+  --mtv-color-coral-300: #ffac94;
+  --mtv-color-coral-400: #f97d5c;
+  --mtv-color-coral-500: #f26040;
+  --mtv-color-coral-600: #d4441f;
+  --mtv-color-coral-700: #a83215;
+  --mtv-color-coral-800: #7d220d;
+  --mtv-color-coral-900: #4f1508;
+  --mtv-color-coral-950: #330a03;
+  --mtv-color-coral-1000: #180402;
+
+  /* Olive */
+  --mtv-color-olive-50: #f7f8ef;
+  --mtv-color-olive-100: #ecf0d9;
+  --mtv-color-olive-200: #d6e0b0;
+  --mtv-color-olive-300: #b8c87b;
+  --mtv-color-olive-400: #93a84f;
+  --mtv-color-olive-500: #728531;
+  --mtv-color-olive-600: #596825;
+  --mtv-color-olive-700: #42501a;
+  --mtv-color-olive-800: #2e3812;
+  --mtv-color-olive-900: #1c2208;
+  --mtv-color-olive-950: #0d1104;
+  --mtv-color-olive-1000: #060800;
+
+  /* Teal */
+  --mtv-color-teal-50: #effcfa;
+  --mtv-color-teal-100: #d5f7f3;
+  --mtv-color-teal-200: #aaeee6;
+  --mtv-color-teal-300: #72dfd5;
+  --mtv-color-teal-400: #3ac5b9;
+  --mtv-color-teal-500: #1fa89c;
+  --mtv-color-teal-600: #16857c;
+  --mtv-color-teal-700: #0e615a;
+  --mtv-color-teal-800: #094039;
+  --mtv-color-teal-900: #052823;
+  --mtv-color-teal-950: #021714;
+  --mtv-color-teal-1000: #010a09;
+
+  /* Indigo */
+  --mtv-color-indigo-50: #f0f1ff;
+  --mtv-color-indigo-100: #e2e4fe;
+  --mtv-color-indigo-200: #c4c9fd;
+  --mtv-color-indigo-300: #9ba3fb;
+  --mtv-color-indigo-400: #6e74f6;
+  --mtv-color-indigo-500: #4b52ec;
+  --mtv-color-indigo-600: #3238cc;
+  --mtv-color-indigo-700: #2328a3;
+  --mtv-color-indigo-800: #171c7a;
+  --mtv-color-indigo-900: #0d1056;
+  --mtv-color-indigo-950: #05072e;
+  --mtv-color-indigo-1000: #020314;
+
+  /* ================================================================
+     Chart Series Tokens (static — consistent across all themes)
+     ================================================================ */
+  --mtv-color-chart-series-1: var(--mtv-color-blue-500);
+  --mtv-color-chart-series-2: var(--mtv-color-teal-500);
+  --mtv-color-chart-series-3: var(--mtv-color-gold-500);
+  --mtv-color-chart-series-4: var(--mtv-color-purple-500);
+  --mtv-color-chart-series-5: var(--mtv-color-coral-500);
+  --mtv-color-chart-series-6: var(--mtv-color-indigo-500);
+  --mtv-color-chart-series-7: var(--mtv-color-berry-500);
+  --mtv-color-chart-series-8: var(--mtv-color-olive-500);
+
+  /* ================================================================
+     Font Families
+     ================================================================ */
   --font-family-sans: 'Satoshi', system-ui, -apple-system, sans-serif;
   --font-family-condensed: 'Barlow Condensed', system-ui, sans-serif;
   --font-family-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;

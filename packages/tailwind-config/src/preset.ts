@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import { tokens } from './tokens'
+import { mtvColors, tokens } from './tokens'
 
 /**
  * Motive Tailwind CSS Preset
@@ -14,7 +14,7 @@ export const motivePreset: Partial<Config> = {
   theme: {
     extend: {
       colors: {
-        motive: tokens.colors,
+        mtv: mtvColors,
       },
       fontFamily: tokens.fontFamily,
       fontSize: tokens.fontSize,

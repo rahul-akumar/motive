@@ -1,36 +1,75 @@
 /* Arc — Futurist HUD. Deep violet-black, max rounded, violet glow. Blade Runner meets design tool. */
 html[data-theme='arc'] {
-  --bg-base: hsl(250, 25%, 5%);
-  --bg-main: hsl(240, 30%, 6%);
-  --bg-card: hsl(240, 30%, 4%);
-  --bg-elevated: hsl(240, 30%, 8%);
-  --bg-hover: hsl(240, 30%, 10%);
-  --border: rgba(124, 58, 237, 0.12);
-  --border-strong: rgba(124, 58, 237, 0.22);
-  --border-accent: rgba(124, 58, 237, 0.3);
-  --accent: hsl(262, 83%, 58%);
-  --accent-rgb: 124, 58, 237;
-  --accent-dim: rgba(124, 58, 237, 0.08);
-  --accent-glow: rgba(124, 58, 237, 0.25);
-  --accent-subtle: rgba(124, 58, 237, 0.04);
-  --accent-border: rgba(124, 58, 237, 0.2);
-  --text-primary: hsl(240, 20%, 80%);
-  --text-secondary: hsl(240, 20%, 60%);
-  --text-muted: hsl(240, 20%, 40%);
-  --text-dim: hsl(240, 20%, 20%);
+  /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
+
+  /* Foreground */
+  --mtv-color-foreground-default: hsl(240, 20%, 80%);
+  --mtv-color-foreground-muted: hsl(240, 20%, 60%);
+  --mtv-color-foreground-subtle: hsl(240, 20%, 40%);
+  --mtv-color-foreground-disabled: hsl(240, 20%, 20%);
+  --mtv-color-foreground-inverse: hsl(240, 20%, 10%);
+  --mtv-color-foreground-on-accent: #ffffff;
+
+  /* Surface */
+  --mtv-color-surface-base: hsl(250, 25%, 5%);
+  --mtv-color-surface-sunken: hsl(240, 30%, 6%);
+  --mtv-color-surface-default: hsl(240, 30%, 4%);
+  --mtv-color-surface-raised: hsl(240, 30%, 8%);
+  --mtv-color-surface-overlay: hsl(240, 30%, 12%);
+  --mtv-color-surface-hover: hsl(240, 30%, 10%);
+  --mtv-color-surface-active: hsl(240, 30%, 13%);
+  --mtv-color-surface-accent: rgba(124, 58, 237, 0.08);
+  --mtv-color-surface-accent-subtle: rgba(124, 58, 237, 0.04);
+
+  /* Border */
+  --mtv-color-border-default: rgba(124, 58, 237, 0.12);
+  --mtv-color-border-strong: rgba(124, 58, 237, 0.3);
+  --mtv-color-border-accent: rgba(124, 58, 237, 0.45);
+  --mtv-color-border-subtle: rgba(124, 58, 237, 0.07);
+
+  /* Link */
+  --mtv-color-link-default: var(--mtv-color-blue-400);
+  --mtv-color-link-hover: var(--mtv-color-blue-300);
+  --mtv-color-link-visited: var(--mtv-color-purple-300);
+  --mtv-color-link-active: var(--mtv-color-blue-500);
+
+  /* Brand */
+  --mtv-color-brand-default: hsl(262, 83%, 58%);
+  --mtv-color-brand-hover: hsl(262, 83%, 68%);
+  --mtv-color-brand-subtle: rgba(124, 58, 237, 0.08);
+  --mtv-color-brand-muted: rgba(124, 58, 237, 0.04);
+  --mtv-color-brand-foreground: #ffffff;
+  --mtv-color-brand-ring: hsl(262, 83%, 58%);
+
+  /* Status */
+  --mtv-color-status-success: var(--mtv-color-green-500);
+  --mtv-color-status-success-subtle: rgba(16, 180, 98, 0.12);
+  --mtv-color-status-warning: var(--mtv-color-gold-500);
+  --mtv-color-status-warning-subtle: rgba(217, 119, 6, 0.12);
+  --mtv-color-status-critical: var(--mtv-color-red-500);
+  --mtv-color-status-critical-subtle: rgba(229, 34, 34, 0.12);
+  --mtv-color-status-info: var(--mtv-color-blue-400);
+  --mtv-color-status-info-subtle: rgba(85, 144, 255, 0.12);
+
+  /* Chart */
+  --mtv-color-chart-positive: var(--mtv-color-green-500);
+  --mtv-color-chart-warning: var(--mtv-color-gold-500);
+  --mtv-color-chart-critical: var(--mtv-color-red-500);
+  --mtv-color-chart-neutral: var(--mtv-color-neutral-500);
+
+  /* ── App-specific vars ────────────────────────────────────────── */
   --scrollbar-thumb: hsl(258, 37%, 14%);
   --scrollbar-thumb-hover: hsl(258, 37%, 20%);
-  --logo-bg: hsl(262, 83%, 58%);
-  --logo-text: hsl(0, 0%, 100%);
+  --logo-bg: var(--mtv-color-brand-default);
+  --logo-text: var(--mtv-color-brand-foreground);
   --sidebar-active-bg: rgba(124, 58, 237, 0.14);
   --sidebar-active-border: hsl(262, 83%, 58%);
   --sidebar-active-icon: hsl(262, 83%, 58%);
   --sidebar-active-glow:
     inset 2px 0 12px rgba(124, 58, 237, 0.2), 0 0 20px rgba(124, 58, 237, 0.06);
-  --avatar-bg: rgba(124, 58, 237, 0.1);
+  --avatar-bg: var(--mtv-color-surface-accent);
   --avatar-text: hsl(262, 83%, 58%);
-  --focus-ring: hsl(262, 83%, 58%);
-  --table-sorted-color: hsl(262, 83%, 58%);
+  --table-sorted-color: var(--mtv-color-brand-default);
   --search-focus-border: rgba(124, 58, 237, 0.5);
   --search-focus-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
   --card-radius: 10px;

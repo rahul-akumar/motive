@@ -1,34 +1,74 @@
 /* Amber Ops — Night Vision. Cockpit phosphor warmth. AN/PVS night-vision aesthetic. */
 html[data-theme='amber-ops'] {
-  --bg-base: #0d0b08;
-  --bg-card: #121009;
-  --bg-elevated: #17140b;
-  --bg-hover: #1c180e;
-  --border: rgba(217, 119, 6, 0.12);
-  --border-strong: rgba(217, 119, 6, 0.2);
-  --border-accent: rgba(217, 119, 6, 0.3);
-  --accent: #d97706;
-  --accent-rgb: 217, 119, 6;
-  --accent-dim: rgba(217, 119, 6, 0.08);
-  --accent-glow: rgba(217, 119, 6, 0.18);
-  --accent-subtle: rgba(217, 119, 6, 0.04);
-  --accent-border: rgba(217, 119, 6, 0.2);
-  --text-primary: #e8d9bc;
-  --text-secondary: #8a7040;
-  --text-muted: #5e4a22;
-  --text-dim: #443618;
+  /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
+
+  /* Foreground */
+  --mtv-color-foreground-default: #e8d9bc;
+  --mtv-color-foreground-muted: #8a7040;
+  --mtv-color-foreground-subtle: #5e4a22;
+  --mtv-color-foreground-disabled: #443618;
+  --mtv-color-foreground-inverse: #0d0b08;
+  --mtv-color-foreground-on-accent: #0d0b08;
+
+  /* Surface */
+  --mtv-color-surface-base: #0d0b08;
+  --mtv-color-surface-sunken: #0d0b08;
+  --mtv-color-surface-default: #121009;
+  --mtv-color-surface-raised: #17140b;
+  --mtv-color-surface-overlay: #211c12;
+  --mtv-color-surface-hover: #1c180e;
+  --mtv-color-surface-active: #272015;
+  --mtv-color-surface-accent: rgba(217, 119, 6, 0.08);
+  --mtv-color-surface-accent-subtle: rgba(217, 119, 6, 0.04);
+
+  /* Border */
+  --mtv-color-border-default: rgba(217, 119, 6, 0.12);
+  --mtv-color-border-strong: rgba(217, 119, 6, 0.3);
+  --mtv-color-border-accent: rgba(217, 119, 6, 0.45);
+  --mtv-color-border-subtle: rgba(217, 119, 6, 0.07);
+
+  /* Link */
+  --mtv-color-link-default: var(--mtv-color-blue-400);
+  --mtv-color-link-hover: var(--mtv-color-blue-300);
+  --mtv-color-link-visited: var(--mtv-color-purple-400);
+  --mtv-color-link-active: var(--mtv-color-blue-500);
+
+  /* Brand */
+  --mtv-color-brand-default: #d97706;
+  --mtv-color-brand-hover: #f59e0b;
+  --mtv-color-brand-subtle: rgba(217, 119, 6, 0.08);
+  --mtv-color-brand-muted: rgba(217, 119, 6, 0.04);
+  --mtv-color-brand-foreground: #0d0b08;
+  --mtv-color-brand-ring: #d97706;
+
+  /* Status */
+  --mtv-color-status-success: var(--mtv-color-green-500);
+  --mtv-color-status-success-subtle: rgba(16, 180, 98, 0.12);
+  --mtv-color-status-warning: var(--mtv-color-gold-500);
+  --mtv-color-status-warning-subtle: rgba(217, 119, 6, 0.12);
+  --mtv-color-status-critical: var(--mtv-color-red-500);
+  --mtv-color-status-critical-subtle: rgba(229, 34, 34, 0.12);
+  --mtv-color-status-info: var(--mtv-color-blue-400);
+  --mtv-color-status-info-subtle: rgba(85, 144, 255, 0.12);
+
+  /* Chart */
+  --mtv-color-chart-positive: var(--mtv-color-green-500);
+  --mtv-color-chart-warning: var(--mtv-color-gold-500);
+  --mtv-color-chart-critical: var(--mtv-color-red-500);
+  --mtv-color-chart-neutral: var(--mtv-color-neutral-500);
+
+  /* ── App-specific vars ────────────────────────────────────────── */
   --scrollbar-thumb: #2a2010;
   --scrollbar-thumb-hover: #382c16;
-  --logo-bg: #d97706;
-  --logo-text: #0d0b08;
+  --logo-bg: var(--mtv-color-brand-default);
+  --logo-text: var(--mtv-color-brand-foreground);
   --sidebar-active-bg: rgba(217, 119, 6, 0.12);
   --sidebar-active-border: #d97706;
   --sidebar-active-icon: #d97706;
   --sidebar-active-glow: inset 2px 0 10px rgba(217, 119, 6, 0.12);
-  --avatar-bg: rgba(217, 119, 6, 0.1);
+  --avatar-bg: var(--mtv-color-surface-accent);
   --avatar-text: #d97706;
-  --focus-ring: #d97706;
-  --table-sorted-color: #d97706;
+  --table-sorted-color: var(--mtv-color-brand-default);
   --search-focus-border: rgba(217, 119, 6, 0.45);
   --search-focus-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
   --card-radius: 3px;
