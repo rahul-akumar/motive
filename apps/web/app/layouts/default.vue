@@ -2,6 +2,8 @@
 const { activeAlerts } = useAlerts()
 const alertCount = computed(() => activeAlerts.value.length)
 
+const { activePanel } = provideRightPanel()
+
 const preferencesModalOpen = ref(false)
 const preferencesInitialSection = ref('notifications')
 const sidebarOpen = ref(false)
@@ -39,6 +41,8 @@ function openPreferences(section?: string) {
     <LayoutAppMain>
       <slot />
     </LayoutAppMain>
+
+    <LayoutAppRightPanel :active-panel="activePanel" />
 
     <LayoutAppPreferencesModal
       :open="preferencesModalOpen"

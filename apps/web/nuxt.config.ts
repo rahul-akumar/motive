@@ -23,21 +23,11 @@ export default defineNuxtConfig({
 
   fonts: {
     families: [
-      {
-        name: 'Barlow',
-        provider: 'google',
-        weights: [400, 500, 600, 700],
-      },
-      {
-        name: 'Barlow Condensed',
-        provider: 'google',
-        weights: [600, 700, 800],
-      },
-      {
-        name: 'IBM Plex Mono',
-        provider: 'google',
-        weights: [400, 500, 600],
-      },
+      { name: 'Satoshi', provider: 'fontshare', weights: [400, 500, 700] },
+      { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700] },
+      { name: 'IBM Plex Mono', provider: 'google', weights: [400, 500, 600] },
+      { name: 'Barlow Condensed', provider: 'google', weights: [600, 700, 800] },
+      { name: 'Zodiak', provider: 'fontshare', weights: [400, 500, 600, 700] },
     ],
   },
 
