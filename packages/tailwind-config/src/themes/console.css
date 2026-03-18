@@ -74,7 +74,7 @@ html[data-theme='console'] {
   --card-radius: 4px;
   --badge-radius: 4px;
   --shadow-card: none;
-  --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-sans: 'Geist', system-ui, -apple-system, sans-serif;
   /* Layout geometry — flat, edge-to-edge */
   --main-margin: 0;
   --main-radius: 0;

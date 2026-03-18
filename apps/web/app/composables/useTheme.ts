@@ -1,4 +1,11 @@
-export type ThemeId = 'stealth' | 'danger-red' | 'amber-ops' | 'slate' | 'arc' | 'console'
+export type ThemeId =
+  | 'stealth'
+  | 'danger-red'
+  | 'amber-ops'
+  | 'slate'
+  | 'arc'
+  | 'console'
+  | 'console-legacy'
 
 export interface Theme {
   id: ThemeId
@@ -9,6 +16,7 @@ export interface Theme {
   bgCard: string
   textPrimary: string
   layout?: 'card' | 'flat'
+  sidebarBg?: string
 }
 
 export const THEMES: Theme[] = [
@@ -65,6 +73,17 @@ export const THEMES: Theme[] = [
     bgBase: '#000000',
     bgCard: '#111111',
     textPrimary: '#e5e5e5',
+    layout: 'flat',
+  },
+  {
+    id: 'console-legacy',
+    name: 'Console Legacy',
+    description: 'Split chrome. Black sidebar, white main — classic terminal discipline.',
+    accent: '#3b82f6',
+    bgBase: '#f8f8f8',
+    bgCard: '#ffffff',
+    textPrimary: '#111111',
+    sidebarBg: '#000000',
     layout: 'flat',
   },
 ]
