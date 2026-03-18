@@ -136,6 +136,6 @@ function handleZoomOut() {
 }
 
 .fv-page__map-skeleton {
-  background: var(--bg-base);
+  background: var(--mtv-color-surface-base);
 }
 </style>

@@ -92,17 +92,17 @@ const emit = defineEmits<{
   left: 0.625rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   pointer-events: none;
 }
 
 .filter-select,
 .filter-input {
   height: 32px;
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 5px;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   font-size: var(--font-size-sm);
   font-family: inherit;
   outline: none;
@@ -111,7 +111,7 @@ const emit = defineEmits<{
 
 .filter-select:focus,
 .filter-input:focus {
-  border-color: var(--text-muted);
+  border-color: var(--mtv-color-foreground-subtle);
 }
 
 .filter-select {
@@ -129,7 +129,7 @@ const emit = defineEmits<{
 }
 
 .filter-input::placeholder {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* Remove default search cancel button */

@@ -163,7 +163,7 @@ function getConfig(type: ActivityEventType) {
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
@@ -178,7 +178,7 @@ function getConfig(type: ActivityEventType) {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-loose);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .activity-feed__list {
@@ -232,14 +232,14 @@ function getConfig(type: ActivityEventType) {
 
 .activity-feed__time {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-normal);
   flex-shrink: 0;
 }
 
 .activity-feed__description {
   font-size: var(--font-size-sm);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   line-height: var(--leading-snug);
   margin: 0 0 0.375rem;
 }
@@ -253,7 +253,7 @@ function getConfig(type: ActivityEventType) {
 .activity-feed__driver {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .activity-feed__location {
@@ -261,16 +261,16 @@ function getConfig(type: ActivityEventType) {
   align-items: center;
   gap: 0.25rem;
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .activity-feed__load-more {
   width: 100%;
   padding: 0.5rem;
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -282,7 +282,7 @@ function getConfig(type: ActivityEventType) {
 }
 
 .activity-feed__load-more:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: rgba(255, 255, 255, 0.04);
 }
 </style>

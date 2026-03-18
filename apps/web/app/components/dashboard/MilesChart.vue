@@ -280,14 +280,14 @@ watch(() => props.data, drawChart, { deep: true })
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .miles-chart__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -303,7 +303,7 @@ watch(() => props.data, drawChart, { deep: true })
   height: 8px;
   border-radius: 25%;
   flex-shrink: 0;
-  background-color: var(--accent);
+  background-color: var(--mtv-color-brand-default);
 }
 
 .miles-chart__legend-dot--today {
@@ -312,7 +312,7 @@ watch(() => props.data, drawChart, { deep: true })
 
 .miles-chart__legend-label {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .miles-chart__canvas {
@@ -335,19 +335,19 @@ watch(() => props.data, drawChart, { deep: true })
 
 .tooltip__label {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   margin-bottom: 2px;
 }
 
 .tooltip__value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .tooltip__trips {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   margin-top: 1px;
 }
 

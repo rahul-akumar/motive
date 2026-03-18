@@ -20,8 +20,8 @@ html {
 }
 
 body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
+  background-color: var(--mtv-color-surface-base);
+  color: var(--mtv-color-foreground-default);
   font-family: var(--font-family-sans);
   line-height: var(--leading-normal);
   min-height: 100vh;
@@ -35,8 +35,8 @@ body {
    FLEET CARD STYLES
    ============================================================ */
 .fleet-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-default);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-card);
   transition:
@@ -46,11 +46,11 @@ body {
 }
 
 .fleet-card:hover {
-  border-color: var(--border-strong);
+  border-color: var(--mtv-color-border-strong);
 }
 
 .fleet-card--elevated {
-  background-color: var(--bg-elevated);
+  background-color: var(--mtv-color-surface-raised);
 }
 
 /* ============================================================
@@ -149,15 +149,15 @@ body {
 }
 
 .text-fleet-primary {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .text-fleet-secondary {
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .text-fleet-muted {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .text-fleet-cyan {
@@ -177,12 +177,12 @@ body {
 }
 
 .text-fleet-accent {
-  color: var(--accent);
+  color: var(--mtv-color-brand-default);
 }
 
 /* Legacy alias */
 .text-fleet-blue {
-  color: var(--accent);
+  color: var(--mtv-color-brand-default);
 }
 
 /* ============================================================
@@ -194,7 +194,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-base);
+  background: var(--mtv-color-surface-base);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -276,7 +276,7 @@ body {
    FOCUS STYLES
    ============================================================ */
 :focus-visible {
-  outline: 1px solid var(--focus-ring);
+  outline: 1px solid var(--mtv-color-brand-ring);
   outline-offset: 2px;
   border-radius: 0;
 }
@@ -295,10 +295,10 @@ body {
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
@@ -306,7 +306,7 @@ body {
 }
 
 .fleet-table th:hover {
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .fleet-table th.sorted {
@@ -317,7 +317,7 @@ body {
   padding: 0.875rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   white-space: nowrap;
 }
 
@@ -330,20 +330,20 @@ body {
 }
 
 .fleet-table tbody tr:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 /* ============================================================
    CHART TOOLTIP
    ============================================================ */
 .chart-tooltip {
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-strong);
   border-radius: var(--badge-radius);
   padding: 0.5rem 0.75rem;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   pointer-events: none;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
@@ -372,7 +372,7 @@ body {
 
 .alert-card--info {
   background-color: rgba(255, 255, 255, 0.03);
-  border-left-color: var(--border-strong);
+  border-left-color: var(--mtv-color-border-strong);
 }
 
 /* ============================================================

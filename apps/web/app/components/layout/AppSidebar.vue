@@ -305,7 +305,7 @@ function toggleCollapsed() {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: var(--bg-base);
+  background-color: var(--mtv-color-surface-base);
   padding-inline: 6px;
   flex-shrink: 0;
   height: 100%;
@@ -339,7 +339,7 @@ function toggleCollapsed() {
   border-radius: 4px;
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
     color 100ms ease,
@@ -348,14 +348,14 @@ function toggleCollapsed() {
 }
 
 .sidebar__collapse-btn:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: hsla(0, 0%, 100%, 0.09);
 }
 
 .sidebar__logo {
   height: 16px;
   width: auto;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   flex-shrink: 0;
   margin-left: 9px;
   /* opacity, transform, transition removed — owned by useMotion on each path */
@@ -411,7 +411,7 @@ function toggleCollapsed() {
   align-items: center;
   justify-content: center;
   padding: 0 2px;
-  border: 1px solid var(--bg-base);
+  border: 1px solid var(--mtv-color-surface-base);
 }
 
 .sidebar-nav-item {
@@ -420,7 +420,7 @@ function toggleCollapsed() {
   align-items: center;
   height: 36px;
   border-radius: 4px;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -433,12 +433,12 @@ function toggleCollapsed() {
 }
 
 .sidebar-nav-item:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: hsla(0, 0%, 100%, 0.09);
 }
 
 .sidebar-nav-item.active {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: var(--sidebar-active-bg);
   box-shadow: var(--sidebar-active-glow);
 }
@@ -498,7 +498,7 @@ function toggleCollapsed() {
   height: 28px;
   border-radius: 25%;
   background: var(--avatar-bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -523,7 +523,7 @@ function toggleCollapsed() {
 .sidebar__user-name {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -601,13 +601,13 @@ function toggleCollapsed() {
     padding: 0.75rem 0.875rem 0;
     background: transparent;
     border: none;
-    color: var(--text-secondary);
+    color: var(--mtv-color-foreground-muted);
     cursor: pointer;
     flex-shrink: 0;
   }
 
   .sidebar__close-btn:hover {
-    color: var(--text-primary);
+    color: var(--mtv-color-foreground-default);
   }
 }
 </style>

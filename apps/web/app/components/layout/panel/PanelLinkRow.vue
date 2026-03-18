@@ -25,7 +25,7 @@ defineProps<{
   gap: 0.625rem;
   padding: 0.4375rem 1.25rem;
   text-decoration: none;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-base);
   transition:
     background-color 100ms ease,
@@ -33,12 +33,12 @@ defineProps<{
 }
 
 .panel-link-row:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: var(--mtv-color-surface-hover);
+  color: var(--mtv-color-foreground-default);
 }
 
 .panel-link-row__icon {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
 }
 
@@ -47,7 +47,7 @@ defineProps<{
 }
 
 .panel-link-row__chevron {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
 }
 </style>

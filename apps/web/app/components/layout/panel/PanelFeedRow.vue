@@ -41,19 +41,19 @@ defineProps<{
 
 .panel-feed-row__text {
   font-size: var(--font-size-base);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   line-height: var(--leading-tight);
 }
 
 .panel-feed-row__sub {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .panel-feed-row__time {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
   padding-top: 0.1rem;
 }

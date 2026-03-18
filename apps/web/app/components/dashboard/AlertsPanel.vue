@@ -189,7 +189,7 @@ const severityConfig = computed(() => {
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
@@ -222,7 +222,7 @@ const severityConfig = computed(() => {
 
 .alerts-panel__dismiss-all {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -232,7 +232,7 @@ const severityConfig = computed(() => {
 }
 
 .alerts-panel__dismiss-all:hover {
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .alerts-panel__empty {
@@ -245,7 +245,7 @@ const severityConfig = computed(() => {
 
 .alerts-panel__empty-text {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 0;
 }
 
@@ -272,8 +272,8 @@ const severityConfig = computed(() => {
 }
 
 .alert-card--info {
-  background-color: var(--accent-subtle);
-  border-left-color: var(--accent);
+  background-color: var(--mtv-color-surface-accent-subtle);
+  border-left-color: var(--mtv-color-brand-default);
 }
 
 .alert-card__header {
@@ -307,7 +307,7 @@ const severityConfig = computed(() => {
 
 .alert-card__time {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-normal);
 }
 
@@ -320,7 +320,7 @@ const severityConfig = computed(() => {
   border-radius: 2px;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
     color 100ms ease,
@@ -328,21 +328,21 @@ const severityConfig = computed(() => {
 }
 
 .alert-card__dismiss:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: rgba(255, 255, 255, 0.06);
 }
 
 .alert-card__title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   margin: 0 0 0.25rem;
   line-height: var(--leading-tight);
 }
 
 .alert-card__description {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   line-height: var(--leading-normal);
   margin: 0;
 }
@@ -357,7 +357,7 @@ const severityConfig = computed(() => {
   gap: 0.25rem;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--accent);
+  color: var(--mtv-color-brand-default);
   background: transparent;
   border: none;
   cursor: pointer;

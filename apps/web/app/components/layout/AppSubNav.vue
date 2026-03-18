@@ -90,7 +90,7 @@ onMounted(() => nextTick(updateIndicator))
   gap: 0;
   padding: 0 1.25rem;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -106,7 +106,7 @@ onMounted(() => nextTick(updateIndicator))
   left: 0;
   height: 2px;
   border-radius: 2px 2px 0 0;
-  background-color: var(--text-primary);
+  background-color: var(--mtv-color-foreground-default);
   pointer-events: none;
   z-index: 1;
 }
@@ -123,7 +123,7 @@ onMounted(() => nextTick(updateIndicator))
   display: block;
   width: 1px;
   height: 1rem;
-  background-color: var(--border);
+  background-color: var(--mtv-color-border-default);
   margin: 0 0.5rem;
   flex-shrink: 0;
   position: relative;
@@ -134,17 +134,17 @@ onMounted(() => nextTick(updateIndicator))
   padding: 0.5rem 0.75rem;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   text-decoration: none;
   white-space: nowrap;
   transition: color 150ms ease;
 }
 
 .app-sub-nav__tab:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .app-sub-nav__tab--active {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 </style>

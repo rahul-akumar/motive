@@ -155,11 +155,11 @@ const localSearch = computed({
   align-items: center;
   gap: 0.375rem;
   padding: 0.5rem 0.625rem 0.5rem 0.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--mtv-color-surface-default);
+  border: 1px solid var(--mtv-color-border-default);
   border-left: none;
   border-radius: 0 2px 2px 0;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
     background-color 120ms ease,
@@ -167,15 +167,15 @@ const localSearch = computed({
 }
 
 .fv-panel-toggle:hover {
-  background: var(--bg-elevated);
-  color: var(--text-primary);
+  background: var(--mtv-color-surface-raised);
+  color: var(--mtv-color-foreground-default);
 }
 
 .fv-panel-toggle__count {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* ── Main panel ──────────────────────────────────────────────── */
@@ -188,10 +188,10 @@ const localSearch = computed({
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--bg-card) 96%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 96%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--mtv-color-border-default);
   border-top: none;
   border-bottom: none;
   border-left: none;
@@ -205,7 +205,7 @@ const localSearch = computed({
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.75rem 0.75rem 0.875rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
@@ -216,13 +216,13 @@ const localSearch = computed({
 }
 
 .fv-panel__header-icon {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .fv-panel__title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
 }
@@ -230,9 +230,9 @@ const localSearch = computed({
 .fv-panel__count {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 1px 5px;
   letter-spacing: var(--tracking-wide);
@@ -245,9 +245,9 @@ const localSearch = computed({
   width: 24px;
   height: 24px;
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
     background-color 120ms ease,
@@ -256,7 +256,7 @@ const localSearch = computed({
 
 .fv-panel__collapse-btn:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* Filter chips */
@@ -265,7 +265,7 @@ const localSearch = computed({
   flex-wrap: wrap;
   gap: 0.375rem;
   padding: 0.625rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
@@ -275,25 +275,25 @@ const localSearch = computed({
   gap: 0.25rem;
   padding: 0.1875rem 0.5rem;
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition: all 120ms ease;
 }
 
 .fv-filter-chip:hover {
-  border-color: var(--border-strong);
-  color: var(--text-secondary);
+  border-color: var(--mtv-color-border-strong);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .fv-filter-chip--active {
   background: rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .fv-filter-chip__dot {
@@ -304,7 +304,7 @@ const localSearch = computed({
 }
 
 .fv-filter-chip__count {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   font-size: var(--font-size-2xs);
 }
 
@@ -312,7 +312,7 @@ const localSearch = computed({
 .fv-panel__search {
   position: relative;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
@@ -321,7 +321,7 @@ const localSearch = computed({
   left: 1.125rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   pointer-events: none;
 }
 
@@ -329,20 +329,20 @@ const localSearch = computed({
   width: 100%;
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   outline: none;
   transition: border-color 120ms ease;
 }
 
 .fv-panel__search-input::placeholder {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .fv-panel__search-input:focus {
-  border-color: var(--border-strong);
+  border-color: var(--mtv-color-border-strong);
 }
 
 /* Driver list */
@@ -356,7 +356,7 @@ const localSearch = computed({
   padding: 2rem 1rem;
   text-align: center;
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* ── Transitions ─────────────────────────────────────────────── */

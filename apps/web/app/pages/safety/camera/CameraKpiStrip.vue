@@ -61,8 +61,8 @@ function handleClick(key: KpiFilter) {
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.875rem 1rem;
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
   border-left-width: 3px;
   border-radius: var(--card-radius, 6px);
   cursor: pointer;
@@ -71,25 +71,25 @@ function handleClick(key: KpiFilter) {
 }
 
 .kpi-card:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .kpi-card--active {
-  background-color: var(--bg-hover);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .kpi-card__count {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   line-height: var(--leading-none);
   transition: color 120ms ease;
 }
 
 .kpi-card__label {
   font-size: var(--font-size-sm);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 /* Color variants */

@@ -223,14 +223,14 @@ watch(() => props.status, drawChart, { deep: true })
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .fleet-donut__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -276,13 +276,13 @@ watch(() => props.status, drawChart, { deep: true })
 
 .fleet-donut__legend-label {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .fleet-donut__legend-value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-widest);
 }
 </style>

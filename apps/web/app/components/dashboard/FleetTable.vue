@@ -287,14 +287,14 @@ function hosColor(driver: Driver): string {
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .fleet-table-card__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -305,9 +305,9 @@ function hosColor(driver: Driver): string {
   gap: 0.375rem;
   padding: 0.25rem 0.625rem;
   background-color: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -319,7 +319,7 @@ function hosColor(driver: Driver): string {
 }
 
 .fleet-table-card__export:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: rgba(255, 255, 255, 0.06);
 }
 
@@ -339,8 +339,8 @@ function hosColor(driver: Driver): string {
   height: 28px;
   border-radius: 2px;
   background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  border: 1px solid var(--mtv-color-border-default);
+  color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -354,31 +354,31 @@ function hosColor(driver: Driver): string {
 .fleet-table__driver-name {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   white-space: nowrap;
 }
 
 .fleet-table__driver-id {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-normal);
 }
 
 .fleet-table__location {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   white-space: nowrap;
 }
 
 .fleet-table__vehicle {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-wide);
 }
 
 .fleet-table__miles {
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-wide);
 }
 
@@ -390,7 +390,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table__eta {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-wide);
 }
 
@@ -399,12 +399,12 @@ function hosColor(driver: Driver): string {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--mtv-color-border-default);
 }
 
 .fleet-table-card__page-info {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-wide);
 }
 
@@ -421,8 +421,8 @@ function hosColor(driver: Driver): string {
   justify-content: center;
   border-radius: 2px;
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  border: 1px solid var(--mtv-color-border-default);
+  color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
     color 100ms ease,
@@ -430,7 +430,7 @@ function hosColor(driver: Driver): string {
 }
 
 .fleet-table-card__page-btn:hover:not(:disabled) {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: rgba(255, 255, 255, 0.04);
 }
 

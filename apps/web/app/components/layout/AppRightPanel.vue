@@ -19,7 +19,7 @@ const props = defineProps<{
   width: 0;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: var(--bg-base);
+  background-color: var(--mtv-color-surface-base);
   height: 100%;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }

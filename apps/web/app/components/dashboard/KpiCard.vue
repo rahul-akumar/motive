@@ -96,7 +96,7 @@ const deltaColor = computed(() => {
   font-weight: var(--font-weight-black);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .kpi-card__icon-wrap {
@@ -106,7 +106,7 @@ const deltaColor = computed(() => {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .kpi-card__value-row {
@@ -118,7 +118,7 @@ const deltaColor = computed(() => {
 .kpi-card__value {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   line-height: var(--leading-none);
   letter-spacing: var(--tracking-tighter);
 }
@@ -126,14 +126,14 @@ const deltaColor = computed(() => {
 .kpi-card__unit {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-normal);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   margin-left: 0.25rem;
   font-family: var(--font-family-mono);
 }
 
 .kpi-card__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-normal);
 }
 

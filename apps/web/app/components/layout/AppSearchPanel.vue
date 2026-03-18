@@ -363,8 +363,8 @@ function onLeave(el: Element, done: () => void) {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-default);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--card-radius);
   padding: 0 0.5rem;
   height: 36px;
@@ -374,7 +374,11 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .search-trigger__bar:hover {
-  border-color: color-mix(in srgb, var(--border) 50%, var(--text-muted));
+  border-color: color-mix(
+    in srgb,
+    var(--mtv-color-border-default) 50%,
+    var(--mtv-color-foreground-subtle)
+  );
 }
 
 /* Fade out in-flow bar when overlay is visible — keeps layout space */
@@ -384,14 +388,14 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .search-trigger__icon {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
 }
 
 .search-trigger__placeholder {
   flex: 1;
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   font-family: var(--font-family-sans);
   user-select: none;
 }
@@ -399,9 +403,9 @@ function onLeave(el: Element, done: () => void) {
 .search-trigger__kbd {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 1px 4px;
   flex-shrink: 0;
@@ -411,7 +415,7 @@ function onLeave(el: Element, done: () => void) {
 .search-overlay {
   position: fixed;
   z-index: 200;
-  background-color: var(--bg-card);
+  background-color: var(--mtv-color-surface-default);
   border: 1px solid var(--search-focus-border);
   border-radius: var(--card-radius);
   box-shadow:
@@ -427,12 +431,12 @@ function onLeave(el: Element, done: () => void) {
   gap: 0.7rem;
   padding: 0 0.75rem;
   height: 40px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
 .search-overlay__icon {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
 }
 
@@ -442,13 +446,13 @@ function onLeave(el: Element, done: () => void) {
   border: none;
   outline: none;
   font-size: var(--font-size-base);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   font-family: var(--font-family-sans);
   min-width: 0;
 }
 
 .search-overlay__input::placeholder {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .search-overlay__input::-webkit-search-cancel-button {
@@ -458,9 +462,9 @@ function onLeave(el: Element, done: () => void) {
 .search-overlay__esc {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 3px;
   padding: 2px 6px;
   flex-shrink: 0;
@@ -478,7 +482,7 @@ function onLeave(el: Element, done: () => void) {
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   padding: 6px 12px 3px;
 }
 
@@ -491,7 +495,7 @@ function onLeave(el: Element, done: () => void) {
   cursor: pointer;
   border-radius: 4px;
   margin: 0 4px;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   outline: none;
   transition:
@@ -502,12 +506,12 @@ function onLeave(el: Element, done: () => void) {
 .search-overlay__row:hover,
 .search-overlay__row:focus {
   background-color: hsla(0, 0%, 100%, 0.07);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .search-overlay__row-icon {
   flex-shrink: 0;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   width: 15px;
   height: 15px;
 }
@@ -528,7 +532,7 @@ function onLeave(el: Element, done: () => void) {
   border-radius: 3px;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   padding: 0;
   opacity: 0;
@@ -544,20 +548,20 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .search-overlay__row-remove:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: hsla(0, 0%, 100%, 0.1);
 }
 
 .search-overlay__empty {
   padding: 4px 12px 2px;
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   font-style: italic;
 }
 
 .search-overlay__divider {
   height: 1px;
-  background-color: var(--border);
+  background-color: var(--mtv-color-border-default);
   margin: 5px 8px;
 }
 
@@ -568,7 +572,7 @@ function onLeave(el: Element, done: () => void) {
   align-items: center;
   height: 36px;
   border-radius: 4px;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -581,7 +585,7 @@ function onLeave(el: Element, done: () => void) {
 }
 
 .sidebar-nav-item:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   background-color: hsla(0, 0%, 100%, 0.09);
 }
 

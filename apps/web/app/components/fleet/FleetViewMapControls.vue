@@ -146,7 +146,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   overflow: visible;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--bg-card) 95%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 95%, transparent);
 }
 
 .fv-controls__layers-wrap {
@@ -161,7 +161,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   height: 32px;
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
     background-color 120ms ease,
@@ -175,22 +175,22 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 
 .fv-controls__btn:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .fv-controls__btn:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--mtv-color-brand-default);
   outline-offset: -2px;
 }
 
 .fv-controls__btn--active {
-  color: var(--accent, #4ade80);
+  color: var(--mtv-color-brand-default);
 }
 
 .fv-controls__divider {
   width: 1px;
   height: 16px;
-  background: var(--border);
+  background: var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
@@ -203,7 +203,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   min-width: 140px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--bg-card) 97%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 97%, transparent);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -216,7 +216,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   padding: 8px 12px;
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
@@ -230,15 +230,15 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 
 .fv-controls__layer-item:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .fv-controls__layer-item--active {
-  color: var(--accent, #4ade80);
+  color: var(--mtv-color-brand-default);
 }
 
 .fv-controls__layer-item + .fv-controls__layer-item {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--mtv-color-border-default);
 }
 
 /* Layers popup transition */
@@ -264,7 +264,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   height: 32px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--bg-card) 95%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 95%, transparent);
 }
 
 .fv-controls__live-dot {
@@ -291,7 +291,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--tracking-looser);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -57,7 +57,7 @@ function openPreferences(section?: string) {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  background-color: var(--bg-base);
+  background-color: var(--mtv-color-surface-base);
   transition: background-color 0.25s ease;
 }
 

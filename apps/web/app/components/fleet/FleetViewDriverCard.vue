@@ -115,7 +115,7 @@ function formatLastUpdated(date: Date): string {
   padding: 0.625rem 0.75rem 0.625rem 0.875rem;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   cursor: pointer;
   text-align: left;
   transition: background-color 120ms ease;
@@ -157,8 +157,8 @@ function formatLastUpdated(date: Date): string {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  background: var(--bg-elevated);
+  color: var(--mtv-color-foreground-default);
+  background: var(--mtv-color-surface-raised);
   flex-shrink: 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -182,7 +182,7 @@ function formatLastUpdated(date: Date): string {
 .fv-driver-card__name {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -198,14 +198,14 @@ function formatLastUpdated(date: Date): string {
 
 .fv-driver-card__location {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .fv-driver-card__load {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* HOS bar */
@@ -242,7 +242,7 @@ function formatLastUpdated(date: Date): string {
 .fv-driver-card__updated {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
   align-self: flex-start;
   margin-top: 2px;

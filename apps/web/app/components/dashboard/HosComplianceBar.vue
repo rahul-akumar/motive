@@ -123,14 +123,14 @@ function hosStatusColor(driver: Driver): string {
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .hos-bar__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -159,8 +159,8 @@ function hosStatusColor(driver: Driver): string {
   height: 24px;
   border-radius: 25%;
   background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  border: 1px solid var(--mtv-color-border-default);
+  color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
@@ -181,7 +181,7 @@ function hosStatusColor(driver: Driver): string {
 .hos-bar__driver-name {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -228,12 +228,12 @@ function hosStatusColor(driver: Driver): string {
 .hos-bar__hours-driven {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .hos-bar__hours-sep {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .hos-bar__hours-remaining {

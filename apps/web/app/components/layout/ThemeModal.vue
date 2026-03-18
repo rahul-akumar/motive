@@ -121,7 +121,7 @@ function selectTheme(id: string) {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
 }
 
 .modal-header__left {
@@ -135,8 +135,8 @@ function selectTheme(id: string) {
   height: 28px;
   border-radius: 2px;
   background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  border: 1px solid var(--mtv-color-border-default);
+  color: var(--mtv-color-foreground-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,14 +147,14 @@ function selectTheme(id: string) {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   margin: 0;
   line-height: 1;
 }
 
 .modal-subtitle {
   font-size: 0.6875rem;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: 0.04em;
   margin: 3px 0 0;
 }
@@ -164,8 +164,8 @@ function selectTheme(id: string) {
   height: 28px;
   border-radius: 2px;
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  border: 1px solid var(--mtv-color-border-default);
+  color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -177,9 +177,9 @@ function selectTheme(id: string) {
 }
 
 .modal-close:hover {
-  color: var(--text-primary);
-  border-color: var(--border-strong);
-  background-color: var(--bg-hover);
+  color: var(--mtv-color-foreground-default);
+  border-color: var(--mtv-color-border-strong);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 /* ── Theme Grid ── */
@@ -192,8 +192,8 @@ function selectTheme(id: string) {
 
 /* ── Theme Card ── */
 .theme-card {
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 0;
   cursor: pointer;
@@ -204,11 +204,11 @@ function selectTheme(id: string) {
 }
 
 .theme-card:hover {
-  border-color: var(--border-strong);
+  border-color: var(--mtv-color-border-strong);
 }
 
 .theme-card--active {
-  border-color: var(--card-accent, var(--accent)) !important;
+  border-color: var(--card-accent, var(--mtv-color-brand-default)) !important;
 }
 
 /* ── Mini Preview ── */
@@ -322,7 +322,7 @@ function selectTheme(id: string) {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   text-transform: uppercase;
 }
 
@@ -330,8 +330,8 @@ function selectTheme(id: string) {
   width: 16px;
   height: 16px;
   border-radius: 2px;
-  background-color: var(--accent);
-  color: var(--bg-base);
+  background-color: var(--mtv-color-brand-default);
+  color: var(--mtv-color-surface-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -340,7 +340,7 @@ function selectTheme(id: string) {
 
 .theme-info__desc {
   font-size: 0.5rem;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: 0.03em;
   line-height: 1.4;
   margin: 0;
@@ -357,13 +357,13 @@ function selectTheme(id: string) {
   width: 6px;
   height: 6px;
   border-radius: 0;
-  background-color: var(--card-accent, var(--accent));
+  background-color: var(--card-accent, var(--mtv-color-brand-default));
   flex-shrink: 0;
 }
 
 .theme-info__swatch-label {
   font-size: 0.5rem;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -371,12 +371,12 @@ function selectTheme(id: string) {
 /* ── Footer ── */
 .modal-footer {
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--mtv-color-border-default);
 }
 
 .modal-footer__hint {
   font-size: 0.5rem;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: 0.05em;
 }
 </style>

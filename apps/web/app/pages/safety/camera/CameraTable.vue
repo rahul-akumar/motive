@@ -242,8 +242,8 @@ function openMenu(index: number, el: HTMLElement) {
 <style scoped>
 /* ── Table wrapper ─────────────────────────────────────────────────────────── */
 .camera-table-wrap {
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--card-radius, 6px);
   overflow: hidden;
 }
@@ -260,15 +260,15 @@ function openMenu(index: number, el: HTMLElement) {
   text-align: left;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   white-space: nowrap;
 }
 
 .camera-table tbody tr {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   transition: background-color 100ms ease;
 }
 
@@ -277,7 +277,7 @@ function openMenu(index: number, el: HTMLElement) {
 }
 
 .camera-table tbody tr:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .camera-table td {
@@ -288,14 +288,14 @@ function openMenu(index: number, el: HTMLElement) {
 /* ── Cell types ────────────────────────────────────────────────────────────── */
 .cell-primary {
   display: block;
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   font-weight: var(--font-weight-medium);
 }
 
 .cell-sub {
   display: block;
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin-top: 0.1rem;
   font-family: var(--font-family-mono);
 }
@@ -326,19 +326,19 @@ function openMenu(index: number, el: HTMLElement) {
   height: 63px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
 }
 
 .thumb-offline {
   width: 112px;
   height: 63px;
   border-radius: 4px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-base);
+  border: 1px solid var(--mtv-color-border-default);
+  background-color: var(--mtv-color-surface-base);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* ── Actions cell ──────────────────────────────────────────────────────────── */
@@ -356,7 +356,7 @@ function openMenu(index: number, el: HTMLElement) {
   border: none;
   background: none;
   border-radius: 4px;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
     background-color 100ms ease,
@@ -364,8 +364,8 @@ function openMenu(index: number, el: HTMLElement) {
 }
 
 .action-btn:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: var(--mtv-color-surface-hover);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* ── Empty state ───────────────────────────────────────────────────────────── */
@@ -375,7 +375,7 @@ function openMenu(index: number, el: HTMLElement) {
   align-items: center;
   gap: 0.5rem;
   padding: 3rem 1rem;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .camera-table-empty__icon {
@@ -391,9 +391,9 @@ function openMenu(index: number, el: HTMLElement) {
 .camera-table-empty__clear {
   margin-top: 0.25rem;
   font-size: var(--font-size-sm);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   background: none;
-  border: 1px solid var(--border);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 4px;
   padding: 0.3rem 0.75rem;
   cursor: pointer;
@@ -401,7 +401,7 @@ function openMenu(index: number, el: HTMLElement) {
 }
 
 .camera-table-empty__clear:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 /* ── Preview overlay ───────────────────────────────────────────────────────── */

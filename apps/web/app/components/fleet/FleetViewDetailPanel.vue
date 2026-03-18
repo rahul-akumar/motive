@@ -314,10 +314,10 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--bg-card) 95%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 95%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-left: 1px solid var(--border);
+  border-left: 1px solid var(--mtv-color-border-default);
   border-top: none;
   border-bottom: none;
   border-right: none;
@@ -345,8 +345,8 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   font-family: var(--font-family-mono);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  background: var(--bg-elevated);
+  color: var(--mtv-color-foreground-default);
+  background: var(--mtv-color-surface-raised);
   flex-shrink: 0;
   letter-spacing: var(--tracking-wide);
 }
@@ -359,7 +359,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 .fv-detail__name {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-normal);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -392,7 +392,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   height: 29px;
   background: transparent;
   border-radius: 2px;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   flex-shrink: 0;
   transition:
@@ -402,7 +402,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__close:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* Body */
@@ -438,24 +438,24 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   font-weight: var(--font-weight-extrabold);
   letter-spacing: var(--tracking-loose);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin-bottom: 0.5rem;
 }
 
 .fv-detail__value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   margin-bottom: 2px;
 }
 
 .fv-detail__meta {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .fv-detail__eta {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-md);
 }
@@ -491,7 +491,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__hos-name {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .fv-detail__hos-value {
@@ -530,7 +530,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__hos-breakdown-label {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wider);
 }
@@ -538,7 +538,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 .fv-detail__hos-breakdown-val {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* Fuel */
@@ -554,19 +554,19 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__fuel-icon {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .fv-detail__fuel-label {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   flex: 1;
 }
 
 .fv-detail__fuel-value {
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 
 .fv-detail__fuel-track {
@@ -596,12 +596,12 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__info-key {
   font-size: var(--font-size-md);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .fv-detail__info-val {
   font-size: var(--font-size-md);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-tight);
 }
 

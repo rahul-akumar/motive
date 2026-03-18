@@ -27,21 +27,21 @@ defineProps<{
 
 .panel-kpi-row__label {
   font-size: var(--font-size-base);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .panel-kpi-row__value {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   flex-shrink: 0;
 }
 
 .panel-kpi-row__unit {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-normal);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin-left: 0.2rem;
 }
 </style>

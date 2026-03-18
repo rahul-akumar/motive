@@ -54,10 +54,10 @@ function iconComponent(name: string): Component {
   align-items: center;
   gap: 6px;
   padding: 7px 10px;
-  background: var(--bg-elevated, rgba(20, 20, 20, 0.92));
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+  background: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-subtle);
   border-radius: 4px;
-  color: var(--text-secondary, #8a8a8a);
+  color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
@@ -71,20 +71,20 @@ function iconComponent(name: string): Component {
 }
 
 .fv-overlay-ctrl__btn:hover {
-  background: var(--bg-elevated-hover, rgba(40, 40, 40, 0.95));
-  color: var(--text-primary, #e2e2e2);
-  border-color: var(--border-strong, rgba(255, 255, 255, 0.2));
+  background: var(--mtv-color-surface-hover);
+  color: var(--mtv-color-foreground-default);
+  border-color: var(--mtv-color-border-strong);
 }
 
 .fv-overlay-ctrl__btn--active {
-  background: var(--accent, #4ade80);
-  border-color: var(--accent, #4ade80);
+  background: var(--mtv-color-brand-default);
+  border-color: var(--mtv-color-brand-default);
   color: #000;
 }
 
 .fv-overlay-ctrl__btn--active:hover {
-  background: var(--accent-hover, #22c55e);
-  border-color: var(--accent-hover, #22c55e);
+  background: var(--mtv-color-brand-hover);
+  border-color: var(--mtv-color-brand-hover);
   color: #000;
 }
 

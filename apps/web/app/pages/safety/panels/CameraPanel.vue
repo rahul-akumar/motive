@@ -103,7 +103,7 @@ const quickLinks = [
 
 .camera-panel__header {
   padding: 1.5rem 1.25rem 1.25rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
@@ -111,20 +111,20 @@ const quickLinks = [
   font-family: var(--font-family-mono);
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   line-height: var(--leading-none);
   margin-bottom: 0.25rem;
 }
 
 .camera-panel__stat-label {
   font-size: var(--font-size-base);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   margin-bottom: 0.875rem;
 }
 
 .camera-panel__coverage-bar {
   height: 4px;
-  background-color: var(--border);
+  background-color: var(--mtv-color-border-default);
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 0.4rem;
@@ -139,7 +139,7 @@ const quickLinks = [
 
 .camera-panel__coverage-pct {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .panel-view-all {
@@ -147,12 +147,12 @@ const quickLinks = [
   align-items: center;
   gap: 0.15rem;
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   text-decoration: none;
   transition: color 100ms ease;
 }
 
 .panel-view-all:hover {
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 </style>

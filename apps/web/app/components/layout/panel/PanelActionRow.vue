@@ -32,7 +32,7 @@ defineProps<{
   gap: 0.625rem;
   padding: 0.4375rem 1.25rem;
   text-decoration: none;
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-base);
   transition:
     background-color 100ms ease,
@@ -40,8 +40,8 @@ defineProps<{
 }
 
 .panel-action-row:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: var(--mtv-color-surface-hover);
+  color: var(--mtv-color-foreground-default);
 }
 
 .panel-action-row__icon {
@@ -64,7 +64,7 @@ defineProps<{
 }
 .panel-action-row__icon--info {
   background-color: rgba(255, 255, 255, 0.06);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .panel-action-row__label {
@@ -92,11 +92,11 @@ defineProps<{
 }
 .panel-action-row__count--info {
   background-color: rgba(255, 255, 255, 0.06);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 .panel-action-row__chevron {
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
 }
 </style>

@@ -292,14 +292,14 @@ function formatHos(driver: Driver): string {
   font-family: var(--font-family-condensed);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
 
 .fleet-map__subtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-widest);
 }
@@ -336,7 +336,7 @@ function formatHos(driver: Driver): string {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-loose);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* Canvas */
@@ -414,19 +414,19 @@ function formatHos(driver: Driver): string {
 .fleet-map__tooltip-name {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
   margin-bottom: 2px;
 }
 
 .fleet-map__tooltip-location {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   margin-bottom: 4px;
 }
 
 .fleet-map__tooltip-load {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--mtv-color-foreground-subtle);
   margin-bottom: 2px;
 }
 
@@ -461,7 +461,7 @@ function formatHos(driver: Driver): string {
 
 .fleet-map__legend-label {
   font-size: var(--font-size-xs);
-  color: var(--text-secondary);
+  color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
   letter-spacing: var(--tracking-tight);
 }

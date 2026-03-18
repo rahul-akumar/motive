@@ -16,7 +16,7 @@ defineProps<{
 
 <style scoped>
 .panel-section {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--mtv-color-border-default);
   padding-bottom: 0.5rem;
 }
 
@@ -30,6 +30,6 @@ defineProps<{
 .panel-section__title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--mtv-color-foreground-default);
 }
 </style>
