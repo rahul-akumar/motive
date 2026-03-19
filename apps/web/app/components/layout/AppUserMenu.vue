@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { User, Settings, BellOff, LogOut } from 'lucide-vue-next'
+import { User, Settings, BellOff, LogOut, ShieldUser } from 'lucide-vue-next'
 import { MDropdown, type MDropdownItem } from '@motive/ui'
 
 const emit = defineEmits<{
@@ -21,6 +21,12 @@ const menuItems = computed<MDropdownItem[]>(() => [
     label: t('userMenu.preferences'),
     icon: Settings,
     action: () => emit('openPreferences'),
+  },
+  {
+    label: t('userMenu.switchToAdmin'),
+    icon: ShieldUser,
+    divider: true,
+    action: () => navigateTo('/admin'),
   },
   {
     label: t('userMenu.pauseNotifications'),

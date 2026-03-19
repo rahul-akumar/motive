@@ -9,7 +9,7 @@ interface RightPanelContext {
 
 /** Called once in the root layout to set up the panel context. */
 export function provideRightPanel() {
-  const activePanel = ref<Component | null>(null)
+  const activePanel = shallowRef<Component | null>(null)
 
   function setPanel(component: Component | null) {
     activePanel.value = component
@@ -31,5 +31,9 @@ export function useRightPanel(component: Component) {
   }
 
   ctx.setPanel(component)
-  onUnmounted(() => ctx.setPanel(null))
+  onUnmounted(() => {
+    if (ctx.activePanel.value === component) {
+      ctx.setPanel(null)
+    }
+  })
 }

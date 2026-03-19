@@ -37,7 +37,7 @@ const deltaColor = computed(() => {
   <article class="kpi-card fleet-card">
     <!-- Header row -->
     <div class="kpi-card__header">
-      <span class="kpi-card__title font-mono-data">{{ metric.title }}</span>
+      <span class="kpi-card__title">{{ metric.title }}</span>
       <div class="kpi-card__icon-wrap" aria-hidden="true">
         <MIcon :icon="iconMap[metric.icon] || Truck" :size="20" />
       </div>
@@ -45,14 +45,14 @@ const deltaColor = computed(() => {
 
     <!-- Value -->
     <div class="kpi-card__value-row">
-      <div class="kpi-card__value font-condensed">
+      <div class="kpi-card__value">
         {{ metric.displayValue }}
         <span v-if="metric.unit" class="kpi-card__unit">{{ metric.unit }}</span>
       </div>
     </div>
 
     <!-- Subtitle -->
-    <div v-if="metric.subtitle" class="kpi-card__subtitle font-mono-data">
+    <div v-if="metric.subtitle" class="kpi-card__subtitle">
       {{ metric.subtitle }}
     </div>
 
@@ -61,14 +61,12 @@ const deltaColor = computed(() => {
       <MIcon
         v-if="metric.deltaType === 'increase'"
         :icon="TrendingUp"
-        :size="16"
         :color="deltaColor"
         :stroke-width="2"
       />
       <MIcon
         v-else-if="metric.deltaType === 'decrease'"
         :icon="TrendingDown"
-        :size="16"
         :color="deltaColor"
         :stroke-width="2"
       />
@@ -80,7 +78,7 @@ const deltaColor = computed(() => {
 
 <style scoped>
 .kpi-card {
-  padding: 1.25rem;
+  padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -95,8 +93,8 @@ const deltaColor = computed(() => {
 
 .kpi-card__title {
   font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-black);
-  letter-spacing: var(--tracking-widest);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--mtv-color-foreground-subtle);
 }
@@ -119,7 +117,6 @@ const deltaColor = computed(() => {
 
 .kpi-card__value {
   font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-default);
   line-height: var(--leading-none);
   letter-spacing: var(--tracking-tighter);
@@ -134,7 +131,7 @@ const deltaColor = computed(() => {
 }
 
 .kpi-card__subtitle {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-normal);
 }
@@ -142,14 +139,13 @@ const deltaColor = computed(() => {
 .kpi-card__delta {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
   margin-top: 0.125rem;
 }
 
 .kpi-card__delta-label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  font-family: var(--font-family-mono);
   letter-spacing: var(--tracking-normal);
 }
 </style>
