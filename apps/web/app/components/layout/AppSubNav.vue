@@ -1,10 +1,16 @@
 <script setup lang="ts">
-export type SubNavTab = { label: string; href: string }
+export type SubNavTab = {
+  label: string
+  href: string
+  badge?: { label: string; color?: 'info' | 'success' | 'warning' | 'danger' }
+}
 
 export interface AppSubNavProps {
   /** Pass a flat array for ungrouped tabs, or an array of arrays to get dividers between groups. */
   tabs: SubNavTab[] | SubNavTab[][]
 }
+
+import { MBadge } from '@motive/ui'
 
 const props = defineProps<AppSubNavProps>()
 const route = useRoute()
@@ -77,6 +83,13 @@ onMounted(() => nextTick(updateIndicator))
         :aria-current="route.path === tab.href ? 'page' : undefined"
       >
         {{ tab.label }}
+        <MBadge
+          v-if="tab.badge"
+          variant="text"
+          :label="tab.badge.label"
+          size="sm"
+          :color="tab.badge.color ?? 'info'"
+        />
       </NuxtLink>
     </template>
   </nav>
