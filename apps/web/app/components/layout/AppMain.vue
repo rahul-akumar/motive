@@ -161,17 +161,14 @@ const subNavTabs = computed(() => {
       :class="['app-content', `app-content--${variant}`, { 'bg-dot-grid': isDefault }]"
       id="main-content"
     >
-      <!-- Default mode: entrance animation -->
       <div
-        v-if="isDefault"
+        class="app-content-inner"
         v-motion
-        :initial="{ opacity: 0, y: 8 }"
+        :initial="isDefault ? { opacity: 0, y: 8 } : { opacity: 1, y: 0 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
       >
         <slot />
       </div>
-      <!-- Map / Globe mode: slot fills container directly -->
-      <slot v-else />
     </main>
   </div>
 </template>
@@ -233,10 +230,15 @@ const subNavTabs = computed(() => {
   min-height: 0;
 }
 
-/* Nuxt wraps the page slot in a div in non-default modes — make it fill the flex container */
-.app-content--map :deep(> div),
-.app-content--globe :deep(> div) {
+.app-content-inner {
+  display: contents;
+}
+
+.app-content--map .app-content-inner,
+.app-content--globe .app-content-inner {
+  display: flex;
   flex: 1;
+  flex-direction: column;
   position: relative;
   min-height: 0;
   height: 100%;

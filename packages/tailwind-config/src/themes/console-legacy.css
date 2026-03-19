@@ -71,12 +71,12 @@ html[data-theme='console-legacy'] {
   --table-sorted-color: var(--mtv-color-brand-default);
   --search-focus-border: oklch(0.623 0.188 259.8);
   --search-focus-shadow: none;
-  --card-radius: 4px;
+  --card-radius: 8px;
   --badge-radius: 4px;
   --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
   --font-size-base: 14px;
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-family-display: 'General Sans', Georgia, serif;
+  --font-family-display: 'Inter', system-ui, -apple-system, sans-serif;
   /* Layout geometry — flat, edge-to-edge */
   --main-margin: 0;
   --main-radius: 0;
@@ -99,7 +99,7 @@ html[data-theme='console-legacy'] aside {
   --mtv-color-border-subtle: oklch(1 0 0 / 0.05);
   --scrollbar-thumb: oklch(0.218 0 0);
   --scrollbar-thumb-hover: oklch(0.252 0 0);
-  --sidebar-active-bg: oklch(0.624 0.202 263.1 / 0.1);
+  --sidebar-active-bg: oklch(33.491% 0.11142 263.172 / 0.1);
   --sidebar-active-border: oklch(0.623 0.188 259.8);
   --sidebar-active-icon: oklch(0.623 0.188 259.8);
   --avatar-bg: oklch(0.624 0.202 263.1 / 0.08);
