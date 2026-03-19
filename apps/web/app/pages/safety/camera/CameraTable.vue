@@ -409,7 +409,7 @@ function openMenu(index: number, el: HTMLElement) {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: oklch(0 0 0 / 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -419,7 +419,7 @@ function openMenu(index: number, el: HTMLElement) {
   max-width: min(900px, 90vw);
   max-height: 85vh;
   border-radius: 6px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 24px 80px oklch(0 0 0 / 0.6);
 }
 
 .preview-overlay__close {
@@ -432,15 +432,15 @@ function openMenu(index: number, el: HTMLElement) {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  border: 1px solid oklch(1 0 0 / 0.15);
+  background-color: oklch(1 0 0 / 0.08);
+  color: oklch(1 0 0);
   cursor: pointer;
   transition: background-color 120ms ease;
 }
 
 .preview-overlay__close:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: oklch(1 0 0 / 0.15);
 }
 
 /* ── Transitions ───────────────────────────────────────────────────────────── */

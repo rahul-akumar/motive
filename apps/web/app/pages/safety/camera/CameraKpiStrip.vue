@@ -94,28 +94,28 @@ function handleClick(key: KpiFilter) {
 
 /* Color variants */
 .kpi-card--success {
-  border-left-color: #10b981;
+  border-left-color: oklch(0.696 0.149 162.5);
 }
 .kpi-card--danger {
-  border-left-color: #ef4444;
+  border-left-color: oklch(0.637 0.208 25.3);
 }
 .kpi-card--warning {
-  border-left-color: #f59e0b;
+  border-left-color: oklch(0.769 0.165 70.1);
 }
 .kpi-card--issues {
-  border-left-color: #f97316;
+  border-left-color: oklch(0.705 0.187 47.6);
 }
 
 .kpi-card--success.kpi-card--active .kpi-card__count {
-  color: #10b981;
+  color: oklch(0.696 0.149 162.5);
 }
 .kpi-card--danger.kpi-card--active .kpi-card__count {
-  color: #ef4444;
+  color: oklch(0.637 0.208 25.3);
 }
 .kpi-card--warning.kpi-card--active .kpi-card__count {
-  color: #f59e0b;
+  color: oklch(0.769 0.165 70.1);
 }
 .kpi-card--issues.kpi-card--active .kpi-card__count {
-  color: #f97316;
+  color: oklch(0.705 0.187 47.6);
 }
 </style>

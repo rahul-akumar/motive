@@ -14,186 +14,186 @@
      ================================================================ */
 
   /* Neutral (cool gray) */
-  --mtv-color-neutral-50: #f9fafb;
-  --mtv-color-neutral-100: #f3f4f6;
-  --mtv-color-neutral-200: #e5e7eb;
-  --mtv-color-neutral-300: #d1d5db;
-  --mtv-color-neutral-400: #9ca3af;
-  --mtv-color-neutral-500: #6b7280;
-  --mtv-color-neutral-600: #4b5563;
-  --mtv-color-neutral-700: #374151;
-  --mtv-color-neutral-800: #1f2937;
-  --mtv-color-neutral-900: #111827;
-  --mtv-color-neutral-950: #080d14;
-  --mtv-color-neutral-1000: #03060a;
+  --mtv-color-neutral-50: oklch(0.985 0.002 247.8);
+  --mtv-color-neutral-100: oklch(0.967 0.003 264.5);
+  --mtv-color-neutral-200: oklch(0.928 0.006 264.5);
+  --mtv-color-neutral-300: oklch(0.872 0.009 258.3);
+  --mtv-color-neutral-400: oklch(0.714 0.019 261.3);
+  --mtv-color-neutral-500: oklch(0.551 0.023 264.4);
+  --mtv-color-neutral-600: oklch(0.446 0.026 256.8);
+  --mtv-color-neutral-700: oklch(0.373 0.031 259.7);
+  --mtv-color-neutral-800: oklch(0.278 0.03 256.8);
+  --mtv-color-neutral-900: oklch(0.21 0.032 264.7);
+  --mtv-color-neutral-950: oklch(0.157 0.017 256.3);
+  --mtv-color-neutral-1000: oklch(0.119 0.013 247.6);
 
   /* Blue (electric instrument blue — brand primary) */
-  --mtv-color-blue-50: #eef3ff;
-  --mtv-color-blue-100: #dde7ff;
-  --mtv-color-blue-200: #bad0ff;
-  --mtv-color-blue-300: #8db5ff;
-  --mtv-color-blue-400: #5590ff;
-  --mtv-color-blue-500: #1b4dff;
-  --mtv-color-blue-600: #1038e0;
-  --mtv-color-blue-700: #0a27b3;
-  --mtv-color-blue-800: #071a80;
-  --mtv-color-blue-900: #050f52;
-  --mtv-color-blue-950: #030a3d;
-  --mtv-color-blue-1000: #01041f;
+  --mtv-color-blue-50: oklch(0.964 0.017 267.8);
+  --mtv-color-blue-100: oklch(0.928 0.034 267.6);
+  --mtv-color-blue-200: oklch(0.857 0.07 265.3);
+  --mtv-color-blue-300: oklch(0.773 0.115 262.2);
+  --mtv-color-blue-400: oklch(0.668 0.176 261.8);
+  --mtv-color-blue-500: oklch(0.524 0.265 264.9);
+  --mtv-color-blue-600: oklch(0.458 0.252 265);
+  --mtv-color-blue-700: oklch(0.382 0.216 265.1);
+  --mtv-color-blue-800: oklch(0.301 0.168 265.6);
+  --mtv-color-blue-900: oklch(0.225 0.12 266.6);
+  --mtv-color-blue-950: oklch(0.187 0.096 266.6);
+  --mtv-color-blue-1000: oklch(0.129 0.061 266);
 
   /* Purple */
-  --mtv-color-purple-50: #f3eeff;
-  --mtv-color-purple-100: #e7ddff;
-  --mtv-color-purple-200: #cdbdff;
-  --mtv-color-purple-300: #ae95ff;
-  --mtv-color-purple-400: #8e66ff;
-  --mtv-color-purple-500: #6e3aee;
-  --mtv-color-purple-600: #5a27d6;
-  --mtv-color-purple-700: #451bad;
-  --mtv-color-purple-800: #311487;
-  --mtv-color-purple-900: #200e5c;
-  --mtv-color-purple-950: #160940;
-  --mtv-color-purple-1000: #0a041f;
+  --mtv-color-purple-50: oklch(0.958 0.023 299.4);
+  --mtv-color-purple-100: oklch(0.916 0.047 298.9);
+  --mtv-color-purple-200: oklch(0.834 0.093 295.4);
+  --mtv-color-purple-300: oklch(0.735 0.151 293.2);
+  --mtv-color-purple-400: oklch(0.629 0.217 290.9);
+  --mtv-color-purple-500: oklch(0.529 0.248 287.9);
+  --mtv-color-purple-600: oklch(0.468 0.239 285.8);
+  --mtv-color-purple-700: oklch(0.395 0.206 285);
+  --mtv-color-purple-800: oklch(0.328 0.172 283);
+  --mtv-color-purple-900: oklch(0.255 0.127 283.3);
+  --mtv-color-purple-950: oklch(0.205 0.096 285);
+  --mtv-color-purple-1000: oklch(0.142 0.057 289.2);
 
   /* Magenta */
-  --mtv-color-magenta-50: #fdf0fa;
-  --mtv-color-magenta-100: #fae0f5;
-  --mtv-color-magenta-200: #f5bfeb;
-  --mtv-color-magenta-300: #ed8fdc;
-  --mtv-color-magenta-400: #e155c6;
-  --mtv-color-magenta-500: #c92da8;
-  --mtv-color-magenta-600: #a81f8a;
-  --mtv-color-magenta-700: #85166b;
-  --mtv-color-magenta-800: #600f4e;
-  --mtv-color-magenta-900: #3e0a33;
-  --mtv-color-magenta-950: #2a0722;
-  --mtv-color-magenta-1000: #150410;
+  --mtv-color-magenta-50: oklch(0.968 0.019 333.5);
+  --mtv-color-magenta-100: oklch(0.934 0.04 332.3);
+  --mtv-color-magenta-200: oklch(0.866 0.084 332.8);
+  --mtv-color-magenta-300: oklch(0.772 0.148 333.8);
+  --mtv-color-magenta-400: oklch(0.671 0.213 336.1);
+  --mtv-color-magenta-500: oklch(0.585 0.225 338.4);
+  --mtv-color-magenta-600: oklch(0.508 0.2 339.1);
+  --mtv-color-magenta-700: oklch(0.427 0.168 340);
+  --mtv-color-magenta-800: oklch(0.341 0.132 339.1);
+  --mtv-color-magenta-900: oklch(0.258 0.095 337.9);
+  --mtv-color-magenta-950: oklch(0.206 0.07 338.1);
+  --mtv-color-magenta-1000: oklch(0.147 0.041 339.2);
 
   /* Gold (amber) */
-  --mtv-color-gold-50: #fffaeb;
-  --mtv-color-gold-100: #fef2c7;
-  --mtv-color-gold-200: #fde488;
-  --mtv-color-gold-300: #fcd04a;
-  --mtv-color-gold-400: #f5b913;
-  --mtv-color-gold-500: #d97706;
-  --mtv-color-gold-600: #b55d04;
-  --mtv-color-gold-700: #8f4503;
-  --mtv-color-gold-800: #6b3002;
-  --mtv-color-gold-900: #451e01;
-  --mtv-color-gold-950: #2e1400;
-  --mtv-color-gold-1000: #170a00;
+  --mtv-color-gold-50: oklch(0.985 0.02 91.6);
+  --mtv-color-gold-100: oklch(0.96 0.057 94.3);
+  --mtv-color-gold-200: oklch(0.92 0.116 94.6);
+  --mtv-color-gold-300: oklch(0.873 0.154 90.2);
+  --mtv-color-gold-400: oklch(0.819 0.165 84.4);
+  --mtv-color-gold-500: oklch(0.666 0.157 58.3);
+  --mtv-color-gold-600: oklch(0.573 0.14 55);
+  --mtv-color-gold-700: oklch(0.476 0.12 52.6);
+  --mtv-color-gold-800: oklch(0.383 0.099 50.6);
+  --mtv-color-gold-900: oklch(0.286 0.072 52.5);
+  --mtv-color-gold-950: oklch(0.225 0.054 57.6);
+  --mtv-color-gold-1000: oklch(0.161 0.035 68.4);
 
   /* Green */
-  --mtv-color-green-50: #ecfdf5;
-  --mtv-color-green-100: #d0faeb;
-  --mtv-color-green-200: #a3f3d5;
-  --mtv-color-green-300: #60e7b3;
-  --mtv-color-green-400: #27cf89;
-  --mtv-color-green-500: #10b462;
-  --mtv-color-green-600: #0a9150;
-  --mtv-color-green-700: #07703d;
-  --mtv-color-green-800: #054f2c;
-  --mtv-color-green-900: #03311b;
-  --mtv-color-green-950: #022011;
-  --mtv-color-green-1000: #010f08;
+  --mtv-color-green-50: oklch(0.979 0.021 166.1);
+  --mtv-color-green-100: oklch(0.951 0.048 171.6);
+  --mtv-color-green-200: oklch(0.904 0.089 168.8);
+  --mtv-color-green-300: oklch(0.839 0.14 164.8);
+  --mtv-color-green-400: oklch(0.757 0.165 159.1);
+  --mtv-color-green-500: oklch(0.676 0.17 153.2);
+  --mtv-color-green-600: oklch(0.577 0.143 153.9);
+  --mtv-color-green-700: oklch(0.479 0.118 154.1);
+  --mtv-color-green-800: oklch(0.377 0.09 155.5);
+  --mtv-color-green-900: oklch(0.277 0.063 156.9);
+  --mtv-color-green-950: oklch(0.216 0.047 158.1);
+  --mtv-color-green-1000: oklch(0.15 0.029 164);
 
   /* Red */
-  --mtv-color-red-50: #fff1f1;
-  --mtv-color-red-100: #ffe2e2;
-  --mtv-color-red-200: #ffc5c5;
-  --mtv-color-red-300: #ff9393;
-  --mtv-color-red-400: #f85656;
-  --mtv-color-red-500: #e52222;
-  --mtv-color-red-600: #c21717;
-  --mtv-color-red-700: #9d1111;
-  --mtv-color-red-800: #770d0d;
-  --mtv-color-red-900: #590909;
-  --mtv-color-red-950: #420606;
-  --mtv-color-red-1000: #1e0202;
+  --mtv-color-red-50: oklch(0.969 0.015 17.4);
+  --mtv-color-red-100: oklch(0.936 0.032 17.7);
+  --mtv-color-red-200: oklch(0.875 0.067 18.5);
+  --mtv-color-red-300: oklch(0.777 0.13 20.5);
+  --mtv-color-red-400: oklch(0.672 0.198 24.2);
+  --mtv-color-red-500: oklch(0.591 0.225 27.7);
+  --mtv-color-red-600: oklch(0.52 0.201 28);
+  --mtv-color-red-700: oklch(0.444 0.172 28);
+  --mtv-color-red-800: oklch(0.365 0.139 27.7);
+  --mtv-color-red-900: oklch(0.299 0.112 27.3);
+  --mtv-color-red-950: oklch(0.246 0.09 27);
+  --mtv-color-red-1000: oklch(0.154 0.054 26.2);
 
   /* Tan */
-  --mtv-color-tan-50: #faf8f5;
-  --mtv-color-tan-100: #f3ede6;
-  --mtv-color-tan-200: #e5d9cb;
-  --mtv-color-tan-300: #d0bda7;
-  --mtv-color-tan-400: #b59a80;
-  --mtv-color-tan-500: #9a7a5e;
-  --mtv-color-tan-600: #7d5e46;
-  --mtv-color-tan-700: #604534;
-  --mtv-color-tan-800: #452f22;
-  --mtv-color-tan-900: #2e1e13;
-  --mtv-color-tan-950: #180f09;
-  --mtv-color-tan-1000: #0b0503;
+  --mtv-color-tan-50: oklch(0.98 0.005 78.3);
+  --mtv-color-tan-100: oklch(0.949 0.011 71.9);
+  --mtv-color-tan-200: oklch(0.891 0.023 71.8);
+  --mtv-color-tan-300: oklch(0.808 0.037 71.3);
+  --mtv-color-tan-400: oklch(0.704 0.049 65.8);
+  --mtv-color-tan-500: oklch(0.603 0.057 62.6);
+  --mtv-color-tan-600: oklch(0.508 0.054 58.9);
+  --mtv-color-tan-700: oklch(0.415 0.046 53.3);
+  --mtv-color-tan-800: oklch(0.327 0.039 51.5);
+  --mtv-color-tan-900: oklch(0.252 0.032 55.3);
+  --mtv-color-tan-950: oklch(0.178 0.019 54.9);
+  --mtv-color-tan-1000: oklch(0.124 0.015 47);
 
   /* Berry */
-  --mtv-color-berry-50: #fdf3f8;
-  --mtv-color-berry-100: #fce6f1;
-  --mtv-color-berry-200: #f9cce4;
-  --mtv-color-berry-300: #f3a0cc;
-  --mtv-color-berry-400: #e86aac;
-  --mtv-color-berry-500: #d43d8a;
-  --mtv-color-berry-600: #ad2a6e;
-  --mtv-color-berry-700: #871d54;
-  --mtv-color-berry-800: #60143c;
-  --mtv-color-berry-900: #3f0c28;
-  --mtv-color-berry-950: #2e0619;
-  --mtv-color-berry-1000: #160309;
+  --mtv-color-berry-50: oklch(0.973 0.013 345.5);
+  --mtv-color-berry-100: oklch(0.946 0.028 345.9);
+  --mtv-color-berry-200: oklch(0.891 0.059 345);
+  --mtv-color-berry-300: oklch(0.8 0.112 346.9);
+  --mtv-color-berry-400: oklch(0.695 0.171 349.9);
+  --mtv-color-berry-500: oklch(0.603 0.199 353.6);
+  --mtv-color-berry-600: oklch(0.512 0.177 353.7);
+  --mtv-color-berry-700: oklch(0.425 0.149 354);
+  --mtv-color-berry-800: oklch(0.336 0.115 353);
+  --mtv-color-berry-900: oklch(0.256 0.085 351);
+  --mtv-color-berry-950: oklch(0.208 0.069 355.5);
+  --mtv-color-berry-1000: oklch(0.142 0.04 359.3);
 
   /* Coral */
-  --mtv-color-coral-50: #fff4f0;
-  --mtv-color-coral-100: #ffe7df;
-  --mtv-color-coral-200: #ffcfbf;
-  --mtv-color-coral-300: #ffac94;
-  --mtv-color-coral-400: #f97d5c;
-  --mtv-color-coral-500: #f26040;
-  --mtv-color-coral-600: #d4441f;
-  --mtv-color-coral-700: #a83215;
-  --mtv-color-coral-800: #7d220d;
-  --mtv-color-coral-900: #4f1508;
-  --mtv-color-coral-950: #330a03;
-  --mtv-color-coral-1000: #180402;
+  --mtv-color-coral-50: oklch(0.975 0.013 41.2);
+  --mtv-color-coral-100: oklch(0.945 0.029 39.3);
+  --mtv-color-coral-200: oklch(0.892 0.059 39.3);
+  --mtv-color-coral-300: oklch(0.819 0.104 36.8);
+  --mtv-color-coral-400: oklch(0.726 0.159 35.9);
+  --mtv-color-coral-500: oklch(0.672 0.186 33.9);
+  --mtv-color-coral-600: oklch(0.588 0.187 34.9);
+  --mtv-color-coral-700: oklch(0.492 0.159 34.5);
+  --mtv-color-coral-800: oklch(0.396 0.129 34);
+  --mtv-color-coral-900: oklch(0.291 0.09 34.1);
+  --mtv-color-coral-950: oklch(0.218 0.068 34.2);
+  --mtv-color-coral-1000: oklch(0.146 0.04 32.7);
 
   /* Olive */
-  --mtv-color-olive-50: #f7f8ef;
-  --mtv-color-olive-100: #ecf0d9;
-  --mtv-color-olive-200: #d6e0b0;
-  --mtv-color-olive-300: #b8c87b;
-  --mtv-color-olive-400: #93a84f;
-  --mtv-color-olive-500: #728531;
-  --mtv-color-olive-600: #596825;
-  --mtv-color-olive-700: #42501a;
-  --mtv-color-olive-800: #2e3812;
-  --mtv-color-olive-900: #1c2208;
-  --mtv-color-olive-950: #0d1104;
-  --mtv-color-olive-1000: #060800;
+  --mtv-color-olive-50: oklch(0.976 0.012 111.8);
+  --mtv-color-olive-100: oklch(0.946 0.031 115);
+  --mtv-color-olive-200: oklch(0.887 0.064 117.3);
+  --mtv-color-olive-300: oklch(0.803 0.102 118.3);
+  --mtv-color-olive-400: oklch(0.696 0.118 120.6);
+  --mtv-color-olive-500: oklch(0.584 0.112 120.8);
+  --mtv-color-olive-600: oklch(0.49 0.093 120.6);
+  --mtv-color-olive-700: oklch(0.406 0.079 122.3);
+  --mtv-color-olive-800: oklch(0.322 0.06 122.2);
+  --mtv-color-olive-900: oklch(0.239 0.044 120.7);
+  --mtv-color-olive-950: oklch(0.169 0.028 122.1);
+  --mtv-color-olive-1000: oklch(0.127 0.03 118.1);
 
   /* Teal */
-  --mtv-color-teal-50: #effcfa;
-  --mtv-color-teal-100: #d5f7f3;
-  --mtv-color-teal-200: #aaeee6;
-  --mtv-color-teal-300: #72dfd5;
-  --mtv-color-teal-400: #3ac5b9;
-  --mtv-color-teal-500: #1fa89c;
-  --mtv-color-teal-600: #16857c;
-  --mtv-color-teal-700: #0e615a;
-  --mtv-color-teal-800: #094039;
-  --mtv-color-teal-900: #052823;
-  --mtv-color-teal-950: #021714;
-  --mtv-color-teal-1000: #010a09;
+  --mtv-color-teal-50: oklch(0.981 0.014 186);
+  --mtv-color-teal-100: oklch(0.951 0.036 187.9);
+  --mtv-color-teal-200: oklch(0.902 0.069 186.9);
+  --mtv-color-teal-300: oklch(0.836 0.102 187.5);
+  --mtv-color-teal-400: oklch(0.748 0.117 186.5);
+  --mtv-color-teal-500: oklch(0.661 0.11 185.6);
+  --mtv-color-teal-600: oklch(0.557 0.093 186.2);
+  --mtv-color-teal-700: oklch(0.445 0.074 186);
+  --mtv-color-teal-800: oklch(0.336 0.055 182.2);
+  --mtv-color-teal-900: oklch(0.251 0.04 181.5);
+  --mtv-color-teal-950: oklch(0.185 0.03 183.1);
+  --mtv-color-teal-1000: oklch(0.132 0.02 188.4);
 
   /* Indigo */
-  --mtv-color-indigo-50: #f0f1ff;
-  --mtv-color-indigo-100: #e2e4fe;
-  --mtv-color-indigo-200: #c4c9fd;
-  --mtv-color-indigo-300: #9ba3fb;
-  --mtv-color-indigo-400: #6e74f6;
-  --mtv-color-indigo-500: #4b52ec;
-  --mtv-color-indigo-600: #3238cc;
-  --mtv-color-indigo-700: #2328a3;
-  --mtv-color-indigo-800: #171c7a;
-  --mtv-color-indigo-900: #0d1056;
-  --mtv-color-indigo-950: #05072e;
-  --mtv-color-indigo-1000: #020314;
+  --mtv-color-indigo-50: oklch(0.961 0.019 282.8);
+  --mtv-color-indigo-100: oklch(0.925 0.035 282.2);
+  --mtv-color-indigo-200: oklch(0.85 0.073 280.4);
+  --mtv-color-indigo-300: oklch(0.744 0.127 278.9);
+  --mtv-color-indigo-400: oklch(0.621 0.191 277.3);
+  --mtv-color-indigo-500: oklch(0.533 0.227 273.7);
+  --mtv-color-indigo-600: oklch(0.448 0.221 271.5);
+  --mtv-color-indigo-700: oklch(0.374 0.191 270.8);
+  --mtv-color-indigo-800: oklch(0.303 0.154 270.5);
+  --mtv-color-indigo-900: oklch(0.236 0.122 270.6);
+  --mtv-color-indigo-950: oklch(0.163 0.077 271.3);
+  --mtv-color-indigo-1000: oklch(0.112 0.043 272.2);
 
   /* ================================================================
      Chart Series Tokens (static — consistent across all themes)
@@ -212,8 +212,8 @@
      ================================================================ */
   --font-family-sans: 'Satoshi', system-ui, -apple-system, sans-serif;
   --font-family-condensed: 'Barlow Condensed', system-ui, sans-serif;
-  --font-family-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
-  --font-family-display: 'Zodiak', Georgia, serif;
+  --font-family-mono: 'JetBrains Mono', 'JetBrains Mono', monospace;
+  --font-family-display: 'Epilogue', Georgia, serif;
 
   /* Font Sizes */
   --font-size-2xs: 0.5rem; /* 8px */

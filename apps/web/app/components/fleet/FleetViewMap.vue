@@ -26,6 +26,7 @@ const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
 // ── Status colors ─────────────────────────────────────────────
+// CANVAS-COLORS: Keep as hex. Leaflet DivIcon HTML strings and paint expressions; oklch is not supported.
 const STATUS_COLORS: Record<DriverStatus, string> = {
   driving: '#4ade80',
   idle: '#fbbf24',
@@ -286,7 +287,7 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 
 .fv-marker-initials {
   position: absolute;
-  color: rgba(0, 0, 0, 0.75);
+  color: oklch(0 0 0 / 0.75);
   font-family: var(--font-family-mono);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--tracking-tight);
@@ -322,7 +323,7 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
   background: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-strong);
   border-radius: 2px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
   padding: 0;
 }
 
@@ -371,12 +372,12 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 /* Override Leaflet attribution */
 .leaflet-control-attribution {
   font-size: 9px !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  color: rgba(255, 255, 255, 0.4) !important;
+  background: oklch(0 0 0 / 0.5) !important;
+  color: oklch(1 0 0 / 0.4) !important;
   border-radius: 2px 0 0 0 !important;
 }
 
 .leaflet-control-attribution a {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: oklch(1 0 0 / 0.5) !important;
 }
 </style>

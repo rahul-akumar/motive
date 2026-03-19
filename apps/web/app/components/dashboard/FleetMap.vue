@@ -23,7 +23,7 @@ interface TooltipState {
 
 const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, driver: null })
 
-// Status → fixed colors (not theme-dependent — always need distinct status colors)
+// CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill/stroke attributes; oklch is not supported in SVG presentation attributes.
 const STATUS_COLORS: Record<DriverStatus, string> = {
   driving: '#4ade80', // green-400 — active/moving
   idle: '#fbbf24', // amber-400 — waiting
@@ -315,7 +315,7 @@ function formatHos(driver: Driver): string {
   width: 8px;
   height: 8px;
   border-radius: 25%;
-  background-color: #4ade80;
+  background-color: oklch(0.793 0.209 153.6);
   animation: live-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }
@@ -385,9 +385,9 @@ function formatHos(driver: Driver): string {
   height: 100%;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.04) 50%,
-    rgba(255, 255, 255, 0.02) 75%
+    oklch(1 0 0 / 0.02) 25%,
+    oklch(1 0 0 / 0.04) 50%,
+    oklch(1 0 0 / 0.02) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
@@ -432,11 +432,11 @@ function formatHos(driver: Driver): string {
 
 .fleet-map__tooltip-hos {
   font-size: var(--font-size-xs);
-  color: #4ade80;
+  color: oklch(0.793 0.209 153.6);
 }
 
 .fleet-map__tooltip-hos--violation {
-  color: #f87171;
+  color: oklch(0.706 0.176 17.7);
 }
 
 /* Legend */

@@ -3,6 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
 import type { Driver, Vehicle } from '@motive/shared'
 
+// CANVAS-COLORS: Keep as hex. MapLibre GL paint expressions feed WebGL shaders; oklch is not supported.
 const STATUS_COLORS: Record<string, string> = {
   driving: '#4ade80',
   idle: '#fbbf24',
@@ -809,10 +810,10 @@ watch(
 <!-- Global: override MapLibre popup chrome and inject popup content styles -->
 <style>
 .f3d-maplibre-popup .maplibregl-popup-content {
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: oklch(0.218 0 0);
+  border: 1px solid oklch(1 0 0 / 0.12);
   border-radius: 2px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
   padding: 0;
 }
 
@@ -829,7 +830,7 @@ watch(
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: #e2e2e2;
+  color: oklch(0.913 0 0);
   margin-bottom: 2px;
 }
 
@@ -843,13 +844,13 @@ watch(
 
 .f3d-popup__location {
   font-size: var(--font-size-xs);
-  color: #8a8a8a;
+  color: oklch(0.627 0 0);
   margin-bottom: 2px;
 }
 
 .f3d-popup__meta {
   font-size: var(--font-size-2xs);
-  color: #94a3b8;
+  color: oklch(0.704 0.022 248.4);
   margin-top: 2px;
 }
 

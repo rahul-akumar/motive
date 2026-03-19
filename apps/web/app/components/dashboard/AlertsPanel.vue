@@ -31,24 +31,24 @@ const severityConfig = computed(() => {
   return {
     critical: {
       label: 'CRITICAL',
-      color: '#dc2626',
-      bg: 'rgba(220,38,38,0.06)',
-      border: '#dc2626',
-      iconColor: '#dc2626',
+      color: 'oklch(0.577 0.215 27.3)',
+      bg: 'oklch(0.577 0.215 27.3 / 0.06)',
+      border: 'oklch(0.577 0.215 27.3)',
+      iconColor: 'oklch(0.577 0.215 27.3)',
     },
     warning: {
       label: 'WARNING',
-      color: '#d97706',
-      bg: 'rgba(217,119,6,0.06)',
-      border: '#d97706',
-      iconColor: '#d97706',
+      color: 'oklch(0.666 0.157 58.3)',
+      bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+      border: 'oklch(0.666 0.157 58.3)',
+      iconColor: 'oklch(0.666 0.157 58.3)',
     },
     info: {
       label: 'INFO',
-      color: '#8a8a8a',
-      bg: 'rgba(255,255,255,0.04)',
-      border: '#555555',
-      iconColor: '#8a8a8a',
+      color: 'oklch(0.633 0.000 0)',
+      bg: 'oklch(1.000 0.000 0 / 0.04)',
+      border: 'oklch(0.450 0.000 0)',
+      iconColor: 'oklch(0.633 0.000 0)',
     },
   }
 })
@@ -86,7 +86,7 @@ const severityConfig = computed(() => {
     </div>
 
     <div v-if="alerts.length === 0" class="alerts-panel__empty" role="status" aria-live="polite">
-      <MIcon :icon="CheckCircle2" :size="32" color="#334155" :stroke-width="1.5" />
+      <MIcon :icon="CheckCircle2" :size="32" color="oklch(0.372 0.039 257.3)" :stroke-width="1.5" />
       <p class="alerts-panel__empty-text">No active alerts</p>
     </div>
 
@@ -209,15 +209,15 @@ const severityConfig = computed(() => {
 }
 
 .alerts-panel__count--critical {
-  background-color: rgba(220, 38, 38, 0.08);
-  color: #dc2626;
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  background-color: oklch(0.577 0.215 27.3 / 0.08);
+  color: oklch(0.577 0.215 27.3);
+  border: 1px solid oklch(0.577 0.215 27.3 / 0.2);
 }
 
 .alerts-panel__count--warning {
-  background-color: rgba(217, 119, 6, 0.08);
-  color: #d97706;
-  border: 1px solid rgba(217, 119, 6, 0.2);
+  background-color: oklch(0.666 0.157 58.3 / 0.08);
+  color: oklch(0.666 0.157 58.3);
+  border: 1px solid oklch(0.666 0.157 58.3 / 0.2);
 }
 
 .alerts-panel__dismiss-all {
@@ -262,13 +262,13 @@ const severityConfig = computed(() => {
 }
 
 .alert-card--critical {
-  background-color: rgba(220, 38, 38, 0.05);
-  border-left-color: #dc2626;
+  background-color: oklch(0.577 0.215 27.3 / 0.05);
+  border-left-color: oklch(0.577 0.215 27.3);
 }
 
 .alert-card--warning {
-  background-color: rgba(217, 119, 6, 0.05);
-  border-left-color: #d97706;
+  background-color: oklch(0.666 0.157 58.3 / 0.05);
+  border-left-color: oklch(0.666 0.157 58.3);
 }
 
 .alert-card--info {
@@ -329,7 +329,7 @@ const severityConfig = computed(() => {
 
 .alert-card__dismiss:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: oklch(1 0 0 / 0.06);
 }
 
 .alert-card__title {

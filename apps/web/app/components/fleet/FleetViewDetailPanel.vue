@@ -13,11 +13,11 @@ const emit = defineEmits<{
 }>()
 
 const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: '#4ade80',
-  idle: '#fbbf24',
-  alert: '#f87171',
-  offline: '#525252',
-  sleeper: '#a78bfa',
+  driving: 'oklch(0.800 0.182 151.7)',
+  idle: 'oklch(0.837 0.164 84.4)',
+  alert: 'oklch(0.711 0.166 22.2)',
+  offline: 'oklch(0.439 0.000 0)',
+  sleeper: 'oklch(0.709 0.159 293.5)',
 }
 
 const STATUS_LABELS: Record<DriverStatus, string> = {
@@ -47,9 +47,9 @@ const cyclePercent = computed(() => {
 })
 
 function hosBarColor(percent: number, hasViolation: boolean): string {
-  if (hasViolation || percent <= 0) return '#f87171'
-  if (percent <= 18) return '#fbbf24' // ~2h of 11h
-  return '#4ade80'
+  if (hasViolation || percent <= 0) return 'oklch(0.711 0.166 22.2)'
+  if (percent <= 18) return 'oklch(0.837 0.164 84.4)' // ~2h of 11h
+  return 'oklch(0.800 0.182 151.7)'
 }
 
 function formatLastUpdated(date: Date): string {
@@ -64,7 +64,9 @@ function formatMileage(miles: number): string {
   return miles.toLocaleString()
 }
 
-const statusColor = computed(() => (props.driver ? STATUS_COLORS[props.driver.status] : '#525252'))
+const statusColor = computed(() =>
+  props.driver ? STATUS_COLORS[props.driver.status] : 'oklch(0.439 0.000 0)',
+)
 const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.status] : ''))
 </script>
 
@@ -273,10 +275,10 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
                   width: `${vehicle.fuelLevel}%`,
                   backgroundColor:
                     vehicle.fuelLevel < 20
-                      ? '#f87171'
+                      ? 'oklch(0.711 0.166 22.2)'
                       : vehicle.fuelLevel < 40
-                        ? '#fbbf24'
-                        : '#4ade80',
+                        ? 'oklch(0.837 0.164 84.4)'
+                        : 'oklch(0.800 0.182 151.7)',
                 }"
               />
             </div>
@@ -401,7 +403,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 }
 
 .fv-detail__close:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -466,9 +468,9 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
-  background: rgba(220, 38, 38, 0.1);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
-  color: #f87171;
+  background: oklch(0.577 0.215 27.3 / 0.1);
+  border-bottom: 1px solid oklch(0.577 0.215 27.3 / 0.2);
+  color: oklch(0.711 0.166 22.2);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
 }
@@ -502,7 +504,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__hos-track {
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: oklch(1 0 0 / 0.08);
   border-radius: 1px;
   overflow: hidden;
 }
@@ -571,7 +573,7 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
 
 .fv-detail__fuel-track {
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: oklch(1 0 0 / 0.08);
   border-radius: 1px;
   overflow: hidden;
 }

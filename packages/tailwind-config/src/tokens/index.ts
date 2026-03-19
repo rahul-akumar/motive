@@ -3,6 +3,10 @@
  *
  * These tokens define the visual language of the Motive design system.
  * They are consumed by the Tailwind preset to generate utility classes.
+ *
+ * Canonical hex source for the primitive color palette.
+ * The runtime CSS layer (theme.css) uses oklch equivalents of these values.
+ * Keep this file as hex — it may be consumed in non-CSS contexts.
  */
 
 // ── Layer 1: Primitive palettes ────────────────────────────────────────────

@@ -55,15 +55,15 @@ defineProps<{
 }
 
 .panel-action-row__icon--critical {
-  background-color: rgba(220, 38, 38, 0.1);
-  color: #dc2626;
+  background-color: oklch(0.577 0.215 27.3 / 0.1);
+  color: oklch(0.577 0.215 27.3);
 }
 .panel-action-row__icon--warning {
-  background-color: rgba(217, 119, 6, 0.1);
-  color: #d97706;
+  background-color: oklch(0.666 0.157 58.3 / 0.1);
+  color: oklch(0.666 0.157 58.3);
 }
 .panel-action-row__icon--info {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-subtle);
 }
 
@@ -83,15 +83,15 @@ defineProps<{
 }
 
 .panel-action-row__count--critical {
-  background-color: rgba(220, 38, 38, 0.1);
-  color: #dc2626;
+  background-color: oklch(0.577 0.215 27.3 / 0.1);
+  color: oklch(0.577 0.215 27.3);
 }
 .panel-action-row__count--warning {
-  background-color: rgba(217, 119, 6, 0.1);
-  color: #d97706;
+  background-color: oklch(0.666 0.157 58.3 / 0.1);
+  color: oklch(0.666 0.157 58.3);
 }
 .panel-action-row__count--info {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-subtle);
 }
 

@@ -79,13 +79,13 @@ function iconComponent(name: string): Component {
 .fv-overlay-ctrl__btn--active {
   background: var(--mtv-color-brand-default);
   border-color: var(--mtv-color-brand-default);
-  color: #000;
+  color: oklch(0 0 0);
 }
 
 .fv-overlay-ctrl__btn--active:hover {
   background: var(--mtv-color-brand-hover);
   border-color: var(--mtv-color-brand-hover);
-  color: #000;
+  color: oklch(0 0 0);
 }
 
 .fv-overlay-ctrl__icon {
