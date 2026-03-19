@@ -14,6 +14,13 @@ import {
   Wrench,
   Users,
   Radio,
+  GraduationCap,
+  MessageSquare,
+  FileText,
+  BarChart3,
+  ClipboardList,
+  Tablet,
+  Store,
 } from 'lucide-vue-next'
 import { MIcon, MTooltip, MBadge } from '@motive/ui'
 import { useMotion } from '@vueuse/motion'
@@ -23,7 +30,6 @@ const route = useRoute()
 
 const props = defineProps<{
   isOpen?: boolean
-  alertCount?: number
 }>()
 
 const emit = defineEmits<{
@@ -31,46 +37,69 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const navItems = computed(() => [
+const navGroups = computed(() => [
   {
-    id: 'dashboard',
-    label: t('nav.dashboard'),
-    href: '/',
-    icon: LayoutDashboard,
+    items: [
+      { id: 'dashboard', label: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
+      { id: 'fleet', label: t('nav.fleet'), href: '/fleet', icon: Truck },
+      {
+        id: 'fleet-3d',
+        label: t('nav.fleet3d'),
+        href: '/fleet-3d',
+        icon: Globe,
+        badge: { label: 'Beta', color: 'info' } as const,
+      },
+      { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck },
+      { id: 'compliance', label: t('nav.compliance'), href: '/compliance', icon: ClipboardCheck },
+      { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel },
+      { id: 'cards', label: t('nav.cards'), href: '/cards', icon: CreditCard },
+      { id: 'maintenance', label: t('nav.maintenance'), href: '/maintenance', icon: Wrench },
+      { id: 'workforce', label: t('nav.workforce'), href: '/workforce', icon: Users },
+      { id: 'dispatch', label: t('nav.dispatch'), href: '/dispatch', icon: Radio },
+      { id: 'alerts', label: t('nav.alerts'), href: '/alerts', icon: Bell, wip: true },
+    ],
   },
   {
-    id: 'fleet',
-    label: t('nav.fleet'),
-    href: '/fleet',
-    icon: Truck,
+    items: [
+      {
+        id: 'coaching',
+        label: t('nav.coaching'),
+        href: '/coaching',
+        icon: GraduationCap,
+        wip: true,
+      },
+      {
+        id: 'messages',
+        label: t('nav.messages'),
+        href: '/messages',
+        icon: MessageSquare,
+        wip: true,
+      },
+      { id: 'documents', label: t('nav.documents'), href: '/documents', icon: FileText, wip: true },
+    ],
   },
   {
-    id: 'fleet-3d',
-    label: t('nav.fleet3d'),
-    href: '/fleet-3d',
-    icon: Globe,
-    badge: { label: 'Beta', color: 'info' } as const,
+    items: [
+      {
+        id: 'analytics',
+        label: t('nav.analytics'),
+        href: '/analytics',
+        icon: BarChart3,
+        wip: true,
+      },
+      { id: 'reports', label: t('nav.reports'), href: '/reports', icon: ClipboardList, wip: true },
+      { id: 'devices', label: t('nav.devices'), href: '/devices', icon: Tablet, wip: true },
+    ],
   },
-  { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck, wip: true },
-  {
-    id: 'compliance',
-    label: t('nav.compliance'),
-    href: '/compliance',
-    icon: ClipboardCheck,
-    wip: true,
-  },
-  { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel, wip: true },
-  { id: 'cards', label: t('nav.cards'), href: '/cards', icon: CreditCard, wip: true },
-  {
-    id: 'maintenance',
-    label: t('nav.maintenance'),
-    href: '/maintenance',
-    icon: Wrench,
-    wip: true,
-  },
-  { id: 'workforce', label: t('nav.workforce'), href: '/workforce', icon: Users, wip: true },
-  { id: 'dispatch', label: t('nav.dispatch'), href: '/dispatch', icon: Radio, wip: true },
 ])
+
+const marketplaceItem = computed(() => ({
+  id: 'marketplace',
+  label: t('nav.marketplace'),
+  href: '/marketplace',
+  icon: Store,
+  wip: true,
+}))
 
 function isActive(href: string) {
   if (href === '/') return route.path === '/'
@@ -242,70 +271,61 @@ function toggleCollapsed() {
 
     <!-- Main Nav -->
     <nav class="sidebar__nav" aria-label="Main navigation">
-      <ul role="list" class="sidebar__nav-list">
-        <li v-for="item in navItems" :key="item.id">
-          <MTooltip :content="item.label" placement="right" :disabled="!collapsed">
-            <NuxtLink
-              :to="item.href"
-              :class="['sidebar-nav-item', { active: isActive(item.href) }]"
-              :aria-current="isActive(item.href) ? 'page' : undefined"
-              @click="handleNavClick"
-            >
-              <MIcon :icon="item.icon" class="sidebar__icon" />
-              <span class="sidebar__label">
-                {{ item.label }}
-                <MBadge
-                  v-if="item.badge"
-                  variant="text"
-                  :label="item.badge.label"
-                  size="sm"
-                  :color="item.badge.color"
-                />
-                <MBadge v-else-if="item.wip" variant="text" label="WIP" size="sm" color="warning" />
-              </span>
-            </NuxtLink>
-          </MTooltip>
-        </li>
-      </ul>
+      <template v-for="(group, groupIndex) in navGroups" :key="groupIndex">
+        <hr v-if="groupIndex > 0" class="sidebar__divider" />
+        <ul role="list" class="sidebar__nav-list">
+          <li v-for="item in group.items" :key="item.id">
+            <MTooltip :content="item.label" placement="right" :disabled="!collapsed">
+              <NuxtLink
+                :to="item.href"
+                :class="['sidebar-nav-item', { active: isActive(item.href) }]"
+                :aria-current="isActive(item.href) ? 'page' : undefined"
+                @click="handleNavClick"
+              >
+                <MIcon :icon="item.icon" class="sidebar__icon" />
+                <span class="sidebar__label">
+                  {{ item.label }}
+                  <MBadge
+                    v-if="item.badge"
+                    variant="text"
+                    :label="item.badge.label"
+                    size="sm"
+                    :color="item.badge.color"
+                  />
+                  <MBadge
+                    v-else-if="item.wip"
+                    variant="text"
+                    label="WIP"
+                    size="sm"
+                    color="warning"
+                  />
+                </span>
+              </NuxtLink>
+            </MTooltip>
+          </li>
+        </ul>
+      </template>
     </nav>
 
     <!-- Bottom Nav -->
     <div class="sidebar__bottom">
+      <!-- Marketplace pinned item -->
       <ul role="list" class="sidebar__nav-list">
         <li>
-          <MTooltip
-            :content="
-              alertCount && alertCount > 0
-                ? t('sidebar.activeAlerts', { count: alertCount })
-                : t('nav.alerts')
-            "
-            placement="right"
-            :disabled="!collapsed"
-          >
-            <button
-              type="button"
-              class="sidebar-nav-item sidebar-nav-item--btn sidebar__alerts-btn"
-              :aria-label="
-                alertCount && alertCount > 0
-                  ? t('sidebar.activeAlerts', { count: alertCount })
-                  : t('nav.alerts')
-              "
+          <MTooltip :content="marketplaceItem.label" placement="right" :disabled="!collapsed">
+            <NuxtLink
+              :to="marketplaceItem.href"
+              :class="['sidebar-nav-item', { active: isActive(marketplaceItem.href) }]"
+              :aria-current="isActive(marketplaceItem.href) ? 'page' : undefined"
+              @click="handleNavClick"
             >
-              <span class="sidebar__icon-wrap">
-                <MIcon :icon="Bell" :size="18" class="sidebar__icon" />
-                <span
-                  v-if="alertCount && alertCount > 0"
-                  class="sidebar__alerts-badge"
-                  aria-hidden="true"
-                >
-                  {{ alertCount > 9 ? '9+' : alertCount }}
-                </span>
-              </span>
-              <span class="sidebar__label">{{ t('nav.alerts') }}</span>
-            </button>
+              <MIcon :icon="marketplaceItem.icon" class="sidebar__icon" />
+              <span class="sidebar__label">{{ marketplaceItem.label }}</span>
+            </NuxtLink>
           </MTooltip>
         </li>
       </ul>
+      <hr class="sidebar__divider" />
 
       <!-- User Profile -->
       <MTooltip content="John Dispatch" placement="right" :disabled="!collapsed">
@@ -405,34 +425,16 @@ function toggleCollapsed() {
   justify-self: center;
 }
 
-/* Wrapper for icon + badge in alerts button */
-.sidebar__icon-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  justify-self: center;
-  width: 18px;
-  height: 18px;
+.sidebar__divider {
+  border: none;
+  border-top: 1px solid var(--mtv-color-border-default);
+  margin: 0.25rem 0;
+  opacity: 0.5;
 }
 
-.sidebar__alerts-badge {
-  position: absolute;
-  top: -5px;
-  right: -7px;
-  min-width: 15px;
-  height: 15px;
-  background-color: oklch(0.577 0.215 27.3);
-  color: white;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-2xs);
-  font-weight: var(--font-weight-bold);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 2px;
-  border: 1px solid var(--mtv-color-surface-base);
+.sidebar__divider--strong {
+  opacity: 1;
+  border-top-width: 2px;
 }
 
 .sidebar-nav-item {

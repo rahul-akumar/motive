@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const { activeAlerts } = useAlerts()
-const alertCount = computed(() => activeAlerts.value.length)
-
 const { activePanel } = provideRightPanel()
 
 const preferencesModalOpen = ref(false)
@@ -33,7 +30,6 @@ function openPreferences(section?: string) {
 
     <LayoutAppSidebar
       :is-open="sidebarOpen"
-      :alert-count="alertCount"
       @open-preferences="openPreferences"
       @close="closeSidebar"
     />
