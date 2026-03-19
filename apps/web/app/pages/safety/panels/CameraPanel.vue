@@ -132,7 +132,7 @@ const quickLinks = [
 
 .camera-panel__coverage-fill {
   height: 100%;
-  background-color: #10b981;
+  background-color: oklch(0.696 0.149 162.5);
   border-radius: 2px;
   transition: width 400ms ease;
 }

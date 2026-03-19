@@ -30,23 +30,73 @@ function getCSSVar(name: string): string {
 const eventConfig = computed(
   (): Record<ActivityEventType, { label: string; color: string; bg: string }> => {
     return {
-      trip_started: { label: 'Trip Started', color: '#9a9a9a', bg: 'rgba(255,255,255,0.04)' },
-      trip_completed: { label: 'Trip Completed', color: '#9a9a9a', bg: 'rgba(255,255,255,0.04)' },
-      hos_warning: { label: 'HOS Warning', color: '#d97706', bg: 'rgba(217,119,6,0.06)' },
-      hos_violation: { label: 'HOS Violation', color: '#dc2626', bg: 'rgba(220,38,38,0.06)' },
-      geofence_enter: { label: 'Geofence Enter', color: '#8a8a8a', bg: 'rgba(255,255,255,0.04)' },
-      geofence_exit: { label: 'Geofence Exit', color: '#8a8a8a', bg: 'rgba(255,255,255,0.04)' },
-      fuel_stop: { label: 'Fuel Stop', color: '#8a8a8a', bg: 'rgba(255,255,255,0.04)' },
-      alert_triggered: { label: 'Alert', color: '#d97706', bg: 'rgba(217,119,6,0.06)' },
-      driver_login: { label: 'Driver Login', color: '#8a8a8a', bg: 'rgba(255,255,255,0.04)' },
-      inspection_passed: { label: 'Inspection', color: '#8a8a8a', bg: 'rgba(255,255,255,0.04)' },
-      vehicle_idle: { label: 'Vehicle Idle', color: '#d97706', bg: 'rgba(217,119,6,0.06)' },
+      trip_started: {
+        label: 'Trip Started',
+        color: 'oklch(0.686 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      trip_completed: {
+        label: 'Trip Completed',
+        color: 'oklch(0.686 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      hos_warning: {
+        label: 'HOS Warning',
+        color: 'oklch(0.666 0.157 58.3)',
+        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+      },
+      hos_violation: {
+        label: 'HOS Violation',
+        color: 'oklch(0.577 0.215 27.3)',
+        bg: 'oklch(0.577 0.215 27.3 / 0.06)',
+      },
+      geofence_enter: {
+        label: 'Geofence Enter',
+        color: 'oklch(0.633 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      geofence_exit: {
+        label: 'Geofence Exit',
+        color: 'oklch(0.633 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      fuel_stop: {
+        label: 'Fuel Stop',
+        color: 'oklch(0.633 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      alert_triggered: {
+        label: 'Alert',
+        color: 'oklch(0.666 0.157 58.3)',
+        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+      },
+      driver_login: {
+        label: 'Driver Login',
+        color: 'oklch(0.633 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      inspection_passed: {
+        label: 'Inspection',
+        color: 'oklch(0.633 0.000 0)',
+        bg: 'oklch(1.000 0.000 0 / 0.04)',
+      },
+      vehicle_idle: {
+        label: 'Vehicle Idle',
+        color: 'oklch(0.666 0.157 58.3)',
+        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+      },
     }
   },
 )
 
 function getConfig(type: ActivityEventType) {
-  return eventConfig.value[type] || { label: type, color: '#64748b', bg: 'rgba(100,116,139,0.12)' }
+  return (
+    eventConfig.value[type] || {
+      label: type,
+      color: 'oklch(0.554 0.041 257.4)',
+      bg: 'oklch(0.554 0.041 257.4 / 0.12)',
+    }
+  )
 }
 </script>
 
@@ -191,7 +241,7 @@ function getConfig(type: ActivityEventType) {
   display: flex;
   gap: 0.75rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid oklch(1 0 0 / 0.04);
   position: relative;
 }
 
@@ -283,6 +333,6 @@ function getConfig(type: ActivityEventType) {
 
 .activity-feed__load-more:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: oklch(1 0 0 / 0.04);
 }
 </style>

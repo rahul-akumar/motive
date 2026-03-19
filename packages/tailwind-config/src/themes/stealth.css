@@ -4,29 +4,29 @@ html[data-theme='stealth'] {
   /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
 
   /* Foreground */
-  --mtv-color-foreground-default: hsl(0, 0%, 85%);
-  --mtv-color-foreground-muted: hsl(0, 0%, 50%);
-  --mtv-color-foreground-subtle: hsl(0, 0%, 35%);
-  --mtv-color-foreground-disabled: hsl(0, 0%, 25%);
-  --mtv-color-foreground-inverse: hsl(0, 0%, 10%);
-  --mtv-color-foreground-on-accent: hsl(0, 0%, 10%);
+  --mtv-color-foreground-default: oklch(0.885 0 0);
+  --mtv-color-foreground-muted: oklch(0.598 0 0);
+  --mtv-color-foreground-subtle: oklch(0.465 0 0);
+  --mtv-color-foreground-disabled: oklch(0.371 0 0);
+  --mtv-color-foreground-inverse: oklch(0.216 0 0);
+  --mtv-color-foreground-on-accent: oklch(0.216 0 0);
 
   /* Surface */
-  --mtv-color-surface-base: hsl(0, 0%, 10%);
-  --mtv-color-surface-sunken: hsl(0, 0%, 7%);
-  --mtv-color-surface-default: hsl(0, 0%, 5%);
-  --mtv-color-surface-raised: #141414;
-  --mtv-color-surface-overlay: #1c1c1c;
-  --mtv-color-surface-hover: #181818;
-  --mtv-color-surface-active: #202020;
-  --mtv-color-surface-accent: hsla(0, 0%, 100%, 0.05);
-  --mtv-color-surface-accent-subtle: hsla(0, 0%, 100%, 0.03);
+  --mtv-color-surface-base: oklch(0.216 0 0);
+  --mtv-color-surface-sunken: oklch(0.182 0 0);
+  --mtv-color-surface-default: oklch(0.158 0 0);
+  --mtv-color-surface-raised: oklch(0.191 0 0);
+  --mtv-color-surface-overlay: oklch(0.226 0 0);
+  --mtv-color-surface-hover: oklch(0.209 0 0);
+  --mtv-color-surface-active: oklch(0.244 0 0);
+  --mtv-color-surface-accent: oklch(1 0 0 / 0.05);
+  --mtv-color-surface-accent-subtle: oklch(1 0 0 / 0.03);
 
   /* Border */
-  --mtv-color-border-default: hsla(0, 0%, 100%, 0.1);
-  --mtv-color-border-strong: hsla(0, 0%, 100%, 0.18);
-  --mtv-color-border-accent: hsla(0, 0%, 100%, 0.28);
-  --mtv-color-border-subtle: hsla(0, 0%, 100%, 0.06);
+  --mtv-color-border-default: oklch(1 0 0 / 0.1);
+  --mtv-color-border-strong: oklch(1 0 0 / 0.18);
+  --mtv-color-border-accent: oklch(1 0 0 / 0.28);
+  --mtv-color-border-subtle: oklch(1 0 0 / 0.06);
 
   /* Link */
   --mtv-color-link-default: var(--mtv-color-blue-400);
@@ -35,22 +35,22 @@ html[data-theme='stealth'] {
   --mtv-color-link-active: var(--mtv-color-blue-500);
 
   /* Brand */
-  --mtv-color-brand-default: #e2e2e2;
-  --mtv-color-brand-hover: #ffffff;
-  --mtv-color-brand-subtle: hsla(0, 0%, 100%, 0.05);
-  --mtv-color-brand-muted: hsla(0, 0%, 100%, 0.03);
-  --mtv-color-brand-foreground: hsl(0, 0%, 10%);
-  --mtv-color-brand-ring: hsl(0, 0%, 89%);
+  --mtv-color-brand-default: oklch(0.913 0 0);
+  --mtv-color-brand-hover: oklch(1 0 0);
+  --mtv-color-brand-subtle: oklch(1 0 0 / 0.05);
+  --mtv-color-brand-muted: oklch(1 0 0 / 0.03);
+  --mtv-color-brand-foreground: oklch(0.216 0 0);
+  --mtv-color-brand-ring: oklch(0.916 0 0);
 
   /* Status */
   --mtv-color-status-success: var(--mtv-color-green-500);
-  --mtv-color-status-success-subtle: rgba(16, 180, 98, 0.12);
+  --mtv-color-status-success-subtle: oklch(0.676 0.17 153.2 / 0.12);
   --mtv-color-status-warning: var(--mtv-color-gold-500);
-  --mtv-color-status-warning-subtle: rgba(217, 119, 6, 0.12);
+  --mtv-color-status-warning-subtle: oklch(0.666 0.157 58.3 / 0.12);
   --mtv-color-status-critical: var(--mtv-color-red-500);
-  --mtv-color-status-critical-subtle: rgba(229, 34, 34, 0.12);
+  --mtv-color-status-critical-subtle: oklch(0.591 0.225 27.7 / 0.12);
   --mtv-color-status-info: var(--mtv-color-blue-400);
-  --mtv-color-status-info-subtle: rgba(85, 144, 255, 0.12);
+  --mtv-color-status-info-subtle: oklch(0.668 0.176 261.8 / 0.12);
 
   /* Chart */
   --mtv-color-chart-positive: var(--mtv-color-green-500);
@@ -59,18 +59,18 @@ html[data-theme='stealth'] {
   --mtv-color-chart-neutral: var(--mtv-color-neutral-500);
 
   /* ── App-specific vars ────────────────────────────────────────── */
-  --scrollbar-thumb: hsl(0, 0%, 12%);
-  --scrollbar-thumb-hover: hsl(0, 0%, 16%);
+  --scrollbar-thumb: oklch(0.238 0 0);
+  --scrollbar-thumb-hover: oklch(0.28 0 0);
   --logo-bg: var(--mtv-color-brand-default);
   --logo-text: var(--mtv-color-brand-foreground);
-  --sidebar-active-bg: hsla(0, 0%, 100%, 0.09);
-  --sidebar-active-border: hsl(0, 0%, 89%);
-  --sidebar-active-icon: hsl(0, 0%, 89%);
+  --sidebar-active-bg: oklch(1 0 0 / 0.09);
+  --sidebar-active-border: oklch(0.916 0 0);
+  --sidebar-active-icon: oklch(0.916 0 0);
   --sidebar-active-glow: none;
   --avatar-bg: var(--mtv-color-surface-accent);
-  --avatar-text: hsl(0, 0%, 60%);
+  --avatar-text: oklch(0.683 0 0);
   --table-sorted-color: var(--mtv-color-brand-default);
-  --search-focus-border: hsl(207, 72%, 55%);
+  --search-focus-border: oklch(0.649 0.14 247.1);
   --search-focus-shadow: none;
   --card-radius: 8px;
   --badge-radius: 0px;

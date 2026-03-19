@@ -19,6 +19,7 @@ function getCSSVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 }
 
+// CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill attributes; oklch is not supported in SVG presentation attributes.
 const segments = computed(() => [
   {
     key: 'driving',

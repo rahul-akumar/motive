@@ -3,29 +3,29 @@ html[data-theme='slate'] {
   /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
 
   /* Foreground */
-  --mtv-color-foreground-default: hsl(216, 28%, 90%);
-  --mtv-color-foreground-muted: hsl(213, 13%, 54%);
-  --mtv-color-foreground-subtle: hsl(214, 14%, 38%);
-  --mtv-color-foreground-disabled: hsl(214, 21%, 31%);
-  --mtv-color-foreground-inverse: hsl(210, 15%, 5%);
-  --mtv-color-foreground-on-accent: #ffffff;
+  --mtv-color-foreground-default: oklch(0.917 0.013 258.3);
+  --mtv-color-foreground-muted: oklch(0.622 0.03 253.5);
+  --mtv-color-foreground-subtle: oklch(0.482 0.029 255.2);
+  --mtv-color-foreground-disabled: oklch(0.415 0.037 255.3);
+  --mtv-color-foreground-inverse: oklch(0.157 0.005 248.2);
+  --mtv-color-foreground-on-accent: oklch(1 0 0);
 
   /* Surface */
-  --mtv-color-surface-base: hsl(210, 15%, 5%);
-  --mtv-color-surface-sunken: hsl(210, 15%, 6%);
-  --mtv-color-surface-default: hsl(210, 15%, 4%);
-  --mtv-color-surface-raised: hsl(210, 15%, 8%);
-  --mtv-color-surface-overlay: hsl(210, 15%, 12%);
-  --mtv-color-surface-hover: hsl(210, 15%, 10%);
-  --mtv-color-surface-active: hsl(210, 15%, 14%);
-  --mtv-color-surface-accent: rgba(100, 116, 139, 0.1);
-  --mtv-color-surface-accent-subtle: hsla(215, 16%, 47%, 0.05);
+  --mtv-color-surface-base: oklch(0.157 0.005 248.2);
+  --mtv-color-surface-sunken: oklch(0.168 0.006 248.2);
+  --mtv-color-surface-default: oklch(0.145 0.004 247.1);
+  --mtv-color-surface-raised: oklch(0.191 0.008 248.2);
+  --mtv-color-surface-overlay: oklch(0.235 0.011 248.3);
+  --mtv-color-surface-hover: oklch(0.213 0.01 248.3);
+  --mtv-color-surface-active: oklch(0.256 0.013 248.3);
+  --mtv-color-surface-accent: oklch(0.554 0.041 257.4 / 0.1);
+  --mtv-color-surface-accent-subtle: oklch(0.556 0.04 256.8 / 0.05);
 
   /* Border */
-  --mtv-color-border-default: hsla(215, 16%, 47%, 0.12);
-  --mtv-color-border-strong: hsla(215, 16%, 47%, 0.35);
-  --mtv-color-border-accent: hsla(215, 16%, 47%, 0.5);
-  --mtv-color-border-subtle: hsla(215, 16%, 47%, 0.07);
+  --mtv-color-border-default: oklch(0.556 0.04 256.8 / 0.12);
+  --mtv-color-border-strong: oklch(0.556 0.04 256.8 / 0.35);
+  --mtv-color-border-accent: oklch(0.556 0.04 256.8 / 0.5);
+  --mtv-color-border-subtle: oklch(0.556 0.04 256.8 / 0.07);
 
   /* Link */
   --mtv-color-link-default: var(--mtv-color-blue-400);
@@ -34,22 +34,22 @@ html[data-theme='slate'] {
   --mtv-color-link-active: var(--mtv-color-blue-500);
 
   /* Brand */
-  --mtv-color-brand-default: hsl(215, 16%, 47%);
-  --mtv-color-brand-hover: hsl(215, 20%, 65%);
-  --mtv-color-brand-subtle: rgba(100, 116, 139, 0.1);
-  --mtv-color-brand-muted: hsla(215, 16%, 47%, 0.05);
-  --mtv-color-brand-foreground: #ffffff;
-  --mtv-color-brand-ring: hsl(215, 20%, 65%);
+  --mtv-color-brand-default: oklch(0.556 0.04 256.8);
+  --mtv-color-brand-hover: oklch(0.71 0.035 256.8);
+  --mtv-color-brand-subtle: oklch(0.554 0.041 257.4 / 0.1);
+  --mtv-color-brand-muted: oklch(0.556 0.04 256.8 / 0.05);
+  --mtv-color-brand-foreground: oklch(1 0 0);
+  --mtv-color-brand-ring: oklch(0.71 0.035 256.8);
 
   /* Status */
   --mtv-color-status-success: var(--mtv-color-green-500);
-  --mtv-color-status-success-subtle: rgba(16, 180, 98, 0.12);
+  --mtv-color-status-success-subtle: oklch(0.676 0.17 153.2 / 0.12);
   --mtv-color-status-warning: var(--mtv-color-gold-500);
-  --mtv-color-status-warning-subtle: rgba(217, 119, 6, 0.12);
+  --mtv-color-status-warning-subtle: oklch(0.666 0.157 58.3 / 0.12);
   --mtv-color-status-critical: var(--mtv-color-red-500);
-  --mtv-color-status-critical-subtle: rgba(229, 34, 34, 0.12);
+  --mtv-color-status-critical-subtle: oklch(0.591 0.225 27.7 / 0.12);
   --mtv-color-status-info: var(--mtv-color-blue-400);
-  --mtv-color-status-info-subtle: rgba(85, 144, 255, 0.12);
+  --mtv-color-status-info-subtle: oklch(0.668 0.176 261.8 / 0.12);
 
   /* Chart */
   --mtv-color-chart-positive: var(--mtv-color-green-500);
@@ -58,22 +58,22 @@ html[data-theme='slate'] {
   --mtv-color-chart-neutral: var(--mtv-color-neutral-500);
 
   /* ── App-specific vars ────────────────────────────────────────── */
-  --scrollbar-thumb: hsl(217, 23%, 15%);
-  --scrollbar-thumb-hover: hsl(211, 22%, 20%);
+  --scrollbar-thumb: oklch(0.259 0.023 259.8);
+  --scrollbar-thumb-hover: oklch(0.315 0.026 250.4);
   --logo-bg: var(--mtv-color-brand-default);
   --logo-text: var(--mtv-color-brand-foreground);
-  --sidebar-active-bg: hsla(215, 16%, 47%, 0.102);
-  --sidebar-active-border: hsl(215, 16%, 47%);
-  --sidebar-active-icon: hsl(215, 20%, 65%);
+  --sidebar-active-bg: oklch(0.556 0.04 256.8 / 0.102);
+  --sidebar-active-border: oklch(0.556 0.04 256.8);
+  --sidebar-active-icon: oklch(0.71 0.035 256.8);
   --sidebar-active-glow: none;
   --avatar-bg: var(--mtv-color-surface-accent);
-  --avatar-text: hsl(215, 16%, 47%);
-  --table-sorted-color: hsl(215, 20%, 65%);
-  --search-focus-border: hsla(215, 16%, 47%, 0.4);
-  --search-focus-shadow: 0 0 0 3px rgba(100, 116, 139, 0.08);
+  --avatar-text: oklch(0.556 0.04 256.8);
+  --table-sorted-color: oklch(0.71 0.035 256.8);
+  --search-focus-border: oklch(0.556 0.04 256.8 / 0.4);
+  --search-focus-shadow: 0 0 0 3px oklch(0.554 0.041 257.4 / 0.08);
   --card-radius: 8px;
   --badge-radius: 3px;
-  --shadow-card: 0 4px 20px hsla(0, 0%, 0%, 0.45), 0 1px 4px hsla(0, 0%, 0%, 0.3);
+  --shadow-card: 0 4px 20px oklch(0 0 0 / 0.45), 0 1px 4px oklch(0 0 0 / 0.3);
   --font-family-sans: 'JetBrains Mono', monospace;
   --main-margin: 0.5rem 0.5rem 0.5rem 0;
   --main-radius: var(--card-radius);

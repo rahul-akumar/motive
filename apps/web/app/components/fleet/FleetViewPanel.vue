@@ -23,11 +23,11 @@ const emit = defineEmits<{
 }>()
 
 const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: '#4ade80',
-  idle: '#fbbf24',
-  alert: '#f87171',
-  offline: '#525252',
-  sleeper: '#a78bfa',
+  driving: 'oklch(0.800 0.182 151.7)',
+  idle: 'oklch(0.837 0.164 84.4)',
+  alert: 'oklch(0.711 0.166 22.2)',
+  offline: 'oklch(0.439 0.000 0)',
+  sleeper: 'oklch(0.709 0.159 293.5)',
 }
 
 const STATUS_LABELS: Record<DriverStatus, string> = {
@@ -231,7 +231,7 @@ const localSearch = computed({
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-subtle);
-  background: rgba(255, 255, 255, 0.06);
+  background: oklch(1 0 0 / 0.06);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 1px 5px;
@@ -255,7 +255,7 @@ const localSearch = computed({
 }
 
 .fv-panel__collapse-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -292,7 +292,7 @@ const localSearch = computed({
 }
 
 .fv-filter-chip--active {
-  background: rgba(255, 255, 255, 0.04);
+  background: oklch(1 0 0 / 0.04);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -328,7 +328,7 @@ const localSearch = computed({
 .fv-panel__search-input {
   width: 100%;
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: oklch(1 0 0 / 0.04);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   font-size: var(--font-size-md);

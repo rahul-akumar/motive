@@ -23,11 +23,11 @@ const emit = defineEmits<{
 }>()
 
 const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: '#4ade80',
-  idle: '#fbbf24',
-  alert: '#f87171',
-  offline: '#525252',
-  sleeper: '#a78bfa',
+  driving: 'oklch(0.800 0.182 151.7)',
+  idle: 'oklch(0.837 0.164 84.4)',
+  alert: 'oklch(0.711 0.166 22.2)',
+  offline: 'oklch(0.439 0.000 0)',
+  sleeper: 'oklch(0.709 0.159 293.5)',
 }
 
 const STATUS_LABELS: Record<DriverStatus, string> = {
@@ -155,8 +155,8 @@ const localSearch = computed({
   align-items: center;
   gap: 0.375rem;
   padding: 0.5rem 0.625rem 0.5rem 0.5rem;
-  background: rgba(10, 10, 20, 0.85);
-  border: 1px solid rgba(100, 130, 255, 0.2);
+  background: oklch(0.15 0.021 283.5 / 0.85);
+  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
   border-left: none;
   border-radius: 0 2px 2px 0;
   color: var(--mtv-color-foreground-muted);
@@ -167,7 +167,7 @@ const localSearch = computed({
 }
 
 .f3d-panel-toggle:hover {
-  background: rgba(20, 20, 40, 0.95);
+  background: oklch(0.203 0.039 282.3 / 0.95);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -188,10 +188,10 @@ const localSearch = computed({
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, #0d0d1a 96%, transparent);
+  background: color-mix(in srgb, oklch(0.166 0.027 283.1) 96%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-right: 1px solid rgba(100, 130, 255, 0.15);
+  border-right: 1px solid oklch(0.647 0.188 270.3 / 0.15);
   border-top: none;
   border-bottom: none;
   border-left: none;
@@ -205,7 +205,7 @@ const localSearch = computed({
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.75rem 0.75rem 0.875rem;
-  border-bottom: 1px solid rgba(100, 130, 255, 0.12);
+  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.12);
   flex-shrink: 0;
 }
 
@@ -216,7 +216,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__header-icon {
-  color: #6482ff;
+  color: oklch(0.647 0.188 270.3);
 }
 
 .f3d-panel__title {
@@ -231,8 +231,8 @@ const localSearch = computed({
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-subtle);
-  background: rgba(100, 130, 255, 0.08);
-  border: 1px solid rgba(100, 130, 255, 0.2);
+  background: oklch(0.647 0.188 270.3 / 0.08);
+  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
   border-radius: 2px;
   padding: 1px 5px;
   letter-spacing: var(--tracking-wide);
@@ -245,7 +245,7 @@ const localSearch = computed({
   width: 24px;
   height: 24px;
   background: transparent;
-  border: 1px solid rgba(100, 130, 255, 0.2);
+  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
   border-radius: 2px;
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
@@ -255,7 +255,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__collapse-btn:hover {
-  background: rgba(100, 130, 255, 0.1);
+  background: oklch(0.647 0.188 270.3 / 0.1);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -265,7 +265,7 @@ const localSearch = computed({
   flex-wrap: wrap;
   gap: 0.375rem;
   padding: 0.625rem 0.75rem;
-  border-bottom: 1px solid rgba(100, 130, 255, 0.1);
+  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.1);
   flex-shrink: 0;
 }
 
@@ -275,7 +275,7 @@ const localSearch = computed({
   gap: 0.25rem;
   padding: 0.1875rem 0.5rem;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid oklch(1 0 0 / 0.1);
   border-radius: 2px;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
@@ -287,12 +287,12 @@ const localSearch = computed({
 }
 
 .f3d-filter-chip:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: oklch(1 0 0 / 0.2);
   color: var(--mtv-color-foreground-muted);
 }
 
 .f3d-filter-chip--active {
-  background: rgba(255, 255, 255, 0.04);
+  background: oklch(1 0 0 / 0.04);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -312,7 +312,7 @@ const localSearch = computed({
 .f3d-panel__search {
   position: relative;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid rgba(100, 130, 255, 0.1);
+  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.1);
   flex-shrink: 0;
 }
 
@@ -328,8 +328,8 @@ const localSearch = computed({
 .f3d-panel__search-input {
   width: 100%;
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
-  background: rgba(100, 130, 255, 0.05);
-  border: 1px solid rgba(100, 130, 255, 0.15);
+  background: oklch(0.647 0.188 270.3 / 0.05);
+  border: 1px solid oklch(0.647 0.188 270.3 / 0.15);
   border-radius: 2px;
   font-size: var(--font-size-md);
   color: var(--mtv-color-foreground-default);
@@ -342,7 +342,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__search-input:focus {
-  border-color: rgba(100, 130, 255, 0.4);
+  border-color: oklch(0.647 0.188 270.3 / 0.4);
 }
 
 /* Driver list */

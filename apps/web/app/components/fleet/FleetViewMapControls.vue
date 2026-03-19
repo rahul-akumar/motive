@@ -174,7 +174,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 }
 
 .fv-controls__btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -229,7 +229,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 }
 
 .fv-controls__layer-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: oklch(1 0 0 / 0.06);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -271,7 +271,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #4ade80;
+  background-color: oklch(0.8 0.182 151.7);
   animation: fv-live-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }

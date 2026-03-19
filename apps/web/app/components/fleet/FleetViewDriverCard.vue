@@ -11,11 +11,11 @@ const emit = defineEmits<{
 }>()
 
 const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: '#4ade80',
-  idle: '#fbbf24',
-  alert: '#f87171',
-  offline: '#525252',
-  sleeper: '#a78bfa',
+  driving: 'oklch(0.800 0.182 151.7)',
+  idle: 'oklch(0.837 0.164 84.4)',
+  alert: 'oklch(0.711 0.166 22.2)',
+  offline: 'oklch(0.439 0.000 0)',
+  sleeper: 'oklch(0.709 0.159 293.5)',
 }
 
 const STATUS_LABELS: Record<DriverStatus, string> = {
@@ -33,9 +33,9 @@ const hosPercent = computed(() => {
 
 const hosColor = computed(() => {
   const h = props.driver.hos.drivingRemaining
-  if (props.driver.hos.hasViolation || h <= 0) return '#f87171'
-  if (h <= 2) return '#fbbf24'
-  return '#4ade80'
+  if (props.driver.hos.hasViolation || h <= 0) return 'oklch(0.711 0.166 22.2)'
+  if (h <= 2) return 'oklch(0.837 0.164 84.4)'
+  return 'oklch(0.800 0.182 151.7)'
 })
 
 const statusColor = computed(() => STATUS_COLORS[props.driver.status])
@@ -123,11 +123,11 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: oklch(1 0 0 / 0.03);
 }
 
 .fv-driver-card--selected {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: oklch(1 0 0 / 0.05);
 }
 
 /* Left accent bar */
@@ -219,7 +219,7 @@ function formatLastUpdated(date: Date): string {
 .fv-driver-card__hos-bar-track {
   flex: 1;
   height: 3px;
-  background: rgba(255, 255, 255, 0.08);
+  background: oklch(1 0 0 / 0.08);
   border-radius: 1px;
   overflow: hidden;
 }

@@ -148,9 +148,9 @@ const { dailyMiles } = useMilesData()
   height: 280px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.04) 50%,
-    rgba(255, 255, 255, 0.02) 75%
+    oklch(1 0 0 / 0.02) 25%,
+    oklch(1 0 0 / 0.04) 50%,
+    oklch(1 0 0 / 0.02) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;

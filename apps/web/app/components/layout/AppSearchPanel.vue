@@ -405,7 +405,7 @@ function onLeave(el: Element, done: () => void) {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-subtle);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: oklch(1 0 0 / 0.03);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 1px 4px;
@@ -420,8 +420,8 @@ function onLeave(el: Element, done: () => void) {
   border: 1px solid var(--search-focus-border);
   border-radius: var(--card-radius);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-    0 8px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 1px oklch(1 0 0 / 0.04) inset,
+    0 8px 40px oklch(0 0 0 / 0.55),
     var(--search-focus-shadow);
   /* width/height/opacity animated by JS hooks — no CSS transition here */
 }
@@ -464,7 +464,7 @@ function onLeave(el: Element, done: () => void) {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-subtle);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: oklch(1 0 0 / 0.05);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 3px;
   padding: 2px 6px;
@@ -506,7 +506,7 @@ function onLeave(el: Element, done: () => void) {
 
 .search-overlay__row:hover,
 .search-overlay__row:focus {
-  background-color: hsla(0, 0%, 100%, 0.07);
+  background-color: oklch(1 0 0 / 0.07);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -550,7 +550,7 @@ function onLeave(el: Element, done: () => void) {
 
 .search-overlay__row-remove:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: hsla(0, 0%, 100%, 0.1);
+  background-color: oklch(1 0 0 / 0.1);
 }
 
 .search-overlay__empty {
@@ -587,7 +587,7 @@ function onLeave(el: Element, done: () => void) {
 
 .sidebar-nav-item:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: hsla(0, 0%, 100%, 0.09);
+  background-color: oklch(1 0 0 / 0.09);
 }
 
 .sidebar-nav-item--btn {

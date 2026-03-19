@@ -67,13 +67,13 @@ function statusLabel(status: string): string {
 }
 
 function hosColor(driver: Driver): string {
-  if (driver.hos.hasViolation) return '#dc2626'
-  if (driver.hos.drivingRemaining <= 1) return '#dc2626'
-  if (driver.hos.drivingRemaining <= 3) return '#d97706'
-  if (!import.meta.client) return '#555555'
+  if (driver.hos.hasViolation) return 'oklch(0.577 0.215 27.3)'
+  if (driver.hos.drivingRemaining <= 1) return 'oklch(0.577 0.215 27.3)'
+  if (driver.hos.drivingRemaining <= 3) return 'oklch(0.666 0.157 58.3)'
+  if (!import.meta.client) return 'oklch(0.450 0.000 0)'
   return (
     getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() ||
-    '#555555'
+    'oklch(0.450 0.000 0)'
   )
 }
 </script>
@@ -320,7 +320,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table-card__export:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: oklch(1 0 0 / 0.06);
 }
 
 .fleet-table-card__scroll {
@@ -338,7 +338,7 @@ function hosColor(driver: Driver): string {
   width: 28px;
   height: 28px;
   border-radius: 2px;
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: oklch(1 0 0 / 0.04);
   border: 1px solid var(--mtv-color-border-default);
   color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
@@ -431,7 +431,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table-card__page-btn:hover:not(:disabled) {
   color: var(--mtv-color-foreground-default);
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: oklch(1 0 0 / 0.04);
 }
 
 .fleet-table-card__page-btn:disabled {

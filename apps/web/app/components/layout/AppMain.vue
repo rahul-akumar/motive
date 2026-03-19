@@ -116,12 +116,12 @@ const subNavTabs = computed(() => {
   margin: var(--main-margin, 0.5rem 0.5rem 0.5rem 0);
   border-radius: var(--main-radius, var(--card-radius));
   background-color: var(--mtv-color-surface-sunken);
-  border: 1px solid var(--mtv-color-border-default);
+  border: 1px solid var(--mtv-color-border-subtle);
 }
 
 .app-main--globe {
-  background-color: #0a0a0f;
-  border-color: #1a1a2e;
+  background-color: oklch(0.147 0.011 285);
+  border-color: oklch(0.228 0.038 282.9);
 }
 
 .app-page-header {
@@ -130,8 +130,9 @@ const subNavTabs = computed(() => {
 }
 
 .app-page-module {
-  font-size: 1.25rem;
-  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xl);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 0.01em;
   color: var(--mtv-color-foreground-default);
   margin: 0 0 2px;

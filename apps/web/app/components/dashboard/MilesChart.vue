@@ -27,6 +27,7 @@ function getCSSVar(name: string): string {
 function drawChart() {
   if (!svgRef.value || !containerRef.value || !props.data.length) return
 
+  // CANVAS-COLORS: Keep as hex. D3 passes these as SVG stroke/fill attributes; oklch is not supported in SVG presentation attributes.
   const accentColor = getCSSVar('--accent') || '#1b4dff'
   const bgCard = getCSSVar('--bg-card') || '#0f1420'
   const textMuted = getCSSVar('--text-muted') || '#334155'

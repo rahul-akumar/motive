@@ -75,7 +75,7 @@ const {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #0a0a0f;
+  background-color: oklch(0.147 0.011 285);
 }
 
 .f3d-page__globe {
@@ -91,10 +91,10 @@ const {
   bottom: 24px;
   right: 24px;
   z-index: 10;
-  background: rgba(20, 20, 30, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: oklch(0.196 0.02 284.4 / 0.85);
+  border: 1px solid oklch(1 0 0 / 0.15);
   border-radius: 4px;
-  color: #e2e2e2;
+  color: oklch(0.913 0 0);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   letter-spacing: var(--tracking-wider);
@@ -107,7 +107,7 @@ const {
 }
 
 .f3d-fit-btn:hover {
-  background: rgba(40, 40, 60, 0.9);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: oklch(0.286 0.036 283.9 / 0.9);
+  border-color: oklch(1 0 0 / 0.3);
 }
 </style>
