@@ -10,7 +10,14 @@
     "maintenance": "Maintenance",
     "workforce": "Workforce",
     "dispatch": "Dispatch",
-    "alerts": "Alerts"
+    "alerts": "Alerts",
+    "coaching": "Coaching",
+    "messages": "Messages",
+    "documents": "Documents",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "devices": "Devices",
+    "marketplace": "Marketplace"
   },
   "sidebar": {
     "expandSidebar": "Expand sidebar",
@@ -32,8 +39,31 @@
       "iftaSummary": "IFTA Summary",
       "vehicles": "Vehicles",
       "fuelPurchases": "Fuel Purchases",
-      "idlingEvents": "Idling Events"
+      "idlingEvents": "Idling Events",
+      "logs": "Logs",
+      "csaInsights": "CSA Insights",
+      "disconnects": "Disconnects",
+      "transactions": "Transactions",
+      "cards": "Cards",
+      "missedSavings": "Missed Savings",
+      "benefits": "Benefits",
+      "inspections": "Inspections",
+      "services": "Services",
+      "history": "History",
+      "schedules": "Schedules",
+      "emissionTest": "Emission Test",
+      "timecards": "Timecards",
+      "qualifications": "Qualifications",
+      "templates": "Templates",
+      "training": "Training",
+      "rewards": "Rewards",
+      "plan": "Plan",
+      "inProgress": "In Progress",
+      "done": "Done"
     }
+  },
+  "common": {
+    "new": "New"
   },
   "search": {
     "label": "Search",
@@ -55,6 +85,7 @@
     "untilTomorrow": "Until tomorrow",
     "untilNextWeek": "Until next week",
     "custom": "Custom…",
+    "switchToAdmin": "Switch to Admin",
     "signOut": "Sign out"
   },
   "themeModal": {

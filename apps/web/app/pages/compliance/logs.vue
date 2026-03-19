@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Overview',
-  moduleName: 'Maintenance',
+  title: 'Logs',
+  moduleName: 'Compliance',
 })
 </script>
 
