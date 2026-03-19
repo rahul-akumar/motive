@@ -15,6 +15,56 @@ const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
     { label: t('pages.titles.requests'), href: '/safety/requests' },
     { label: t('pages.titles.cameras'), href: '/safety/camera' },
   ],
+  '/dispatch': [
+    { label: t('pages.titles.plan'), href: '/dispatch/plan' },
+    { label: t('pages.titles.inProgress'), href: '/dispatch/in-progress' },
+    { label: t('pages.titles.done'), href: '/dispatch/done' },
+  ],
+  '/workforce': [
+    [
+      {
+        label: t('pages.titles.overview'),
+        href: '/workforce/overview',
+        badge: { label: t('common.new'), color: 'info' },
+      },
+    ],
+    [
+      { label: t('pages.titles.drivers'), href: '/workforce/drivers' },
+      { label: t('pages.titles.timecards'), href: '/workforce/timecards' },
+      { label: t('pages.titles.qualifications'), href: '/workforce/qualifications' },
+      { label: t('pages.titles.templates'), href: '/workforce/templates' },
+      { label: t('pages.titles.training'), href: '/workforce/training' },
+      {
+        label: t('pages.titles.rewards'),
+        href: '/workforce/rewards',
+        badge: { label: t('common.new'), color: 'info' },
+      },
+    ],
+  ],
+  '/maintenance': [
+    [{ label: t('pages.titles.inspections'), href: '/maintenance/inspections' }],
+    [
+      { label: t('pages.titles.services'), href: '/maintenance/services' },
+      { label: t('pages.titles.history'), href: '/maintenance/history' },
+      { label: t('pages.titles.schedules'), href: '/maintenance/schedules' },
+    ],
+    [{ label: t('pages.titles.emissionTest'), href: '/maintenance/emission-test' }],
+  ],
+  '/cards': [
+    [
+      { label: t('pages.titles.overview'), href: '/cards/overview' },
+      { label: t('pages.titles.transactions'), href: '/cards/transactions' },
+      { label: t('pages.titles.cards'), href: '/cards/cards' },
+      { label: t('pages.titles.missedSavings'), href: '/cards/missed-savings' },
+    ],
+    [{ label: t('pages.titles.benefits'), href: '/cards/benefits' }],
+  ],
+  '/compliance': [
+    { label: t('pages.titles.overview'), href: '/compliance/overview' },
+    { label: t('pages.titles.logs'), href: '/compliance/logs' },
+    { label: t('pages.titles.csaInsights'), href: '/compliance/csa-insights' },
+    { label: t('pages.titles.disconnects'), href: '/compliance/disconnects' },
+  ],
   '/fuel': [
     [
       { label: t('pages.titles.overview'), href: '/fuel/overview' },
@@ -56,6 +106,26 @@ const titleKeyMap: Record<string, string> = {
   Vehicles: 'pages.titles.vehicles',
   'Fuel Purchases': 'pages.titles.fuelPurchases',
   'Idling Events': 'pages.titles.idlingEvents',
+  Logs: 'pages.titles.logs',
+  'CSA Insights': 'pages.titles.csaInsights',
+  Disconnects: 'pages.titles.disconnects',
+  Transactions: 'pages.titles.transactions',
+  Cards: 'pages.titles.cards',
+  'Missed Savings': 'pages.titles.missedSavings',
+  Benefits: 'pages.titles.benefits',
+  Inspections: 'pages.titles.inspections',
+  Services: 'pages.titles.services',
+  History: 'pages.titles.history',
+  Schedules: 'pages.titles.schedules',
+  'Emission Test': 'pages.titles.emissionTest',
+  Timecards: 'pages.titles.timecards',
+  Qualifications: 'pages.titles.qualifications',
+  Templates: 'pages.titles.templates',
+  Training: 'pages.titles.training',
+  Rewards: 'pages.titles.rewards',
+  Plan: 'pages.titles.plan',
+  'In Progress': 'pages.titles.inProgress',
+  Done: 'pages.titles.done',
 }
 
 const moduleNameDisplay = computed(() => {
@@ -131,9 +201,8 @@ const subNavTabs = computed(() => {
 
 .app-page-module {
   font-size: var(--font-size-xl);
-  font-family: var(--font-family-display);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.01em;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tighter);
   color: var(--mtv-color-foreground-default);
   margin: 0 0 2px;
 }

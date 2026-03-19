@@ -10,7 +10,14 @@
     "maintenance": "Manutenção",
     "workforce": "Equipe",
     "dispatch": "Despacho",
-    "alerts": "Alertas"
+    "alerts": "Alertas",
+    "coaching": "Coaching",
+    "messages": "Mensagens",
+    "documents": "Documentos",
+    "analytics": "Análises",
+    "reports": "Relatórios",
+    "devices": "Dispositivos",
+    "marketplace": "Marketplace"
   },
   "sidebar": {
     "expandSidebar": "Expandir barra lateral",
@@ -32,8 +39,31 @@
       "iftaSummary": "Resumo IFTA",
       "vehicles": "Veículos",
       "fuelPurchases": "Compras de Combustível",
-      "idlingEvents": "Eventos de Marcha Lenta"
+      "idlingEvents": "Eventos de Marcha Lenta",
+      "logs": "Registros",
+      "csaInsights": "Insights CSA",
+      "disconnects": "Desconexões",
+      "transactions": "Transações",
+      "cards": "Cartões",
+      "missedSavings": "Economias Perdidas",
+      "benefits": "Benefícios",
+      "inspections": "Inspeções",
+      "services": "Serviços",
+      "history": "Histórico",
+      "schedules": "Agendamentos",
+      "emissionTest": "Teste de Emissão",
+      "timecards": "Cartões de Ponto",
+      "qualifications": "Qualificações",
+      "templates": "Modelos",
+      "training": "Treinamento",
+      "rewards": "Recompensas",
+      "plan": "Plano",
+      "inProgress": "Em Andamento",
+      "done": "Concluído"
     }
+  },
+  "common": {
+    "new": "Novo"
   },
   "search": {
     "label": "Pesquisar",
