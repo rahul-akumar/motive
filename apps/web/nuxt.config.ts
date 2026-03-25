@@ -8,7 +8,6 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Motive',
       link: [{ rel: 'icon', type: 'image/jpeg', href: '/motive-wordmark.jpeg' }],
     },
   },
