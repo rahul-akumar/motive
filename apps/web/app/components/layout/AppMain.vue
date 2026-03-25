@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import { LOCALE_URL_PREFIXES } from '~/composables/useLocalePreferences'
+import type { LocaleCode } from '~/composables/useLocalePreferences'
+
+const { t, locale } = useI18n()
 const route = useRoute()
 
 type SubNavTab = { label: string; href: string }
@@ -162,7 +165,13 @@ const pageTitleDisplay = computed(() => {
 })
 
 const subNavTabs = computed(() => {
-  const prefix = Object.keys(subNavMap.value).find((k) => route.path.startsWith(k))
+  // Strip locale prefix (e.g. /pt-BR, /en-GB) so bare keys like /safety still match
+  const localePrefix = LOCALE_URL_PREFIXES[locale.value as LocaleCode] ?? ''
+  const basePath =
+    localePrefix && route.path.startsWith(localePrefix)
+      ? route.path.slice(localePrefix.length) || '/'
+      : route.path
+  const prefix = Object.keys(subNavMap.value).find((k) => basePath.startsWith(k))
   return prefix ? subNavMap.value[prefix] : null
 })
 </script>

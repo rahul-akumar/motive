@@ -13,7 +13,7 @@ defineProps<{
 </script>
 
 <template>
-  <NuxtLink :to="href" class="panel-action-row">
+  <NuxtLinkLocale :to="href" class="panel-action-row">
     <span :class="['panel-action-row__icon', `panel-action-row__icon--${severity}`]">
       <MIcon :icon="icon" :size="13" />
     </span>
@@ -22,7 +22,7 @@ defineProps<{
       count
     }}</span>
     <MIcon :icon="ChevronRight" :size="14" class="panel-action-row__chevron" />
-  </NuxtLink>
+  </NuxtLinkLocale>
 </template>
 
 <style scoped>

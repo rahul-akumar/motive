@@ -67,9 +67,9 @@ const quickLinks = [
     <!-- Alert Feed -->
     <LayoutPanelSection v-if="alertFeed.length > 0" title="Recent Alerts">
       <template #action>
-        <NuxtLink to="/safety/camera" class="panel-view-all">
+        <NuxtLinkLocale to="/safety/camera" class="panel-view-all">
           View all <MIcon :icon="ArrowUpRight" :size="11" />
-        </NuxtLink>
+        </NuxtLinkLocale>
       </template>
       <LayoutPanelFeedRow
         v-for="item in alertFeed"

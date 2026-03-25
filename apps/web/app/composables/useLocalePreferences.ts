@@ -11,14 +11,20 @@ export const LOCALES: LocaleOption[] = [
   { code: 'pt-BR', name: 'Português (Brasil)' },
 ]
 
-const STORAGE_KEY = 'motive-locale'
-const DEFAULT_LOCALE: LocaleCode = 'en-US'
+// URL prefix for each non-default locale (en-US has no prefix)
+export const LOCALE_URL_PREFIXES: Partial<Record<LocaleCode, string>> = {
+  'en-GB': '/en-GB',
+  'pt-BR': '/pt-BR',
+}
 
-// Singleton reactive state
-const currentLocale = ref<LocaleCode>(DEFAULT_LOCALE)
+const STORAGE_KEY = 'motive-locale'
+export const DEFAULT_LOCALE: LocaleCode = 'en-US'
+
+// Singleton ref — exported directly so the route middleware can keep it in sync
+export const currentLocale = ref<LocaleCode>(DEFAULT_LOCALE)
 
 export function useLocalePreferences() {
-  const { setLocale } = useI18n()
+  const { setLocale, locale: i18nLocale } = useI18n()
 
   function applyLocale(code: LocaleCode) {
     setLocale(code)
@@ -30,6 +36,13 @@ export function useLocalePreferences() {
 
   function loadSavedLocale() {
     if (!import.meta.client) return
+    // URL-detected locale (from path prefix) always wins over localStorage
+    const urlLocale = i18nLocale.value as LocaleCode
+    if (urlLocale !== DEFAULT_LOCALE && LOCALES.find((l) => l.code === urlLocale)) {
+      currentLocale.value = urlLocale
+      localStorage.setItem(STORAGE_KEY, urlLocale)
+      return
+    }
     const saved = localStorage.getItem(STORAGE_KEY) as LocaleCode | null
     const valid = LOCALES.find((l) => l.code === saved)
     const code = valid ? saved! : DEFAULT_LOCALE
