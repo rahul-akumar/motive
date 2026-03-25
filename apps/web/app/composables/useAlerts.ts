@@ -84,6 +84,18 @@ const initialAlerts: FleetAlert[] = [
     timestamp: mins(120),
     dismissed: false,
   },
+  {
+    id: 'alert-008',
+    severity: 'critical',
+    title: 'Fuel Loss Alert — Pipa 08',
+    description:
+      'Tank dropped 18% over 20 minutes while stopped. Possible fuel theft near Saltillo, COAH.',
+    vehicleId: 'VEH-MX-04',
+    driverName: 'Carlos Valdez',
+    timestamp: mins(5),
+    dismissed: false,
+    actionLabel: 'View Event',
+  },
 ]
 
 export function useAlerts() {

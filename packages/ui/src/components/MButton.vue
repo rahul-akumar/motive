@@ -38,20 +38,20 @@ defineEmits<{
 @reference "@motive/tailwind-config/theme.css";
 
 .m-button {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
 }
 
 /* Sizes */
 .m-button--sm {
-  @apply h-8 px-3 text-sm;
+  @apply h-8 px-3 text-sm rounded-sm;
 }
 
 .m-button--md {
-  @apply h-10 px-4 text-sm;
+  @apply h-10 px-4 text-sm rounded-md;
 }
 
 .m-button--lg {
-  @apply h-12 px-6 text-base;
+  @apply h-12 px-6 text-base rounded-md;
 }
 
 /* Variants */

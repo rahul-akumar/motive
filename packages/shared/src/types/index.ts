@@ -112,6 +112,7 @@ export type ActivityEventType =
   | 'driver_login'
   | 'inspection_passed'
   | 'vehicle_idle'
+  | 'fuel_loss_detected'
 
 export type ActivitySeverity = 'info' | 'warning' | 'critical' | 'success'
 
@@ -177,4 +178,34 @@ export interface DashboardSummary {
   activeAlerts: number
   criticalAlerts: number
   fleetStatus: FleetStatusCount
+}
+
+// ============================================================
+// FUEL LOSS TYPES
+// ============================================================
+
+export type FuelDropStatus = 'open' | 'reviewed' | 'dismissed'
+
+export interface FuelLossLocation {
+  lat: number
+  lng: number
+  address: string
+}
+
+export interface FuelLossEvent {
+  id: string
+  vehicleId: string
+  vehicleName: string
+  driverId?: string
+  driverName?: string
+  location: FuelLossLocation
+  startTime: Date
+  endTime: Date
+  /** Fuel level at start of stop event (0–100) */
+  fuelStart: number
+  /** Fuel level at end of stop event (0–100) */
+  fuelEnd: number
+  /** Percentage points dropped (fuelStart − fuelEnd) */
+  fuelDrop: number
+  status: FuelDropStatus
 }

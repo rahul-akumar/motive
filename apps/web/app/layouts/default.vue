@@ -54,6 +54,8 @@ function openPreferences(section?: string) {
       :initial-section="preferencesInitialSection"
       @close="preferencesModalOpen = false"
     />
+
+    <LayoutToastContainer />
   </div>
 </template>
 
