@@ -1,4 +1,13 @@
 <script setup lang="ts">
+const route = useRoute()
+useHead({
+  title: () => {
+    const { title, moduleName } = route.meta
+    const pageTitle = title === 'Overview' ? undefined : title
+    return [pageTitle, moduleName, 'Motive'].filter(Boolean).join(' - ')
+  },
+})
+
 const { activePanel } = provideRightPanel()
 
 const preferencesModalOpen = ref(false)
