@@ -195,6 +195,42 @@
   --mtv-color-indigo-950: oklch(0.163 0.077 271.3);
   --mtv-color-indigo-1000: oklch(0.112 0.043 272.2);
 
+  /* Emerald (blue-green jewel tone) */
+  --mtv-color-emerald-50: oklch(0.981 0.019 160);
+  --mtv-color-emerald-100: oklch(0.954 0.044 163);
+  --mtv-color-emerald-200: oklch(0.908 0.083 161);
+  --mtv-color-emerald-300: oklch(0.844 0.13 158);
+  --mtv-color-emerald-400: oklch(0.762 0.155 155);
+  --mtv-color-emerald-500: oklch(0.673 0.161 152);
+  --mtv-color-emerald-600: oklch(0.57 0.135 153);
+  --mtv-color-emerald-700: oklch(0.466 0.108 154);
+  --mtv-color-emerald-800: oklch(0.363 0.081 155);
+  --mtv-color-emerald-900: oklch(0.265 0.056 156);
+  --mtv-color-emerald-950: oklch(0.203 0.041 158);
+  --mtv-color-emerald-1000: oklch(0.139 0.025 162);
+
+  /* Rose (warm pink-red) */
+  --mtv-color-rose-50: oklch(0.972 0.012 13);
+  --mtv-color-rose-100: oklch(0.939 0.028 14);
+  --mtv-color-rose-200: oklch(0.878 0.061 16);
+  --mtv-color-rose-300: oklch(0.781 0.12 18);
+  --mtv-color-rose-400: oklch(0.677 0.192 21);
+  --mtv-color-rose-500: oklch(0.595 0.227 22);
+  --mtv-color-rose-600: oklch(0.516 0.204 24);
+  --mtv-color-rose-700: oklch(0.431 0.17 24);
+  --mtv-color-rose-800: oklch(0.34 0.133 23);
+  --mtv-color-rose-900: oklch(0.268 0.101 22);
+  --mtv-color-rose-950: oklch(0.207 0.074 21);
+  --mtv-color-rose-1000: oklch(0.132 0.04 19);
+
+  /* Transparent */
+  --mtv-color-transparent: transparent;
+
+  /* ================================================================
+     Border Tokens
+     ================================================================ */
+  --mtv-color-border-transparent: var(--mtv-color-transparent);
+
   /* ================================================================
      Chart Series Tokens (static — consistent across all themes)
      ================================================================ */

@@ -105,3 +105,9 @@ html[data-theme='console-legacy'] .sidebar {
   --avatar-bg: oklch(0.624 0.202 263.1 / 0.08);
   --avatar-text: oklch(0.683 0 0);
 }
+
+/* Main area override — right border only */
+html[data-theme='console-legacy'] .app-main {
+  border: none;
+  border-right: 1px solid var(--mtv-color-border-default);
+}
