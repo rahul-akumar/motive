@@ -1,6 +1,19 @@
 @import '@motive/tailwind-config/theme.css';
 
 /* ============================================================
+   FLEET STATUS COLOR TOKENS
+   Single source of truth for driver status colors.
+   Used as inline styles in map markers, list accents, gauges.
+   ============================================================ */
+:root {
+  --fleet-status-driving: var(--mtv-color-emerald-500);
+  --fleet-status-idle: var(--mtv-color-coral-500);
+  --fleet-status-alert: var(--mtv-color-rose-500);
+  --fleet-status-offline: var(--mtv-color-gray-500);
+  --fleet-status-sleeper: var(--mtv-color-indigo-500);
+}
+
+/* ============================================================
    MOTIVE FLEET DASHBOARD — GLOBAL STYLES
    Theme-aware via CSS custom properties on html[data-theme]
    ============================================================ */
@@ -110,19 +123,19 @@ body {
 }
 
 .status-dot--driving {
-  background-color: oklch(0.913 0 0);
+  background-color: var(--fleet-status-driving);
 }
 
 .status-dot--idle {
-  background-color: oklch(0.666 0.157 58.3);
+  background-color: var(--fleet-status-idle);
 }
 
 .status-dot--offline {
-  background-color: oklch(0.51 0 0);
+  background-color: var(--fleet-status-offline);
 }
 
 .status-dot--alert {
-  background-color: oklch(0.577 0.215 27.3);
+  background-color: var(--fleet-status-alert);
 }
 
 .status-dot--active {
@@ -130,7 +143,7 @@ body {
 }
 
 .status-dot--sleeper {
-  background-color: oklch(0.709 0.159 293.5);
+  background-color: var(--fleet-status-sleeper);
 }
 
 /* ============================================================

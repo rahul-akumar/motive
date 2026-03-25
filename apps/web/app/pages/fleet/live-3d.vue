@@ -1,8 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'Fleet 3D',
-  moduleName: 'Fleet 3D',
-  mainVariant: 'globe',
+  title: 'Live 3D',
+  moduleName: 'Fleet',
 })
 
 const {
@@ -71,9 +70,8 @@ const {
 
 <style scoped>
 .f3d-page {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background-color: oklch(0.147 0.011 285);
 }
@@ -91,10 +89,10 @@ const {
   bottom: 24px;
   right: 24px;
   z-index: 10;
-  background: oklch(0.196 0.02 284.4 / 0.85);
-  border: 1px solid oklch(1 0 0 / 0.15);
+  background: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-strong);
   border-radius: 4px;
-  color: oklch(0.913 0 0);
+  color: var(--mtv-color-foreground-default);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   letter-spacing: var(--tracking-wider);
@@ -107,7 +105,7 @@ const {
 }
 
 .f3d-fit-btn:hover {
-  background: oklch(0.286 0.036 283.9 / 0.9);
-  border-color: oklch(1 0 0 / 0.3);
+  background: var(--mtv-color-surface-overlay);
+  border-color: var(--mtv-color-border-accent);
 }
 </style>

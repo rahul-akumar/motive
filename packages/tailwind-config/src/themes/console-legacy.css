@@ -83,7 +83,7 @@ html[data-theme='console-legacy'] {
 }
 
 /* Sidebar overrides — dark */
-html[data-theme='console-legacy'] aside {
+html[data-theme='console-legacy'] .sidebar {
   --mtv-color-foreground-default: oklch(0.923 0 0);
   --mtv-color-foreground-muted: oklch(0.598 0 0);
   --mtv-color-foreground-subtle: oklch(0.418 0 0);

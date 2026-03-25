@@ -15,9 +15,11 @@ const emit = defineEmits<{
 }>()
 
 // ── Theme detection ───────────────────────────────────────────
+const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+
 function isDarkTheme(): boolean {
   if (!import.meta.client) return true
-  return document.documentElement.getAttribute('data-theme') !== 'light'
+  return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
 }
 
 const TILE_DARK = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'

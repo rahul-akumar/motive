@@ -2,6 +2,7 @@
 import { ChevronLeft, ChevronRight, Search, Truck } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
 import type { Driver, DriverStatus } from '@motive/shared'
+import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   drivers: Driver[]
@@ -21,22 +22,6 @@ const emit = defineEmits<{
   togglePanel: []
   'update:searchQuery': [value: string]
 }>()
-
-const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: 'oklch(0.800 0.182 151.7)',
-  idle: 'oklch(0.837 0.164 84.4)',
-  alert: 'oklch(0.711 0.166 22.2)',
-  offline: 'oklch(0.439 0.000 0)',
-  sleeper: 'oklch(0.709 0.159 293.5)',
-}
-
-const STATUS_LABELS: Record<DriverStatus, string> = {
-  driving: 'Driving',
-  idle: 'Idle',
-  alert: 'Alert',
-  offline: 'Offline',
-  sleeper: 'Sleeper',
-}
 
 const FILTER_ORDER: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
@@ -99,7 +84,7 @@ const localSearch = computed({
           :class="['fv-filter-chip', { 'fv-filter-chip--active': activeFilters.has(status) }]"
           :style="
             activeFilters.has(status)
-              ? { borderColor: STATUS_COLORS[status], color: STATUS_COLORS[status] }
+              ? { borderColor: FLEET_STATUS_COLORS[status], color: FLEET_STATUS_COLORS[status] }
               : {}
           "
           :aria-pressed="activeFilters.has(status)"
@@ -107,10 +92,10 @@ const localSearch = computed({
         >
           <span
             class="fv-filter-chip__dot"
-            :style="{ backgroundColor: STATUS_COLORS[status] }"
+            :style="{ backgroundColor: FLEET_STATUS_COLORS[status] }"
             aria-hidden="true"
           />
-          {{ STATUS_LABELS[status] }}
+          {{ FLEET_STATUS_LABELS[status] }}
           <span class="fv-filter-chip__count">{{ statusCounts[status] }}</span>
         </button>
       </div>
@@ -121,7 +106,7 @@ const localSearch = computed({
         <input
           v-model="localSearch"
           type="search"
-          class="fv-panel__search-input font-mono-data"
+          class="fv-panel__search-input"
           placeholder="Search drivers..."
           aria-label="Search drivers by name"
         />
@@ -130,7 +115,7 @@ const localSearch = computed({
       <!-- Driver list -->
       <div class="fv-panel__list" role="list" aria-label="Driver list">
         <div v-if="filteredDrivers.length === 0" class="fv-panel__empty">
-          <span class="font-mono-data">No drivers match filters</span>
+          <span>No drivers match filters</span>
         </div>
         <div v-for="driver in filteredDrivers" :key="driver.id" role="listitem">
           <FleetViewDriverCard
@@ -172,7 +157,6 @@ const localSearch = computed({
 }
 
 .fv-panel-toggle__count {
-  font-family: var(--font-family-mono);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-default);
@@ -188,10 +172,8 @@ const localSearch = computed({
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--mtv-color-surface-default) 96%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-right: 1px solid var(--mtv-color-border-default);
+  background: var(--mtv-color-surface-base);
+  border-right: 1px solid var(--mtv-color-border-subtle);
   border-top: none;
   border-bottom: none;
   border-left: none;
@@ -277,7 +259,6 @@ const localSearch = computed({
   background: transparent;
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
-  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);

@@ -29,6 +29,10 @@
     "titles": {
       "fleetView": "Fleet View",
       "fleet3d": "Fleet 3D",
+      "live": "Live",
+      "live3d": "Live 3D",
+      "assets": "Assets",
+      "trips": "Trips",
       "overview": "Overview",
       "events": "Events",
       "speeding": "Speeding",
@@ -59,11 +63,45 @@
       "rewards": "Rewards",
       "plan": "Plan",
       "inProgress": "In Progress",
-      "done": "Done"
+      "done": "Done",
+      "fuelLossEvents": "Fuel Loss Events"
+    }
+  },
+  "fuel": {
+    "lossEvents": {
+      "title": "Fuel Loss Events",
+      "description": "Detected fuel drops during vehicle stops",
+      "columns": {
+        "vehicle": "Vehicle",
+        "timeWindow": "Time Window",
+        "location": "Location",
+        "fuelStart": "Fuel Start",
+        "fuelEnd": "Fuel End",
+        "drop": "Drop",
+        "status": "Status"
+      },
+      "status": {
+        "open": "Open",
+        "reviewed": "Reviewed",
+        "dismissed": "Dismissed"
+      },
+      "filters": {
+        "searchPlaceholder": "Search vehicle or driver…",
+        "anyDrop": "Any drop %",
+        "clearFilters": "Clear filters",
+        "allStatuses": "All statuses"
+      },
+      "actions": {
+        "markReviewed": "Mark as Reviewed",
+        "dismiss": "Dismiss",
+        "exportCsv": "Export CSV"
+      },
+      "empty": "No fuel loss events match your filters."
     }
   },
   "common": {
-    "new": "New"
+    "new": "New",
+    "beta": "Beta"
   },
   "search": {
     "label": "Search",

@@ -51,11 +51,15 @@ function updateIndicator() {
     })
 }
 
+const { locale } = useI18n()
+
 watch(
   () => route.path,
   () => nextTick(updateIndicator),
 )
-onMounted(() => nextTick(updateIndicator))
+// Re-measure after locale switches (labels change width, shifting tab positions)
+watch(locale, () => nextTick(() => requestAnimationFrame(updateIndicator)))
+onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
 </script>
 
 <template>
