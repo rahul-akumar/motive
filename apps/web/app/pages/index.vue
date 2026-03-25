@@ -97,7 +97,6 @@ const { dailyMiles } = useMilesData()
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  max-width: 1600px;
 }
 
 /* KPI Row */

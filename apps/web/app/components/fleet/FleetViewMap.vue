@@ -222,6 +222,13 @@ onMounted(() => {
     attributeFilter: ['data-theme'],
   })
   onUnmounted(() => themeObserver.disconnect())
+
+  // Notify Leaflet when the container resizes (e.g. window resize or panel open/close)
+  const resizeObserver = new ResizeObserver(() => {
+    map?.invalidateSize()
+  })
+  resizeObserver.observe(mapRef.value)
+  onUnmounted(() => resizeObserver.disconnect())
 })
 
 onUnmounted(() => {
