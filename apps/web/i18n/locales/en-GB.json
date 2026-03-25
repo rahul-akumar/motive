@@ -173,6 +173,7 @@
     "language": {
       "title": "Language & Region",
       "desc": "Set your language, timezone, and date format preferences.",
+      "region": "Region",
       "language": "Language",
       "timezone": "Timezone",
       "dateFormat": "Date format",

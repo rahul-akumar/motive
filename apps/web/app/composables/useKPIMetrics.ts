@@ -1,7 +1,9 @@
 import type { KpiMetric } from '@motive/shared'
+import { currentRegion } from '~/composables/useRegion'
+import type { RegionCode } from '~/composables/useRegion'
 
-export function useKPIMetrics() {
-  const metrics = ref<KpiMetric[]>([
+const metricsByRegion: Record<RegionCode, KpiMetric[]> = {
+  us: [
     {
       id: 'active-drivers',
       title: 'Active Drivers',
@@ -54,7 +56,120 @@ export function useKPIMetrics() {
       color: 'red',
       subtitle: '7 warnings',
     },
-  ])
+  ],
 
+  mx: [
+    {
+      id: 'active-drivers',
+      title: 'Active Drivers',
+      value: 31,
+      displayValue: '31',
+      unit: '/ 35',
+      delta: -2,
+      deltaLabel: '-2 from yesterday',
+      deltaType: 'decrease',
+      icon: 'drivers',
+      color: 'cyan',
+      subtitle: '4 offline',
+    },
+    {
+      id: 'miles-today',
+      title: 'Km Today',
+      value: 8243,
+      displayValue: '8,243',
+      unit: 'km',
+      delta: 3.1,
+      deltaLabel: '+3.1% vs avg',
+      deltaType: 'increase',
+      icon: 'miles',
+      color: 'blue',
+      subtitle: 'Across 31 drivers',
+    },
+    {
+      id: 'on-time',
+      title: 'On-Time Delivery',
+      value: 91.8,
+      displayValue: '91.8',
+      unit: '%',
+      delta: 0.5,
+      deltaLabel: '+0.5% this week',
+      deltaType: 'increase',
+      icon: 'ontime',
+      color: 'emerald',
+      subtitle: '2 delayed loads',
+    },
+    {
+      id: 'active-alerts',
+      title: 'Active Alerts',
+      value: 5,
+      displayValue: '5',
+      unit: 'critical',
+      delta: 3,
+      deltaLabel: '+3 since 8am',
+      deltaType: 'decrease',
+      icon: 'alerts',
+      color: 'red',
+      subtitle: '4 warnings',
+    },
+  ],
+
+  uk: [
+    {
+      id: 'active-drivers',
+      title: 'Active Drivers',
+      value: 22,
+      displayValue: '22',
+      unit: '/ 25',
+      delta: 1,
+      deltaLabel: '+1 from yesterday',
+      deltaType: 'increase',
+      icon: 'drivers',
+      color: 'cyan',
+      subtitle: '3 offline',
+    },
+    {
+      id: 'miles-today',
+      title: 'Miles Today',
+      value: 6107,
+      displayValue: '6,107',
+      unit: 'mi',
+      delta: -2.4,
+      deltaLabel: '-2.4% vs avg',
+      deltaType: 'decrease',
+      icon: 'miles',
+      color: 'blue',
+      subtitle: 'Across 22 drivers',
+    },
+    {
+      id: 'on-time',
+      title: 'On-Time Delivery',
+      value: 96.1,
+      displayValue: '96.1',
+      unit: '%',
+      delta: 1.8,
+      deltaLabel: '+1.8% this week',
+      deltaType: 'increase',
+      icon: 'ontime',
+      color: 'emerald',
+      subtitle: '1 delayed load',
+    },
+    {
+      id: 'active-alerts',
+      title: 'Active Alerts',
+      value: 2,
+      displayValue: '2',
+      unit: 'critical',
+      delta: -1,
+      deltaLabel: '-1 since 8am',
+      deltaType: 'increase',
+      icon: 'alerts',
+      color: 'red',
+      subtitle: '3 warnings',
+    },
+  ],
+}
+
+export function useKPIMetrics() {
+  const metrics = computed<KpiMetric[]>(() => metricsByRegion[currentRegion.value])
   return { metrics }
 }

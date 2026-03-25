@@ -173,6 +173,7 @@
     "language": {
       "title": "Idioma e Região",
       "desc": "Defina suas preferências de idioma, fuso horário e formato de data.",
+      "region": "Região",
       "language": "Idioma",
       "timezone": "Fuso horário",
       "dateFormat": "Formato de data",

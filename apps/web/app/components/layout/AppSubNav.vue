@@ -52,6 +52,7 @@ function updateIndicator() {
 }
 
 const { locale } = useI18n()
+const localePath = useLocalePath()
 
 watch(
   () => route.path,
@@ -74,17 +75,20 @@ onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
 
     <template v-for="(group, gi) in groups" :key="gi">
       <span v-if="gi > 0" class="app-sub-nav__divider" aria-hidden="true" />
-      <NuxtLink
+      <NuxtLinkLocale
         v-for="tab in group"
         :key="tab.href"
         :ref="
           (el) => {
-            if (el) tabEls[tab.href] = ((el as any).$el ?? el) as HTMLElement
+            if (el) tabEls[localePath(tab.href)] = ((el as any).$el ?? el) as HTMLElement
           }
         "
         :to="tab.href"
-        :class="['app-sub-nav__tab', { 'app-sub-nav__tab--active': route.path === tab.href }]"
-        :aria-current="route.path === tab.href ? 'page' : undefined"
+        :class="[
+          'app-sub-nav__tab',
+          { 'app-sub-nav__tab--active': route.path === localePath(tab.href) },
+        ]"
+        :aria-current="route.path === localePath(tab.href) ? 'page' : undefined"
       >
         {{ tab.label }}
         <MBadge
@@ -94,7 +98,7 @@ onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
           size="sm"
           :color="tab.badge.color ?? 'info'"
         />
-      </NuxtLink>
+      </NuxtLinkLocale>
     </template>
   </nav>
 </template>

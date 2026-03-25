@@ -26,6 +26,8 @@ import { useMotion } from '@vueuse/motion'
 
 const { t } = useI18n()
 const route = useRoute()
+const localePath = useLocalePath()
+const { regionModuleConfig } = useRegion()
 
 const props = defineProps<{
   isOpen?: boolean
@@ -36,54 +38,72 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const navGroups = computed(() => [
-  {
-    items: [
-      { id: 'dashboard', label: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
-      { id: 'fleet', label: t('nav.fleet'), href: '/fleet', icon: Truck },
-      { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck },
-      { id: 'compliance', label: t('nav.compliance'), href: '/compliance', icon: ClipboardCheck },
-      { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel },
-      { id: 'cards', label: t('nav.cards'), href: '/cards', icon: CreditCard },
-      { id: 'maintenance', label: t('nav.maintenance'), href: '/maintenance', icon: Wrench },
-      { id: 'workforce', label: t('nav.workforce'), href: '/workforce', icon: Users },
-      { id: 'dispatch', label: t('nav.dispatch'), href: '/dispatch', icon: Radio },
-      { id: 'alerts', label: t('nav.alerts'), href: '/alerts', icon: Bell, wip: true },
-    ],
-  },
-  {
-    items: [
-      {
-        id: 'coaching',
-        label: t('nav.coaching'),
-        href: '/coaching',
-        icon: GraduationCap,
-        wip: true,
-      },
-      {
-        id: 'messages',
-        label: t('nav.messages'),
-        href: '/messages',
-        icon: MessageSquare,
-        wip: true,
-      },
-      { id: 'documents', label: t('nav.documents'), href: '/documents', icon: FileText, wip: true },
-    ],
-  },
-  {
-    items: [
-      {
-        id: 'analytics',
-        label: t('nav.analytics'),
-        href: '/analytics',
-        icon: BarChart3,
-        wip: true,
-      },
-      { id: 'reports', label: t('nav.reports'), href: '/reports', icon: ClipboardList, wip: true },
-      { id: 'devices', label: t('nav.devices'), href: '/devices', icon: Tablet, wip: true },
-    ],
-  },
-])
+const navGroups = computed(() => {
+  const cfg = regionModuleConfig.value
+  const filter = (items: { id: string; [k: string]: unknown }[]) =>
+    items.filter((item) => cfg[item.id as keyof typeof cfg]?.enabled !== false)
+
+  return [
+    {
+      items: filter([
+        { id: 'dashboard', label: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
+        { id: 'fleet', label: t('nav.fleet'), href: '/fleet', icon: Truck },
+        { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck },
+        { id: 'compliance', label: t('nav.compliance'), href: '/compliance', icon: ClipboardCheck },
+        { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel },
+        { id: 'cards', label: t('nav.cards'), href: '/cards', icon: CreditCard },
+        { id: 'maintenance', label: t('nav.maintenance'), href: '/maintenance', icon: Wrench },
+        { id: 'workforce', label: t('nav.workforce'), href: '/workforce', icon: Users },
+        { id: 'dispatch', label: t('nav.dispatch'), href: '/dispatch', icon: Radio },
+        { id: 'alerts', label: t('nav.alerts'), href: '/alerts', icon: Bell, wip: true },
+      ]),
+    },
+    {
+      items: filter([
+        {
+          id: 'coaching',
+          label: t('nav.coaching'),
+          href: '/coaching',
+          icon: GraduationCap,
+          wip: true,
+        },
+        {
+          id: 'messages',
+          label: t('nav.messages'),
+          href: '/messages',
+          icon: MessageSquare,
+          wip: true,
+        },
+        {
+          id: 'documents',
+          label: t('nav.documents'),
+          href: '/documents',
+          icon: FileText,
+          wip: true,
+        },
+      ]),
+    },
+    {
+      items: filter([
+        {
+          id: 'analytics',
+          label: t('nav.analytics'),
+          href: '/analytics',
+          icon: BarChart3,
+          wip: true,
+        },
+        {
+          id: 'reports',
+          label: t('nav.reports'),
+          href: '/reports',
+          icon: ClipboardList,
+          wip: true,
+        },
+        { id: 'devices', label: t('nav.devices'), href: '/devices', icon: Tablet, wip: true },
+      ]),
+    },
+  ]
+})
 
 const marketplaceItem = computed(() => ({
   id: 'marketplace',
@@ -94,8 +114,9 @@ const marketplaceItem = computed(() => ({
 }))
 
 function isActive(href: string) {
-  if (href === '/') return route.path === '/'
-  return route.path === href || route.path.startsWith(href + '/')
+  const lp = localePath(href)
+  if (href === '/') return route.path === lp
+  return route.path === lp || route.path.startsWith(lp + '/')
 }
 
 function handleNavClick() {
@@ -268,7 +289,7 @@ function toggleCollapsed() {
         <ul role="list" class="sidebar__nav-list">
           <li v-for="item in group.items" :key="item.id">
             <MTooltip :content="item.label" placement="right" :disabled="!collapsed">
-              <NuxtLink
+              <NuxtLinkLocale
                 :to="item.href"
                 :class="['sidebar-nav-item', { active: isActive(item.href) }]"
                 :aria-current="isActive(item.href) ? 'page' : undefined"
@@ -292,7 +313,7 @@ function toggleCollapsed() {
                     color="warning"
                   />
                 </span>
-              </NuxtLink>
+              </NuxtLinkLocale>
             </MTooltip>
           </li>
         </ul>
@@ -305,7 +326,7 @@ function toggleCollapsed() {
       <ul role="list" class="sidebar__nav-list">
         <li>
           <MTooltip :content="marketplaceItem.label" placement="right" :disabled="!collapsed">
-            <NuxtLink
+            <NuxtLinkLocale
               :to="marketplaceItem.href"
               :class="['sidebar-nav-item', { active: isActive(marketplaceItem.href) }]"
               :aria-current="isActive(marketplaceItem.href) ? 'page' : undefined"
@@ -313,7 +334,7 @@ function toggleCollapsed() {
             >
               <MIcon :icon="marketplaceItem.icon" class="sidebar__icon" />
               <span class="sidebar__label">{{ marketplaceItem.label }}</span>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </MTooltip>
         </li>
       </ul>

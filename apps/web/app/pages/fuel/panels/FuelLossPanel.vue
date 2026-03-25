@@ -82,9 +82,9 @@ const quickLinks = [
       <!-- Recent Events feed -->
       <LayoutPanelSection title="Recent Events">
         <template #action>
-          <NuxtLink to="/fuel/fuel-loss-events" class="fl-panel__view-all">
+          <NuxtLinkLocale to="/fuel/fuel-loss-events" class="fl-panel__view-all">
             View all <MIcon :icon="ArrowUpRight" :size="11" />
-          </NuxtLink>
+          </NuxtLinkLocale>
         </template>
         <LayoutPanelFeedRow
           v-for="item in feedItems"

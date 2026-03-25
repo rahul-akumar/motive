@@ -29,6 +29,7 @@ const emit = defineEmits<{
 
 const { currentTheme, themes, applyTheme } = useTheme()
 const { currentLocale, availableLocales, applyLocale } = useLocalePreferences()
+const { currentRegion, availableRegions, applyRegion } = useRegion()
 const { t } = useI18n()
 
 const sections = computed(() => [
@@ -268,6 +269,25 @@ function selectTheme(id: string) {
               <p class="pref-section__desc">{{ t('preferences.language.desc') }}</p>
             </div>
             <div class="pref-section__body">
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-region-select">{{
+                  t('preferences.language.region')
+                }}</label>
+                <select
+                  id="pref-region-select"
+                  class="pref-select"
+                  :value="currentRegion"
+                  @change="applyRegion(($event.target as HTMLSelectElement).value as any)"
+                >
+                  <option
+                    v-for="region in availableRegions"
+                    :key="region.code"
+                    :value="region.code"
+                  >
+                    {{ region.flag }} {{ region.name }}
+                  </option>
+                </select>
+              </div>
               <div class="pref-row">
                 <label class="pref-row__label" for="pref-language-select">{{
                   t('preferences.language.language')

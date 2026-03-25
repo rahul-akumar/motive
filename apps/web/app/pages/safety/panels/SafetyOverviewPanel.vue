@@ -113,9 +113,9 @@ const quickLinks = [
     <!-- Activity -->
     <LayoutPanelSection title="Activity">
       <template #action>
-        <NuxtLink to="/safety/events" class="panel-view-all">
+        <NuxtLinkLocale to="/safety/events" class="panel-view-all">
           View all <MIcon :icon="ArrowUpRight" :size="11" />
-        </NuxtLink>
+        </NuxtLinkLocale>
       </template>
       <LayoutPanelFeedRow
         v-for="item in activityFeed"

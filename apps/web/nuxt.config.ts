@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/fonts', '@nuxt/eslint', '@vueuse/motion/nuxt', '@nuxtjs/i18n'],
 
   i18n: {
-    strategy: 'no_prefix',
+    strategy: 'prefix_except_default',
     defaultLocale: 'en-US',
     detectBrowserLanguage: false,
     locales: [
