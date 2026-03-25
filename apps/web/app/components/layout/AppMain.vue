@@ -1,12 +1,27 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const route = useRoute()
-const variant = computed(() => route.meta.mainVariant ?? 'default')
-const isDefault = computed(() => variant.value === 'default')
 
 type SubNavTab = { label: string; href: string }
 // Values are either a flat tab array (no groups) or an array of groups (renders dividers between groups).
 const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
+  '/fleet': [
+    [
+      { label: t('pages.titles.live'), href: '/fleet/live' },
+      {
+        label: t('pages.titles.live'),
+        href: '/fleet/live-3d',
+        badge: { label: t('common.beta'), color: 'info' },
+      },
+      { label: t('pages.titles.history'), href: '/fleet/history' },
+    ],
+    [
+      { label: t('pages.titles.vehicles'), href: '/fleet/vehicles' },
+      { label: t('pages.titles.drivers'), href: '/fleet/drivers' },
+      { label: t('pages.titles.assets'), href: '/fleet/assets' },
+    ],
+    [{ label: t('pages.titles.trips'), href: '/fleet/trips' }],
+  ],
   '/safety': [
     { label: t('pages.titles.overview'), href: '/safety/overview' },
     { label: t('pages.titles.drivers'), href: '/safety/drivers' },
@@ -76,13 +91,15 @@ const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
       { label: t('pages.titles.tripReports'), href: '/fuel/trip-reports' },
       { label: t('pages.titles.fuelPurchases'), href: '/fuel/fuel-purchases' },
     ],
-    [{ label: t('pages.titles.idlingEvents'), href: '/fuel/idling-events' }],
+    [
+      { label: t('pages.titles.idlingEvents'), href: '/fuel/idling-events' },
+      { label: t('pages.titles.fuelLossEvents'), href: '/fuel/fuel-loss-events' },
+    ],
   ],
 }))
 
 const moduleKeyMap: Record<string, string> = {
   Fleet: 'nav.fleet',
-  'Fleet 3D': 'nav.fleet3d',
   Safety: 'nav.safety',
   Fuel: 'nav.fuel',
   Dispatch: 'nav.dispatch',
@@ -95,6 +112,10 @@ const moduleKeyMap: Record<string, string> = {
 const titleKeyMap: Record<string, string> = {
   'Fleet View': 'pages.titles.fleetView',
   'Fleet 3D': 'pages.titles.fleet3d',
+  Live: 'pages.titles.live',
+  'Live 3D': 'pages.titles.live3d',
+  Assets: 'pages.titles.assets',
+  Trips: 'pages.titles.trips',
   Overview: 'pages.titles.overview',
   Events: 'pages.titles.events',
   Speeding: 'pages.titles.speeding',
@@ -147,24 +168,21 @@ const subNavTabs = computed(() => {
 </script>
 
 <template>
-  <div :class="['app-main', `app-main--${variant}`]">
-    <!-- Page header: shown in default mode only -->
-    <div v-if="isDefault" class="app-page-header">
+  <div class="app-main">
+    <!-- Page header: shown whenever the page declares a moduleName -->
+    <div v-if="route.meta.moduleName" class="app-page-header">
       <p class="app-page-module">{{ moduleNameDisplay }}</p>
       <h1 class="app-page-title font-condensed">{{ pageTitleDisplay }}</h1>
     </div>
 
     <!-- Sub-navigation tab strip -->
-    <LayoutAppSubNav v-if="isDefault && subNavTabs" :tabs="subNavTabs" />
+    <LayoutAppSubNav v-if="subNavTabs" :tabs="subNavTabs" />
 
-    <main
-      :class="['app-content', `app-content--${variant}`, { 'bg-dot-grid': isDefault }]"
-      id="main-content"
-    >
+    <main class="app-content bg-dot-grid" id="main-content">
       <div
         class="app-content-inner"
         v-motion
-        :initial="isDefault ? { opacity: 0, y: 8 } : { opacity: 1, y: 0 }"
+        :initial="{ opacity: 0, y: 8 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
       >
         <slot />
@@ -182,13 +200,8 @@ const subNavTabs = computed(() => {
   overflow: hidden;
   margin: var(--main-margin, 0.5rem 0.5rem 0.5rem 0);
   border-radius: var(--main-radius, var(--card-radius));
-  background-color: var(--mtv-color-surface-sunken);
-  border: 1px solid var(--mtv-color-border-subtle);
-}
-
-.app-main--globe {
-  background-color: oklch(0.147 0.011 285);
-  border-color: oklch(0.228 0.038 282.9);
+  background-color: var(--mtv-color-surface-base);
+  border: 1px solid var(--mtv-color-border-default);
 }
 
 .app-page-header {
@@ -215,43 +228,31 @@ const subNavTabs = computed(() => {
 
 .app-content {
   flex: 1;
-  padding: 1.25rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.app-content--map,
-.app-content--globe {
-  padding: 0;
-  overflow: hidden;
-  position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   min-height: 0;
 }
 
 .app-content-inner {
-  display: contents;
-}
-
-.app-content--map .app-content-inner,
-.app-content--globe .app-content-inner {
-  display: flex;
   flex: 1;
-  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-height: 0;
-  height: 100%;
 }
 
 @media (max-width: 768px) {
-  .app-content--default {
+  .app-content-inner {
     padding: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .app-content--default {
+  .app-content-inner {
     padding: 0.75rem;
   }
 }

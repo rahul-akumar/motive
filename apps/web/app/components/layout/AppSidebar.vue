@@ -2,7 +2,6 @@
 import {
   LayoutDashboard,
   Truck,
-  Globe,
   X,
   PanelLeftClose,
   PanelLeftOpen,
@@ -42,13 +41,6 @@ const navGroups = computed(() => [
     items: [
       { id: 'dashboard', label: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
       { id: 'fleet', label: t('nav.fleet'), href: '/fleet', icon: Truck },
-      {
-        id: 'fleet-3d',
-        label: t('nav.fleet3d'),
-        href: '/fleet-3d',
-        icon: Globe,
-        badge: { label: 'Beta', color: 'info' } as const,
-      },
       { id: 'safety', label: t('nav.safety'), href: '/safety', icon: ShieldCheck },
       { id: 'compliance', label: t('nav.compliance'), href: '/compliance', icon: ClipboardCheck },
       { id: 'fuel', label: t('nav.fuel'), href: '/fuel', icon: Fuel },

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Driver, DriverStatus } from '@motive/shared'
+import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   driver: Driver
@@ -10,22 +11,6 @@ const emit = defineEmits<{
   select: [id: string]
 }>()
 
-const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: 'oklch(0.800 0.182 151.7)',
-  idle: 'oklch(0.837 0.164 84.4)',
-  alert: 'oklch(0.711 0.166 22.2)',
-  offline: 'oklch(0.439 0.000 0)',
-  sleeper: 'oklch(0.709 0.159 293.5)',
-}
-
-const STATUS_LABELS: Record<DriverStatus, string> = {
-  driving: 'DRIVING',
-  idle: 'IDLE',
-  alert: 'ALERT',
-  offline: 'OFFLINE',
-  sleeper: 'SLEEPER',
-}
-
 const hosPercent = computed(() => {
   const max = 11
   return Math.max(0, Math.min(100, (props.driver.hos.drivingRemaining / max) * 100))
@@ -33,13 +18,11 @@ const hosPercent = computed(() => {
 
 const hosColor = computed(() => {
   const h = props.driver.hos.drivingRemaining
-  if (props.driver.hos.hasViolation || h <= 0) return 'oklch(0.711 0.166 22.2)'
-  if (h <= 2) return 'oklch(0.837 0.164 84.4)'
-  return 'oklch(0.800 0.182 151.7)'
+  return hosBarColor((h / 11) * 100, props.driver.hos.hasViolation)
 })
 
-const statusColor = computed(() => STATUS_COLORS[props.driver.status])
-const statusLabel = computed(() => STATUS_LABELS[props.driver.status])
+const statusColor = computed(() => FLEET_STATUS_COLORS[props.driver.status])
+const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
 
 function formatLastUpdated(date: Date): string {
   const diff = Date.now() - new Date(date).getTime()

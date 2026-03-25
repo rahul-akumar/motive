@@ -2,6 +2,7 @@
 import { ChevronLeft, ChevronRight, Globe, Search } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
 import type { Driver, DriverStatus } from '@motive/shared'
+import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   drivers: Driver[]
@@ -21,22 +22,6 @@ const emit = defineEmits<{
   togglePanel: []
   'update:searchQuery': [value: string]
 }>()
-
-const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: 'oklch(0.800 0.182 151.7)',
-  idle: 'oklch(0.837 0.164 84.4)',
-  alert: 'oklch(0.711 0.166 22.2)',
-  offline: 'oklch(0.439 0.000 0)',
-  sleeper: 'oklch(0.709 0.159 293.5)',
-}
-
-const STATUS_LABELS: Record<DriverStatus, string> = {
-  driving: 'Driving',
-  idle: 'Idle',
-  alert: 'Alert',
-  offline: 'Offline',
-  sleeper: 'Sleeper',
-}
 
 const FILTER_ORDER: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
@@ -99,7 +84,7 @@ const localSearch = computed({
           :class="['f3d-filter-chip', { 'f3d-filter-chip--active': activeFilters.has(status) }]"
           :style="
             activeFilters.has(status)
-              ? { borderColor: STATUS_COLORS[status], color: STATUS_COLORS[status] }
+              ? { borderColor: FLEET_STATUS_COLORS[status], color: FLEET_STATUS_COLORS[status] }
               : {}
           "
           :aria-pressed="activeFilters.has(status)"
@@ -107,10 +92,10 @@ const localSearch = computed({
         >
           <span
             class="f3d-filter-chip__dot"
-            :style="{ backgroundColor: STATUS_COLORS[status] }"
+            :style="{ backgroundColor: FLEET_STATUS_COLORS[status] }"
             aria-hidden="true"
           />
-          {{ STATUS_LABELS[status] }}
+          {{ FLEET_STATUS_LABELS[status] }}
           <span class="f3d-filter-chip__count">{{ statusCounts[status] }}</span>
         </button>
       </div>

@@ -2,6 +2,7 @@
 import { X, MapPin, Package, Clock, Truck, Fuel, AlertTriangle } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
 import type { Driver, Vehicle, DriverStatus } from '@motive/shared'
+import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   driver: Driver | null
@@ -11,22 +12,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: []
 }>()
-
-const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: 'oklch(0.800 0.182 151.7)',
-  idle: 'oklch(0.837 0.164 84.4)',
-  alert: 'oklch(0.711 0.166 22.2)',
-  offline: 'oklch(0.439 0.000 0)',
-  sleeper: 'oklch(0.709 0.159 293.5)',
-}
-
-const STATUS_LABELS: Record<DriverStatus, string> = {
-  driving: 'Driving',
-  idle: 'Idle',
-  alert: 'Alert',
-  offline: 'Offline',
-  sleeper: 'Sleeper',
-}
 
 // HOS gauge calculations
 const drivingPercent = computed(() => {
@@ -46,12 +31,6 @@ const cyclePercent = computed(() => {
   return Math.max(0, Math.min(100, (props.driver.hos.cycleRemaining / total) * 100))
 })
 
-function hosBarColor(percent: number, hasViolation: boolean): string {
-  if (hasViolation || percent <= 0) return 'oklch(0.711 0.166 22.2)'
-  if (percent <= 18) return 'oklch(0.837 0.164 84.4)' // ~2h of 11h
-  return 'oklch(0.800 0.182 151.7)'
-}
-
 function formatLastUpdated(date: Date): string {
   const diff = Date.now() - new Date(date).getTime()
   const mins = Math.floor(diff / 60000)
@@ -65,9 +44,9 @@ function formatMileage(miles: number): string {
 }
 
 const statusColor = computed(() =>
-  props.driver ? STATUS_COLORS[props.driver.status] : 'oklch(0.439 0.000 0)',
+  props.driver ? FLEET_STATUS_COLORS[props.driver.status] : 'var(--fleet-status-offline)',
 )
-const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.status] : ''))
+const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.driver.status] : ''))
 </script>
 
 <template>
@@ -275,10 +254,10 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
                   width: `${vehicle.fuelLevel}%`,
                   backgroundColor:
                     vehicle.fuelLevel < 20
-                      ? 'oklch(0.711 0.166 22.2)'
+                      ? 'var(--fleet-status-alert)'
                       : vehicle.fuelLevel < 40
-                        ? 'oklch(0.837 0.164 84.4)'
-                        : 'oklch(0.800 0.182 151.7)',
+                        ? 'var(--fleet-status-idle)'
+                        : 'var(--fleet-status-driving)',
                 }"
               />
             </div>
@@ -468,9 +447,9 @@ const statusLabel = computed(() => (props.driver ? STATUS_LABELS[props.driver.st
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
-  background: oklch(0.577 0.215 27.3 / 0.1);
-  border-bottom: 1px solid oklch(0.577 0.215 27.3 / 0.2);
-  color: oklch(0.711 0.166 22.2);
+  background: var(--mtv-color-status-critical-subtle);
+  border-bottom: 1px solid oklch(from var(--fleet-status-alert) l c h / 0.2);
+  color: var(--fleet-status-alert);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
 }

@@ -29,6 +29,10 @@
     "titles": {
       "fleetView": "Visualização de Frota",
       "fleet3d": "Frota 3D",
+      "live": "Ao Vivo",
+      "live3d": "Ao Vivo 3D",
+      "assets": "Ativos",
+      "trips": "Viagens",
       "overview": "Visão Geral",
       "events": "Eventos",
       "speeding": "Excesso de Velocidade",
@@ -59,11 +63,45 @@
       "rewards": "Recompensas",
       "plan": "Plano",
       "inProgress": "Em Andamento",
-      "done": "Concluído"
+      "done": "Concluído",
+      "fuelLossEvents": "Eventos de Perda de Combustível"
+    }
+  },
+  "fuel": {
+    "lossEvents": {
+      "title": "Eventos de Perda de Combustível",
+      "description": "Quedas de combustível detectadas durante paradas do veículo",
+      "columns": {
+        "vehicle": "Veículo",
+        "timeWindow": "Janela de Tempo",
+        "location": "Localização",
+        "fuelStart": "Combustível Inicial",
+        "fuelEnd": "Combustível Final",
+        "drop": "Queda",
+        "status": "Status"
+      },
+      "status": {
+        "open": "Aberto",
+        "reviewed": "Revisado",
+        "dismissed": "Descartado"
+      },
+      "filters": {
+        "searchPlaceholder": "Buscar veículo ou motorista…",
+        "anyDrop": "Qualquer queda %",
+        "clearFilters": "Limpar filtros",
+        "allStatuses": "Todos os status"
+      },
+      "actions": {
+        "markReviewed": "Marcar como Revisado",
+        "dismiss": "Descartar",
+        "exportCsv": "Exportar CSV"
+      },
+      "empty": "Nenhum evento de perda de combustível corresponde aos seus filtros."
     }
   },
   "common": {
-    "new": "Novo"
+    "new": "Novo",
+    "beta": "Beta"
   },
   "search": {
     "label": "Pesquisar",

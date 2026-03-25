@@ -2,9 +2,8 @@
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
 
 definePageMeta({
-  title: 'Fleet View',
+  title: 'Live',
   moduleName: 'Fleet',
-  mainVariant: 'map',
 })
 
 const {
@@ -31,9 +30,11 @@ const { allOverlays, activeOverlayIds, toggleOverlay } = useTomTomOverlays()
 const config = useRuntimeConfig()
 const tomtomKey = config.public.tomtomApiKey as string
 
+const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+
 function isDark(): boolean {
   if (!import.meta.client) return true
-  return document.documentElement.getAttribute('data-theme') !== 'light'
+  return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
 }
 
 const activeOverlayDefs = computed(() => {
@@ -120,9 +121,8 @@ function handleZoomOut() {
 /* The fleet layout provides a position:relative, overflow:hidden container.
    This page fills it completely. */
 .fv-page {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
 }
 
