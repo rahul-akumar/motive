@@ -9,6 +9,7 @@ const { metrics } = useKPIMetrics()
 const { visibleEvents, hasMore, loadMore } = useActivityFeed()
 const { activeAlerts, criticalCount, warningCount, dismiss, dismissAll } = useAlerts()
 const { dailyMiles } = useMilesData()
+const { mapFuelLossEvents } = useFuelLossData()
 </script>
 
 <template>
@@ -39,6 +40,7 @@ const { dailyMiles } = useMilesData()
       <ClientOnly>
         <DashboardFleetMap
           :drivers="drivers"
+          :fuel-loss-events="mapFuelLossEvents"
           class="charts-row__map animate-card-enter animate-card-enter-6"
         />
         <template #fallback>

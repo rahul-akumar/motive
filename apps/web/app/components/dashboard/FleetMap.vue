@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { select } from 'd3-selection'
 import 'd3-transition'
-import { geoAlbersUsa, geoPath } from 'd3-geo'
+import { geoAlbersUsa, geoMercator, geoPath } from 'd3-geo'
 import { easeBackOut } from 'd3-ease'
-import type { Driver, DriverStatus } from '@motive/shared'
+import type { Driver, DriverStatus, FuelLossEvent } from '@motive/shared'
 
 const props = defineProps<{
   drivers: Driver[]
+  fuelLossEvents: FuelLossEvent[]
 }>()
 
 const { geoData, loading } = useFleetMap()
@@ -14,16 +15,20 @@ const { geoData, loading } = useFleetMap()
 const svgRef = ref<SVGSVGElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 
+type TooltipData = { driver: Driver; fuelLoss?: FuelLossEvent }
+
 interface TooltipState {
   visible: boolean
   x: number
   y: number
-  driver: Driver | null
+  data: TooltipData | null
 }
 
-const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, driver: null })
+const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, data: null })
 
 // CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill/stroke attributes; oklch is not supported in SVG presentation attributes.
+// Fuel loss orange is the SVG-safe equivalent of --mtv-color-status-warning.
+const FUEL_LOSS_ORANGE = '#f97316' // --mtv-color-status-warning
 const STATUS_COLORS: Record<DriverStatus, string> = {
   driving: '#4ade80', // green-400 — active/moving
   idle: '#fbbf24', // amber-400 — waiting
@@ -54,6 +59,11 @@ function getCSSVar(name: string): string {
 function drawMap() {
   if (!svgRef.value || !containerRef.value || !geoData.value) return
 
+  // Build vehicleId → FuelLossEvent lookup for O(1) access during pin rendering
+  const fuelByVehicle = new Map<string, FuelLossEvent>(
+    props.fuelLossEvents.map((e) => [e.vehicleId, e]),
+  )
+
   const bgCard = getCSSVar('--bg-card') || '#111111'
   const borderColor = getCSSVar('--border') || 'rgba(255,255,255,0.07)'
   const borderStrong = getCSSVar('--border-strong') || 'rgba(255,255,255,0.12)'
@@ -68,31 +78,34 @@ function drawMap() {
     .attr('width', width)
     .attr('height', height)
     .attr('role', 'img')
-    .attr('aria-label', 'Live fleet location map showing truck positions across the US')
+    .attr('aria-label', 'Live fleet location map showing truck positions and fuel theft events')
 
-  // Projection — AlbersUSA handles contiguous + AK + HI
-  const projection = geoAlbersUsa().fitSize([width, height], geoData.value.states)
+  // Projection — AlbersUSA for US (handles AK + HI); Mercator fitted to country outline for MX/UK
+  const projection =
+    geoData.value.region === 'us'
+      ? geoAlbersUsa().fitSize([width, height], geoData.value.featureCollection as never)
+      : geoMercator().fitSize([width, height], geoData.value.featureCollection as never)
 
   const pathGen = geoPath().projection(projection)
 
-  // State fills
+  // Region fills
   svg
     .append('g')
     .attr('class', 'states')
     .selectAll('path')
-    .data(geoData.value.states.features)
+    .data(geoData.value.featureCollection.features)
     .join('path')
     .attr('d', pathGen as never)
     .attr('fill', bgCard)
     .attr('stroke', borderColor)
     .attr('stroke-width', 0.5)
 
-  // State borders (stronger)
+  // Region borders (stronger)
   svg
     .append('g')
     .attr('class', 'state-borders')
     .selectAll('path')
-    .data(geoData.value.states.features)
+    .data(geoData.value.featureCollection.features)
     .join('path')
     .attr('d', pathGen as never)
     .attr('fill', 'none')
@@ -104,9 +117,17 @@ function drawMap() {
     .map((driver) => {
       const projected = projection([driver.currentLocation.lng, driver.currentLocation.lat])
       if (!projected) return null
-      return { driver, x: projected[0], y: projected[1] }
+      return {
+        driver,
+        fuelLoss: fuelByVehicle.get(driver.vehicleId),
+        x: projected[0],
+        y: projected[1],
+      }
     })
-    .filter((d): d is { driver: Driver; x: number; y: number } => d !== null)
+    .filter(
+      (d): d is { driver: Driver; fuelLoss: FuelLossEvent | undefined; x: number; y: number } =>
+        d !== null,
+    )
 
   const pinsGroup = svg.append('g').attr('class', 'pins')
 
@@ -124,7 +145,7 @@ function drawMap() {
     .attr('stroke-width', 1.5)
     .attr('opacity', 0.5)
 
-  // Truck pins
+  // Truck pins — orange when the vehicle has an active fuel loss event
   pinsGroup
     .selectAll('.pin')
     .data(pinData)
@@ -133,7 +154,7 @@ function drawMap() {
     .attr('cx', (d) => d.x)
     .attr('cy', (d) => d.y)
     .attr('r', 0)
-    .attr('fill', (d) => STATUS_COLORS[d.driver.status])
+    .attr('fill', (d) => (d.fuelLoss ? FUEL_LOSS_ORANGE : STATUS_COLORS[d.driver.status]))
     .attr('stroke', bgCard)
     .attr('stroke-width', 1.5)
     .style('cursor', 'pointer')
@@ -160,16 +181,21 @@ function drawMap() {
       // Keep tooltip inside container bounds
       const tx = Math.min(Math.max(event.clientX - rect.left, 80), rect.width - 80)
       const ty = Math.max(event.clientY - rect.top - 70, 4)
-      tooltip.value = { visible: true, x: tx, y: ty, driver: d.driver }
+      tooltip.value = {
+        visible: true,
+        x: tx,
+        y: ty,
+        data: { driver: d.driver, fuelLoss: d.fuelLoss },
+      }
     })
     .on('mouseleave', () => {
       tooltip.value.visible = false
     })
 }
 
-// Watch for geo data load + driver changes
+// Watch for geo data load + driver changes + fuel events
 watch(
-  [geoData, () => props.drivers],
+  [geoData, () => props.drivers, () => props.fuelLossEvents],
   () => {
     nextTick(drawMap)
   },
@@ -198,6 +224,14 @@ function formatHos(driver: Driver): string {
   if (h <= 0) return 'Violation'
   return `${h.toFixed(1)}h drive left`
 }
+
+function timeAgo(date: Date): string {
+  const mins = Math.floor((Date.now() - date.getTime()) / 60_000)
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  return `${Math.floor(hrs / 24)}d ago`
+}
 </script>
 
 <template>
@@ -219,7 +253,7 @@ function formatHos(driver: Driver): string {
       ref="containerRef"
       class="fleet-map__canvas"
       role="figure"
-      aria-label="US map showing truck locations"
+      aria-label="Live fleet map showing truck positions and fuel theft events"
     >
       <!-- Loading skeleton -->
       <div v-if="loading" class="fleet-map__skeleton" aria-hidden="true">
@@ -231,24 +265,29 @@ function formatHos(driver: Driver): string {
       <!-- Tooltip -->
       <Transition name="map-tooltip">
         <div
-          v-if="tooltip.visible && tooltip.driver"
+          v-if="tooltip.visible && tooltip.data"
           class="chart-tooltip fleet-map__tooltip"
           :style="{ left: `${tooltip.x}px`, top: `${tooltip.y}px`, transform: 'translateX(-50%)' }"
           role="tooltip"
           aria-live="polite"
         >
-          <div class="fleet-map__tooltip-name">{{ tooltip.driver.name }}</div>
+          <div class="fleet-map__tooltip-name">{{ tooltip.data.driver.name }}</div>
           <div class="fleet-map__tooltip-location">
-            {{ tooltip.driver.currentLocation.city }}, {{ tooltip.driver.currentLocation.state }}
+            {{ tooltip.data.driver.currentLocation.city }},
+            {{ tooltip.data.driver.currentLocation.state }}
           </div>
-          <div v-if="tooltip.driver.currentLoad" class="fleet-map__tooltip-load">
-            {{ tooltip.driver.currentLoad }}
+          <div v-if="tooltip.data.driver.currentLoad" class="fleet-map__tooltip-load">
+            {{ tooltip.data.driver.currentLoad }}
           </div>
           <div
             class="fleet-map__tooltip-hos"
-            :class="{ 'fleet-map__tooltip-hos--violation': tooltip.driver.hos.hasViolation }"
+            :class="{ 'fleet-map__tooltip-hos--violation': tooltip.data.driver.hos.hasViolation }"
           >
-            {{ formatHos(tooltip.driver) }}
+            {{ formatHos(tooltip.data.driver) }}
+          </div>
+          <div v-if="tooltip.data.fuelLoss" class="fleet-map__tooltip-fuel-drop">
+            &#x2212;{{ tooltip.data.fuelLoss.fuelDrop }}% fuel &middot;
+            {{ timeAgo(tooltip.data.fuelLoss.startTime) }}
           </div>
         </div>
       </Transition>
@@ -268,6 +307,14 @@ function formatHos(driver: Driver): string {
           aria-hidden="true"
         />
         <span class="fleet-map__legend-label">{{ STATUS_LABELS[status] }}</span>
+      </div>
+      <div v-if="fuelLossEvents.length > 0" class="fleet-map__legend-item" role="listitem">
+        <span
+          class="fleet-map__legend-dot"
+          :style="{ backgroundColor: '#f97316' }"
+          aria-hidden="true"
+        />
+        <span class="fleet-map__legend-label">Fuel Loss</span>
       </div>
     </div>
   </div>
@@ -435,11 +482,17 @@ function formatHos(driver: Driver): string {
   color: oklch(0.793 0.209 153.6);
 }
 
-.fleet-map__tooltip-hos--violation {
-  color: oklch(0.706 0.176 17.7);
+/* Fuel loss line in driver tooltip */
+.fleet-map__tooltip-fuel-drop {
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-mono);
+  color: var(--mtv-color-status-warning);
+  font-weight: var(--font-weight-semibold);
+  margin-top: 2px;
 }
 
 /* Legend */
+
 .fleet-map__legend {
   display: flex;
   flex-wrap: wrap;
