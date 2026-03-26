@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import L from 'leaflet'
-import type { Driver, DriverStatus } from '@motive/shared'
+import type { Driver, DriverStatus, FuelLossEvent } from '@motive/shared'
 
 const props = defineProps<{
   drivers: Driver[]
   selectedDriverId: string | null
   fitAllTrigger: number
   overlays: Array<{ id: string; tileUrl: string; opacity: number; zIndex: number }>
+  fuelLossEvents?: FuelLossEvent[]
 }>()
 
 const emit = defineEmits<{
@@ -48,13 +49,13 @@ function getTileUrl(): string {
   return isDarkTheme() ? TILE_DARK : TILE_LIGHT
 }
 
-function createMarkerIcon(driver: Driver, isSelected: boolean): L.DivIcon {
-  const color = STATUS_COLORS[driver.status]
+function createMarkerIcon(driver: Driver, isSelected: boolean, hasFuelLoss: boolean): L.DivIcon {
+  const color = hasFuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
   const size = isSelected ? 36 : 28
   const borderWidth = isSelected ? 3 : 2
   const borderColor = isSelected ? '#ffffff' : 'rgba(0,0,0,0.5)'
   const pulseRing =
-    driver.status === 'alert'
+    hasFuelLoss || driver.status === 'alert'
       ? `<div class="fv-marker-ring" style="border-color:${color}"></div>`
       : ''
 
@@ -79,8 +80,9 @@ function createMarkerIcon(driver: Driver, isSelected: boolean): L.DivIcon {
   })
 }
 
-function createPopupContent(driver: Driver): string {
-  const color = STATUS_COLORS[driver.status]
+function createPopupContent(driver: Driver, fuelLoss?: FuelLossEvent): string {
+  const color = fuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
+  const statusLabel = fuelLoss ? 'FUEL LOSS' : driver.status.toUpperCase()
   const hosText = driver.hos.hasViolation
     ? '<span style="color:#f87171">HOS Violation</span>'
     : `<span style="color:#4ade80">${driver.hos.drivingRemaining.toFixed(1)}h drive left</span>`
@@ -90,33 +92,37 @@ function createPopupContent(driver: Driver): string {
   const etaText = driver.etaNextStop
     ? `<div style="color:#94a3b8;font-size:10px">ETA ${driver.etaNextStop}</div>`
     : ''
+  const fuelLossText = fuelLoss
+    ? `<div style="color:${STATUS_COLORS.alert};font-size:10px;margin-top:4px">&minus;${fuelLoss.fuelDrop}% fuel &middot; ${timeAgo(fuelLoss.startTime)}</div>`
+    : ''
 
   return `
     <div class="fv-popup">
       <div class="fv-popup__name">${driver.name}</div>
-      <div class="fv-popup__status" style="color:${color}">${driver.status.toUpperCase()}</div>
+      <div class="fv-popup__status" style="color:${color}">${statusLabel}</div>
       <div class="fv-popup__location">${driver.currentLocation.city}, ${driver.currentLocation.state}</div>
       ${loadText}
       ${etaText}
       <div class="fv-popup__hos">${hosText}</div>
+      ${fuelLossText}
     </div>
   `
 }
 
-function addOrUpdateMarker(driver: Driver) {
+function addOrUpdateMarker(driver: Driver, fuelLoss?: FuelLossEvent) {
   if (!map) return
   const isSelected = driver.id === props.selectedDriverId
-  const icon = createMarkerIcon(driver, isSelected)
+  const icon = createMarkerIcon(driver, isSelected, !!fuelLoss)
   const latlng: L.LatLngExpression = [driver.currentLocation.lat, driver.currentLocation.lng]
 
   if (markers.has(driver.id)) {
     const marker = markers.get(driver.id)!
     marker.setLatLng(latlng)
     marker.setIcon(icon)
-    marker.getPopup()?.setContent(createPopupContent(driver))
+    marker.getPopup()?.setContent(createPopupContent(driver, fuelLoss))
   } else {
     const marker = L.marker(latlng, { icon })
-    marker.bindPopup(createPopupContent(driver), {
+    marker.bindPopup(createPopupContent(driver, fuelLoss), {
       closeButton: false,
       className: 'fv-leaflet-popup',
       offset: [0, -4],
@@ -146,11 +152,22 @@ function removeStaleMarkers(currentIds: Set<string>) {
   }
 }
 
+function timeAgo(date: Date): string {
+  const mins = Math.floor((Date.now() - date.getTime()) / 60_000)
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  return `${Math.floor(hrs / 24)}d ago`
+}
+
 function syncMarkers() {
+  const fuelByVehicle = new Map<string, FuelLossEvent>(
+    (props.fuelLossEvents ?? []).map((e) => [e.vehicleId, e]),
+  )
   const currentIds = new Set(props.drivers.map((d) => d.id))
   removeStaleMarkers(currentIds)
   for (const driver of props.drivers) {
-    addOrUpdateMarker(driver)
+    addOrUpdateMarker(driver, fuelByVehicle.get(driver.vehicleId))
   }
 }
 
@@ -242,6 +259,7 @@ onUnmounted(() => {
 // Reactive watchers
 watch(() => props.overlays, syncOverlays, { deep: true })
 watch(() => props.drivers, syncMarkers, { deep: true })
+watch(() => props.fuelLossEvents, syncMarkers, { deep: true })
 
 watch(
   () => props.selectedDriverId,
@@ -267,7 +285,12 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 </script>
 
 <template>
-  <div ref="mapRef" class="fv-map" aria-label="Live fleet map showing truck positions" role="img" />
+  <div
+    ref="mapRef"
+    class="fv-map"
+    aria-label="Live fleet map showing truck positions and fuel theft events"
+    role="img"
+  />
 </template>
 
 <style>

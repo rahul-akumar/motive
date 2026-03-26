@@ -25,6 +25,8 @@ const {
   fitAllTrucks,
 } = useFleetView()
 
+const { mapFuelLossEvents } = useFuelLossData()
+
 // TomTom overlay state
 const { allOverlays, activeOverlayIds, toggleOverlay } = useTomTomOverlays()
 const config = useRuntimeConfig()
@@ -73,6 +75,7 @@ function handleZoomOut() {
         :selected-driver-id="selectedDriverId"
         :fit-all-trigger="fitAllTrigger"
         :overlays="activeOverlayDefs"
+        :fuel-loss-events="mapFuelLossEvents"
         class="fv-page__map"
         @select-driver="selectDriver"
       />
