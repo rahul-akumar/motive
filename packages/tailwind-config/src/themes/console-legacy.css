@@ -9,6 +9,8 @@ html[data-theme='console-legacy'] {
   --mtv-color-foreground-disabled: oklch(0.845 0 0);
   --mtv-color-foreground-inverse: oklch(0.979 0 0);
   --mtv-color-foreground-on-accent: oklch(1 0 0);
+  --mtv-color-foreground-critical: var(--mtv-color-rose-600);
+  --mtv-color-foreground-critical-inverted: var(--mtv-color-rose-50);
 
   /* Surface */
   --mtv-color-surface-base: oklch(0.979 0 0);
@@ -20,12 +22,19 @@ html[data-theme='console-legacy'] {
   --mtv-color-surface-active: oklch(0.919 0 0);
   --mtv-color-surface-accent: oklch(0.624 0.202 263.1 / 0.08);
   --mtv-color-surface-accent-subtle: oklch(0.624 0.202 263.1 / 0.04);
+  --mtv-color-surface-critical: var(--mtv-color-rose-100);
+  --mtv-color-surface-critical-subtle: var(--mtv-color-rose-50);
+  --mtv-color-surface-critical-strong: var(--mtv-color-rose-200);
+  --mtv-color-surface-critical-inverted: var(--mtv-color-rose-700);
 
   /* Border */
   --mtv-color-border-default: oklch(0 0 0 / 0.1);
   --mtv-color-border-strong: oklch(0.624 0.202 263.1 / 0.5);
   --mtv-color-border-accent: oklch(0.624 0.202 263.1 / 0.65);
   --mtv-color-border-subtle: oklch(0 0 0 / 0.06);
+  --mtv-color-border-critical: var(--mtv-color-rose-300);
+  --mtv-color-border-critical-subtle: var(--mtv-color-rose-200);
+  --mtv-color-border-critical-strong: var(--mtv-color-rose-700);
 
   /* Link */
   --mtv-color-link-default: var(--mtv-color-blue-500);
@@ -80,6 +89,7 @@ html[data-theme='console-legacy'] {
   /* Layout geometry — flat, edge-to-edge */
   --main-margin: 0;
   --main-radius: 0;
+  --mtv-border-radius: var(--card-radius);
 }
 
 /* Sidebar overrides — dark */
