@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { X, TriangleAlert, CheckCircle2, Info } from 'lucide-vue-next'
+import { X, TriangleAlert, CheckCircle2, Info, Siren } from 'lucide-vue-next'
 import type { Component } from 'vue'
+import MButton from './MButton.vue'
+import MIcon from './MIcon.vue'
 
 export type MToastVariant = 'critical' | 'warning' | 'info' | 'success'
 
@@ -8,12 +10,16 @@ export interface MToastProps {
   message: string
   subtext?: string
   variant?: MToastVariant
+  duration?: number
+  dismissible?: boolean
   actionLabel?: string
   onAction?: () => void
 }
 
 const props = withDefaults(defineProps<MToastProps>(), {
   variant: 'info',
+  duration: 0,
+  dismissible: true,
 })
 
 const emit = defineEmits<{
@@ -30,10 +36,10 @@ interface VariantConfig {
 
 const VARIANT_CONFIG: Record<MToastVariant, VariantConfig> = {
   critical: {
-    icon: TriangleAlert,
-    bg: 'oklch(0.577 0.215 27.3 / 0.08)',
-    border: 'oklch(0.577 0.215 27.3 / 0.35)',
-    iconColor: 'oklch(0.711 0.166 22.2)',
+    icon: Siren,
+    bg: 'var(--mtv-color-surface-critical)',
+    border: 'var(--mtv-color-border-critical)',
+    iconColor: 'var(--mtv-color-foreground-critical)',
     actionColor: 'oklch(0.711 0.166 22.2)',
   },
   warning: {
@@ -61,6 +67,8 @@ const VARIANT_CONFIG: Record<MToastVariant, VariantConfig> = {
 
 const config = computed(() => VARIANT_CONFIG[props.variant])
 
+const isHovered = ref(false)
+
 function handleAction() {
   props.onAction?.()
   emit('dismiss')
@@ -73,64 +81,91 @@ function handleAction() {
     role="alert"
     :aria-live="variant === 'critical' ? 'assertive' : 'polite'"
     :style="{ backgroundColor: config.bg, borderColor: config.border }"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
   >
-    <span class="m-toast__icon" :style="{ color: config.iconColor }" aria-hidden="true">
-      <component :is="config.icon" :size="15" :stroke-width="1.75" />
-    </span>
+    <div class="m-toast__content">
+      <MIcon
+        class="m-toast__icon"
+        :icon="config.icon"
+        :size="18"
+        :stroke-width="1.75"
+        :style="{ color: config.iconColor }"
+      />
 
-    <div class="m-toast__body">
-      <span class="m-toast__message">{{ message }}</span>
-      <span v-if="subtext" class="m-toast__subtext">{{ subtext }}</span>
+      <div class="m-toast__body">
+        <span class="m-toast__message">{{ message }}</span>
+        <span v-if="subtext" class="m-toast__subtext">{{ subtext }}</span>
+      </div>
     </div>
 
-    <div class="m-toast__actions">
-      <button
+    <div class="m-toast__actions px-8">
+      <MButton
         v-if="actionLabel"
-        type="button"
-        class="m-toast__action-btn"
+        variant="link"
+        size="sm"
         :style="{ color: config.actionColor }"
         @click="handleAction"
       >
         {{ actionLabel }}
-      </button>
-      <button
-        type="button"
-        class="m-toast__dismiss"
+      </MButton>
+      <MButton
+        v-if="dismissible && duration === 0"
+        variant="ghost"
+        size="sm"
+        icon-only
         aria-label="Dismiss notification"
         @click="emit('dismiss')"
       >
         <X :size="13" :stroke-width="2" />
-      </button>
+      </MButton>
     </div>
+
+    <div
+      v-if="duration > 0"
+      class="m-toast__timer-bar"
+      :style="{
+        animationDuration: `${duration}ms`,
+        animationPlayState: isHovered ? 'paused' : 'running',
+        backgroundColor: config.iconColor,
+      }"
+      @animationend="emit('dismiss')"
+    />
   </div>
 </template>
 
 <style scoped>
 .m-toast {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.625rem;
   min-width: 300px;
-  max-width: 400px;
+  max-width: 500px;
   padding: 0.75rem 0.875rem;
   border: 1px solid;
-  border-radius: 6px;
+  border-radius: var(--mtv-border-radius);
   backdrop-filter: blur(8px);
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.28),
     0 1px 4px rgba(0, 0, 0, 0.12);
   pointer-events: all;
+  position: relative;
+  overflow: hidden;
+}
+
+.m-toast__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
 }
 
 .m-toast__icon {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  margin-top: 1px;
 }
 
 .m-toast__body {
-  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -138,14 +173,14 @@ function handleAction() {
 }
 
 .m-toast__message {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
   line-height: var(--leading-tight);
 }
 
 .m-toast__subtext {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xsm);
   color: var(--mtv-color-foreground-muted);
   line-height: var(--leading-tight);
 }
@@ -153,42 +188,28 @@ function handleAction() {
 .m-toast__actions {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: 0.25rem;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
-.m-toast__action-btn {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  white-space: nowrap;
-  transition: opacity 100ms ease;
+.m-toast__timer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left center;
+  opacity: 0.55;
+  animation: m-timer-shrink linear forwards;
 }
 
-.m-toast__action-btn:hover {
-  opacity: 0.75;
-}
-
-.m-toast__dismiss {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--mtv-color-foreground-subtle);
-  border-radius: 3px;
-  padding: 0;
-  transition: all 100ms ease;
-}
-
-.m-toast__dismiss:hover {
-  background-color: var(--mtv-color-surface-raised);
-  color: var(--mtv-color-foreground-default);
+@keyframes m-timer-shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
 </style>
