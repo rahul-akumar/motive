@@ -79,7 +79,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           aria-label="Close driver details"
           @click="emit('close')"
         >
-          <MIcon :icon="X" :size="18" />
+          <MIcon :icon="X" />
         </button>
       </div>
 
@@ -88,7 +88,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
         <!-- Location -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <MIcon :icon="MapPin" :size="18" />
+            <MIcon :icon="MapPin" />
             Location
           </div>
           <div class="fv-detail__value">
@@ -99,14 +99,14 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 
         <!-- HOS Violation Banner -->
         <div v-if="driver.hos.hasViolation" class="fv-detail__violation" role="alert">
-          <MIcon :icon="AlertTriangle" :size="18" />
+          <MIcon :icon="AlertTriangle" />
           <span>HOS Violation — Immediate action required</span>
         </div>
 
         <!-- HOS Gauges -->
         <section class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <MIcon :icon="Clock" :size="18" />
+            <MIcon :icon="Clock" />
             Hours of Service
           </div>
 
@@ -115,7 +115,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
             <div class="fv-detail__hos-row">
               <span class="fv-detail__hos-name">Drive Remaining</span>
               <span
-                class="fv-detail__hos-value font-mono-data"
+                class="fv-detail__hos-value"
                 :style="{ color: hosBarColor(drivingPercent, driver.hos.hasViolation) }"
               >
                 <template v-if="driver.hos.hasViolation || driver.hos.drivingRemaining <= 0">
@@ -140,7 +140,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
             <div class="fv-detail__hos-row">
               <span class="fv-detail__hos-name">On Duty Remaining</span>
               <span
-                class="fv-detail__hos-value font-mono-data"
+                class="fv-detail__hos-value"
                 :style="{ color: hosBarColor(onDutyPercent, driver.hos.hasViolation) }"
               >
                 <template v-if="driver.hos.hasViolation || driver.hos.onDutyRemaining <= 0">
@@ -165,7 +165,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
             <div class="fv-detail__hos-row">
               <span class="fv-detail__hos-name">70h Cycle Remaining</span>
               <span
-                class="fv-detail__hos-value font-mono-data"
+                class="fv-detail__hos-value"
                 :style="{ color: hosBarColor(cyclePercent, false) }"
               >
                 {{ driver.hos.cycleRemaining.toFixed(0) }}h
@@ -186,25 +186,25 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           <div class="fv-detail__hos-breakdown">
             <div class="fv-detail__hos-breakdown-item">
               <span class="fv-detail__hos-breakdown-label">Driving</span>
-              <span class="fv-detail__hos-breakdown-val font-mono-data"
+              <span class="fv-detail__hos-breakdown-val"
                 >{{ driver.hos.drivingToday.toFixed(1) }}h</span
               >
             </div>
             <div class="fv-detail__hos-breakdown-item">
               <span class="fv-detail__hos-breakdown-label">On Duty</span>
-              <span class="fv-detail__hos-breakdown-val font-mono-data"
+              <span class="fv-detail__hos-breakdown-val"
                 >{{ driver.hos.onDutyToday.toFixed(1) }}h</span
               >
             </div>
             <div class="fv-detail__hos-breakdown-item">
               <span class="fv-detail__hos-breakdown-label">Sleeper</span>
-              <span class="fv-detail__hos-breakdown-val font-mono-data"
+              <span class="fv-detail__hos-breakdown-val"
                 >{{ driver.hos.sleeperToday.toFixed(1) }}h</span
               >
             </div>
             <div class="fv-detail__hos-breakdown-item">
               <span class="fv-detail__hos-breakdown-label">Off Duty</span>
-              <span class="fv-detail__hos-breakdown-val font-mono-data"
+              <span class="fv-detail__hos-breakdown-val"
                 >{{ driver.hos.offDutyToday.toFixed(1) }}h</span
               >
             </div>
@@ -230,7 +230,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
         <!-- Vehicle -->
         <section v-if="vehicle" class="fv-detail__section">
           <div class="fv-detail__section-label">
-            <MIcon :icon="Truck" :size="18" />
+            <MIcon :icon="Truck" class="fv-detail__section-icon" />
             Vehicle
           </div>
           <div class="fv-detail__value">
@@ -243,9 +243,9 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           <!-- Fuel level -->
           <div class="fv-detail__fuel">
             <div class="fv-detail__fuel-row">
-              <MIcon :icon="Fuel" :size="18" class="fv-detail__fuel-icon" />
+              <MIcon :icon="Fuel" class="fv-detail__fuel-icon" />
               <span class="fv-detail__fuel-label">Fuel</span>
-              <span class="fv-detail__fuel-value font-mono-data">{{ vehicle.fuelLevel }}%</span>
+              <span class="fv-detail__fuel-value">{{ vehicle.fuelLevel }}%</span>
             </div>
             <div class="fv-detail__fuel-track">
               <div
@@ -269,15 +269,15 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           <div class="fv-detail__section-label">Driver Info</div>
           <div class="fv-detail__info-row">
             <span class="fv-detail__info-key">CDL</span>
-            <span class="fv-detail__info-val font-mono-data">{{ driver.licenseNumber }}</span>
+            <span class="fv-detail__info-val">{{ driver.licenseNumber }}</span>
           </div>
           <div class="fv-detail__info-row">
             <span class="fv-detail__info-key">Phone</span>
-            <span class="fv-detail__info-val font-mono-data">{{ driver.phone }}</span>
+            <span class="fv-detail__info-val">{{ driver.phone }}</span>
           </div>
           <div class="fv-detail__info-row">
             <span class="fv-detail__info-key">Vehicle ID</span>
-            <span class="fv-detail__info-val font-mono-data">{{ driver.vehicleId }}</span>
+            <span class="fv-detail__info-val">{{ driver.vehicleId }}</span>
           </div>
         </section>
       </div>
@@ -295,9 +295,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, var(--mtv-color-surface-default) 95%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--mtv-color-surface-base);
   border-left: 1px solid var(--mtv-color-border-default);
   border-top: none;
   border-bottom: none;
@@ -323,8 +321,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-default);
   background: var(--mtv-color-surface-raised);
@@ -339,7 +336,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 
 .fv-detail__name {
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
@@ -350,9 +347,8 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-loose);
   text-transform: uppercase;
   margin-top: 2px;
@@ -414,31 +410,28 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   align-items: center;
   gap: 0.5rem;
   line-height: var(--leading-none);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-extrabold);
-  letter-spacing: var(--tracking-loose);
+  font-size: var(--font-size-xsm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--mtv-color-foreground-subtle);
-  margin-bottom: 0.5rem;
+  color: var(--mtv-color-foreground-default);
+  margin-bottom: 0.25rem;
 }
 
 .fv-detail__value {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
   margin-bottom: 2px;
 }
 
 .fv-detail__meta {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-muted);
 }
 
 .fv-detail__eta {
   color: var(--mtv-color-foreground-default);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-md);
 }
 
 /* Violation banner */
@@ -450,8 +443,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   background: var(--mtv-color-status-critical-subtle);
   border-bottom: 1px solid oklch(from var(--fleet-status-alert) l c h / 0.2);
   color: var(--fleet-status-alert);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
 }
 
 /* HOS items */
@@ -471,19 +463,19 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 }
 
 .fv-detail__hos-name {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-muted);
 }
 
 .fv-detail__hos-value {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xsm);
+  font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-wide);
 }
 
 .fv-detail__hos-track {
   height: 4px;
-  background: oklch(1 0 0 / 0.08);
+  background: var(--mtv-color-rose-100);
   border-radius: 1px;
   overflow: hidden;
 }
@@ -510,14 +502,14 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 }
 
 .fv-detail__hos-breakdown-label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xsm);
   color: var(--mtv-color-foreground-subtle);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
+  letter-spacing: var(--tracking-wide);
 }
 
 .fv-detail__hos-breakdown-val {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
 }
@@ -539,20 +531,20 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 }
 
 .fv-detail__fuel-label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-muted);
   flex: 1;
 }
 
 .fv-detail__fuel-value {
-  font-size: var(--font-size-2xs);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xsm);
+  font-weight: var(--font-weight-medium);
   color: var(--mtv-color-foreground-default);
 }
 
 .fv-detail__fuel-track {
   height: 4px;
-  background: oklch(1 0 0 / 0.08);
+  background: var(--mtv-color-rose-200);
   border-radius: 1px;
   overflow: hidden;
 }
@@ -576,12 +568,12 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 }
 
 .fv-detail__info-key {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-subtle);
 }
 
 .fv-detail__info-val {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-muted);
   letter-spacing: var(--tracking-tight);
 }
