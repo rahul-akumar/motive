@@ -1,9 +1,10 @@
 <script setup lang="ts">
 export interface MButtonProps {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   loading?: boolean
+  iconOnly?: boolean
 }
 
 withDefaults(defineProps<MButtonProps>(), {
@@ -11,6 +12,7 @@ withDefaults(defineProps<MButtonProps>(), {
   size: 'md',
   disabled: false,
   loading: false,
+  iconOnly: false,
 })
 
 defineEmits<{
@@ -25,6 +27,7 @@ defineEmits<{
       `m-button--${variant}`,
       `m-button--${size}`,
       { 'm-button--loading': loading },
+      { 'm-button--icon-only': iconOnly },
     ]"
     :disabled="disabled || loading"
     @click="$emit('click', $event)"
@@ -38,7 +41,7 @@ defineEmits<{
 @reference "@motive/tailwind-config/theme.css";
 
 .m-button {
-  @apply inline-flex items-center justify-center gap-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 font-medium transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
 }
 
 /* Sizes */
@@ -52,6 +55,17 @@ defineEmits<{
 
 .m-button--lg {
   @apply h-12 px-6 text-base rounded-md;
+}
+
+/* Icon-only: square, no horizontal padding */
+.m-button--icon-only.m-button--sm {
+  @apply w-8 px-0;
+}
+.m-button--icon-only.m-button--md {
+  @apply w-10 px-0;
+}
+.m-button--icon-only.m-button--lg {
+  @apply w-12 px-0;
 }
 
 /* Variants */
@@ -101,6 +115,20 @@ defineEmits<{
 }
 .m-button--danger:hover {
   background-color: color-mix(in srgb, var(--mtv-color-status-critical) 85%, transparent);
+}
+
+.m-button--link {
+  background-color: transparent;
+  color: var(--mtv-color-brand-default);
+  padding-left: 0;
+  padding-right: 0;
+  height: auto;
+  text-decoration: none;
+  --tw-ring-color: var(--mtv-color-brand-ring);
+}
+.m-button--link:hover {
+  text-decoration: underline;
+  background-color: transparent;
 }
 
 /* Loading spinner */
