@@ -5,6 +5,7 @@ interface ToastOptions {
   subtext?: string
   variant?: MToastVariant
   duration?: number
+  dismissible?: boolean
   actionLabel?: string
   onAction?: () => void
 }
@@ -19,13 +20,7 @@ const toasts = ref<ToastItem[]>([])
 export function useToast() {
   function showToast(opts: ToastOptions) {
     const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
-    const duration = opts.duration ?? 4000
-
-    toasts.value.push({ ...opts, id })
-
-    if (duration > 0) {
-      setTimeout(() => dismissToast(id), duration)
-    }
+    toasts.value.push({ ...opts, id, duration: opts.duration ?? 4000 })
   }
 
   function dismissToast(id: string) {
