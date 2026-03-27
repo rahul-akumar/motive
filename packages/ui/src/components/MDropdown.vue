@@ -219,7 +219,6 @@ onUnmounted(() => {
           <template v-for="(item, index) in items" :key="index">
             <div v-if="item.divider" class="m-dropdown__divider" role="separator" />
             <button
-              v-else
               :ref="
                 (el) => {
                   itemRefs[index] = el as HTMLElement
