@@ -96,7 +96,11 @@ const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
     ],
     [
       { label: t('pages.titles.idlingEvents'), href: '/fuel/idling-events' },
-      { label: t('pages.titles.fuelLossEvents'), href: '/fuel/fuel-loss-events' },
+      {
+        label: t('pages.titles.fuelLossEvents'),
+        href: '/fuel/fuel-loss-events',
+        badge: { label: t('common.beta'), color: 'info' as const },
+      },
     ],
   ],
 }))
