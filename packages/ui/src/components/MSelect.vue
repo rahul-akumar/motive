@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="T extends string | number">
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { ChevronDown, Check } from 'lucide-vue-next'
 
 export interface MSelectOption<V extends string | number = string | number> {
@@ -13,6 +14,7 @@ export interface MSelectProps<V extends string | number = string | number> {
   placeholder?: string
   size?: 'sm' | 'md'
   disabled?: boolean
+  name?: string
   /** Accessible label — required if no visible label surrounds the component */
   ariaLabel?: string
 }
@@ -175,6 +177,8 @@ watch(
 
 <template>
   <div class="m-select" :class="{ 'm-select--open': open, 'm-select--disabled': disabled }">
+    <!-- Hidden native input for form integration -->
+    <input v-if="name" type="hidden" :name="name" :value="modelValue" />
     <!-- Trigger -->
     <button
       ref="triggerRef"
