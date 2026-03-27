@@ -18,6 +18,7 @@ const visible = ref(false)
 const wrapperRef = ref<HTMLElement | null>(null)
 const tooltipRef = ref<HTMLElement | null>(null)
 const tooltipStyle = ref<Record<string, string>>({ opacity: '0' })
+const tooltipId = `m-tooltip-${Math.random().toString(36).slice(2, 9)}`
 
 // Arrow size in px — must match the CSS border-width below
 const ARROW = 5
@@ -79,7 +80,14 @@ function hide() {
 </script>
 
 <template>
-  <div ref="wrapperRef" class="m-tooltip-wrapper" @mouseenter="show" @mouseleave="hide">
+  <div
+    ref="wrapperRef"
+    class="m-tooltip-wrapper"
+    @mouseenter="show"
+    @mouseleave="hide"
+    @focusin="show"
+    @focusout="hide"
+  >
     <slot />
     <Teleport to="body">
       <div
@@ -88,6 +96,7 @@ function hide() {
         v-motion
         :initial="{ opacity: 0 }"
         :enter="{ opacity: 1, transition: { duration: 120, ease: 'easeOut' } }"
+        :id="tooltipId"
         :class="['m-tooltip', `m-tooltip--${placement}`, { 'm-tooltip--arrow': arrow }]"
         :style="tooltipStyle"
         role="tooltip"
@@ -112,7 +121,7 @@ function hide() {
   background: #ffffff;
   color: #111111;
   font-size: var(--font-size-sm);
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: var(--font-family-sans);
   font-weight: var(--font-weight-normal);
   letter-spacing: var(--tracking-tight);
   padding: 0.25rem 0.5rem;

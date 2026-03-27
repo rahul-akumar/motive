@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { X, TriangleAlert, CheckCircle2, Info, Siren } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import MButton from './MButton.vue'
@@ -37,31 +38,31 @@ interface VariantConfig {
 const VARIANT_CONFIG: Record<MToastVariant, VariantConfig> = {
   critical: {
     icon: Siren,
-    bg: 'var(--mtv-color-surface-critical)',
-    border: 'var(--mtv-color-border-critical)',
-    iconColor: 'var(--mtv-color-foreground-critical)',
-    actionColor: 'oklch(0.711 0.166 22.2)',
+    bg: 'var(--mtv-color-status-critical-subtle)',
+    border: 'color-mix(in oklch, var(--mtv-color-status-critical) 35%, transparent)',
+    iconColor: 'var(--mtv-color-status-critical)',
+    actionColor: 'var(--mtv-color-status-critical)',
   },
   warning: {
     icon: TriangleAlert,
-    bg: 'oklch(0.666 0.157 58.3 / 0.08)',
-    border: 'oklch(0.666 0.157 58.3 / 0.35)',
-    iconColor: 'oklch(0.837 0.164 84.4)',
-    actionColor: 'oklch(0.837 0.164 84.4)',
+    bg: 'var(--mtv-color-status-warning-subtle)',
+    border: 'color-mix(in oklch, var(--mtv-color-status-warning) 35%, transparent)',
+    iconColor: 'var(--mtv-color-status-warning)',
+    actionColor: 'var(--mtv-color-status-warning)',
   },
   info: {
     icon: Info,
-    bg: 'oklch(0.623 0.214 259.8 / 0.08)',
-    border: 'oklch(0.623 0.214 259.8 / 0.3)',
-    iconColor: 'oklch(0.7 0.177 253)',
-    actionColor: 'oklch(0.7 0.177 253)',
+    bg: 'var(--mtv-color-status-info-subtle)',
+    border: 'color-mix(in oklch, var(--mtv-color-status-info) 35%, transparent)',
+    iconColor: 'var(--mtv-color-status-info)',
+    actionColor: 'var(--mtv-color-status-info)',
   },
   success: {
     icon: CheckCircle2,
-    bg: 'oklch(0.696 0.149 162.5 / 0.08)',
-    border: 'oklch(0.696 0.149 162.5 / 0.3)',
-    iconColor: 'oklch(0.800 0.182 151.7)',
-    actionColor: 'oklch(0.800 0.182 151.7)',
+    bg: 'var(--mtv-color-status-success-subtle)',
+    border: 'color-mix(in oklch, var(--mtv-color-status-success) 35%, transparent)',
+    iconColor: 'var(--mtv-color-status-success)',
+    actionColor: 'var(--mtv-color-status-success)',
   },
 }
 
