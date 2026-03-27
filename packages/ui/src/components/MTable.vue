@@ -1,4 +1,5 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends object">
+import { computed } from 'vue'
 import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 
 export interface MTableColumn {
@@ -10,10 +11,9 @@ export interface MTableColumn {
   minWidth?: string
 }
 
-export interface MTableProps {
+export interface MTableProps<T extends object = Record<string, unknown>> {
   columns: MTableColumn[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rows: any[]
+  rows: T[]
   sortKey?: string
   sortDir?: 'asc' | 'desc'
   page?: number
@@ -36,8 +36,7 @@ const props = withDefaults(defineProps<MTableProps>(), {
 const emit = defineEmits<{
   sort: [key: string, dir: 'asc' | 'desc']
   'update:page': [page: number]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  'row-click': [row: any]
+  'row-click': [row: T]
 }>()
 
 function handleSort(col: MTableColumn) {
@@ -48,8 +47,7 @@ function handleSort(col: MTableColumn) {
 
 const totalPages = computed(() => Math.max(1, Math.ceil(props.rows.length / props.pageSize)))
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const paginated = computed<any[]>(() => {
+const paginated = computed<T[]>(() => {
   const start = (props.page - 1) * props.pageSize
   return props.rows.slice(start, start + props.pageSize)
 })
@@ -101,8 +99,11 @@ function nextPage() {
                     : 'descending'
                   : undefined
               "
+              :tabindex="col.sortable ? 0 : undefined"
               role="columnheader"
               @click="handleSort(col)"
+              @keydown.enter.prevent="handleSort(col)"
+              @keydown.space.prevent="handleSort(col)"
             >
               <span class="m-table__th-inner">
                 <span>{{ col.label }}</span>
