@@ -2,7 +2,7 @@
 import { computed, type Component } from 'vue'
 
 export type MBadgeVariant = 'text' | 'number' | 'score'
-export type MBadgeColor = 'default' | 'success' | 'warning' | 'danger' | 'error' | 'info' | 'accent'
+export type MBadgeColor = 'default' | 'success' | 'warning' | 'danger' | 'info' | 'accent'
 export type MBadgeSize = 'sm' | 'md' | 'lg'
 export type MBadgeScoreKind = 'safety' | 'speed' | 'health' | 'risk' | 'performance'
 
@@ -81,7 +81,11 @@ const rootClasses = computed(() => {
   return base
 })
 
-const rootRole = computed(() => (props.variant === 'score' ? 'img' : 'status'))
+const rootRole = computed(() => {
+  if (props.variant === 'score') return 'img'
+  if (props.variant === 'number') return 'status'
+  return undefined
+})
 
 const rootAriaLabel = computed(() => {
   if (props.variant === 'number') return `${displayCount.value} notifications`
