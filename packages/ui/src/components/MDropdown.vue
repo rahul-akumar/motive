@@ -48,6 +48,8 @@ watch(
     }
     await nextTick()
     positionMenu()
+    const menuEl = menuRef.value?.$el as HTMLElement | undefined
+    menuEl?.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
   },
 )
 
@@ -143,6 +145,33 @@ function handleSubItemClick(item: MDropdownItem) {
   emit('update:open', false)
 }
 
+function handleMenuKeydown(e: KeyboardEvent) {
+  const menuEl = menuRef.value?.$el as HTMLElement | undefined
+  if (!menuEl) return
+  const items = Array.from(menuEl.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+  const idx = items.indexOf(document.activeElement as HTMLElement)
+
+  switch (e.key) {
+    case 'ArrowDown':
+      e.preventDefault()
+      items[Math.min(idx + 1, items.length - 1)]?.focus()
+      break
+    case 'ArrowUp':
+      e.preventDefault()
+      if (idx <= 0) emit('update:open', false)
+      else items[idx - 1]?.focus()
+      break
+    case 'Home':
+      e.preventDefault()
+      items[0]?.focus()
+      break
+    case 'End':
+      e.preventDefault()
+      items[items.length - 1]?.focus()
+      break
+  }
+}
+
 function handleClickOutside(e: MouseEvent) {
   if (!props.open) return
   const target = e.target as Node
@@ -186,10 +215,11 @@ onUnmounted(() => {
         :style="menuStyle"
         @mouseleave="handleMenuLeave"
       >
-        <div class="m-dropdown__list">
+        <div class="m-dropdown__list" role="menu" @keydown="handleMenuKeydown">
           <template v-for="(item, index) in items" :key="index">
-            <div v-if="item.divider" class="m-dropdown__divider" />
+            <div v-if="item.divider" class="m-dropdown__divider" role="separator" />
             <button
+              v-else
               :ref="
                 (el) => {
                   itemRefs[index] = el as HTMLElement
@@ -202,6 +232,9 @@ onUnmounted(() => {
                 activeSubmenuIndex === index && 'm-dropdown__item--active',
               ]"
               type="button"
+              role="menuitem"
+              :aria-haspopup="item.items ? 'menu' : undefined"
+              :aria-expanded="item.items ? activeSubmenuIndex === index : undefined"
               @click="handleItemClick(item)"
               @mouseenter="handleItemHover(index)"
             >
@@ -240,7 +273,7 @@ onUnmounted(() => {
         @mouseenter="handleSubmenuEnter"
         @mouseleave="handleSubmenuLeave"
       >
-        <div class="m-dropdown__list">
+        <div class="m-dropdown__list" role="menu">
           <button
             v-for="(subItem, subIndex) in activeSubmenuIndex !== null
               ? items[activeSubmenuIndex]?.items
@@ -251,6 +284,7 @@ onUnmounted(() => {
               subItem.variant === 'danger' && 'm-dropdown__item--danger',
             ]"
             type="button"
+            role="menuitem"
             @click="handleSubItemClick(subItem)"
           >
             <MIcon v-if="subItem.icon" :icon="subItem.icon" class="m-dropdown__item-icon" />

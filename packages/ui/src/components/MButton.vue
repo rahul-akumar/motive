@@ -2,6 +2,7 @@
 export interface MButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link'
   size?: 'sm' | 'md' | 'lg'
+  type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   loading?: boolean
   iconOnly?: boolean
@@ -10,6 +11,7 @@ export interface MButtonProps {
 withDefaults(defineProps<MButtonProps>(), {
   variant: 'primary',
   size: 'md',
+  type: 'button',
   disabled: false,
   loading: false,
   iconOnly: false,
@@ -22,6 +24,7 @@ defineEmits<{
 
 <template>
   <button
+    :type="type"
     :class="[
       'm-button',
       `m-button--${variant}`,
@@ -30,9 +33,10 @@ defineEmits<{
       { 'm-button--icon-only': iconOnly },
     ]"
     :disabled="disabled || loading"
+    :aria-busy="loading || undefined"
     @click="$emit('click', $event)"
   >
-    <span v-if="loading" class="m-button__spinner" />
+    <span v-if="loading" class="m-button__spinner" role="status" aria-label="Loading" />
     <slot />
   </button>
 </template>
