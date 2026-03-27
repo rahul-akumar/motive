@@ -34,9 +34,9 @@ describe('MBadge — text variant', () => {
     expect(wrapper.classes()).toContain('m-badge--sm')
   })
 
-  it('has role="status"', () => {
+  it('text badge has no role attribute', () => {
     const wrapper = mount(MBadge)
-    expect(wrapper.attributes('role')).toBe('status')
+    expect(wrapper.attributes('role')).toBeUndefined()
   })
 
   it('renders icon on the left by default', () => {
