@@ -6,8 +6,21 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  routeRules: {
+    '/fleet': { redirect: '/fleet/live' },
+    '/safety': { redirect: '/safety/overview' },
+    '/maintenance': { redirect: '/maintenance/inspections' },
+    '/compliance': { redirect: '/compliance/overview' },
+    '/cards': { redirect: '/cards/overview' },
+    '/workforce': { redirect: '/workforce/overview' },
+    '/dispatch': { redirect: '/dispatch/plan' },
+    '/fuel': { redirect: '/fuel/overview' },
+  },
+
   app: {
     head: {
+      title: 'Motive',
+      titleTemplate: '%s — Motive',
       link: [{ rel: 'icon', type: 'image/jpeg', href: '/motive-wordmark.jpeg' }],
     },
   },
