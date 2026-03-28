@@ -38,9 +38,15 @@ const OVERLAYS: OverlayDef[] = [
 ]
 
 export function useTomTomOverlays() {
+  const config = useRuntimeConfig()
   const activeOverlayIds = ref<Set<string>>(new Set())
 
   function toggleOverlay(id: string) {
+    if (!config.public.tomtomApiKey) {
+      console.warn(
+        '[useTomTomOverlays] NUXT_PUBLIC_TOMTOM_API_KEY is not set. Map overlays will not load.',
+      )
+    }
     const next = new Set(activeOverlayIds.value)
     if (next.has(id)) {
       next.delete(id)
