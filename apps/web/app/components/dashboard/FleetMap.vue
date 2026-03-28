@@ -26,15 +26,18 @@ interface TooltipState {
 
 const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, data: null })
 
-// CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill/stroke attributes; oklch is not supported in SVG presentation attributes.
-// Fuel loss orange is the SVG-safe equivalent of --mtv-color-status-warning.
-const FUEL_LOSS_ORANGE = '#f97316' // --mtv-color-status-warning
-const STATUS_COLORS: Record<DriverStatus, string> = {
-  driving: '#4ade80', // green-400 — active/moving
-  idle: '#fbbf24', // amber-400 — waiting
-  alert: '#f87171', // red-400 — needs attention
-  offline: '#525252', // neutral-600 — unavailable
-  sleeper: '#a78bfa', // violet-400 — resting
+// Resolve a CSS custom property to a browser-computed RGB color.
+// Uses a temporary DOM element so the browser resolves OKLCH → rgb().
+// SVG presentation attributes don't support oklch() — this function bridges that gap.
+function readCSSColor(varName: string, fallback: string): string {
+  if (!import.meta.client) return fallback
+  const el = document.createElement('div')
+  el.style.display = 'none'
+  el.style.color = `var(${varName})`
+  document.body.appendChild(el)
+  const resolved = getComputedStyle(el).color
+  document.body.removeChild(el)
+  return resolved || fallback
 }
 
 const STATUS_LABELS: Record<DriverStatus, string> = {
@@ -48,7 +51,7 @@ const STATUS_LABELS: Record<DriverStatus, string> = {
 // Only show statuses that have at least one driver
 const activeLegendStatuses = computed(() => {
   const seen = new Set(props.drivers.map((d) => d.status))
-  return (Object.keys(STATUS_COLORS) as DriverStatus[]).filter((s) => seen.has(s))
+  return (Object.keys(STATUS_LABELS) as DriverStatus[]).filter((s) => seen.has(s))
 })
 
 function getCSSVar(name: string): string {
@@ -59,7 +62,15 @@ function getCSSVar(name: string): string {
 function drawMap() {
   if (!svgRef.value || !containerRef.value || !geoData.value) return
 
-  // Build vehicleId → FuelLossEvent lookup for O(1) access during pin rendering
+  // Resolve CSS vars to browser-computed RGB values for SVG attribute compatibility
+  const statusColors: Record<DriverStatus, string> = {
+    driving: readCSSColor('--fleet-status-driving', '#4ade80'),
+    idle: readCSSColor('--fleet-status-idle', '#fbbf24'),
+    alert: readCSSColor('--fleet-status-alert', '#f87171'),
+    offline: readCSSColor('--fleet-status-offline', '#525252'),
+    sleeper: readCSSColor('--fleet-status-sleeper', '#a78bfa'),
+  }
+  const fuelLossColor = readCSSColor('--mtv-color-status-warning', '#f97316')
   const fuelByVehicle = new Map<string, FuelLossEvent>(
     props.fuelLossEvents.map((e) => [e.vehicleId, e]),
   )
@@ -141,7 +152,7 @@ function drawMap() {
     .attr('cy', (d) => d.y)
     .attr('r', 10)
     .attr('fill', 'none')
-    .attr('stroke', STATUS_COLORS.alert)
+    .attr('stroke', statusColors.alert)
     .attr('stroke-width', 1.5)
     .attr('opacity', 0.5)
 
@@ -154,7 +165,7 @@ function drawMap() {
     .attr('cx', (d) => d.x)
     .attr('cy', (d) => d.y)
     .attr('r', 0)
-    .attr('fill', (d) => (d.fuelLoss ? FUEL_LOSS_ORANGE : STATUS_COLORS[d.driver.status]))
+    .attr('fill', (d) => (d.fuelLoss ? fuelLossColor : statusColors[d.driver.status]))
     .attr('stroke', bgCard)
     .attr('stroke-width', 1.5)
     .style('cursor', 'pointer')
@@ -303,7 +314,7 @@ function timeAgo(date: Date): string {
       >
         <span
           class="fleet-map__legend-dot"
-          :style="{ backgroundColor: STATUS_COLORS[status] }"
+          :style="{ backgroundColor: `var(--fleet-status-${status})` }"
           aria-hidden="true"
         />
         <span class="fleet-map__legend-label">{{ STATUS_LABELS[status] }}</span>
@@ -311,7 +322,7 @@ function timeAgo(date: Date): string {
       <div v-if="fuelLossEvents.length > 0" class="fleet-map__legend-item" role="listitem">
         <span
           class="fleet-map__legend-dot"
-          :style="{ backgroundColor: '#f97316' }"
+          :style="{ backgroundColor: 'var(--mtv-color-status-warning)' }"
           aria-hidden="true"
         />
         <span class="fleet-map__legend-label">Fuel Loss</span>
