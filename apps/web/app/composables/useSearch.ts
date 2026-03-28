@@ -14,7 +14,8 @@ export function useSearch() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       recentSearches.value = raw ? (JSON.parse(raw) as string[]) : []
-    } catch {
+    } catch (e) {
+      console.warn('[useSearch] Failed to parse localStorage data:', e)
       recentSearches.value = []
     }
   }

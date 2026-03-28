@@ -29,7 +29,11 @@ export function useLocalePreferences() {
   function applyLocale(code: LocaleCode) {
     setLocale(code)
     if (import.meta.client) {
-      localStorage.setItem(STORAGE_KEY, code)
+      try {
+        localStorage.setItem(STORAGE_KEY, code)
+      } catch (e) {
+        console.warn('[useLocalePreferences] Failed to persist locale:', e)
+      }
     }
     currentLocale.value = code
   }
@@ -40,10 +44,19 @@ export function useLocalePreferences() {
     const urlLocale = i18nLocale.value as LocaleCode
     if (urlLocale !== DEFAULT_LOCALE && LOCALES.find((l) => l.code === urlLocale)) {
       currentLocale.value = urlLocale
-      localStorage.setItem(STORAGE_KEY, urlLocale)
+      try {
+        localStorage.setItem(STORAGE_KEY, urlLocale)
+      } catch (e) {
+        console.warn('[useLocalePreferences] Failed to persist locale:', e)
+      }
       return
     }
-    const saved = localStorage.getItem(STORAGE_KEY) as LocaleCode | null
+    let saved: LocaleCode | null = null
+    try {
+      saved = localStorage.getItem(STORAGE_KEY) as LocaleCode | null
+    } catch (e) {
+      console.warn('[useLocalePreferences] Failed to read saved locale:', e)
+    }
     const valid = LOCALES.find((l) => l.code === saved)
     const code = valid ? saved! : DEFAULT_LOCALE
     applyLocale(code)

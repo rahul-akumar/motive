@@ -51,7 +51,8 @@ export function useFleetMap() {
           region,
         }
       }
-    } catch {
+    } catch (e) {
+      console.warn('[useFleetMap] Failed to load geo data:', e)
       error.value = 'Failed to load map data'
     } finally {
       loading.value = false

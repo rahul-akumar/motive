@@ -98,14 +98,23 @@ export function useTheme() {
   function applyTheme(id: ThemeId) {
     if (import.meta.client) {
       document.documentElement.setAttribute('data-theme', id)
-      localStorage.setItem(STORAGE_KEY, id)
+      try {
+        localStorage.setItem(STORAGE_KEY, id)
+      } catch (e) {
+        console.warn('[useTheme] Failed to persist theme:', e)
+      }
     }
     currentTheme.value = id
   }
 
   function loadSavedTheme() {
     if (!import.meta.client) return
-    const saved = localStorage.getItem(STORAGE_KEY) as ThemeId | null
+    let saved: ThemeId | null = null
+    try {
+      saved = localStorage.getItem(STORAGE_KEY) as ThemeId | null
+    } catch (e) {
+      console.warn('[useTheme] Failed to read saved theme:', e)
+    }
     const valid = THEMES.find((t) => t.id === saved)
     const id = valid ? saved! : DEFAULT_THEME
     applyTheme(id)
