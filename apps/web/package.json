@@ -42,6 +42,8 @@
   "devDependencies": {
     "@nuxt/test-utils": "4.0.0",
     "@playwright/test": "^1.50.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vitest": "^3.2.4",
     "@tailwindcss/vite": "^4.0.0",
     "@types/d3-array": "^3.2.2",
     "@types/d3-axis": "^3.0.6",
