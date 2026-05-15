@@ -68,12 +68,20 @@ const STATUS_BADGE: Record<
 const openMenuIndex = ref<string | null>(null)
 const menuAnchor = ref<HTMLElement | null>(null)
 
-const actionItems: MDropdownItem[] = [
-  { label: 'View Details', icon: Truck },
-  { label: 'Assign Driver', icon: UserCheck },
-  { divider: true, label: '' },
-  { label: 'Service History', icon: Wrench },
-]
+function getActionItems(vehicleId: string): MDropdownItem[] {
+  return [
+    {
+      label: 'View Details',
+      icon: Truck,
+      action: () => navigateTo(`/fleet/vehicles/${vehicleId}/live`),
+    },
+    { label: 'Assign Driver', icon: UserCheck },
+    { divider: true, label: '' },
+    { label: 'Service History', icon: Wrench },
+  ]
+}
+
+const actionItems = computed(() => (openMenuIndex.value ? getActionItems(openMenuIndex.value) : []))
 
 function openMenu(id: string, el: HTMLElement) {
   if (openMenuIndex.value === id) {
@@ -142,7 +150,12 @@ function openMenu(id: string, el: HTMLElement) {
       >
         <!-- Vehicle ID / MMY -->
         <template #cell-unitNumber="{ row }">
-          <span class="cell-link">{{ (row as FleetVehicle).unitNumber }}</span>
+          <NuxtLinkLocale
+            :to="`/fleet/vehicles/${(row as FleetVehicle).id}/live`"
+            class="cell-link"
+          >
+            {{ (row as FleetVehicle).unitNumber }}
+          </NuxtLinkLocale>
           <span class="cell-sub"
             >{{ (row as FleetVehicle).make }} · {{ (row as FleetVehicle).model }} ·
             {{ (row as FleetVehicle).year }}</span

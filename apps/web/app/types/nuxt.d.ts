@@ -5,5 +5,6 @@ declare module 'vue-router' {
     title?: string
     moduleName?: string
     mainVariant?: 'default' | 'map' | 'globe'
+    breadcrumb?: { label: string; to?: string }[]
   }
 }
