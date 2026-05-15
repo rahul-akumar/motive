@@ -22,6 +22,7 @@ export interface MTableProps<T extends object = Record<string, unknown>> {
   selectedKey?: string | number
   loading?: boolean
   stickyHeader?: boolean
+  infinite?: boolean
 }
 
 const props = withDefaults(defineProps<MTableProps>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<MTableProps>(), {
   rowKey: 'id',
   loading: false,
   stickyHeader: true,
+  infinite: false,
 })
 
 const emit = defineEmits<{
@@ -48,6 +50,7 @@ function handleSort(col: MTableColumn) {
 const totalPages = computed(() => Math.max(1, Math.ceil(props.rows.length / props.pageSize)))
 
 const paginated = computed<T[]>(() => {
+  if (props.infinite) return props.rows
   const start = (props.page - 1) * props.pageSize
   return props.rows.slice(start, start + props.pageSize)
 })
@@ -171,9 +174,9 @@ function nextPage() {
       </table>
     </div>
 
-    <!-- Pagination — only shown when rows exceed one page -->
+    <!-- Pagination — only shown when rows exceed one page and not infinite -->
     <div
-      v-if="rows.length > pageSize"
+      v-if="!infinite && rows.length > pageSize"
       class="m-table__pagination"
       role="navigation"
       aria-label="Table pagination"

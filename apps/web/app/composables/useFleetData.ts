@@ -1099,3 +1099,26 @@ export function useFleetData() {
 
   return { drivers, vehicles, fleetStatus, loading, refresh }
 }
+
+// ── New fleet data composable (uses linked data) ──────────────────────────────
+import type { FleetVehicle, FleetDriver, FleetAsset } from '@motive/shared'
+import {
+  linkedVehiclesByRegion,
+  linkedDriversByRegion,
+  linkedAssetsByRegion,
+} from '~/mocks/fleet-linked'
+
+export function useFleetDataV2() {
+  const fleetVehicles = computed<FleetVehicle[]>(() => linkedVehiclesByRegion[currentRegion.value])
+  const fleetDrivers = computed<FleetDriver[]>(() => linkedDriversByRegion[currentRegion.value])
+  const fleetAssets = computed<FleetAsset[]>(() => linkedAssetsByRegion[currentRegion.value])
+  const loading = ref(false)
+
+  async function refresh() {
+    loading.value = true
+    await new Promise((r) => setTimeout(r, 800))
+    loading.value = false
+  }
+
+  return { fleetVehicles, fleetDrivers, fleetAssets, loading, refresh }
+}
