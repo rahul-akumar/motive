@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { Gauge, AlertTriangle, Globe } from 'lucide-vue-next'
+import { MMapControls } from '@motive/ui'
+import type { MMapControlsLayer } from '@motive/ui'
 import type { OverlayDef } from '~/composables/useTomTomOverlays'
+import type { Component } from 'vue'
 
 definePageMeta({
   title: 'Live',
@@ -31,6 +35,16 @@ const { mapFuelLossEvents } = useFuelLossData()
 const { allOverlays, activeOverlayIds, toggleOverlay } = useTomTomOverlays()
 const config = useRuntimeConfig()
 const tomtomKey = config.public.tomtomApiKey as string
+
+const OVERLAY_ICONS: Record<string, Component> = { Gauge, AlertTriangle, Globe }
+
+const mapLayers = computed<MMapControlsLayer[]>(() =>
+  allOverlays.map((o: OverlayDef) => ({
+    id: o.id,
+    label: o.label,
+    icon: OVERLAY_ICONS[o.icon] ?? Gauge,
+  })),
+)
 
 const LIGHT_THEMES = new Set(['light', 'console-legacy'])
 
@@ -109,13 +123,15 @@ function handleZoomOut() {
     />
 
     <!-- Map controls (floating bottom-center, includes layers) -->
-    <FleetViewMapControls
-      :overlays="allOverlays"
-      :active-ids="activeOverlayIds"
+    <MMapControls
+      :layers="mapLayers"
+      :active-layers="activeOverlayIds"
+      :show-fit-all="true"
+      :show-live-indicator="true"
       @zoom-in="handleZoomIn"
       @zoom-out="handleZoomOut"
       @fit-all="fitAllTrucks"
-      @toggle="toggleOverlay"
+      @toggle-layer="toggleOverlay"
     />
   </div>
 </template>
