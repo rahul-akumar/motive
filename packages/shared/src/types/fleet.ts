@@ -151,6 +151,7 @@ export interface SignalTimelineEntry {
   timestamp: Date
   description: string
   signalStrength?: number
+  location?: { lat: number; lng: number }
 }
 
 export interface JammingEvent {
