@@ -10,8 +10,10 @@ import {
   Fuel,
   Gauge,
   CircleAlert,
+  AlertTriangle,
 } from 'lucide-vue-next'
-import { MBadge, MButton, MIcon, MPopover } from '@motive/ui'
+import { MBadge, MButton, MIcon, MPopover, MMapControls } from '@motive/ui'
+import type { MMapControlsLayer } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, FleetVehicleStatus } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
 import { destinationPoint } from '~/composables/useSearchZoneGeometry'
@@ -38,7 +40,7 @@ let searchCircle: L.Circle | null = null
 let sectorPolygon: L.Polygon | null = null
 let headingLine: L.Polyline | null = null
 let headingArrow: L.Marker | null = null
-let incidentMarkers: L.Marker[] = []
+let incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
 
 const popoverOpen = ref(false)
 const popoverAnchorEl = ref<HTMLElement | null>(null)
@@ -117,6 +119,85 @@ const INCIDENT_LABELS: Record<string, string> = {
   'unauthorized-movement': 'Unauthorized movement',
 }
 
+const INCIDENT_COLORS: Record<string, string> = {
+  jamming: 'var(--mtv-color-status-warning)',
+  'theft-attempt': '#f26040',
+  'unauthorized-movement': 'var(--mtv-color-status-critical)',
+}
+
+const INCIDENT_HEX: Record<string, string> = {
+  jamming: '#d97706',
+  'theft-attempt': '#f26040',
+  'unauthorized-movement': '#e52222',
+}
+
+const incidentLayers: MMapControlsLayer[] = [
+  {
+    id: 'incidents',
+    label: 'Incidents',
+    icon: AlertTriangle,
+    children: [
+      {
+        id: 'incidents:jamming',
+        label: 'Jamming',
+        icon: AlertTriangle,
+        color: 'var(--mtv-color-status-warning)',
+      },
+      { id: 'incidents:theft', label: 'Theft', icon: AlertTriangle, color: '#f26040' },
+      {
+        id: 'incidents:unauthorized',
+        label: 'Unauthorized',
+        icon: AlertTriangle,
+        color: 'var(--mtv-color-status-critical)',
+      },
+    ],
+  },
+]
+
+const LAYER_TO_TYPE: Record<string, string> = {
+  'incidents:jamming': 'jamming',
+  'incidents:theft': 'theft-attempt',
+  'incidents:unauthorized': 'unauthorized-movement',
+}
+
+const activeLayerIds = ref<Set<string>>(
+  new Set(['incidents:jamming', 'incidents:theft', 'incidents:unauthorized']),
+)
+
+function handleToggleLayer(id: string) {
+  const next = new Set(activeLayerIds.value)
+  if (id === 'incidents') {
+    const childIds = incidentLayers[0].children!.map((c) => c.id)
+    const allActive = childIds.every((cid) => next.has(cid))
+    if (allActive) {
+      childIds.forEach((cid) => next.delete(cid))
+    } else {
+      childIds.forEach((cid) => next.add(cid))
+    }
+  } else if (next.has(id)) {
+    next.delete(id)
+  } else {
+    next.add(id)
+  }
+  activeLayerIds.value = next
+  syncIncidentVisibility()
+}
+
+function isIncidentVisible(type: string): boolean {
+  for (const [layerId, incType] of Object.entries(LAYER_TO_TYPE)) {
+    if (incType === type) return activeLayerIds.value.has(layerId)
+  }
+  return true
+}
+
+function syncIncidentVisibility() {
+  if (!map) return
+  incidentMarkers.forEach(({ marker: m, type }) => {
+    const el = m.getElement()
+    if (el) el.style.display = isIncidentVisible(type) ? '' : 'none'
+  })
+}
+
 function openIncidentPopover(markerEl: L.Marker, inc: { type: string; date: Date }) {
   if (!map) return
   if (!incidentPopoverAnchorEl.value) {
@@ -151,8 +232,6 @@ async function initMap() {
     maxZoom: 18,
     subdomains: 'abcd',
   }).addTo(map)
-
-  L.control.zoom({ position: 'bottomright' }).addTo(map)
 
   if (isJammed.value) {
     initJammingLayers(L)
@@ -282,23 +361,27 @@ function initJammingLayers(L: typeof import('leaflet')) {
 
   // Prior incident markers
   event.priorIncidents.forEach((inc) => {
+    const hex = INCIDENT_HEX[inc.type] ?? '#fbbf24'
     const incIcon = L.divIcon({
       className: '',
       html: `<div style="
         width: 20px; height: 20px;
         display: flex; align-items: center; justify-content: center;
-        background: rgba(251, 191, 36, 0.2);
-        border: 1.5px solid #fbbf24;
+        background: ${hex}33;
+        border: 1.5px solid ${hex};
         border-radius: 4px;
-      "><svg width="12" height="12" viewBox="0 0 24 24" fill="#fbbf24" stroke="none">
+      "><svg width="12" height="12" viewBox="0 0 24 24" fill="${hex}" stroke="none">
         <path d="M12 2L2 22h20L12 2zm0 6v6m0 2v2"/>
       </svg></div>`,
       iconSize: [20, 20],
       iconAnchor: [10, 10],
     })
     const m = L.marker([inc.location.lat, inc.location.lng], { icon: incIcon }).addTo(map!)
-    m.on('click', () => openIncidentPopover(m, inc))
-    incidentMarkers.push(m)
+    m.on('mouseover', () => openIncidentPopover(m, inc))
+    m.on('mouseout', () => {
+      incidentPopoverOpen.value = false
+    })
+    incidentMarkers.push({ marker: m, type: inc.type })
   })
 }
 
@@ -579,44 +662,54 @@ onUnmounted(() => {
     </aside>
 
     <!-- Map -->
-    <div ref="mapContainer" class="vehicle-live__map" />
+    <div class="vehicle-live__map-wrap">
+      <div ref="mapContainer" class="vehicle-live__map" />
 
-    <!-- Signal Jammed Popover -->
-    <MPopover
-      ref="popoverCompRef"
-      v-model:open="popoverOpen"
-      :anchor-el="popoverAnchorEl"
-      placement="top"
-      :arrow="true"
-      aria-label="Signal jammed details"
-    >
-      <SignalJammedPopover
-        v-if="jammingEvent"
-        :jamming-event="jammingEvent"
-        :elapsed-seconds="elapsedSeconds"
-        @mark-incident="handleMarkIncident"
-        @broadcast-incident="handleBroadcastIncident"
-        @notify-online="handleNotifyOnline"
+      <MMapControls
+        :layers="incidentLayers"
+        :active-layers="activeLayerIds"
+        @zoom-in="map?.zoomIn()"
+        @zoom-out="map?.zoomOut()"
+        @toggle-layer="handleToggleLayer"
       />
-    </MPopover>
 
-    <!-- Prior Incident Popover -->
-    <MPopover
-      ref="incidentPopoverRef"
-      v-model:open="incidentPopoverOpen"
-      :anchor-el="incidentPopoverAnchorEl"
-      placement="top"
-      :arrow="true"
-      aria-label="Prior incident details"
-    >
-      <MapMarkerPopover
-        v-if="activeIncident"
-        :title="INCIDENT_LABELS[activeIncident.type] ?? activeIncident.type"
-        :timestamp="activeIncident.date"
-        badge-label="Prior incident"
-        badge-color="warning"
-      />
-    </MPopover>
+      <!-- Signal Jammed Popover -->
+      <MPopover
+        ref="popoverCompRef"
+        v-model:open="popoverOpen"
+        :anchor-el="popoverAnchorEl"
+        placement="top"
+        :arrow="true"
+        aria-label="Signal jammed details"
+      >
+        <SignalJammedPopover
+          v-if="jammingEvent"
+          :jamming-event="jammingEvent"
+          :elapsed-seconds="elapsedSeconds"
+          @mark-incident="handleMarkIncident"
+          @broadcast-incident="handleBroadcastIncident"
+          @notify-online="handleNotifyOnline"
+        />
+      </MPopover>
+
+      <!-- Prior Incident Popover -->
+      <MPopover
+        ref="incidentPopoverRef"
+        v-model:open="incidentPopoverOpen"
+        :anchor-el="incidentPopoverAnchorEl"
+        placement="top"
+        :arrow="true"
+        aria-label="Prior incident details"
+      >
+        <MapMarkerPopover
+          v-if="activeIncident"
+          :title="INCIDENT_LABELS[activeIncident.type] ?? activeIncident.type"
+          :timestamp="activeIncident.date"
+          badge-label="Prior incident"
+          badge-color="warning"
+        />
+      </MPopover>
+    </div>
   </div>
 </template>
 
@@ -640,9 +733,15 @@ onUnmounted(() => {
   border-right: 1px solid var(--mtv-color-border-default);
 }
 
-.vehicle-live__map {
+.vehicle-live__map-wrap {
+  position: relative;
   flex: 1;
   min-width: 0;
+  height: 100%;
+}
+
+.vehicle-live__map {
+  width: 100%;
   height: 100%;
 }
 
