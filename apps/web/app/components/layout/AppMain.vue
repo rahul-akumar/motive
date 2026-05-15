@@ -8,6 +8,14 @@ const route = useRoute()
 type SubNavTab = { label: string; href: string }
 // Values are either a flat tab array (no groups) or an array of groups (renders dividers between groups).
 const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
+  '/fleet/vehicles/': [
+    { label: 'Live', href: `/fleet/vehicles/${route.params.id ?? ''}/live` },
+    { label: 'History', href: `/fleet/vehicles/${route.params.id ?? ''}/history` },
+    { label: 'Summary', href: `/fleet/vehicles/${route.params.id ?? ''}/summary` },
+    { label: 'Health', href: `/fleet/vehicles/${route.params.id ?? ''}/health` },
+    { label: 'Telematics', href: `/fleet/vehicles/${route.params.id ?? ''}/telematics` },
+    { label: 'Devices', href: `/fleet/vehicles/${route.params.id ?? ''}/devices` },
+  ],
   '/fleet': [
     [
       { label: t('pages.titles.live'), href: '/fleet/live' },
@@ -168,6 +176,22 @@ const pageTitleDisplay = computed(() => {
   return key ? t(key) : raw
 })
 
+const { fleetVehicles } = useFleetDataV2()
+
+const dynamicBreadcrumb = computed(() => {
+  if (route.params.id && route.path.includes('/fleet/vehicles/')) {
+    const id = route.params.id as string
+    const vehicle = fleetVehicles.value.find((v) => v.id === id)
+    const label = vehicle ? vehicle.unitNumber : id
+    return [
+      { label: 'Fleet', to: '/fleet/live' },
+      { label: 'Vehicles', to: '/fleet/vehicles' },
+      { label },
+    ]
+  }
+  return route.meta.breadcrumb ?? null
+})
+
 const subNavTabs = computed(() => {
   // Strip locale prefix (e.g. /pt-BR, /en-GB) so bare keys like /safety still match
   const localePrefix = LOCALE_URL_PREFIXES[locale.value as LocaleCode] ?? ''
@@ -184,8 +208,21 @@ const subNavTabs = computed(() => {
   <div class="app-main">
     <!-- Page header: shown whenever the page declares a moduleName -->
     <div v-if="route.meta.moduleName" class="app-page-header">
-      <p class="app-page-module">{{ moduleNameDisplay }}</p>
-      <h1 class="app-page-title font-condensed">{{ pageTitleDisplay }}</h1>
+      <!-- Breadcrumb mode -->
+      <nav v-if="dynamicBreadcrumb" class="app-page-breadcrumb" aria-label="Breadcrumb">
+        <template v-for="(crumb, i) in dynamicBreadcrumb" :key="i">
+          <span v-if="i > 0" class="app-page-breadcrumb__sep">/</span>
+          <NuxtLinkLocale v-if="crumb.to" :to="crumb.to" class="app-page-breadcrumb__link">
+            {{ crumb.label }}
+          </NuxtLinkLocale>
+          <span v-else class="app-page-breadcrumb__current">{{ crumb.label }}</span>
+        </template>
+      </nav>
+      <!-- Default mode -->
+      <template v-else>
+        <p class="app-page-module">{{ moduleNameDisplay }}</p>
+        <h1 class="app-page-title font-condensed">{{ pageTitleDisplay }}</h1>
+      </template>
     </div>
 
     <!-- Sub-navigation tab strip -->
@@ -228,6 +265,34 @@ const subNavTabs = computed(() => {
   letter-spacing: var(--tracking-tighter);
   color: var(--mtv-color-foreground-default);
   margin: 0 0 2px;
+}
+
+.app-page-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tighter);
+}
+
+.app-page-breadcrumb__link {
+  color: var(--mtv-color-foreground-muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.app-page-breadcrumb__link:hover {
+  color: var(--mtv-color-brand-default);
+}
+
+.app-page-breadcrumb__sep {
+  color: var(--mtv-color-foreground-subtle);
+  font-weight: var(--font-weight-normal);
+}
+
+.app-page-breadcrumb__current {
+  color: var(--mtv-color-foreground-default);
 }
 
 .app-page-title {
