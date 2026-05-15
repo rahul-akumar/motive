@@ -1,9 +1,67 @@
-import type { Driver, DriverStatus } from '@motive/shared'
+import type { Driver, DriverStatus, Vehicle } from '@motive/shared'
+import type { FleetDriver } from '@motive/shared'
+import { useFleetDataV2 } from '~/composables/useFleetData'
 
 const ALL_STATUSES: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
+/**
+ * Maps the new FleetDriver data to the legacy Driver type for map/panel compat.
+ */
+function toDriver(fd: FleetDriver): Driver {
+  return {
+    id: fd.id,
+    name: fd.name,
+    initials: fd.initials,
+    licenseNumber: fd.licenseNumber,
+    phone: fd.phone,
+    status: fd.status,
+    vehicleId: fd.vehicleId ?? '',
+    currentLocation: fd.currentLocation,
+    hos: {
+      drivingRemaining: fd.hos.driveRemaining,
+      onDutyRemaining: fd.hos.shiftRemaining,
+      drivingToday: fd.hos.hoursToday,
+      onDutyToday: fd.hos.hoursToday,
+      sleeperToday: 0,
+      offDutyToday: 0,
+      hasViolation: fd.hos.hasViolation,
+      cycleUsed: 70 - fd.hos.cycleRemaining,
+      cycleRemaining: fd.hos.cycleRemaining,
+    },
+    milesDrivenToday: Math.floor(fd.hos.hoursToday * 55),
+    lastUpdated: new Date(),
+  }
+}
+
 export function useFleetView() {
-  const { drivers, vehicles } = useFleetData()
+  const { fleetVehicles, fleetDrivers } = useFleetDataV2()
+
+  // Map FleetDriver[] → Driver[] for legacy map/panel components
+  const drivers = computed<Driver[]>(() => fleetDrivers.value.map(toDriver))
+
+  // Map FleetVehicle[] → Vehicle[] for legacy detail panel
+  const vehicles = computed<Vehicle[]>(() =>
+    fleetVehicles.value.map((v) => ({
+      id: v.id,
+      make: v.make,
+      model: v.model,
+      year: v.year,
+      vin: v.vin,
+      licensePlate: v.licensePlate,
+      status:
+        v.status === 'active'
+          ? 'active'
+          : v.status === 'idle'
+            ? 'idle'
+            : v.status === 'maintenance'
+              ? 'maintenance'
+              : 'offline',
+      mileage: v.mileage,
+      fuelLevel: v.fuelLevel,
+      driverId: v.driverId ?? undefined,
+      lastInspection: new Date(),
+    })),
+  )
 
   // ── Filter state ──────────────────────────────────────────────
   const activeFilters = ref<Set<DriverStatus>>(new Set(ALL_STATUSES))
