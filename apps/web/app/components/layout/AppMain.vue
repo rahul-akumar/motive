@@ -14,7 +14,11 @@ const subNavMap = computed<Record<string, SubNavTab[] | SubNavTab[][]>>(() => ({
     { label: 'Summary', href: `/fleet/vehicles/${route.params.id ?? ''}/summary` },
     { label: 'Health', href: `/fleet/vehicles/${route.params.id ?? ''}/health` },
     { label: 'Telematics', href: `/fleet/vehicles/${route.params.id ?? ''}/telematics` },
-    { label: 'Devices', href: `/fleet/vehicles/${route.params.id ?? ''}/devices` },
+    {
+      label: 'Assets',
+      href: `/fleet/vehicles/${route.params.id ?? ''}/devices`,
+      badge: { label: t('common.beta'), color: 'info' },
+    },
   ],
   '/fleet': [
     [

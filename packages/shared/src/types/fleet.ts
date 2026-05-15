@@ -96,3 +96,78 @@ export interface FleetAsset {
   availability: FleetAssetAvailability
   cameras: number
 }
+
+// ── Vehicle Device (installed hardware) ──────────────────────────────────────
+
+export type VehicleDeviceType =
+  | 'vehicle-gateway'
+  | 'asset-gateway'
+  | 'beacon'
+  | 'visionlink'
+  | 'komtrax'
+  | 'engine-immobilizer'
+
+export type VehicleDeviceStatus =
+  | 'online'
+  | 'offline'
+  | 'signal-jammed'
+  | 'activated'
+  | 'armed'
+  | 'disarmed'
+  | 'error'
+
+export interface VehicleDeviceSensor {
+  label: string
+  value: string
+  status: 'normal' | 'warning' | 'critical'
+}
+
+export interface VehicleDevice {
+  id: string
+  vehicleId: string
+  type: VehicleDeviceType
+  name: string
+  serialNumber: string
+  firmwareVersion: string
+  status: VehicleDeviceStatus
+  installedAt: Date
+  lastHeartbeat: Date
+  dependsOn?: string
+  sensors?: VehicleDeviceSensor[]
+}
+
+// ── Signal Jamming ───────────────────────────────────────────────────────────
+
+export type SignalEventPhase =
+  | 'normal'
+  | 'degraded'
+  | 'jammed'
+  | 'immobilizer-armed'
+  | 'immobilizer-activated'
+  | 'recovered'
+
+export interface SignalTimelineEntry {
+  phase: SignalEventPhase
+  timestamp: Date
+  description: string
+  signalStrength?: number
+}
+
+export interface JammingEvent {
+  id: string
+  vehicleId: string
+  lastKnownLocation: { lat: number; lng: number; address: string }
+  lastKnownSpeed: number
+  lastKnownHeading: number
+  degradedAt: Date
+  jammedAt: Date
+  immobilizerActivatedAt?: Date
+  isActive: boolean
+  timeline: SignalTimelineEntry[]
+  priorIncidents: Array<{
+    id: string
+    location: { lat: number; lng: number }
+    date: Date
+    type: 'jamming' | 'theft-attempt' | 'unauthorized-movement'
+  }>
+}
