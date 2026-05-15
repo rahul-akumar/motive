@@ -6,6 +6,7 @@ import type { JammingEvent } from '@motive/shared'
 interface Props {
   jammingEvent: JammingEvent
   elapsedSeconds: number
+  isImmobilized?: boolean
 }
 
 defineProps<Props>()
@@ -14,6 +15,7 @@ const emit = defineEmits<{
   'mark-incident': []
   'broadcast-incident': []
   'notify-online': []
+  're-mobilize': []
 }>()
 
 function formatElapsed(seconds: number): string {
@@ -21,6 +23,33 @@ function formatElapsed(seconds: number): string {
   const s = seconds % 60
   return `${m}m ${s.toString().padStart(2, '0')}s`
 }
+
+const HOLD_DURATION_MS = 3000
+const TICK_MS = 30
+const holdProgress = ref(0)
+let holdTimer: ReturnType<typeof setInterval> | null = null
+
+function startHold() {
+  holdProgress.value = 0
+  holdTimer = setInterval(() => {
+    holdProgress.value += (TICK_MS / HOLD_DURATION_MS) * 100
+    if (holdProgress.value >= 100) {
+      holdProgress.value = 100
+      cancelHold()
+      emit('re-mobilize')
+    }
+  }, TICK_MS)
+}
+
+function cancelHold() {
+  if (holdTimer) {
+    clearInterval(holdTimer)
+    holdTimer = null
+  }
+  holdProgress.value = 0
+}
+
+onUnmounted(cancelHold)
 </script>
 
 <template>
@@ -71,7 +100,7 @@ function formatElapsed(seconds: number): string {
 
     <!-- Actions -->
     <div class="signal-jammed-popover__actions">
-      <MButton variant="danger" size="sm" @click="emit('mark-incident')"
+      <MButton variant="outline" size="sm" @click="emit('mark-incident')"
         >Mark incident location</MButton
       >
       <MButton variant="outline" size="sm" @click="emit('broadcast-incident')"
@@ -80,6 +109,19 @@ function formatElapsed(seconds: number): string {
       <MButton variant="outline" size="sm" @click="emit('notify-online')"
         >Notify when back online</MButton
       >
+      <button
+        v-if="isImmobilized"
+        class="signal-jammed-popover__hold-btn"
+        @pointerdown.prevent="startHold"
+        @pointerup="cancelHold"
+        @pointerleave="cancelHold"
+        @pointercancel="cancelHold"
+      >
+        <span class="signal-jammed-popover__hold-fill" :style="{ width: `${holdProgress}%` }" />
+        <span class="signal-jammed-popover__hold-label">
+          {{ holdProgress > 0 ? 'Keep holding…' : 'Re-mobilize' }}
+        </span>
+      </button>
     </div>
   </div>
 </template>
@@ -160,5 +202,36 @@ function formatElapsed(seconds: number): string {
 
 .signal-jammed-popover__actions :deep(.m-button) {
   width: 100%;
+}
+
+.signal-jammed-popover__hold-btn {
+  position: relative;
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: var(--mtv-color-brand-default);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+.signal-jammed-popover__hold-fill {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 30ms linear;
+  pointer-events: none;
+}
+
+.signal-jammed-popover__hold-label {
+  position: relative;
+  z-index: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--mtv-color-foreground-on-accent);
+  letter-spacing: 0.02em;
 }
 </style>

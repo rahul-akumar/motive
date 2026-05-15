@@ -14,7 +14,7 @@ import {
 } from 'lucide-vue-next'
 import { MBadge, MButton, MIcon, MPopover, MMapControls } from '@motive/ui'
 import type { MMapControlsLayer } from '@motive/ui'
-import type { FleetVehicle, FleetDriver, FleetVehicleStatus } from '@motive/shared'
+import type { FleetVehicle, FleetDriver, FleetVehicleStatus, JammingEvent } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
 import { destinationPoint } from '~/composables/useSearchZoneGeometry'
 import SignalJammedPopover from '~/components/vehicle/SignalJammedPopover.vue'
@@ -26,12 +26,24 @@ const props = defineProps<{
 }>()
 
 const vehicleId = computed(() => props.vehicle.id)
-const { isJammed, jammingEvent, elapsedSeconds, searchRadiusMeters, searchRadiusKm, sectorPoints } =
-  useVehicleSecurityData(vehicleId)
+const {
+  isJammed,
+  isImmobilized,
+  maxRadiusMeters,
+  jammingEvent,
+  elapsedSeconds,
+  searchRadiusMeters,
+  searchRadiusKm,
+  sectorPoints,
+} = useVehicleSecurityData(vehicleId)
 
 const immobilizerExpanded = ref(true)
 const telematicsExpanded = ref(false)
 const tpmsExpanded = ref(false)
+
+const isZoneFrozen = computed(
+  () => isImmobilized.value && searchRadiusMeters.value >= maxRadiusMeters.value,
+)
 
 const mapContainer = ref<HTMLElement | null>(null)
 let map: L.Map | null = null
@@ -41,6 +53,8 @@ let sectorPolygon: L.Polygon | null = null
 let headingLine: L.Polyline | null = null
 let headingArrow: L.Marker | null = null
 let incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
+let lockBadge: L.Marker | null = null
+let routeSegments: L.Polyline[] = []
 
 const popoverOpen = ref(false)
 const popoverAnchorEl = ref<HTMLElement | null>(null)
@@ -70,6 +84,25 @@ const STATUS_COLORS: Record<FleetVehicleStatus, string> = {
 
 const LIGHT_THEMES = new Set(['light', 'console-legacy'])
 
+const SEARCH_ZONE_STYLES = {
+  active: {
+    circleColor: 'rgba(248, 113, 113, 0.3)',
+    circleFill: 'rgba(248, 113, 113, 0.04)',
+    circleDash: '8, 6',
+    circleWeight: 1.5,
+    sectorColor: 'rgba(248, 113, 113, 0.6)',
+    sectorFill: 'rgba(248, 113, 113, 0.12)',
+  },
+  frozen: {
+    circleColor: 'rgba(74, 222, 128, 0.5)',
+    circleFill: 'rgba(74, 222, 128, 0.06)',
+    circleDash: '',
+    circleWeight: 2,
+    sectorColor: 'rgba(74, 222, 128, 0.4)',
+    sectorFill: 'rgba(74, 222, 128, 0.08)',
+  },
+} as const
+
 function isDark(): boolean {
   const theme = document.documentElement.getAttribute('data-theme') ?? 'dark'
   return !LIGHT_THEMES.has(theme)
@@ -94,6 +127,13 @@ function createVirtualAnchor(): HTMLElement {
   return el
 }
 
+function speedToColor(speed: number): string {
+  const t = Math.min(speed / 105, 1)
+  if (t > 0.6) return `rgba(74, 222, 128, ${0.5 + t * 0.3})`
+  if (t > 0.3) return `rgba(251, 191, 36, ${0.5 + t * 0.3})`
+  return `rgba(248, 113, 113, ${0.5 + (1 - t) * 0.3})`
+}
+
 function syncAnchorToMarker() {
   if (!map || !marker || !popoverAnchorEl.value) return
   const point = map.latLngToContainerPoint(marker.getLatLng())
@@ -110,6 +150,10 @@ function handleBroadcastIncident() {
 }
 
 function handleNotifyOnline() {
+  popoverOpen.value = false
+}
+
+function handleRemobilize() {
   popoverOpen.value = false
 }
 
@@ -287,21 +331,22 @@ function initNormalMarker(L: typeof import('leaflet')) {
 function initJammingLayers(L: typeof import('leaflet')) {
   const event = jammingEvent.value!
   const { lat, lng } = event.lastKnownLocation
+  const style = isZoneFrozen.value ? SEARCH_ZONE_STYLES.frozen : SEARCH_ZONE_STYLES.active
 
-  // Outer probability circle (dashed)
+  // Outer probability circle
   searchCircle = L.circle([lat, lng], {
     radius: searchRadiusMeters.value,
-    color: 'rgba(248, 113, 113, 0.3)',
-    fillColor: 'rgba(248, 113, 113, 0.04)',
+    color: style.circleColor,
+    fillColor: style.circleFill,
     fillOpacity: 1,
-    weight: 1.5,
-    dashArray: '8, 6',
+    weight: style.circleWeight,
+    dashArray: style.circleDash,
   }).addTo(map!)
 
   // Directional sector polygon
   sectorPolygon = L.polygon(sectorPoints.value as L.LatLngExpression[], {
-    color: 'rgba(248, 113, 113, 0.6)',
-    fillColor: 'rgba(248, 113, 113, 0.12)',
+    color: style.sectorColor,
+    fillColor: style.sectorFill,
     fillOpacity: 1,
     weight: 1,
   }).addTo(map!)
@@ -383,6 +428,73 @@ function initJammingLayers(L: typeof import('leaflet')) {
     })
     incidentMarkers.push({ marker: m, type: inc.type })
   })
+
+  // Route trail — speed-colored segments
+  if (event.routeTrail && event.routeTrail.length > 1) {
+    const trail = event.routeTrail
+    for (let i = 0; i < trail.length - 1; i++) {
+      const speed = trail[i].speed ?? 0
+      const seg = L.polyline(
+        [
+          [trail[i].lat, trail[i].lng],
+          [trail[i + 1].lat, trail[i + 1].lng],
+        ],
+        {
+          color: speedToColor(speed),
+          weight: 3,
+          opacity: 0.8,
+          lineCap: 'round',
+          lineJoin: 'round',
+        },
+      ).addTo(map!)
+      routeSegments.push(seg)
+    }
+  }
+
+  if (isZoneFrozen.value) {
+    addLockBadge(L, event)
+  }
+}
+
+function addLockBadge(L: typeof import('leaflet'), event: JammingEvent) {
+  if (lockBadge) return
+  const badgePos = destinationPoint(
+    event.lastKnownLocation.lat,
+    event.lastKnownLocation.lng,
+    0,
+    searchRadiusMeters.value,
+  )
+  const badgeIcon = L.divIcon({
+    className: '',
+    html: `<div style="
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: rgba(22, 101, 52, 0.85);
+      border: 1px solid rgba(74, 222, 128, 0.5);
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #4ade80;
+      white-space: nowrap;
+      pointer-events: none;
+    ">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+      CONTAINED
+    </div>`,
+    iconSize: [0, 0],
+    iconAnchor: [50, 16],
+  })
+  lockBadge = L.marker([badgePos.lat, badgePos.lng], {
+    icon: badgeIcon,
+    interactive: false,
+    zIndexOffset: 1000,
+  }).addTo(map!)
 }
 
 // Update layers each second as radius grows
@@ -409,9 +521,36 @@ watch(searchRadiusMeters, (radius) => {
   if (headingArrow) headingArrow.setLatLng([arrowEnd.lat, arrowEnd.lng])
 })
 
+watch(isZoneFrozen, async (frozen) => {
+  if (!frozen || !map) return
+  const style = SEARCH_ZONE_STYLES.frozen
+  if (searchCircle) {
+    searchCircle.setStyle({
+      color: style.circleColor,
+      fillColor: style.circleFill,
+      weight: style.circleWeight,
+      dashArray: style.circleDash,
+    })
+  }
+  if (sectorPolygon) {
+    sectorPolygon.setStyle({
+      color: style.sectorColor,
+      fillColor: style.sectorFill,
+    })
+  }
+  const L = await import('leaflet')
+  addLockBadge(L, jammingEvent.value!)
+})
+
 onMounted(initMap)
 
 onUnmounted(() => {
+  routeSegments.forEach((s) => s.remove())
+  routeSegments = []
+  if (lockBadge) {
+    lockBadge.remove()
+    lockBadge = null
+  }
   if (popoverAnchorEl.value) {
     popoverAnchorEl.value.remove()
     popoverAnchorEl.value = null
@@ -518,7 +657,11 @@ onUnmounted(() => {
             <span class="vehicle-live__card-meta">{{ formatElapsed(elapsedSeconds) }}</span>
           </div>
           <div class="vehicle-live__card-header-right">
-            <MBadge label="Activated" color="danger" size="sm" />
+            <MBadge
+              :label="isZoneFrozen ? 'Activated' : 'Jammed'"
+              :color="isZoneFrozen ? 'success' : 'danger'"
+              size="sm"
+            />
             <MIcon
               :icon="immobilizerExpanded ? ChevronDown : ChevronRight"
               :size="14"
@@ -549,7 +692,11 @@ onUnmounted(() => {
             </div>
             <div class="vehicle-live__metric">
               <span class="vehicle-live__metric-label">RELAY</span>
-              <span class="vehicle-live__metric-value vehicle-live__danger">Engaged</span>
+              <span
+                class="vehicle-live__metric-value"
+                :class="isZoneFrozen ? 'vehicle-live__success' : 'vehicle-live__danger'"
+                >{{ isZoneFrozen ? 'Engaged' : 'Armed' }}</span
+              >
             </div>
             <div class="vehicle-live__metric">
               <span class="vehicle-live__metric-label">TAMPER</span>
@@ -686,9 +833,11 @@ onUnmounted(() => {
           v-if="jammingEvent"
           :jamming-event="jammingEvent"
           :elapsed-seconds="elapsedSeconds"
+          :is-immobilized="isZoneFrozen"
           @mark-incident="handleMarkIncident"
           @broadcast-incident="handleBroadcastIncident"
           @notify-online="handleNotifyOnline"
+          @re-mobilize="handleRemobilize"
         />
       </MPopover>
 
@@ -949,6 +1098,11 @@ onUnmounted(() => {
 
 .vehicle-live__danger {
   color: var(--mtv-color-status-danger);
+  font-weight: 600;
+}
+
+.vehicle-live__success {
+  color: var(--mtv-color-status-success);
   font-weight: 600;
 }
 
