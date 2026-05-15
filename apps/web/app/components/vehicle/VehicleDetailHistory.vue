@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Search, MapPin } from 'lucide-vue-next'
-import { MBadge, MIcon } from '@motive/ui'
+import { MBadge, MIcon, MPopover } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, SignalEventPhase } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
+import MapMarkerPopover from '~/components/vehicle/MapMarkerPopover.vue'
 
 const props = defineProps<{
   vehicle: FleetVehicle
@@ -74,6 +75,39 @@ const mapContainer = ref<HTMLElement | null>(null)
 let map: L.Map | null = null
 let markers: L.Marker[] = []
 
+const timelinePopoverOpen = ref(false)
+const timelinePopoverAnchorEl = ref<HTMLElement | null>(null)
+const timelinePopoverRef = ref<InstanceType<typeof MPopover> | null>(null)
+const activeTimelineEntry = ref<TimelineDisplayEntry | null>(null)
+
+const PHASE_BADGE_COLORS: Record<string, 'success' | 'warning' | 'danger' | 'default'> = {
+  normal: 'success',
+  degraded: 'warning',
+  jammed: 'danger',
+  'immobilizer-armed': 'warning',
+  'immobilizer-activated': 'danger',
+  recovered: 'success',
+}
+
+function createVirtualAnchor(): HTMLElement {
+  const el = document.createElement('div')
+  el.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;'
+  mapContainer.value!.appendChild(el)
+  return el
+}
+
+function openTimelinePopover(markerEl: L.Marker, entry: TimelineDisplayEntry) {
+  if (!map) return
+  if (!timelinePopoverAnchorEl.value) {
+    timelinePopoverAnchorEl.value = createVirtualAnchor()
+  }
+  const point = map.latLngToContainerPoint(markerEl.getLatLng())
+  timelinePopoverAnchorEl.value!.style.left = `${point.x}px`
+  timelinePopoverAnchorEl.value!.style.top = `${point.y}px`
+  activeTimelineEntry.value = entry
+  timelinePopoverOpen.value = true
+}
+
 const LIGHT_THEMES = new Set(['light', 'console-legacy'])
 
 function isDark(): boolean {
@@ -110,6 +144,16 @@ async function initMap() {
   L.control.zoom({ position: 'bottomright' }).addTo(map)
 
   addMarkers(L)
+
+  map.on('move', () => {
+    if (timelinePopoverOpen.value) {
+      timelinePopoverRef.value?.reposition()
+    }
+  })
+
+  map.on('zoomstart', () => {
+    timelinePopoverOpen.value = false
+  })
 
   const observer = new MutationObserver(() => {
     if (!map) return
@@ -160,12 +204,7 @@ function addMarkers(L: typeof import('leaflet')) {
       iconAnchor: [7, 7],
     })
     const m = L.marker([entry.location.lat, entry.location.lng], { icon }).addTo(map!)
-    m.bindPopup(
-      `<div style="font-size:12px;line-height:1.4;">
-        <strong>${PHASE_LABELS[entry.phase]}</strong><br/>
-        ${entry.description}
-      </div>`,
-    )
+    m.on('click', () => openTimelinePopover(m, entry))
     markers.push(m)
   })
 
@@ -185,6 +224,10 @@ function panTo(entry: TimelineDisplayEntry) {
 onMounted(initMap)
 
 onUnmounted(() => {
+  if (timelinePopoverAnchorEl.value) {
+    timelinePopoverAnchorEl.value.remove()
+    timelinePopoverAnchorEl.value = null
+  }
   if (map) {
     map.remove()
     map = null
@@ -244,6 +287,26 @@ onUnmounted(() => {
 
     <!-- Map -->
     <div ref="mapContainer" class="vehicle-history__map" />
+
+    <!-- Timeline Event Popover -->
+    <MPopover
+      ref="timelinePopoverRef"
+      v-model:open="timelinePopoverOpen"
+      :anchor-el="timelinePopoverAnchorEl"
+      placement="top"
+      :arrow="true"
+      aria-label="Timeline event details"
+    >
+      <MapMarkerPopover
+        v-if="activeTimelineEntry"
+        :title="PHASE_LABELS[activeTimelineEntry.phase] ?? activeTimelineEntry.phase"
+        :description="activeTimelineEntry.description"
+        :timestamp="activeTimelineEntry.timestamp"
+        :signal-strength="activeTimelineEntry.signalStrength"
+        :badge-label="PHASE_LABELS[activeTimelineEntry.phase]"
+        :badge-color="PHASE_BADGE_COLORS[activeTimelineEntry.phase] ?? 'default'"
+      />
+    </MPopover>
   </div>
 </template>
 
