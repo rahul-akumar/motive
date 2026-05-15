@@ -164,6 +164,7 @@ export interface JammingEvent {
   jammedAt: Date
   immobilizerActivatedAt?: Date
   isActive: boolean
+  routeTrail?: Array<{ lat: number; lng: number; speed?: number }>
   timeline: SignalTimelineEntry[]
   priorIncidents: Array<{
     id: string

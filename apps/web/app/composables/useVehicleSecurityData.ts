@@ -15,7 +15,24 @@ export function useVehicleSecurityData(vehicleId: Ref<string> | ComputedRef<stri
 
   const isJammed = computed(() => jammingEvent.value?.isActive ?? false)
 
+  const isImmobilized = computed(() => {
+    return !!jammingEvent.value?.immobilizerActivatedAt
+  })
+
+  const maxRadiusMeters = computed(() => {
+    const event = jammingEvent.value
+    if (!event?.immobilizerActivatedAt) return Infinity
+    const windowSeconds = Math.floor(
+      (event.immobilizerActivatedAt.getTime() - event.jammedAt.getTime()) / 1000,
+    )
+    const speedMps = (event.lastKnownSpeed * 1000) / 3600
+    return speedMps * windowSeconds
+  })
+
+  const ANIMATION_DURATION_S = 35
+
   const elapsedSeconds = ref(0)
+  const animationElapsed = ref(0)
   let timer: ReturnType<typeof setInterval> | null = null
 
   function startTimer() {
@@ -24,6 +41,9 @@ export function useVehicleSecurityData(vehicleId: Ref<string> | ComputedRef<stri
     elapsedSeconds.value = Math.floor((Date.now() - jammedAt) / 1000)
     timer = setInterval(() => {
       elapsedSeconds.value++
+      if (animationElapsed.value < ANIMATION_DURATION_S) {
+        animationElapsed.value++
+      }
     }, 1000)
   }
 
@@ -36,6 +56,10 @@ export function useVehicleSecurityData(vehicleId: Ref<string> | ComputedRef<stri
 
   const searchRadiusMeters = computed(() => {
     if (!jammingEvent.value) return 0
+    if (isImmobilized.value) {
+      const progress = Math.min(animationElapsed.value / ANIMATION_DURATION_S, 1)
+      return maxRadiusMeters.value * progress
+    }
     const speedMps = (jammingEvent.value.lastKnownSpeed * 1000) / 3600
     return speedMps * elapsedSeconds.value
   })
@@ -66,6 +90,8 @@ export function useVehicleSecurityData(vehicleId: Ref<string> | ComputedRef<stri
     devices,
     jammingEvent,
     isJammed,
+    isImmobilized,
+    maxRadiusMeters,
     elapsedSeconds,
     searchRadiusMeters,
     searchRadiusKm,
