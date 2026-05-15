@@ -11,10 +11,12 @@ import {
   Gauge,
   CircleAlert,
 } from 'lucide-vue-next'
-import { MBadge, MIcon } from '@motive/ui'
+import { MBadge, MButton, MIcon, MPopover } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, FleetVehicleStatus } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
 import { destinationPoint } from '~/composables/useSearchZoneGeometry'
+import SignalJammedPopover from '~/components/vehicle/SignalJammedPopover.vue'
+import MapMarkerPopover from '~/components/vehicle/MapMarkerPopover.vue'
 
 const props = defineProps<{
   vehicle: FleetVehicle
@@ -37,6 +39,15 @@ let sectorPolygon: L.Polygon | null = null
 let headingLine: L.Polyline | null = null
 let headingArrow: L.Marker | null = null
 let incidentMarkers: L.Marker[] = []
+
+const popoverOpen = ref(false)
+const popoverAnchorEl = ref<HTMLElement | null>(null)
+const popoverCompRef = ref<InstanceType<typeof MPopover> | null>(null)
+
+const incidentPopoverOpen = ref(false)
+const incidentPopoverAnchorEl = ref<HTMLElement | null>(null)
+const incidentPopoverRef = ref<InstanceType<typeof MPopover> | null>(null)
+const activeIncident = ref<{ type: string; date: Date } | null>(null)
 
 const STATUS_BADGE: Record<
   FleetVehicleStatus,
@@ -74,6 +85,50 @@ function formatElapsed(seconds: number): string {
   return `${m}m ${String(s).padStart(2, '0')}s`
 }
 
+function createVirtualAnchor(): HTMLElement {
+  const el = document.createElement('div')
+  el.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;'
+  mapContainer.value!.appendChild(el)
+  return el
+}
+
+function syncAnchorToMarker() {
+  if (!map || !marker || !popoverAnchorEl.value) return
+  const point = map.latLngToContainerPoint(marker.getLatLng())
+  popoverAnchorEl.value.style.left = `${point.x}px`
+  popoverAnchorEl.value.style.top = `${point.y}px`
+}
+
+function handleMarkIncident() {
+  popoverOpen.value = false
+}
+
+function handleBroadcastIncident() {
+  popoverOpen.value = false
+}
+
+function handleNotifyOnline() {
+  popoverOpen.value = false
+}
+
+const INCIDENT_LABELS: Record<string, string> = {
+  jamming: 'Jamming',
+  'theft-attempt': 'Theft attempt',
+  'unauthorized-movement': 'Unauthorized movement',
+}
+
+function openIncidentPopover(markerEl: L.Marker, inc: { type: string; date: Date }) {
+  if (!map) return
+  if (!incidentPopoverAnchorEl.value) {
+    incidentPopoverAnchorEl.value = createVirtualAnchor()
+  }
+  const point = map.latLngToContainerPoint(markerEl.getLatLng())
+  incidentPopoverAnchorEl.value!.style.left = `${point.x}px`
+  incidentPopoverAnchorEl.value!.style.top = `${point.y}px`
+  activeIncident.value = inc
+  incidentPopoverOpen.value = true
+}
+
 async function initMap() {
   if (!mapContainer.value) return
 
@@ -104,6 +159,21 @@ async function initMap() {
   } else {
     initNormalMarker(L)
   }
+
+  map.on('move', () => {
+    if (popoverOpen.value) {
+      syncAnchorToMarker()
+      popoverCompRef.value?.reposition()
+    }
+    if (incidentPopoverOpen.value && incidentPopoverAnchorEl.value) {
+      incidentPopoverRef.value?.reposition()
+    }
+  })
+
+  map.on('zoomstart', () => {
+    popoverOpen.value = false
+    incidentPopoverOpen.value = false
+  })
 
   const observer = new MutationObserver(() => {
     if (!map) return
@@ -202,14 +272,13 @@ function initJammingLayers(L: typeof import('leaflet')) {
     iconAnchor: [22, 22],
   })
   marker = L.marker([lat, lng], { icon: jammedIcon }).addTo(map!)
-  marker.bindPopup(
-    `<div style="font-size:12px;line-height:1.4;">
-      <strong style="color:#f87171;">Signal Jammed</strong><br/>
-      Speed: ${event.lastKnownSpeed} km/h<br/>
-      Heading: ${event.lastKnownHeading}° (NW)<br/>
-      Lost: ${event.jammedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-    </div>`,
-  )
+  marker.on('click', () => {
+    if (!popoverAnchorEl.value) {
+      popoverAnchorEl.value = createVirtualAnchor()
+    }
+    syncAnchorToMarker()
+    popoverOpen.value = true
+  })
 
   // Prior incident markers
   event.priorIncidents.forEach((inc) => {
@@ -228,12 +297,7 @@ function initJammingLayers(L: typeof import('leaflet')) {
       iconAnchor: [10, 10],
     })
     const m = L.marker([inc.location.lat, inc.location.lng], { icon: incIcon }).addTo(map!)
-    m.bindPopup(
-      `<div style="font-size:12px;">
-        <strong>${inc.type.replace('-', ' ')}</strong><br/>
-        ${inc.date.toLocaleDateString()}
-      </div>`,
-    )
+    m.on('click', () => openIncidentPopover(m, inc))
     incidentMarkers.push(m)
   })
 }
@@ -265,6 +329,14 @@ watch(searchRadiusMeters, (radius) => {
 onMounted(initMap)
 
 onUnmounted(() => {
+  if (popoverAnchorEl.value) {
+    popoverAnchorEl.value.remove()
+    popoverAnchorEl.value = null
+  }
+  if (incidentPopoverAnchorEl.value) {
+    incidentPopoverAnchorEl.value.remove()
+    incidentPopoverAnchorEl.value = null
+  }
   if (map) {
     map.remove()
     map = null
@@ -508,6 +580,43 @@ onUnmounted(() => {
 
     <!-- Map -->
     <div ref="mapContainer" class="vehicle-live__map" />
+
+    <!-- Signal Jammed Popover -->
+    <MPopover
+      ref="popoverCompRef"
+      v-model:open="popoverOpen"
+      :anchor-el="popoverAnchorEl"
+      placement="top"
+      :arrow="true"
+      aria-label="Signal jammed details"
+    >
+      <SignalJammedPopover
+        v-if="jammingEvent"
+        :jamming-event="jammingEvent"
+        :elapsed-seconds="elapsedSeconds"
+        @mark-incident="handleMarkIncident"
+        @broadcast-incident="handleBroadcastIncident"
+        @notify-online="handleNotifyOnline"
+      />
+    </MPopover>
+
+    <!-- Prior Incident Popover -->
+    <MPopover
+      ref="incidentPopoverRef"
+      v-model:open="incidentPopoverOpen"
+      :anchor-el="incidentPopoverAnchorEl"
+      placement="top"
+      :arrow="true"
+      aria-label="Prior incident details"
+    >
+      <MapMarkerPopover
+        v-if="activeIncident"
+        :title="INCIDENT_LABELS[activeIncident.type] ?? activeIncident.type"
+        :timestamp="activeIncident.date"
+        badge-label="Prior incident"
+        badge-color="warning"
+      />
+    </MPopover>
   </div>
 </template>
 
