@@ -57,6 +57,8 @@ function timeAgo(date: Date): string {
   if (hours < 24) return `${hours}h ago`
   return `${Math.floor(hours / 24)}d ago`
 }
+
+const { formatDate } = useFormatters()
 </script>
 
 <template>
@@ -78,7 +80,7 @@ function timeAgo(date: Date): string {
       <dt>Firmware</dt>
       <dd>v{{ device.firmwareVersion }}</dd>
       <dt>Installed</dt>
-      <dd>{{ device.installedAt.toLocaleDateString() }}</dd>
+      <dd>{{ formatDate(device.installedAt) }}</dd>
       <dt>Last Heartbeat</dt>
       <dd :class="{ 'device-card__danger': isCritical }">{{ timeAgo(device.lastHeartbeat) }}</dd>
     </dl>

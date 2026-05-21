@@ -12,6 +12,8 @@ const props = defineProps<{
   data: DailyMilesData[]
 }>()
 
+const { formatDistance } = useFormatters()
+
 const svgRef = ref<SVGSVGElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 const tooltip = ref({ visible: false, x: 0, y: 0, label: '', miles: 0, trips: 0 })
@@ -255,7 +257,7 @@ watch(() => props.data, drawChart, { deep: true })
           aria-live="polite"
         >
           <div class="tooltip__label">{{ tooltip.label }}</div>
-          <div class="tooltip__value">{{ tooltip.miles.toLocaleString() }} mi</div>
+          <div class="tooltip__value">{{ formatDistance(tooltip.miles) }}</div>
           <div class="tooltip__trips">{{ tooltip.trips }} trips</div>
         </div>
       </Transition>

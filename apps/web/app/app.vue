@@ -2,11 +2,13 @@
 const { loadSavedTheme } = useTheme()
 const { loadSavedLocale } = useLocalePreferences()
 const { loadSavedRegion } = useRegion()
+const { loadSavedFormatPreferences } = useFormatPreferences()
 
 onMounted(() => {
   loadSavedTheme()
   loadSavedLocale()
   loadSavedRegion()
+  loadSavedFormatPreferences()
 })
 </script>
 

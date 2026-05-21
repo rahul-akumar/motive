@@ -61,13 +61,7 @@ const PHASE_LABELS: Record<string, string> = {
   recovered: 'Recovered',
 }
 
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
-}
+const { formatTime, formatDate } = useFormatters()
 
 // ── Map ─────────────────────────────────────────────────────────────────────
 
@@ -204,7 +198,10 @@ function addMarkers(L: typeof import('leaflet')) {
       iconAnchor: [7, 7],
     })
     const m = L.marker([entry.location.lat, entry.location.lng], { icon }).addTo(map!)
-    m.on('click', () => openTimelinePopover(m, entry))
+    m.on('mouseover', () => openTimelinePopover(m, entry))
+    m.on('mouseout', () => {
+      timelinePopoverOpen.value = false
+    })
     markers.push(m)
   })
 

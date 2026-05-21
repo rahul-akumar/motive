@@ -41,12 +41,14 @@ const STATUS_OPTIONS: MSelectOption<FleetVehicleStatus | 'all'>[] = [
   { label: 'Maintenance', value: 'maintenance' },
 ]
 
-// ── Columns ─────────────────────────────────────────────
+const { formatDate, formatTime } = useFormatters()
+
+// ── Columns ─────────────────────────────────────────
 const columns: MTableColumn[] = [
   { key: 'unitNumber', label: 'Vehicle ID / MMY', sortable: true, minWidth: '180px' },
   { key: 'driverName', label: 'Driver Name / ID', sortable: true, minWidth: '160px' },
   { key: 'assetName', label: 'Asset ID', sortable: true, minWidth: '120px' },
-  { key: 'location', label: 'Location / Updated (MDY EDT)', sortable: true, minWidth: '200px' },
+  { key: 'location', label: 'Location', sortable: true, minWidth: '200px' },
   { key: 'status', label: 'Availability', sortable: true, width: '140px' },
   { key: 'defects', label: 'Defects / Faults', sortable: true, align: 'center', width: '110px' },
   { key: 'cameras', label: 'Cameras', sortable: true, align: 'center', width: '90px' },
@@ -185,16 +187,7 @@ function openMenu(id: string, el: HTMLElement) {
             >{{ (row as FleetVehicle).currentLocation.city }},
             {{ (row as FleetVehicle).currentLocation.state }}</span
           >
-          <span class="cell-sub"
-            >{{
-              new Date().toLocaleDateString('en-US', {
-                month: '2-digit',
-                day: '2-digit',
-                year: 'numeric',
-              })
-            }}
-            EDT</span
-          >
+          <span class="cell-sub">{{ formatDate(new Date()) }} · {{ formatTime(new Date()) }}</span>
         </template>
 
         <!-- Availability -->

@@ -12,13 +12,7 @@ export interface MapMarkerPopoverProps {
 
 const props = defineProps<MapMarkerPopoverProps>()
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })
-}
-
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
+const { formatDate, formatTime } = useFormatters()
 </script>
 
 <template>

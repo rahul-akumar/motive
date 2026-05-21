@@ -14,13 +14,7 @@ const emit = defineEmits<{
   dismissAll: []
 }>()
 
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
+const { formatTime } = useFormatters()
 
 function getCSSVar(name: string): string {
   if (!import.meta.client) return ''

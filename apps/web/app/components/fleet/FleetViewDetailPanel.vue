@@ -39,9 +39,7 @@ function formatLastUpdated(date: Date): string {
   return `${Math.floor(mins / 60)}h ago`
 }
 
-function formatMileage(miles: number): string {
-  return miles.toLocaleString()
-}
+const { formatDistance } = useFormatters()
 
 const statusColor = computed(() =>
   props.driver ? FLEET_STATUS_COLORS[props.driver.status] : 'var(--fleet-status-offline)',
@@ -223,7 +221,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           </div>
           <div class="fv-detail__meta">
             Miles today:
-            <span class="fv-detail__eta">{{ driver.milesDrivenToday.toLocaleString() }} mi</span>
+            <span class="fv-detail__eta">{{ formatDistance(driver.milesDrivenToday) }}</span>
           </div>
         </section>
 
@@ -237,7 +235,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
             {{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}
           </div>
           <div class="fv-detail__meta">
-            {{ vehicle.licensePlate }} · {{ formatMileage(vehicle.mileage) }} mi
+            {{ vehicle.licensePlate }} · {{ formatDistance(vehicle.mileage) }}
           </div>
 
           <!-- Fuel level -->

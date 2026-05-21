@@ -15,9 +15,7 @@ const vehicleId = computed(() => route.params.id as string)
 const { vehicle, loading, notFound } = useVehicleDetail(vehicleId)
 const { devices, isJammed, jammingEvent } = useVehicleSecurityData(vehicleId)
 
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
+const { formatTime } = useFormatters()
 </script>
 
 <template>

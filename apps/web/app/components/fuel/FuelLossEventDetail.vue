@@ -22,23 +22,7 @@ const STATUS_BADGE: Record<
   dismissed: { color: 'default', label: 'Dismissed' },
 }
 
-function formatDateTime(date: Date): string {
-  return new Date(date).toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
-
-function formatTime(date: Date): string {
-  return new Date(date).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
+const { formatDateTime, formatTime } = useFormatters()
 
 function durationMins(start: Date, end: Date): number {
   return Math.round((new Date(end).getTime() - new Date(start).getTime()) / 60_000)

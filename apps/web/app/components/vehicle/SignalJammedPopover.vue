@@ -15,6 +15,7 @@ const emit = defineEmits<{
   'mark-incident': []
   'broadcast-incident': []
   'notify-online': []
+  'inform-authorities': []
   're-mobilize': []
 }>()
 
@@ -108,6 +109,9 @@ onUnmounted(cancelHold)
       >
       <MButton variant="outline" size="sm" @click="emit('notify-online')"
         >Notify when back online</MButton
+      >
+      <MButton variant="outline" size="sm" @click="emit('inform-authorities')"
+        >Inform authorities</MButton
       >
       <button
         v-if="isImmobilized"
