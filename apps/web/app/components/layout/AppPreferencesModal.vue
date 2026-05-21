@@ -13,6 +13,7 @@ import {
 import { MModal } from '@motive/ui'
 import { useTheme } from '~/composables/useTheme'
 import { useLocalePreferences } from '~/composables/useLocalePreferences'
+import { useFormatPreferences } from '~/composables/useFormatPreferences'
 
 export interface AppPreferencesModalProps {
   open: boolean
@@ -30,6 +31,21 @@ const emit = defineEmits<{
 const { currentTheme, themes, applyTheme } = useTheme()
 const { currentLocale, availableLocales, applyLocale } = useLocalePreferences()
 const { currentRegion, availableRegions, applyRegion } = useRegion()
+const {
+  formatPreferences,
+  applyFormatPreferences,
+  TIMEZONE_OPTIONS,
+  DATE_FORMAT_OPTIONS,
+  TIME_FORMAT_OPTIONS,
+  DISTANCE_UNIT_OPTIONS,
+  SPEED_UNIT_OPTIONS,
+  WEIGHT_UNIT_OPTIONS,
+  TEMPERATURE_UNIT_OPTIONS,
+  VOLUME_UNIT_OPTIONS,
+  FUEL_EFFICIENCY_UNIT_OPTIONS,
+  PRESSURE_UNIT_OPTIONS,
+  FIRST_DAY_OF_WEEK_OPTIONS,
+} = useFormatPreferences()
 const { t } = useI18n()
 
 const sections = computed(() => [
@@ -269,6 +285,8 @@ function selectTheme(id: string) {
               <p class="pref-section__desc">{{ t('preferences.language.desc') }}</p>
             </div>
             <div class="pref-section__body">
+              <!-- ── Locale ── -->
+              <p class="pref-group-label">{{ t('preferences.language.groupLocale') }}</p>
               <div class="pref-row">
                 <label class="pref-row__label" for="pref-region-select">{{
                   t('preferences.language.region')
@@ -307,17 +325,230 @@ function selectTheme(id: string) {
                   </option>
                 </select>
               </div>
-              <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">{{ t('preferences.language.timezone') }}</span>
-                <span class="pref-row__value">America/Chicago</span>
+
+              <!-- ── Date & Time ── -->
+              <p class="pref-group-label">{{ t('preferences.language.groupDateTime') }}</p>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-timezone-select">{{
+                  t('preferences.language.timezone')
+                }}</label>
+                <select
+                  id="pref-timezone-select"
+                  class="pref-select"
+                  :value="formatPreferences.timezone"
+                  @change="
+                    applyFormatPreferences({ timezone: ($event.target as HTMLSelectElement).value })
+                  "
+                >
+                  <option v-for="tz in TIMEZONE_OPTIONS" :key="tz.value" :value="tz.value">
+                    {{ tz.label }}
+                  </option>
+                </select>
               </div>
-              <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">{{ t('preferences.language.dateFormat') }}</span>
-                <span class="pref-row__value">MM/DD/YYYY</span>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-date-format-select">{{
+                  t('preferences.language.dateFormat')
+                }}</label>
+                <select
+                  id="pref-date-format-select"
+                  class="pref-select"
+                  :value="formatPreferences.dateFormat"
+                  @change="
+                    applyFormatPreferences({
+                      dateFormat: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="fmt in DATE_FORMAT_OPTIONS" :key="fmt.value" :value="fmt.value">
+                    {{ fmt.label }}
+                  </option>
+                </select>
               </div>
-              <div class="pref-row pref-row--placeholder">
-                <span class="pref-row__label">{{ t('preferences.language.distanceUnit') }}</span>
-                <span class="pref-row__value">{{ t('preferences.language.miles') }}</span>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-time-format-select">{{
+                  t('preferences.language.timeFormat')
+                }}</label>
+                <select
+                  id="pref-time-format-select"
+                  class="pref-select"
+                  :value="formatPreferences.timeFormat"
+                  @change="
+                    applyFormatPreferences({
+                      timeFormat: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="fmt in TIME_FORMAT_OPTIONS" :key="fmt.value" :value="fmt.value">
+                    {{ fmt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-first-day-select">{{
+                  t('preferences.language.firstDayOfWeek')
+                }}</label>
+                <select
+                  id="pref-first-day-select"
+                  class="pref-select"
+                  :value="formatPreferences.firstDayOfWeek"
+                  @change="
+                    applyFormatPreferences({
+                      firstDayOfWeek: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option
+                    v-for="opt in FIRST_DAY_OF_WEEK_OPTIONS"
+                    :key="opt.value"
+                    :value="opt.value"
+                  >
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- ── Units ── -->
+              <p class="pref-group-label">{{ t('preferences.language.groupUnits') }}</p>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-distance-select">{{
+                  t('preferences.language.distanceUnit')
+                }}</label>
+                <select
+                  id="pref-distance-select"
+                  class="pref-select"
+                  :value="formatPreferences.distanceUnit"
+                  @change="
+                    applyFormatPreferences({
+                      distanceUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="opt in DISTANCE_UNIT_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-speed-select">{{
+                  t('preferences.language.speedUnit')
+                }}</label>
+                <select
+                  id="pref-speed-select"
+                  class="pref-select"
+                  :value="formatPreferences.speedUnit"
+                  @change="
+                    applyFormatPreferences({
+                      speedUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="opt in SPEED_UNIT_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-weight-select">{{
+                  t('preferences.language.weightUnit')
+                }}</label>
+                <select
+                  id="pref-weight-select"
+                  class="pref-select"
+                  :value="formatPreferences.weightUnit"
+                  @change="
+                    applyFormatPreferences({
+                      weightUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="opt in WEIGHT_UNIT_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-temperature-select">{{
+                  t('preferences.language.temperatureUnit')
+                }}</label>
+                <select
+                  id="pref-temperature-select"
+                  class="pref-select"
+                  :value="formatPreferences.temperatureUnit"
+                  @change="
+                    applyFormatPreferences({
+                      temperatureUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option
+                    v-for="opt in TEMPERATURE_UNIT_OPTIONS"
+                    :key="opt.value"
+                    :value="opt.value"
+                  >
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-volume-select">{{
+                  t('preferences.language.volumeUnit')
+                }}</label>
+                <select
+                  id="pref-volume-select"
+                  class="pref-select"
+                  :value="formatPreferences.volumeUnit"
+                  @change="
+                    applyFormatPreferences({
+                      volumeUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="opt in VOLUME_UNIT_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-fuel-efficiency-select">{{
+                  t('preferences.language.fuelEfficiencyUnit')
+                }}</label>
+                <select
+                  id="pref-fuel-efficiency-select"
+                  class="pref-select"
+                  :value="formatPreferences.fuelEfficiencyUnit"
+                  @change="
+                    applyFormatPreferences({
+                      fuelEfficiencyUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option
+                    v-for="opt in FUEL_EFFICIENCY_UNIT_OPTIONS"
+                    :key="opt.value"
+                    :value="opt.value"
+                  >
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="pref-row">
+                <label class="pref-row__label" for="pref-pressure-select">{{
+                  t('preferences.language.pressureUnit')
+                }}</label>
+                <select
+                  id="pref-pressure-select"
+                  class="pref-select"
+                  :value="formatPreferences.pressureUnit"
+                  @change="
+                    applyFormatPreferences({
+                      pressureUnit: ($event.target as HTMLSelectElement).value as any,
+                    })
+                  "
+                >
+                  <option v-for="opt in PRESSURE_UNIT_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
@@ -567,6 +798,10 @@ function selectTheme(id: string) {
   color: var(--mtv-color-foreground-subtle);
   margin: 0 0 0.625rem;
   text-transform: uppercase;
+}
+
+.pref-group-label + .pref-row ~ .pref-group-label {
+  margin-top: 1.25rem;
 }
 
 .pref-radio-group {

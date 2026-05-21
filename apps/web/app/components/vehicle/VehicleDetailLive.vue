@@ -25,6 +25,8 @@ const props = defineProps<{
   driver?: FleetDriver
 }>()
 
+const { formatDistance } = useFormatters()
+
 const vehicleId = computed(() => props.vehicle.id)
 const {
   isJammed,
@@ -154,6 +156,10 @@ function handleNotifyOnline() {
 }
 
 function handleRemobilize() {
+  popoverOpen.value = false
+}
+
+function handleInformAuthorities() {
   popoverOpen.value = false
 }
 
@@ -768,7 +774,7 @@ onUnmounted(() => {
           <dt>Year</dt>
           <dd>{{ vehicle.year }}</dd>
           <dt>Mileage</dt>
-          <dd>{{ vehicle.mileage.toLocaleString() }} mi</dd>
+          <dd>{{ formatDistance(vehicle.mileage) }}</dd>
         </dl>
       </div>
 
@@ -837,6 +843,7 @@ onUnmounted(() => {
           @mark-incident="handleMarkIncident"
           @broadcast-incident="handleBroadcastIncident"
           @notify-online="handleNotifyOnline"
+          @inform-authorities="handleInformAuthorities"
           @re-mobilize="handleRemobilize"
         />
       </MPopover>

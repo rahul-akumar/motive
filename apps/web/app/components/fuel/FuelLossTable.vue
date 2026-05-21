@@ -77,20 +77,11 @@ function handleSort(key: string, dir: 'asc' | 'desc') {
 }
 
 // ── Formatting helpers ───────────────────────────────────
+const { formatDateTime, formatTime } = useFormatters()
+
 function formatTimeWindow(event: FuelLossEvent): string {
-  const opts: Intl.DateTimeFormatOptions = {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }
-  const start = new Date(event.startTime).toLocaleString('en-US', opts)
-  const endTime = new Date(event.endTime).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })
+  const start = formatDateTime(event.startTime)
+  const endTime = formatTime(event.endTime)
   return `${start} – ${endTime}`
 }
 

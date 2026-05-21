@@ -3,6 +3,8 @@ import { Download, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
 import type { Driver } from '@motive/shared'
 
+const { formatDistance } = useFormatters()
+
 const props = defineProps<{
   drivers: Driver[]
 }>()
@@ -214,7 +216,7 @@ function hosColor(driver: Driver): string {
             <!-- Miles Today -->
             <td>
               <span class="fleet-table__miles font-mono-data">
-                {{ driver.milesDrivenToday > 0 ? driver.milesDrivenToday.toLocaleString() : '—' }}
+                {{ driver.milesDrivenToday > 0 ? formatDistance(driver.milesDrivenToday) : '—' }}
               </span>
             </td>
             <!-- HOS Remaining -->

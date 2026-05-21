@@ -805,14 +805,7 @@ export function useFuelLossData() {
       'Status',
     ]
 
-    const formatDate = (d: Date) =>
-      new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    const formatTime = (d: Date) =>
-      new Date(d).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
+    const { formatDate, formatTime } = useFormatters()
     const duration = (start: Date, end: Date) =>
       Math.round((new Date(end).getTime() - new Date(start).getTime()) / 60_000)
 
