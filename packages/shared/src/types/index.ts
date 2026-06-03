@@ -186,7 +186,9 @@ export interface DashboardSummary {
 // FUEL LOSS TYPES
 // ============================================================
 
-export type FuelDropStatus = 'open' | 'reviewed' | 'dismissed'
+export type FuelDropStatus = 'pending-review' | 'coachable' | 'coached' | 'dismissed'
+
+export type FuelEventType = 'fuel-loss' | 'idling'
 
 export interface FuelLossLocation {
   lat: number
@@ -209,5 +211,21 @@ export interface FuelLossEvent {
   fuelEnd: number
   /** Percentage points dropped (fuelStart − fuelEnd) */
   fuelDrop: number
+  status: FuelDropStatus
+}
+
+export interface IdlingEvent {
+  id: string
+  vehicleId: string
+  vehicleName: string
+  driverId?: string
+  driverName?: string
+  location: FuelLossLocation
+  startTime: Date
+  endTime: Date
+  /** Duration in minutes */
+  durationMins: number
+  /** Estimated fuel wasted (gallons or litres depending on region) */
+  fuelWasted: number
   status: FuelDropStatus
 }
