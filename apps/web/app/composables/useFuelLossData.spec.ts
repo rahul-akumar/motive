@@ -44,10 +44,10 @@ describe('useFuelLossData', () => {
     expect(filteredEvents.value.every((e) => e.fuelDrop >= 15)).toBe(true)
   })
 
-  it('filterStatus narrows to open events only', () => {
+  it('filterStatus narrows to pending-review events only', () => {
     const { filteredEvents, filterStatus } = useFuelLossData()
-    filterStatus.value = 'open'
-    expect(filteredEvents.value.every((e) => e.status === 'open')).toBe(true)
+    filterStatus.value = 'pending-review'
+    expect(filteredEvents.value.every((e) => e.status === 'pending-review')).toBe(true)
   })
 
   it('hasActiveFilters is false when all filters are cleared', () => {
@@ -61,27 +61,27 @@ describe('useFuelLossData', () => {
     expect(hasActiveFilters.value).toBe(true)
   })
 
-  it('openCount reflects number of open events', () => {
+  it('openCount reflects number of pending-review events', () => {
     const { events, openCount } = useFuelLossData()
-    const expected = events.value.filter((e) => e.status === 'open').length
+    const expected = events.value.filter((e) => e.status === 'pending-review').length
     expect(openCount.value).toBe(expected)
   })
 
-  it('markReviewed changes event status to reviewed', () => {
+  it('markReviewed changes event status to coached', () => {
     const { events, markReviewed } = useFuelLossData()
-    const openEvent = events.value.find((e) => e.status === 'open')
-    if (!openEvent) return
-    markReviewed(openEvent.id)
-    const updated = events.value.find((e) => e.id === openEvent.id)
-    expect(updated?.status).toBe('reviewed')
+    const pendingEvent = events.value.find((e) => e.status === 'pending-review')
+    if (!pendingEvent) return
+    markReviewed(pendingEvent.id)
+    const updated = events.value.find((e) => e.id === pendingEvent.id)
+    expect(updated?.status).toBe('coached')
   })
 
   it('markDismissed changes event status to dismissed', () => {
     const { events, markDismissed } = useFuelLossData()
-    const openEvent = events.value.find((e) => e.status === 'open')
-    if (!openEvent) return
-    markDismissed(openEvent.id)
-    const updated = events.value.find((e) => e.id === openEvent.id)
+    const pendingEvent = events.value.find((e) => e.status === 'pending-review')
+    if (!pendingEvent) return
+    markDismissed(pendingEvent.id)
+    const updated = events.value.find((e) => e.id === pendingEvent.id)
     expect(updated?.status).toBe('dismissed')
   })
 
