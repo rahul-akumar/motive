@@ -7,7 +7,7 @@ export function useVehiclesTable() {
   const sortKey = ref<string>('unitNumber')
   const sortDir = ref<'asc' | 'desc'>('asc')
   const searchQuery = ref('')
-  const statusFilter = ref<FleetVehicleStatus | 'all'>('all')
+  const statusFilter = ref<FleetVehicleStatus | null>(null)
 
   const filteredVehicles = computed<FleetVehicle[]>(() => {
     let result = fleetVehicles.value
@@ -24,7 +24,7 @@ export function useVehiclesTable() {
       )
     }
 
-    if (statusFilter.value !== 'all') {
+    if (statusFilter.value !== null) {
       result = result.filter((v) => v.status === statusFilter.value)
     }
 
@@ -45,7 +45,7 @@ export function useVehiclesTable() {
     return result
   })
 
-  const hasActiveFilters = computed(() => searchQuery.value !== '' || statusFilter.value !== 'all')
+  const hasActiveFilters = computed(() => searchQuery.value !== '' || statusFilter.value !== null)
 
   function handleSort(key: string, dir: 'asc' | 'desc') {
     sortKey.value = key
@@ -54,7 +54,7 @@ export function useVehiclesTable() {
 
   function clearFilters() {
     searchQuery.value = ''
-    statusFilter.value = 'all'
+    statusFilter.value = null
   }
 
   return {

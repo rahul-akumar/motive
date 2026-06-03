@@ -7,8 +7,8 @@ export function useAssetsTable() {
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')
   const searchQuery = ref('')
-  const availabilityFilter = ref<FleetAssetAvailability | 'all'>('all')
-  const typeFilter = ref<FleetAssetType | 'all'>('all')
+  const availabilityFilter = ref<FleetAssetAvailability | null>(null)
+  const typeFilter = ref<FleetAssetType | null>(null)
 
   const filteredAssets = computed<FleetAsset[]>(() => {
     let result = fleetAssets.value
@@ -26,11 +26,11 @@ export function useAssetsTable() {
       )
     }
 
-    if (availabilityFilter.value !== 'all') {
+    if (availabilityFilter.value !== null) {
       result = result.filter((a) => a.availability === availabilityFilter.value)
     }
 
-    if (typeFilter.value !== 'all') {
+    if (typeFilter.value !== null) {
       result = result.filter((a) => a.type === typeFilter.value)
     }
 
@@ -53,7 +53,7 @@ export function useAssetsTable() {
 
   const hasActiveFilters = computed(
     () =>
-      searchQuery.value !== '' || availabilityFilter.value !== 'all' || typeFilter.value !== 'all',
+      searchQuery.value !== '' || availabilityFilter.value !== null || typeFilter.value !== null,
   )
 
   function handleSort(key: string, dir: 'asc' | 'desc') {
@@ -63,8 +63,8 @@ export function useAssetsTable() {
 
   function clearFilters() {
     searchQuery.value = ''
-    availabilityFilter.value = 'all'
-    typeFilter.value = 'all'
+    availabilityFilter.value = null
+    typeFilter.value = null
   }
 
   return {

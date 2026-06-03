@@ -124,24 +124,16 @@ function openMenu(id: string, el: HTMLElement) {
 }
 
 // ── Filter options ───────────────────────────────────────────
-const EVENT_TYPE_OPTIONS: MSelectOption<FuelEventType | 'all'>[] = [
-  { label: 'Behavior', value: 'all' },
+const EVENT_TYPE_OPTIONS: MSelectOption<FuelEventType>[] = [
   { label: 'Fuel Loss', value: 'fuel-loss' },
   { label: 'Idling', value: 'idling' },
 ]
 
-const VEHICLE_OPTIONS = computed<MSelectOption<string>[]>(() => [
-  { label: 'Vehicle', value: 'all' },
-  ...vehicleOptions.value,
-])
+const VEHICLE_OPTIONS = computed<MSelectOption<string>[]>(() => [...vehicleOptions.value])
 
-const DRIVER_OPTIONS = computed<MSelectOption<string>[]>(() => [
-  { label: 'Driver', value: 'all' },
-  ...driverOptions.value,
-])
+const DRIVER_OPTIONS = computed<MSelectOption<string>[]>(() => [...driverOptions.value])
 
-const STATUS_OPTIONS: MSelectOption<FuelDropStatus | 'all'>[] = [
-  { label: 'Status', value: 'all' },
+const STATUS_OPTIONS: MSelectOption<FuelDropStatus>[] = [
   { label: 'Pending review', value: 'pending-review' },
   { label: 'Coachable', value: 'coachable' },
   { label: 'Coached', value: 'coached' },
@@ -202,41 +194,53 @@ const STATUS_BADGE: Record<
         <MSelect
           :model-value="filterEventType"
           :options="EVENT_TYPE_OPTIONS"
+          label="Behavior"
+          :clearable="true"
           aria-label="Filter by event type"
-          @update:model-value="filterEventType = $event as FuelEventType | 'all'"
+          @update:model-value="filterEventType = $event as FuelEventType | null"
         />
 
         <!-- Vehicle filter -->
         <MSelect
           :model-value="filterVehicle"
           :options="VEHICLE_OPTIONS"
+          label="Vehicle"
+          :clearable="true"
           aria-label="Filter by vehicle"
-          @update:model-value="filterVehicle = $event as string"
+          @update:model-value="filterVehicle = $event as string | null"
         />
 
         <!-- Driver filter -->
         <MSelect
           :model-value="filterDriver"
           :options="DRIVER_OPTIONS"
+          label="Driver"
+          :clearable="true"
           aria-label="Filter by driver"
-          @update:model-value="filterDriver = $event as string"
+          @update:model-value="filterDriver = $event as string | null"
         />
 
         <!-- Status filter -->
         <MSelect
           :model-value="filterStatus"
           :options="STATUS_OPTIONS"
+          label="Status"
+          :clearable="true"
           aria-label="Filter by status"
-          @update:model-value="filterStatus = $event as FuelDropStatus | 'all'"
+          @update:model-value="filterStatus = $event as FuelDropStatus | null"
         />
 
         <!-- Clear filters -->
-        <Transition name="fe-filter-clear">
-          <MButton v-if="hasActiveFilters" variant="outline" size="sm" @click="clearFilters">
-            <X :size="12" :stroke-width="2.5" />
-            Clear
-          </MButton>
-        </Transition>
+        <MButton
+          v-if="hasActiveFilters"
+          variant="ghost"
+          size="sm"
+          class="fe-filter-clear"
+          @click="clearFilters"
+        >
+          <X :size="12" :stroke-width="2.5" />
+          Clear
+        </MButton>
       </div>
     </div>
 
@@ -488,19 +492,5 @@ const STATUS_BADGE: Record<
 .fe-empty__sub {
   font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-subtle);
-}
-
-/* Filter clear transition */
-.fe-filter-clear-enter-active,
-.fe-filter-clear-leave-active {
-  transition:
-    opacity 0.15s,
-    transform 0.15s;
-}
-
-.fe-filter-clear-enter-from,
-.fe-filter-clear-leave-to {
-  opacity: 0;
-  transform: translateX(-4px);
 }
 </style>

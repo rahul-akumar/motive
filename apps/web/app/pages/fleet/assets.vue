@@ -39,16 +39,14 @@ const {
 } = useAssetsTable()
 
 // ── Filter options ──────────────────────────────────────
-const AVAILABILITY_OPTIONS: MSelectOption<FleetAssetAvailability | 'all'>[] = [
-  { label: 'All availability', value: 'all' },
+const AVAILABILITY_OPTIONS: MSelectOption<FleetAssetAvailability>[] = [
   { label: 'In Use', value: 'in-use' },
   { label: 'Available', value: 'available' },
   { label: 'Maintenance', value: 'maintenance' },
   { label: 'Decommissioned', value: 'decommissioned' },
 ]
 
-const TYPE_OPTIONS: MSelectOption<FleetAssetType | 'all'>[] = [
-  { label: 'All types', value: 'all' },
+const TYPE_OPTIONS: MSelectOption<FleetAssetType>[] = [
   { label: 'Trailer', value: 'trailer' },
   { label: 'Container', value: 'container' },
   { label: 'Generator', value: 'generator' },
@@ -147,23 +145,25 @@ function openMenu(id: string, el: HTMLElement) {
         <MSelect
           :model-value="availabilityFilter"
           :options="AVAILABILITY_OPTIONS"
+          label="Availability"
+          :clearable="true"
           aria-label="Filter by availability"
-          @update:model-value="availabilityFilter = $event as FleetAssetAvailability | 'all'"
+          @update:model-value="availabilityFilter = $event as FleetAssetAvailability | null"
         />
 
         <MSelect
           :model-value="typeFilter"
           :options="TYPE_OPTIONS"
+          label="Type"
+          :clearable="true"
           aria-label="Filter by type"
-          @update:model-value="typeFilter = $event as FleetAssetType | 'all'"
+          @update:model-value="typeFilter = $event as FleetAssetType | null"
         />
 
-        <Transition name="fleet-filter-clear">
-          <MButton v-if="hasActiveFilters" variant="outline" size="sm" @click="clearFilters">
-            <X :size="13" :stroke-width="2" />
-            Reset
-          </MButton>
-        </Transition>
+        <MButton v-if="hasActiveFilters" variant="ghost" size="sm" @click="clearFilters">
+          <X :size="13" :stroke-width="2" />
+          Clear
+        </MButton>
       </div>
     </div>
 
@@ -361,20 +361,6 @@ function openMenu(id: string, el: HTMLElement) {
 .fleet-filter-bar__clear-input:hover {
   color: var(--mtv-color-foreground-default);
   background-color: var(--mtv-color-surface-hover);
-}
-
-/* ── Clear filters transition ────────────────────────────── */
-.fleet-filter-clear-enter-active,
-.fleet-filter-clear-leave-active {
-  transition:
-    opacity 150ms ease,
-    transform 150ms ease;
-}
-
-.fleet-filter-clear-enter-from,
-.fleet-filter-clear-leave-to {
-  opacity: 0;
-  transform: scale(0.92);
 }
 
 /* ── Cell styles ─────────────────────────────────────────── */
