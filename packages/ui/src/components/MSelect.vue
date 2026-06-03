@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="T extends string | number">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
-import { ChevronDown, Check } from 'lucide-vue-next'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { ChevronDown, Check, X } from 'lucide-vue-next'
+import MButton from './MButton.vue'
 
 export interface MSelectOption<V extends string | number = string | number> {
   label: string
@@ -9,11 +10,14 @@ export interface MSelectOption<V extends string | number = string | number> {
 }
 
 export interface MSelectProps<V extends string | number = string | number> {
-  modelValue: V
+  modelValue: V | null
   options: MSelectOption<V>[]
+  /** Static label shown on the trigger when no value is selected (e.g. "Status", "Behavior") */
+  label?: string
   placeholder?: string
   size?: 'sm' | 'md'
   disabled?: boolean
+  clearable?: boolean
   name?: string
   /** Accessible label — required if no visible label surrounds the component */
   ariaLabel?: string
@@ -22,10 +26,11 @@ export interface MSelectProps<V extends string | number = string | number> {
 const props = withDefaults(defineProps<MSelectProps<T>>(), {
   size: 'sm',
   disabled: false,
+  clearable: false,
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: T]
+  'update:modelValue': [value: T | null]
 }>()
 
 const open = ref(false)
@@ -33,9 +38,19 @@ const triggerRef = ref<HTMLButtonElement | null>(null)
 const listboxRef = ref<HTMLUListElement | null>(null)
 const menuStyle = ref<Record<string, string>>({})
 
-const selectedOption = computed(
-  () => props.options.find((o) => o.value === props.modelValue) ?? null,
+const selectedOption = computed(() =>
+  props.modelValue != null
+    ? (props.options.find((o) => o.value === props.modelValue) ?? null)
+    : null,
 )
+
+const hasValue = computed(() => selectedOption.value !== null)
+
+function clearValue(e: MouseEvent) {
+  e.stopPropagation()
+  emit('update:modelValue', null)
+  triggerRef.value?.focus()
+}
 
 // ── Positioning ──────────────────────────────────────────
 async function openMenu() {
@@ -144,47 +159,29 @@ function handleClickOutside(e: MouseEvent) {
 
 onMounted(() => document.addEventListener('mousedown', handleClickOutside))
 onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
-
-// ── Trigger width animation on value change ──────────────
-watch(
-  selectedOption,
-  async () => {
-    const el = triggerRef.value
-    if (!el) return
-
-    // Capture current rendered width before Vue updates the label
-    const fromWidth = el.offsetWidth
-
-    await nextTick()
-
-    const toWidth = el.offsetWidth
-    if (fromWidth === toWidth) return
-
-    // FLIP: disable transition, jump to old width, force reflow, then animate to new
-    el.style.transition = 'none'
-    el.style.width = `${fromWidth}px`
-    el.getBoundingClientRect() // flush layout so browser registers fromWidth
-    el.style.transition = ''
-    el.style.width = `${toWidth}px`
-
-    setTimeout(() => {
-      el.style.width = ''
-    }, 180)
-  },
-  { flush: 'pre' },
-)
 </script>
 
 <template>
-  <div class="m-select" :class="{ 'm-select--open': open, 'm-select--disabled': disabled }">
+  <div
+    class="m-select"
+    :class="{
+      'm-select--open': open,
+      'm-select--disabled': disabled,
+      'm-select--active': hasValue,
+    }"
+  >
     <!-- Hidden native input for form integration -->
-    <input v-if="name" type="hidden" :name="name" :value="modelValue" />
+    <input v-if="name" type="hidden" :name="name" :value="modelValue ?? ''" />
     <!-- Trigger -->
     <button
       ref="triggerRef"
       type="button"
       role="combobox"
-      :class="['m-select__trigger', `m-select__trigger--${size}`]"
+      :class="[
+        'm-select__trigger',
+        `m-select__trigger--${size}`,
+        { 'm-select__trigger--active': hasValue },
+      ]"
       :aria-expanded="open"
       :aria-haspopup="'listbox'"
       :aria-label="ariaLabel"
@@ -193,10 +190,29 @@ watch(
       @click="open ? (open = false) : openMenu()"
       @keydown="handleTriggerKeydown"
     >
-      <span class="m-select__value" :class="{ 'm-select__value--placeholder': !selectedOption }">
-        {{ selectedOption?.label ?? placeholder ?? 'Select…' }}
+      <span class="m-select__value" :class="{ 'm-select__value--placeholder': !hasValue }">
+        {{ selectedOption?.label ?? label ?? placeholder ?? 'Select…' }}
       </span>
-      <ChevronDown :size="12" :stroke-width="2.25" class="m-select__chevron" aria-hidden="true" />
+      <MButton
+        v-if="clearable && hasValue && !disabled"
+        variant="ghost"
+        size="xs"
+        :icon-only="true"
+        aria-label="Clear selection"
+        tabindex="-1"
+        class="m-select__clear"
+        @click="clearValue"
+        @mousedown.prevent
+      >
+        <X :size="11" :stroke-width="2.5" />
+      </MButton>
+      <ChevronDown
+        v-if="!clearable || !hasValue"
+        :size="12"
+        :stroke-width="2.25"
+        class="m-select__chevron"
+        aria-hidden="true"
+      />
     </button>
 
     <!-- Listbox — teleported to body for correct z-index/overflow stacking -->
@@ -262,8 +278,7 @@ watch(
   white-space: nowrap;
   transition:
     border-color 120ms ease,
-    background-color 120ms ease,
-    width 150ms ease;
+    background-color 120ms ease;
   outline: none;
   font-size: var(--font-size-sm);
   font-family: inherit;
@@ -302,6 +317,11 @@ watch(
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: opacity 100ms ease;
+}
+
+.m-select__value--transitioning {
+  opacity: 0;
 }
 
 .m-select__value--placeholder {
@@ -316,6 +336,21 @@ watch(
 
 .m-select--open .m-select__chevron {
   transform: rotate(180deg);
+}
+
+/* ── Clear button ────────────────────────────────────────── */
+.m-select__clear {
+  flex-shrink: 0;
+  color: var(--mtv-color-foreground-muted);
+}
+
+.m-select__clear:hover {
+  color: var(--mtv-color-foreground-default);
+}
+
+/* ── Active state (value selected) ───────────────────────── */
+.m-select__trigger--active {
+  border-color: var(--mtv-color-border-strong);
 }
 
 /* ── Listbox ─────────────────────────────────────────────── */

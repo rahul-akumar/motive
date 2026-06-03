@@ -1,7 +1,7 @@
 <script setup lang="ts">
 export interface MButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link'
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   loading?: boolean
@@ -49,6 +49,10 @@ defineEmits<{
 }
 
 /* Sizes */
+.m-button--xs {
+  @apply h-5 px-1 text-xs rounded-sm;
+}
+
 .m-button--sm {
   @apply h-8 px-3 text-sm rounded-sm;
 }
@@ -62,6 +66,9 @@ defineEmits<{
 }
 
 /* Icon-only: square, no horizontal padding */
+.m-button--icon-only.m-button--xs {
+  @apply w-5 px-0;
+}
 .m-button--icon-only.m-button--sm {
   @apply w-8 px-0;
 }

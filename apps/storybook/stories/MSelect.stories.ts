@@ -88,3 +88,36 @@ export const WithDisabledOption: Story = {
     template: `<MSelect v-model="value" :options="opts" aria-label="Availability" />`,
   }),
 }
+
+export const FilterWithLabel: Story = {
+  render: () => ({
+    components: { MSelect },
+    setup() {
+      const opts = [
+        { label: 'Fuel Loss', value: 'fuel-loss' },
+        { label: 'Idling', value: 'idling' },
+        { label: 'Harsh Braking', value: 'harsh-braking' },
+      ]
+      const value = ref<string | null>(null)
+      return { value, opts }
+    },
+    template: `<MSelect v-model="value" :options="opts" label="Behavior" :clearable="true" aria-label="Filter by behavior" />`,
+  }),
+}
+
+export const FilterWithSelection: Story = {
+  render: () => ({
+    components: { MSelect },
+    setup() {
+      const opts = [
+        { label: 'Active', value: 'active' },
+        { label: 'Idle', value: 'idle' },
+        { label: 'Out of Service', value: 'out-of-service' },
+        { label: 'Maintenance', value: 'maintenance' },
+      ]
+      const value = ref<string | null>('active')
+      return { value, opts }
+    },
+    template: `<MSelect v-model="value" :options="opts" label="Status" :clearable="true" aria-label="Filter by status" />`,
+  }),
+}

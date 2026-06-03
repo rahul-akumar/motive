@@ -7,7 +7,7 @@ export function useDriversTable() {
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')
   const searchQuery = ref('')
-  const statusFilter = ref<FleetDriverStatus | 'all'>('all')
+  const statusFilter = ref<FleetDriverStatus | null>(null)
 
   const filteredDrivers = computed<FleetDriver[]>(() => {
     let result = fleetDrivers.value
@@ -22,7 +22,7 @@ export function useDriversTable() {
       )
     }
 
-    if (statusFilter.value !== 'all') {
+    if (statusFilter.value !== null) {
       result = result.filter((d) => d.status === statusFilter.value)
     }
 
@@ -56,7 +56,7 @@ export function useDriversTable() {
     return result
   })
 
-  const hasActiveFilters = computed(() => searchQuery.value !== '' || statusFilter.value !== 'all')
+  const hasActiveFilters = computed(() => searchQuery.value !== '' || statusFilter.value !== null)
 
   function handleSort(key: string, dir: 'asc' | 'desc') {
     sortKey.value = key
@@ -65,7 +65,7 @@ export function useDriversTable() {
 
   function clearFilters() {
     searchQuery.value = ''
-    statusFilter.value = 'all'
+    statusFilter.value = null
   }
 
   return {

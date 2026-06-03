@@ -84,17 +84,17 @@ function idlingToRow(e: IdlingEvent): FuelEventRow {
 
 // ── Module-level singleton state ─────────────────────────────
 const filterSearch = ref('')
-const filterEventType = ref<FuelEventType | 'all'>('all')
-const filterStatus = ref<FuelDropStatus | 'all'>('all')
-const filterVehicle = ref<string | 'all'>('all')
-const filterDriver = ref<string | 'all'>('all')
+const filterEventType = ref<FuelEventType | null>(null)
+const filterStatus = ref<FuelDropStatus | null>(null)
+const filterVehicle = ref<string | null>(null)
+const filterDriver = ref<string | null>(null)
 
 watch(currentRegion, () => {
   filterSearch.value = ''
-  filterEventType.value = 'all'
-  filterStatus.value = 'all'
-  filterVehicle.value = 'all'
-  filterDriver.value = 'all'
+  filterEventType.value = null
+  filterStatus.value = null
+  filterVehicle.value = null
+  filterDriver.value = null
 })
 
 export function useFuelEventsData() {
@@ -114,10 +114,10 @@ export function useFuelEventsData() {
   // Filtered rows
   const filteredRows = computed<FuelEventRow[]>(() =>
     allRows.value.filter((row) => {
-      if (filterEventType.value !== 'all' && row.type !== filterEventType.value) return false
-      if (filterStatus.value !== 'all' && row.status !== filterStatus.value) return false
-      if (filterVehicle.value !== 'all' && row.vehicleId !== filterVehicle.value) return false
-      if (filterDriver.value !== 'all' && row.driverId !== filterDriver.value) return false
+      if (filterEventType.value !== null && row.type !== filterEventType.value) return false
+      if (filterStatus.value !== null && row.status !== filterStatus.value) return false
+      if (filterVehicle.value !== null && row.vehicleId !== filterVehicle.value) return false
+      if (filterDriver.value !== null && row.driverId !== filterDriver.value) return false
       if (filterSearch.value) {
         const q = filterSearch.value.toLowerCase()
         if (
@@ -153,18 +153,18 @@ export function useFuelEventsData() {
   const hasActiveFilters = computed(
     () =>
       filterSearch.value !== '' ||
-      filterEventType.value !== 'all' ||
-      filterStatus.value !== 'all' ||
-      filterVehicle.value !== 'all' ||
-      filterDriver.value !== 'all',
+      filterEventType.value !== null ||
+      filterStatus.value !== null ||
+      filterVehicle.value !== null ||
+      filterDriver.value !== null,
   )
 
   function clearFilters() {
     filterSearch.value = ''
-    filterEventType.value = 'all'
-    filterStatus.value = 'all'
-    filterVehicle.value = 'all'
-    filterDriver.value = 'all'
+    filterEventType.value = null
+    filterStatus.value = null
+    filterVehicle.value = null
+    filterDriver.value = null
   }
 
   return {
