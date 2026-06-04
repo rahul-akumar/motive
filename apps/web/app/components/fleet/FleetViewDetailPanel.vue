@@ -376,7 +376,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 }
 
 .fv-detail__close:hover {
-  background: oklch(1 0 0 / 0.06);
+  background: var(--mtv-color-surface-accent);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -439,7 +439,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
   background: var(--mtv-color-status-critical-subtle);
-  border-bottom: 1px solid oklch(from var(--fleet-status-alert) l c h / 0.2);
+  border-bottom: 1px solid color-mix(in oklch, var(--fleet-status-alert) 20%, transparent);
   color: var(--fleet-status-alert);
   font-size: var(--font-size-base);
 }

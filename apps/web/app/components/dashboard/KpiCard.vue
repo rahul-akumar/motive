@@ -26,10 +26,12 @@ const iconMap: Record<string, Component> = {
 const deltaColor = computed(() => {
   if (props.metric.id === 'active-alerts') {
     return props.metric.deltaType === 'decrease'
-      ? 'oklch(0.577 0.215 27.3)'
-      : 'oklch(0.627 0.000 0)'
+      ? 'var(--fleet-delta-decrease)'
+      : 'var(--fleet-delta-neutral)'
   }
-  return props.metric.deltaType === 'increase' ? 'oklch(0.627 0.000 0)' : 'oklch(0.577 0.215 27.3)'
+  return props.metric.deltaType === 'increase'
+    ? 'var(--fleet-delta-increase)'
+    : 'var(--fleet-delta-decrease)'
 })
 </script>
 

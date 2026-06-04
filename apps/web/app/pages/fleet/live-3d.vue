@@ -73,7 +73,7 @@ const {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background-color: oklch(0.147 0.011 285);
+  background-color: var(--mtv-color-surface-default);
 }
 
 .f3d-page__globe {

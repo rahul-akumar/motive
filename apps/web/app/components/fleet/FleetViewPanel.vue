@@ -213,7 +213,7 @@ const localSearch = computed({
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-subtle);
-  background: oklch(1 0 0 / 0.06);
+  background: var(--mtv-color-surface-accent);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   padding: 1px 5px;
@@ -237,7 +237,7 @@ const localSearch = computed({
 }
 
 .fv-panel__collapse-btn:hover {
-  background: oklch(1 0 0 / 0.06);
+  background: var(--mtv-color-surface-accent);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -273,7 +273,7 @@ const localSearch = computed({
 }
 
 .fv-filter-chip--active {
-  background: oklch(1 0 0 / 0.04);
+  background: var(--mtv-color-surface-accent-subtle);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -309,7 +309,7 @@ const localSearch = computed({
 .fv-panel__search-input {
   width: 100%;
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
-  background: oklch(1 0 0 / 0.04);
+  background: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   font-size: var(--font-size-md);

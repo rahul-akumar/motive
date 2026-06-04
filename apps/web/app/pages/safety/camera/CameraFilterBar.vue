@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
+import { MIcon } from '@motive/ui'
 import type { CameraType, KpiFilter } from '~/composables/useCameraData'
 
 export interface CameraFilterBarProps {
@@ -57,7 +58,7 @@ const emit = defineEmits<{
     </div>
 
     <div class="filter-bar__search">
-      <Search class="filter-bar__search-icon" :size="14" aria-hidden="true" />
+      <MIcon :icon="Search" :size="14" class="filter-bar__search-icon" />
       <input
         class="filter-input"
         type="search"

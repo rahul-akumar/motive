@@ -94,28 +94,28 @@ function handleClick(key: KpiFilter) {
 
 /* Color variants */
 .kpi-card--success {
-  border-left-color: oklch(0.696 0.149 162.5);
+  border-left-color: var(--fleet-severity-success);
 }
 .kpi-card--danger {
-  border-left-color: oklch(0.637 0.208 25.3);
+  border-left-color: var(--fleet-severity-critical);
 }
 .kpi-card--warning {
-  border-left-color: oklch(0.769 0.165 70.1);
+  border-left-color: var(--fleet-severity-warning);
 }
 .kpi-card--issues {
-  border-left-color: oklch(0.705 0.187 47.6);
+  border-left-color: var(--fleet-event-alert);
 }
 
 .kpi-card--success.kpi-card--active .kpi-card__count {
-  color: oklch(0.696 0.149 162.5);
+  color: var(--fleet-severity-success);
 }
 .kpi-card--danger.kpi-card--active .kpi-card__count {
-  color: oklch(0.637 0.208 25.3);
+  color: var(--fleet-severity-critical);
 }
 .kpi-card--warning.kpi-card--active .kpi-card__count {
-  color: oklch(0.769 0.165 70.1);
+  color: var(--fleet-severity-warning);
 }
 .kpi-card--issues.kpi-card--active .kpi-card__count {
-  color: oklch(0.705 0.187 47.6);
+  color: var(--fleet-event-alert);
 }
 </style>

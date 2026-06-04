@@ -69,13 +69,13 @@ function statusLabel(status: string): string {
 }
 
 function hosColor(driver: Driver): string {
-  if (driver.hos.hasViolation) return 'oklch(0.577 0.215 27.3)'
-  if (driver.hos.drivingRemaining <= 1) return 'oklch(0.577 0.215 27.3)'
-  if (driver.hos.drivingRemaining <= 3) return 'oklch(0.666 0.157 58.3)'
-  if (!import.meta.client) return 'oklch(0.450 0.000 0)'
+  if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'
+  if (driver.hos.drivingRemaining <= 1) return 'var(--fleet-severity-critical)'
+  if (driver.hos.drivingRemaining <= 3) return 'var(--fleet-severity-warning)'
+  if (!import.meta.client) return 'var(--mtv-color-foreground-subtle)'
   return (
     getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() ||
-    'oklch(0.450 0.000 0)'
+    'var(--mtv-color-foreground-subtle)'
   )
 }
 </script>
@@ -322,7 +322,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table-card__export:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.06);
+  background-color: var(--mtv-color-surface-accent);
 }
 
 .fleet-table-card__scroll {
@@ -340,7 +340,7 @@ function hosColor(driver: Driver): string {
   width: 28px;
   height: 28px;
   border-radius: 2px;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
   color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
@@ -433,7 +433,7 @@ function hosColor(driver: Driver): string {
 
 .fleet-table-card__page-btn:hover:not(:disabled) {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
 }
 
 .fleet-table-card__page-btn:disabled {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ShieldAlert } from 'lucide-vue-next'
-import { MBadge, MButton } from '@motive/ui'
+import { MBadge, MButton, MIcon } from '@motive/ui'
 import type { JammingEvent } from '@motive/shared'
 
 interface Props {
@@ -58,7 +58,7 @@ onUnmounted(cancelHold)
     <!-- Header -->
     <div class="signal-jammed-popover__header">
       <div class="signal-jammed-popover__title">
-        <ShieldAlert :size="16" class="signal-jammed-popover__icon" />
+        <MIcon :icon="ShieldAlert" :size="16" class="signal-jammed-popover__icon" />
         <span>Signal Jammed</span>
       </div>
       <MBadge :label="formatElapsed(elapsedSeconds)" color="danger" size="sm" />

@@ -172,7 +172,7 @@ const quickLinks = [
   align-items: center;
   gap: 0.3rem;
   font-size: var(--font-size-sm);
-  color: oklch(0.8 0.182 151.7);
+  color: var(--fleet-severity-success);
   margin-top: 0.5rem;
 }
 
@@ -180,9 +180,9 @@ const quickLinks = [
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  background-color: oklch(0.577 0.215 27.3 / 0.12);
-  color: oklch(0.577 0.215 27.3);
-  border: 1px solid oklch(0.577 0.215 27.3 / 0.2);
+  background-color: color-mix(in oklch, var(--fleet-severity-critical) 12%, transparent);
+  color: var(--fleet-severity-critical);
+  border: 1px solid color-mix(in oklch, var(--fleet-severity-critical) 20%, transparent);
   border-radius: 2px;
   padding: 0 0.3rem;
   line-height: var(--leading-relaxed);

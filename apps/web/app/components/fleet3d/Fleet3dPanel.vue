@@ -140,8 +140,8 @@ const localSearch = computed({
   align-items: center;
   gap: 0.375rem;
   padding: 0.5rem 0.625rem 0.5rem 0.5rem;
-  background: oklch(0.15 0.021 283.5 / 0.85);
-  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
+  background: var(--mtv-color-surface-default) / 0.85;
+  border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
   border-left: none;
   border-radius: 0 2px 2px 0;
   color: var(--mtv-color-foreground-muted);
@@ -152,7 +152,7 @@ const localSearch = computed({
 }
 
 .f3d-panel-toggle:hover {
-  background: oklch(0.203 0.039 282.3 / 0.95);
+  background: var(--mtv-color-surface-hover);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -173,10 +173,10 @@ const localSearch = computed({
   z-index: 20;
   display: flex;
   flex-direction: column;
-  background: color-mix(in srgb, oklch(0.166 0.027 283.1) 96%, transparent);
+  background: color-mix(in srgb, var(--mtv-color-surface-default) 96%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-right: 1px solid oklch(0.647 0.188 270.3 / 0.15);
+  border-right: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 15%, transparent);
   border-top: none;
   border-bottom: none;
   border-left: none;
@@ -190,7 +190,7 @@ const localSearch = computed({
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.75rem 0.75rem 0.875rem;
-  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.12);
+  border-bottom: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 12%, transparent);
   flex-shrink: 0;
 }
 
@@ -201,7 +201,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__header-icon {
-  color: oklch(0.647 0.188 270.3);
+  color: var(--mtv-color-blue-400);
 }
 
 .f3d-panel__title {
@@ -216,8 +216,8 @@ const localSearch = computed({
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-subtle);
-  background: oklch(0.647 0.188 270.3 / 0.08);
-  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
+  background: color-mix(in oklch, var(--mtv-color-blue-400) 8%, transparent);
+  border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
   border-radius: 2px;
   padding: 1px 5px;
   letter-spacing: var(--tracking-wide);
@@ -230,7 +230,7 @@ const localSearch = computed({
   width: 24px;
   height: 24px;
   background: transparent;
-  border: 1px solid oklch(0.647 0.188 270.3 / 0.2);
+  border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
   border-radius: 2px;
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
@@ -240,7 +240,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__collapse-btn:hover {
-  background: oklch(0.647 0.188 270.3 / 0.1);
+  background: color-mix(in oklch, var(--mtv-color-blue-400) 10%, transparent);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -250,7 +250,7 @@ const localSearch = computed({
   flex-wrap: wrap;
   gap: 0.375rem;
   padding: 0.625rem 0.75rem;
-  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.1);
+  border-bottom: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 10%, transparent);
   flex-shrink: 0;
 }
 
@@ -260,7 +260,7 @@ const localSearch = computed({
   gap: 0.25rem;
   padding: 0.1875rem 0.5rem;
   background: transparent;
-  border: 1px solid oklch(1 0 0 / 0.1);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
@@ -272,12 +272,12 @@ const localSearch = computed({
 }
 
 .f3d-filter-chip:hover {
-  border-color: oklch(1 0 0 / 0.2);
+  border-color: var(--mtv-color-border-strong);
   color: var(--mtv-color-foreground-muted);
 }
 
 .f3d-filter-chip--active {
-  background: oklch(1 0 0 / 0.04);
+  background: var(--mtv-color-surface-accent-subtle);
   color: var(--mtv-color-foreground-default);
 }
 
@@ -297,7 +297,7 @@ const localSearch = computed({
 .f3d-panel__search {
   position: relative;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid oklch(0.647 0.188 270.3 / 0.1);
+  border-bottom: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 10%, transparent);
   flex-shrink: 0;
 }
 
@@ -313,8 +313,8 @@ const localSearch = computed({
 .f3d-panel__search-input {
   width: 100%;
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
-  background: oklch(0.647 0.188 270.3 / 0.05);
-  border: 1px solid oklch(0.647 0.188 270.3 / 0.15);
+  background: color-mix(in oklch, var(--mtv-color-blue-400) 5%, transparent);
+  border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 15%, transparent);
   border-radius: 2px;
   font-size: var(--font-size-md);
   color: var(--mtv-color-foreground-default);
@@ -327,7 +327,7 @@ const localSearch = computed({
 }
 
 .f3d-panel__search-input:focus {
-  border-color: oklch(0.647 0.188 270.3 / 0.4);
+  border-color: color-mix(in oklch, var(--mtv-color-blue-400) 40%, transparent);
 }
 
 /* Driver list */

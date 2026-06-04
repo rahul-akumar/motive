@@ -373,7 +373,7 @@ function timeAgo(date: Date): string {
   width: 8px;
   height: 8px;
   border-radius: 25%;
-  background-color: oklch(0.793 0.209 153.6);
+  background-color: var(--fleet-severity-success);
   animation: live-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }
@@ -443,9 +443,9 @@ function timeAgo(date: Date): string {
   height: 100%;
   background: linear-gradient(
     90deg,
-    oklch(1 0 0 / 0.02) 25%,
-    oklch(1 0 0 / 0.04) 50%,
-    oklch(1 0 0 / 0.02) 75%
+    var(--mtv-color-surface-accent-subtle) 25%,
+    var(--mtv-color-surface-accent-subtle) 50%,
+    var(--mtv-color-surface-accent-subtle) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
@@ -490,7 +490,7 @@ function timeAgo(date: Date): string {
 
 .fleet-map__tooltip-hos {
   font-size: var(--font-size-xs);
-  color: oklch(0.793 0.209 153.6);
+  color: var(--fleet-severity-success);
 }
 
 /* Fuel loss line in driver tooltip */

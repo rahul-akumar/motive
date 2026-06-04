@@ -57,14 +57,14 @@ defineProps<{
 
 .under-construction__subtitle {
   font-size: var(--font-size-base);
-  color: var(--mtv-color-text-secondary, oklch(70% 0 0));
+  color: var(--mtv-color-foreground-muted);
   margin: 0;
   max-width: 360px;
 }
 
 .under-construction__hint {
   font-size: var(--font-size-base);
-  color: var(--mtv-color-text-tertiary, oklch(55% 0 0));
+  color: var(--mtv-color-foreground-subtle);
   margin: 0;
 }
 </style>

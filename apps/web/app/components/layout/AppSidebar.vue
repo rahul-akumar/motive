@@ -403,7 +403,7 @@ function toggleCollapsed() {
 
 .sidebar__collapse-btn:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.09);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .sidebar__logo {
@@ -470,7 +470,7 @@ function toggleCollapsed() {
 
 .sidebar-nav-item:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.09);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .sidebar-nav-item.active {
@@ -627,7 +627,7 @@ function toggleCollapsed() {
 
   .sidebar--open {
     transform: translateX(0);
-    box-shadow: 4px 0 24px oklch(0 0 0 / 0.4);
+    box-shadow: 4px 0 24px color-mix(in oklch, black 40%, transparent);
   }
 
   .sidebar__close-btn {
