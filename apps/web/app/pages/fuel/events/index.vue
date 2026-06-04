@@ -101,13 +101,13 @@ const canGoNext = computed(
 
 function goToPrev() {
   if (canGoPrev.value) {
-    selectedEvent.value = sorted.value[selectedIndex.value - 1]
+    selectedEvent.value = sorted.value[selectedIndex.value - 1] ?? null
   }
 }
 
 function goToNext() {
   if (canGoNext.value) {
-    selectedEvent.value = sorted.value[selectedIndex.value + 1]
+    selectedEvent.value = sorted.value[selectedIndex.value + 1] ?? null
   }
 }
 
@@ -125,6 +125,12 @@ function handleStatusChange(v: string | number | null) {
   if (!selectedEvent.value || !v) return
   updateEventStatus(selectedEvent.value.id, v as FuelDropStatus)
   selectedEvent.value = { ...selectedEvent.value, status: v as FuelDropStatus }
+}
+
+function goToEventDetail() {
+  if (!selectedEvent.value) return
+  drawerOpen.value = false
+  navigateTo(`/fuel/events/${selectedEvent.value.id}`)
 }
 
 // ── Actions menu ─────────────────────────────────────────────
@@ -326,7 +332,7 @@ const STATUS_BADGE: Record<
     <div class="fe-page__content">
       <MTable
         :columns="columns"
-        :rows="sorted"
+        :rows="sorted as unknown as Record<string, unknown>[]"
         :sort-key="sortKey"
         :sort-dir="sortDir"
         :infinite="true"
@@ -453,16 +459,7 @@ const STATUS_BADGE: Record<
           aria-label="Change event status"
           @update:model-value="handleStatusChange"
         />
-        <MButton
-          variant="link"
-          size="sm"
-          @click="
-            drawerOpen = false
-            navigateTo(`/fuel/events/${selectedEvent!.id}`)
-          "
-        >
-          View details
-        </MButton>
+        <MButton variant="link" size="sm" @click="goToEventDetail"> View details </MButton>
       </template>
 
       <FuelEventDrawer :event="selectedEvent" />
