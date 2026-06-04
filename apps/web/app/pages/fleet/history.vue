@@ -2,7 +2,6 @@
 definePageMeta({
   title: 'History',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 </script>
 

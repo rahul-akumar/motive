@@ -22,7 +22,6 @@ import { useAssetsTable } from '~/composables/useAssetsTable'
 definePageMeta({
   title: 'Assets',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 
 const {

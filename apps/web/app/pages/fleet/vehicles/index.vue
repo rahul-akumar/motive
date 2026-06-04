@@ -17,7 +17,6 @@ import { useVehiclesTable } from '~/composables/useVehiclesTable'
 definePageMeta({
   title: 'Vehicles',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 
 const {
