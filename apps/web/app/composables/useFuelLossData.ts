@@ -42,8 +42,8 @@ let initialToastShown = false
 export function useFuelLossData() {
   const { showToast } = useToast()
 
-  // Fire a simulated real-time detection toast once per session
-  if (!initialToastShown && import.meta.client) {
+  // Fire a simulated real-time detection toast once per session (MX region only)
+  if (!initialToastShown && import.meta.client && currentRegion.value === 'mx') {
     initialToastShown = true
     setTimeout(() => {
       showToast({
