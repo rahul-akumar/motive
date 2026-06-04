@@ -129,6 +129,10 @@ function handleKeydown(e: KeyboardEvent) {
               </MButton>
             </div>
 
+            <div v-if="$slots.subheader" class="m-drawer__subheader">
+              <slot name="subheader" />
+            </div>
+
             <div class="m-drawer__body">
               <slot />
             </div>
@@ -158,6 +162,10 @@ function handleKeydown(e: KeyboardEvent) {
           <MButton variant="ghost" size="sm" icon-only aria-label="Close drawer" @click="close">
             <MIcon :icon="X" />
           </MButton>
+        </div>
+
+        <div v-if="$slots.subheader" class="m-drawer__subheader">
+          <slot name="subheader" />
         </div>
 
         <div class="m-drawer__body">
@@ -225,10 +233,19 @@ function handleKeydown(e: KeyboardEvent) {
 .m-drawer__header {
   display: flex;
   align-items: center;
-  padding: 0.875rem 1rem;
-  border-bottom: 1px solid var(--mtv-color-border-default);
+  padding: 0.875rem 1rem 0rem;
   flex-shrink: 0;
   gap: 0.5rem;
+}
+
+/* ── Subheader ─────────────────────────────────────────── */
+.m-drawer__subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--mtv-color-border-default);
+  flex-shrink: 0;
 }
 
 /* ── Body ────────────────────────────────────────────────── */

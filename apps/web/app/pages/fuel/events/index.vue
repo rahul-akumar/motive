@@ -13,7 +13,7 @@ import {
   type MDropdownItem,
 } from '@motive/ui'
 import type { FuelEventType, FuelDropStatus } from '@motive/shared'
-import type { FuelEventRow } from '~/composables/useFuelEventsData'
+import type { FuelEventRow } from '~/composables/useFuelEventMappers'
 
 definePageMeta({
   title: 'Events',
@@ -31,6 +31,7 @@ const {
   driverOptions,
   hasActiveFilters,
   clearFilters,
+  updateEventStatus,
 } = useFuelEventsData()
 
 // ── Sort state ───────────────────────────────────────────────
@@ -118,6 +119,12 @@ function handleRowClick(row: unknown) {
 function handleViewDetails(id: string) {
   drawerOpen.value = false
   navigateTo(`/fuel/events/${id}`)
+}
+
+function handleStatusChange(v: string | number | null) {
+  if (!selectedEvent.value || !v) return
+  updateEventStatus(selectedEvent.value.id, v as FuelDropStatus)
+  selectedEvent.value = { ...selectedEvent.value, status: v as FuelDropStatus }
 }
 
 // ── Actions menu ─────────────────────────────────────────────
@@ -410,8 +417,7 @@ const STATUS_BADGE: Record<
     >
       <template #header>
         <span class="fe-drawer-title">
-          {{ selectedEvent?.vehicleName }} ·
-          {{ selectedEvent?.type === 'fuel-loss' ? 'Fuel Loss' : 'Idling' }}
+          {{ selectedEvent?.type === 'fuel-loss' ? 'Fuel loss event' : 'Idling event' }}
         </span>
         <div class="fe-drawer-nav">
           <MButton
@@ -436,7 +442,30 @@ const STATUS_BADGE: Record<
           </MButton>
         </div>
       </template>
-      <FuelFuelEventDrawer :event="selectedEvent" @view-details="handleViewDetails" />
+
+      <template v-if="selectedEvent" #subheader>
+        <MSelect
+          :model-value="selectedEvent.status"
+          :options="STATUS_OPTIONS"
+          label=""
+          :clearable="false"
+          class="fe-drawer-status-select"
+          aria-label="Change event status"
+          @update:model-value="handleStatusChange"
+        />
+        <MButton
+          variant="link"
+          size="sm"
+          @click="
+            drawerOpen = false
+            navigateTo(`/fuel/events/${selectedEvent!.id}`)
+          "
+        >
+          View details
+        </MButton>
+      </template>
+
+      <FuelEventDrawer :event="selectedEvent" />
     </MDrawer>
   </div>
 </template>
@@ -617,5 +646,28 @@ const STATUS_BADGE: Record<
   align-items: center;
   gap: 2px;
   flex-shrink: 0;
+}
+
+.fe-drawer-status-select {
+  max-width: 160px;
+}
+
+.fe-drawer-status-select :deep(.m-select__trigger) {
+  background-color: var(--mtv-color-brand-default);
+  border-color: var(--mtv-color-brand-default);
+  color: var(--mtv-color-brand-foreground);
+}
+
+.fe-drawer-status-select :deep(.m-select__trigger:hover:not(:disabled)) {
+  background-color: var(--mtv-color-brand-hover);
+  border-color: var(--mtv-color-brand-hover);
+}
+
+.fe-drawer-status-select :deep(.m-select__chevron) {
+  color: var(--mtv-color-brand-foreground);
+}
+
+.fe-drawer-status-select :deep(.m-select__value) {
+  color: var(--mtv-color-brand-foreground);
 }
 </style>

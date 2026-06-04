@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronRight } from 'lucide-vue-next'
 import { MBadge, MIcon } from '@motive/ui'
-import type { FuelEventRow } from '~/composables/useFuelEventsData'
+import type { FuelEventRow } from '~/composables/useFuelEventMappers'
 
 definePageMeta({
   title: 'Event Detail',
@@ -14,13 +14,7 @@ const eventId = computed(() => route.params.id as string)
 const { formatDate, formatTime } = useFormatters()
 
 // Look up event from composable data
-const { filteredRows } = useFuelEventsData()
-
-const event = computed<FuelEventRow | undefined>(() =>
-  filteredRows.value.find((e) => e.id === eventId.value),
-)
-
-const notFound = computed(() => !event.value)
+const { event, notFound } = useFuelEventDetail(eventId)
 
 const TYPE_LABEL: Record<string, string> = {
   'fuel-loss': 'Fuel Loss',
