@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search, X, MoreVertical } from 'lucide-vue-next'
+import { Search, X, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import {
   MTable,
   MButton,
@@ -7,6 +7,7 @@ import {
   MSelect,
   MIcon,
   MDropdown,
+  MDrawer,
   type MSelectOption,
   type MTableColumn,
   type MDropdownItem,
@@ -83,16 +84,53 @@ function handleSort(key: string, dir: 'asc' | 'desc') {
   sortDir.value = dir
 }
 
+// ── Drawer state ─────────────────────────────────────────────
+const selectedEvent = ref<FuelEventRow | null>(null)
+const drawerOpen = ref(false)
+
+const selectedIndex = computed(() => {
+  if (!selectedEvent.value) return -1
+  return sorted.value.findIndex((r) => r.id === selectedEvent.value!.id)
+})
+
+const canGoPrev = computed(() => selectedIndex.value > 0)
+const canGoNext = computed(
+  () => selectedIndex.value < sorted.value.length - 1 && selectedIndex.value >= 0,
+)
+
+function goToPrev() {
+  if (canGoPrev.value) {
+    selectedEvent.value = sorted.value[selectedIndex.value - 1]
+  }
+}
+
+function goToNext() {
+  if (canGoNext.value) {
+    selectedEvent.value = sorted.value[selectedIndex.value + 1]
+  }
+}
+
+function handleRowClick(row: unknown) {
+  selectedEvent.value = row as FuelEventRow
+  drawerOpen.value = true
+}
+
+function handleViewDetails(id: string) {
+  drawerOpen.value = false
+  navigateTo(`/fuel/events/${id}`)
+}
+
 // ── Actions menu ─────────────────────────────────────────────
 const openMenuId = ref<string | null>(null)
 const menuAnchor = ref<HTMLElement | null>(null)
 
-function getActionItems(_id: string): MDropdownItem[] {
+function getActionItems(id: string): MDropdownItem[] {
   return [
     {
       label: 'View Details',
       action: () => {
         openMenuId.value = null
+        navigateTo(`/fuel/events/${id}`)
       },
     },
     {
@@ -121,6 +159,39 @@ function openMenu(id: string, el: HTMLElement) {
     openMenuId.value = id
     menuAnchor.value = el
   }
+}
+
+function closeMenu(open: boolean) {
+  if (!open) openMenuId.value = null
+}
+
+function handleActionClick(id: string, el: EventTarget | null) {
+  openMenu(id, el as HTMLElement)
+}
+
+// ── Template cast helper (avoids inline `as` breaking syntax highlight) ──
+function row(r: unknown): FuelEventRow {
+  return r as FuelEventRow
+}
+
+function handleSearchInput(e: Event) {
+  filterSearch.value = (e.target as HTMLInputElement).value
+}
+
+function setFilterEventType(v: string | number | null) {
+  filterEventType.value = v as FuelEventType | null
+}
+
+function setFilterVehicle(v: string | number | null) {
+  filterVehicle.value = v as string | null
+}
+
+function setFilterDriver(v: string | number | null) {
+  filterDriver.value = v as string | null
+}
+
+function setFilterStatus(v: string | number | null) {
+  filterStatus.value = v as FuelDropStatus | null
 }
 
 // ── Filter options ───────────────────────────────────────────
@@ -177,7 +248,7 @@ const STATUS_BADGE: Record<
             class="fe-page__search-input"
             placeholder="Search vehicle or driver…"
             aria-label="Search vehicle or driver"
-            @input="filterSearch = ($event.target as HTMLInputElement).value"
+            @input="handleSearchInput"
           />
           <button
             v-if="filterSearch"
@@ -197,7 +268,7 @@ const STATUS_BADGE: Record<
           label="Behavior"
           :clearable="true"
           aria-label="Filter by event type"
-          @update:model-value="filterEventType = $event as FuelEventType | null"
+          @update:model-value="setFilterEventType"
         />
 
         <!-- Vehicle filter -->
@@ -207,7 +278,7 @@ const STATUS_BADGE: Record<
           label="Vehicle"
           :clearable="true"
           aria-label="Filter by vehicle"
-          @update:model-value="filterVehicle = $event as string | null"
+          @update:model-value="setFilterVehicle"
         />
 
         <!-- Driver filter -->
@@ -217,7 +288,7 @@ const STATUS_BADGE: Record<
           label="Driver"
           :clearable="true"
           aria-label="Filter by driver"
-          @update:model-value="filterDriver = $event as string | null"
+          @update:model-value="setFilterDriver"
         />
 
         <!-- Status filter -->
@@ -227,7 +298,7 @@ const STATUS_BADGE: Record<
           label="Status"
           :clearable="true"
           aria-label="Filter by status"
-          @update:model-value="filterStatus = $event as FuelDropStatus | null"
+          @update:model-value="setFilterStatus"
         />
 
         <!-- Clear filters -->
@@ -248,23 +319,25 @@ const STATUS_BADGE: Record<
     <div class="fe-page__content">
       <MTable
         :columns="columns"
-        :rows="sorted as any"
+        :rows="sorted"
         :sort-key="sortKey"
         :sort-dir="sortDir"
         :infinite="true"
         row-key="id"
+        :selected-key="selectedEvent?.id"
         @sort="handleSort"
+        @row-click="handleRowClick"
       >
         <!-- Behavior -->
         <template #cell-type="{ row: r }">
-          <span class="fe-cell-primary">{{ TYPE_LABEL[(r as FuelEventRow).type] }}</span>
+          <span class="fe-cell-primary">{{ TYPE_LABEL[row(r).type] }}</span>
         </template>
 
         <!-- Driver Name / ID -->
         <template #cell-driverName="{ row: r }">
-          <template v-if="(r as FuelEventRow).driverName">
-            <span class="fe-cell-link">{{ (r as FuelEventRow).driverName }}</span>
-            <span class="fe-cell-secondary">{{ (r as FuelEventRow).driverId }}</span>
+          <template v-if="row(r).driverName">
+            <span class="fe-cell-link">{{ row(r).driverName }}</span>
+            <span class="fe-cell-secondary">{{ row(r).driverId }}</span>
           </template>
           <span v-else class="fe-cell-muted">—</span>
         </template>
@@ -272,29 +345,29 @@ const STATUS_BADGE: Record<
         <!-- Vehicle ID / MMY -->
         <template #cell-vehicleId="{ row: r }">
           <NuxtLinkLocale
-            :to="`/fleet/vehicles/${(r as FuelEventRow).vehicleId}/live`"
+            :to="`/fleet/vehicles/${row(r).vehicleId}/live`"
             class="fe-cell-link"
             @click.stop
           >
-            {{ (r as FuelEventRow).vehicleName }}
+            {{ row(r).vehicleName }}
           </NuxtLinkLocale>
-          <span class="fe-cell-secondary">{{ (r as FuelEventRow).vehicleMMY }}</span>
+          <span class="fe-cell-secondary">{{ row(r).vehicleMMY }}</span>
         </template>
 
         <!-- Date / Location / Geofence -->
         <template #cell-startTime="{ row: r }">
           <div class="fe-cell-stack">
-            <span class="fe-cell-primary">{{ formatDateLine(r as FuelEventRow) }}</span>
-            <span class="fe-cell-secondary fe-cell-location" :title="(r as FuelEventRow).location">
-              {{ (r as FuelEventRow).location }}
+            <span class="fe-cell-primary">{{ formatDateLine(row(r)) }}</span>
+            <span class="fe-cell-secondary fe-cell-location" :title="row(r).location">
+              {{ row(r).location }}
             </span>
           </div>
         </template>
 
         <!-- Status badge -->
         <template #cell-status="{ row: r }">
-          <MBadge :color="STATUS_BADGE[(r as FuelEventRow).status].color" size="sm">
-            {{ STATUS_BADGE[(r as FuelEventRow).status].label }}
+          <MBadge :color="STATUS_BADGE[row(r).status].color" size="sm">
+            {{ STATUS_BADGE[row(r).status].label }}
           </MBadge>
         </template>
 
@@ -304,7 +377,7 @@ const STATUS_BADGE: Record<
             class="fe-action-btn"
             type="button"
             aria-label="Event actions"
-            @click.stop="openMenu((r as FuelEventRow).id, $event.currentTarget as HTMLElement)"
+            @click.stop="handleActionClick(row(r).id, $event.currentTarget)"
           >
             <MIcon :icon="MoreVertical" :size="16" />
           </button>
@@ -325,13 +398,46 @@ const STATUS_BADGE: Record<
         :open="openMenuId !== null"
         :anchor-el="menuAnchor"
         placement="right"
-        @update:open="
-          (v: boolean) => {
-            if (!v) openMenuId = null
-          }
-        "
+        @update:open="closeMenu"
       />
     </div>
+
+    <!-- Event detail drawer -->
+    <MDrawer
+      v-model:open="drawerOpen"
+      persistent
+      :aria-label="selectedEvent ? `${selectedEvent.type} event details` : 'Event details'"
+    >
+      <template #header>
+        <span class="fe-drawer-title">
+          {{ selectedEvent?.vehicleName }} ·
+          {{ selectedEvent?.type === 'fuel-loss' ? 'Fuel Loss' : 'Idling' }}
+        </span>
+        <div class="fe-drawer-nav">
+          <MButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            :disabled="!canGoPrev"
+            aria-label="Previous event"
+            @click="goToPrev"
+          >
+            <MIcon :icon="ChevronLeft" />
+          </MButton>
+          <MButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            :disabled="!canGoNext"
+            aria-label="Next event"
+            @click="goToNext"
+          >
+            <MIcon :icon="ChevronRight" />
+          </MButton>
+        </div>
+      </template>
+      <FuelFuelEventDrawer :event="selectedEvent" @view-details="handleViewDetails" />
+    </MDrawer>
   </div>
 </template>
 
@@ -492,5 +598,24 @@ const STATUS_BADGE: Record<
 .fe-empty__sub {
   font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-subtle);
+}
+
+/* Drawer title */
+.fe-drawer-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--mtv-color-foreground-default);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fe-drawer-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
 }
 </style>
