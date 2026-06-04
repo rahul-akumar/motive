@@ -2,9 +2,32 @@
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
 import type { Driver, Vehicle } from '@motive/shared'
+import { currentRegion } from '~/composables/useRegion'
+import { mockDriverOriginsByRegion, mockDriverSpeedsByRegion } from '~/mocks/globe-animation'
 
-// CANVAS-COLORS: Keep as hex. MapLibre GL paint expressions feed WebGL shaders; oklch is not supported.
-const STATUS_COLORS: Record<string, string> = {
+// Resolve CSS custom properties to computed color strings for MapLibre GL shaders.
+function readCSSColor(varName: string, fallback: string): string {
+  if (!import.meta.client) return fallback
+  const el = document.createElement('div')
+  el.style.display = 'none'
+  el.style.color = `var(${varName})`
+  document.body.appendChild(el)
+  const resolved = getComputedStyle(el).color
+  document.body.removeChild(el)
+  return resolved || fallback
+}
+
+function getStatusColors(): Record<string, string> {
+  return {
+    driving: readCSSColor('--fleet-status-driving', '#4ade80'),
+    idle: readCSSColor('--fleet-status-idle', '#fbbf24'),
+    alert: readCSSColor('--fleet-status-alert', '#f87171'),
+    offline: readCSSColor('--fleet-status-offline', '#525252'),
+    sleeper: readCSSColor('--fleet-status-sleeper', '#a78bfa'),
+  }
+}
+
+let STATUS_COLORS: Record<string, string> = {
   driving: '#4ade80',
   idle: '#fbbf24',
   alert: '#f87171',
@@ -73,22 +96,10 @@ const STATE_ABBR_TO_NAME: Record<string, string> = {
   DC: 'District of Columbia',
 }
 
-const MOCK_DRIVER_ORIGINS: Record<string, [number, number]> = {
-  'DRV-001': [-94.57, 29.76], // Houston → Dallas
-  'DRV-002': [-122.67, 45.52], // Portland → LA
-  'DRV-004': [-93.09, 44.97], // Minneapolis → Chicago
-  'DRV-007': [-105.07, 40.57], // Denver → Phoenix
-  'DRV-009': [-97.74, 30.27], // Austin → Houston
-}
+const MOCK_DRIVER_ORIGINS = computed(() => mockDriverOriginsByRegion[currentRegion.value])
 
 // Mock speeds (mph) for driving drivers
-const MOCK_DRIVER_SPEEDS: Record<string, number> = {
-  'DRV-001': 62,
-  'DRV-002': 58,
-  'DRV-004': 65,
-  'DRV-007': 71,
-  'DRV-009': 55,
-}
+const MOCK_DRIVER_SPEEDS = computed(() => mockDriverSpeedsByRegion[currentRegion.value])
 
 // Navigation arrow pointing north (up). Rotated by icon-rotate per heading.
 const ARROW_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -170,9 +181,9 @@ async function fetchOSRMRoutes(drivers: Driver[]): Promise<GeoJSON.FeatureCollec
   const features: GeoJSON.Feature[] = []
   await Promise.allSettled(
     drivers
-      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS[d.id])
+      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS.value[d.id])
       .map(async (d) => {
-        const origin = MOCK_DRIVER_ORIGINS[d.id]!
+        const origin = MOCK_DRIVER_ORIGINS.value[d.id]!
         const dest: [number, number] = [d.currentLocation.lng, d.currentLocation.lat]
         const url = `https://router.project-osrm.org/route/v1/driving/${origin[0]},${origin[1]};${dest[0]},${dest[1]}?overview=full&geometries=geojson`
         try {
@@ -226,13 +237,13 @@ function driversToGeoJSON(drivers: Driver[], vehicles: Vehicle[]): GeoJSON.Featu
       const live = livePositions.get(d.id)
       const lng = live ? live.lng : d.currentLocation.lng
       const lat = live ? live.lat : d.currentLocation.lat
-      const origin = MOCK_DRIVER_ORIGINS[d.id]
+      const origin = MOCK_DRIVER_ORIGINS.value[d.id]
       const staticHeading =
         origin && d.status === 'driving'
           ? computeBearing(origin, [d.currentLocation.lng, d.currentLocation.lat])
           : 0
       const heading = live ? live.heading : staticHeading
-      const speed = MOCK_DRIVER_SPEEDS[d.id] ?? 0
+      const speed = MOCK_DRIVER_SPEEDS.value[d.id] ?? 0
       return {
         type: 'Feature',
         geometry: { type: 'Point', coordinates: [lng, lat] },
@@ -259,12 +270,15 @@ function buildStraightRoutes(drivers: Driver[]): GeoJSON.FeatureCollection {
   return {
     type: 'FeatureCollection',
     features: drivers
-      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS[d.id])
+      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS.value[d.id])
       .map((d) => ({
         type: 'Feature' as const,
         geometry: {
           type: 'LineString' as const,
-          coordinates: [MOCK_DRIVER_ORIGINS[d.id]!, [d.currentLocation.lng, d.currentLocation.lat]],
+          coordinates: [
+            MOCK_DRIVER_ORIGINS.value[d.id]!,
+            [d.currentLocation.lng, d.currentLocation.lat],
+          ],
         },
         properties: { driverId: d.id },
       })),
@@ -306,10 +320,10 @@ function popupHTML(p: {
   currentLoad: string | null
   etaNextStop: string | null
 }): string {
-  const statusColor = STATUS_COLORS[p.status] ?? '#525252'
+  const statusColor = STATUS_COLORS[p.status] ?? STATUS_COLORS.offline
   const hosText = p.hosViolation
-    ? `<div class="f3d-popup__hos" style="color:#f87171">HOS Violation</div>`
-    : `<div class="f3d-popup__hos" style="color:#4ade80">${p.hosDrivingRemaining.toFixed(1)}h drive left</div>`
+    ? `<div class="f3d-popup__hos" style="color:${STATUS_COLORS.alert}">HOS Violation</div>`
+    : `<div class="f3d-popup__hos" style="color:${STATUS_COLORS.driving}">${p.hosDrivingRemaining.toFixed(1)}h drive left</div>`
   const loadText = p.currentLoad ? `<div class="f3d-popup__meta">${p.currentLoad}</div>` : ''
   const etaText = p.etaNextStop ? `<div class="f3d-popup__meta">ETA ${p.etaNextStop}</div>` : ''
   return `
@@ -666,6 +680,7 @@ async function initLayers() {
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 onMounted(() => {
+  STATUS_COLORS = getStatusColors()
   if (!containerRef.value) return
 
   map = new maplibregl.Map({

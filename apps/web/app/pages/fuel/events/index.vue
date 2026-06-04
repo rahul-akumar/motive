@@ -241,7 +241,7 @@ const STATUS_BADGE: Record<
       <div class="fe-page__filters-left">
         <!-- Search -->
         <div class="fe-page__search">
-          <Search :size="14" class="fe-page__search-icon" aria-hidden="true" />
+          <MIcon :icon="Search" :size="14" class="fe-page__search-icon" />
           <input
             :value="filterSearch"
             type="text"
@@ -257,7 +257,7 @@ const STATUS_BADGE: Record<
             aria-label="Clear search"
             @click="filterSearch = ''"
           >
-            <X :size="12" :stroke-width="2.5" />
+            <MIcon :icon="X" :size="12" :stroke-width="2.5" />
           </button>
         </div>
 
@@ -309,7 +309,7 @@ const STATUS_BADGE: Record<
           class="fe-filter-clear"
           @click="clearFilters"
         >
-          <X :size="12" :stroke-width="2.5" />
+          <MIcon :icon="X" :size="12" :stroke-width="2.5" />
           Clear
         </MButton>
       </div>

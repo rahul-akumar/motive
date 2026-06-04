@@ -180,10 +180,10 @@ function addMarkers(L: typeof import('leaflet')) {
   // Add a marker for each timeline entry
   entries.forEach((entry) => {
     if (!entry.location) return
-    const color = PHASE_COLORS[entry.phase] ?? '#94a3b8'
+    const color = PHASE_COLORS[entry.phase] ?? 'var(--mtv-color-neutral-400)'
     const cssColor = color.startsWith('var(')
       ? getComputedStyle(document.documentElement).getPropertyValue(color.slice(4, -1)).trim() ||
-        '#94a3b8'
+        'rgb(148, 163, 184)'
       : color
     const icon = L.divIcon({
       className: '',

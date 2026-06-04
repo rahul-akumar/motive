@@ -29,14 +29,39 @@ const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
 // ── Status colors ─────────────────────────────────────────────
-// CANVAS-COLORS: Keep as hex. Leaflet DivIcon HTML strings and paint expressions; oklch is not supported.
-const STATUS_COLORS: Record<DriverStatus, string> = {
+// Resolve CSS custom properties to computed color strings for Leaflet HTML markers.
+function readCSSColor(varName: string, fallback: string): string {
+  if (!import.meta.client) return fallback
+  const el = document.createElement('div')
+  el.style.display = 'none'
+  el.style.color = `var(${varName})`
+  document.body.appendChild(el)
+  const resolved = getComputedStyle(el).color
+  document.body.removeChild(el)
+  return resolved || fallback
+}
+
+function getStatusColors(): Record<DriverStatus, string> {
+  return {
+    driving: readCSSColor('--fleet-status-driving', '#4ade80'),
+    idle: readCSSColor('--fleet-status-idle', '#fbbf24'),
+    alert: readCSSColor('--fleet-status-alert', '#f87171'),
+    offline: readCSSColor('--fleet-status-offline', '#525252'),
+    sleeper: readCSSColor('--fleet-status-sleeper', '#a78bfa'),
+  }
+}
+
+let STATUS_COLORS: Record<DriverStatus, string> = {
   driving: '#4ade80',
   idle: '#fbbf24',
   alert: '#f87171',
   offline: '#525252',
   sleeper: '#a78bfa',
 }
+
+onMounted(() => {
+  STATUS_COLORS = getStatusColors()
+})
 
 // ── Map instance ──────────────────────────────────────────────
 const mapRef = ref<HTMLDivElement | null>(null)
@@ -84,13 +109,13 @@ function createPopupContent(driver: Driver, fuelLoss?: FuelLossEvent): string {
   const color = fuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
   const statusLabel = fuelLoss ? 'FUEL LOSS' : driver.status.toUpperCase()
   const hosText = driver.hos.hasViolation
-    ? '<span style="color:#f87171">HOS Violation</span>'
-    : `<span style="color:#4ade80">${driver.hos.drivingRemaining.toFixed(1)}h drive left</span>`
+    ? `<span style="color:${STATUS_COLORS.alert}">HOS Violation</span>`
+    : `<span style="color:${STATUS_COLORS.driving}">${driver.hos.drivingRemaining.toFixed(1)}h drive left</span>`
   const loadText = driver.currentLoad
-    ? `<div style="color:#94a3b8;font-size:10px;margin-top:2px">${driver.currentLoad}</div>`
+    ? `<div style="color:${STATUS_COLORS.offline};font-size:10px;margin-top:2px">${driver.currentLoad}</div>`
     : ''
   const etaText = driver.etaNextStop
-    ? `<div style="color:#94a3b8;font-size:10px">ETA ${driver.etaNextStop}</div>`
+    ? `<div style="color:${STATUS_COLORS.offline};font-size:10px">ETA ${driver.etaNextStop}</div>`
     : ''
   const fuelLossText = fuelLoss
     ? `<div style="color:${STATUS_COLORS.alert};font-size:10px;margin-top:4px">&minus;${fuelLoss.fuelDrop}% fuel &middot; ${timeAgo(fuelLoss.startTime)}</div>`
@@ -319,7 +344,7 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 
 .fv-marker-initials {
   position: absolute;
-  color: oklch(0 0 0 / 0.75);
+  color: var(--mtv-color-foreground-inverse);
   font-family: var(--font-family-mono);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--tracking-tight);
@@ -355,7 +380,7 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
   background: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-strong);
   border-radius: 2px;
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
+  box-shadow: 0 8px 24px color-mix(in oklch, black 50%, transparent);
   padding: 0;
 }
 
@@ -404,12 +429,12 @@ defineExpose({ zoomIn, zoomOut, fitAllBounds })
 /* Override Leaflet attribution */
 .leaflet-control-attribution {
   font-size: 9px !important;
-  background: oklch(0 0 0 / 0.5) !important;
-  color: oklch(1 0 0 / 0.4) !important;
+  background: var(--mtv-color-surface-default) !important;
+  color: var(--mtv-color-foreground-subtle) !important;
   border-radius: 2px 0 0 0 !important;
 }
 
 .leaflet-control-attribution a {
-  color: oklch(1 0 0 / 0.5) !important;
+  color: var(--mtv-color-foreground-muted) !important;
 }
 </style>

@@ -192,7 +192,7 @@ function openMenu(index: number, el: HTMLElement) {
 
     <!-- Empty state -->
     <div v-else class="camera-table-empty">
-      <VideoOff class="camera-table-empty__icon" :size="32" aria-hidden="true" />
+      <MIcon :icon="VideoOff" :size="32" class="camera-table-empty__icon" />
       <p class="camera-table-empty__text">No cameras match your filters</p>
       <button class="camera-table-empty__clear" type="button" @click="$emit('clear')">
         Clear filters
@@ -232,7 +232,7 @@ function openMenu(index: number, el: HTMLElement) {
           aria-label="Close preview"
           @click="closePreview"
         >
-          <X :size="18" />
+          <MIcon :icon="X" :size="18" />
         </button>
       </div>
     </Transition>
@@ -409,7 +409,7 @@ function openMenu(index: number, el: HTMLElement) {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background-color: oklch(0 0 0 / 0.8);
+  background-color: color-mix(in oklch, black 80%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -419,7 +419,7 @@ function openMenu(index: number, el: HTMLElement) {
   max-width: min(900px, 90vw);
   max-height: 85vh;
   border-radius: 6px;
-  box-shadow: 0 24px 80px oklch(0 0 0 / 0.6);
+  box-shadow: 0 24px 80px color-mix(in oklch, black 60%, transparent);
 }
 
 .preview-overlay__close {
@@ -432,15 +432,15 @@ function openMenu(index: number, el: HTMLElement) {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid oklch(1 0 0 / 0.15);
-  background-color: oklch(1 0 0 / 0.08);
-  color: oklch(1 0 0);
+  border: 1px solid var(--mtv-color-border-strong);
+  background-color: var(--mtv-color-surface-hover);
+  color: var(--mtv-color-foreground-default);
   cursor: pointer;
   transition: background-color 120ms ease;
 }
 
 .preview-overlay__close:hover {
-  background-color: oklch(1 0 0 / 0.15);
+  background-color: var(--mtv-color-surface-active);
 }
 
 /* ── Transitions ───────────────────────────────────────────────────────────── */

@@ -10,7 +10,7 @@ import {
   X,
   Check,
 } from 'lucide-vue-next'
-import { MModal } from '@motive/ui'
+import { MIcon, MModal } from '@motive/ui'
 import { useTheme } from '~/composables/useTheme'
 import { useLocalePreferences } from '~/composables/useLocalePreferences'
 import { useFormatPreferences } from '~/composables/useFormatPreferences'
@@ -93,7 +93,7 @@ function selectTheme(id: string) {
           :aria-label="t('preferences.close')"
           @click="emit('close')"
         >
-          <X :size="14" />
+          <MIcon :icon="X" :size="14" />
         </button>
       </div>
 
@@ -237,7 +237,7 @@ function selectTheme(id: string) {
                         class="theme-info__check"
                         aria-hidden="true"
                       >
-                        <Check :size="10" />
+                        <MIcon :icon="Check" :size="10" />
                       </div>
                     </div>
                     <p class="theme-info__desc">{{ theme.description }}</p>
@@ -724,12 +724,12 @@ function selectTheme(id: string) {
 
 .pref-nav__item:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
 }
 
 .pref-nav__item--active {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.06);
+  background-color: var(--mtv-color-surface-accent);
   border-left-color: var(--mtv-color-brand-default);
 }
 
@@ -893,7 +893,7 @@ function selectTheme(id: string) {
 }
 
 .pref-row__value--danger {
-  color: oklch(0.637 0.208 25.3);
+  color: var(--fleet-severity-critical);
   cursor: pointer;
 }
 
@@ -960,15 +960,19 @@ function selectTheme(id: string) {
 .theme-preview {
   display: flex;
   height: 72px;
-  background-color: var(--card-bg, oklch(0.159 0 0));
-  border-bottom: 1px solid oklch(1 0 0 / 0.06);
+  background-color: var(--card-bg, var(--mtv-color-surface-default));
+  border-bottom: 1px solid var(--mtv-color-border-subtle);
   overflow: hidden;
 }
 
 .theme-preview__sidebar {
   width: 24px;
-  background-color: color-mix(in srgb, var(--card-bg, oklch(0.159 0 0)) 85%, white 15%);
-  border-right: 1px solid oklch(1 0 0 / 0.06);
+  background-color: color-mix(
+    in srgb,
+    var(--card-bg, var(--mtv-color-surface-default)) 85%,
+    white 15%
+  );
+  border-right: 1px solid var(--mtv-color-border-subtle);
   padding: 5px 3px;
   display: flex;
   flex-direction: column;
@@ -979,19 +983,19 @@ function selectTheme(id: string) {
 .theme-preview__logo {
   width: 14px;
   height: 8px;
-  background-color: var(--card-accent, oklch(0.913 0 0));
+  background-color: var(--card-accent, var(--mtv-color-brand-default));
   margin-bottom: 3px;
   flex-shrink: 0;
 }
 
 .theme-preview__nav-item {
   height: 5px;
-  background-color: oklch(1 0 0 / 0.08);
+  background-color: var(--mtv-color-surface-accent);
   flex-shrink: 0;
 }
 
 .theme-preview__nav-item--active {
-  background-color: var(--card-accent, oklch(0.913 0 0));
+  background-color: var(--card-accent, var(--mtv-color-brand-default));
   opacity: 0.6;
 }
 
@@ -1005,12 +1009,12 @@ function selectTheme(id: string) {
 }
 
 .theme-preview--flat .theme-preview__sidebar {
-  border-right-color: oklch(1 0 0 / 0.09);
+  border-right-color: var(--mtv-color-border-default);
 }
 
 .theme-preview__topbar {
   height: 7px;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   flex-shrink: 0;
 }
 
@@ -1023,19 +1027,19 @@ function selectTheme(id: string) {
 
 .theme-preview__card {
   height: 16px;
-  background-color: var(--card-surface, oklch(0.178 0 0));
-  border: 1px solid oklch(1 0 0 / 0.06);
+  background-color: var(--card-surface, var(--mtv-color-surface-raised));
+  border: 1px solid var(--mtv-color-border-subtle);
 }
 
 .theme-preview__card--accent {
-  border-color: var(--card-accent, oklch(0.913 0 0));
+  border-color: var(--card-accent, var(--mtv-color-brand-default));
   border-left-width: 2px;
 }
 
 .theme-preview__chart {
   flex: 1;
-  background-color: oklch(1 0 0 / 0.02);
-  border: 1px solid oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
+  border: 1px solid var(--mtv-color-border-subtle);
   min-height: 10px;
 }
 

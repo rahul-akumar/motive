@@ -25,24 +25,24 @@ const severityConfig = computed(() => {
   return {
     critical: {
       label: 'CRITICAL',
-      color: 'oklch(0.577 0.215 27.3)',
-      bg: 'oklch(0.577 0.215 27.3 / 0.06)',
-      border: 'oklch(0.577 0.215 27.3)',
-      iconColor: 'oklch(0.577 0.215 27.3)',
+      color: 'var(--fleet-severity-critical)',
+      bg: 'color-mix(in oklch, var(--fleet-severity-critical) 8%, transparent)',
+      border: 'var(--fleet-severity-critical)',
+      iconColor: 'var(--fleet-severity-critical)',
     },
     warning: {
       label: 'WARNING',
-      color: 'oklch(0.666 0.157 58.3)',
-      bg: 'oklch(0.666 0.157 58.3 / 0.06)',
-      border: 'oklch(0.666 0.157 58.3)',
-      iconColor: 'oklch(0.666 0.157 58.3)',
+      color: 'var(--fleet-severity-warning)',
+      bg: 'color-mix(in oklch, var(--fleet-severity-warning) 8%, transparent)',
+      border: 'var(--fleet-severity-warning)',
+      iconColor: 'var(--fleet-severity-warning)',
     },
     info: {
       label: 'INFO',
-      color: 'oklch(0.633 0.000 0)',
-      bg: 'oklch(1.000 0.000 0 / 0.04)',
-      border: 'oklch(0.450 0.000 0)',
-      iconColor: 'oklch(0.633 0.000 0)',
+      color: 'var(--mtv-color-foreground-muted)',
+      bg: 'var(--mtv-color-surface-accent-subtle)',
+      border: 'var(--mtv-color-border-default)',
+      iconColor: 'var(--fleet-severity-info)',
     },
   }
 })
@@ -80,7 +80,12 @@ const severityConfig = computed(() => {
     </div>
 
     <div v-if="alerts.length === 0" class="alerts-panel__empty" role="status" aria-live="polite">
-      <MIcon :icon="CheckCircle2" :size="32" color="oklch(0.372 0.039 257.3)" :stroke-width="1.5" />
+      <MIcon
+        :icon="CheckCircle2"
+        :size="32"
+        color="var(--mtv-color-foreground-subtle)"
+        :stroke-width="1.5"
+      />
       <p class="alerts-panel__empty-text">No active alerts</p>
     </div>
 
@@ -203,15 +208,15 @@ const severityConfig = computed(() => {
 }
 
 .alerts-panel__count--critical {
-  background-color: oklch(0.577 0.215 27.3 / 0.08);
-  color: oklch(0.577 0.215 27.3);
-  border: 1px solid oklch(0.577 0.215 27.3 / 0.2);
+  background-color: color-mix(in oklch, var(--fleet-severity-critical) 8%, transparent);
+  color: var(--fleet-severity-critical);
+  border: 1px solid color-mix(in oklch, var(--fleet-severity-critical) 20%, transparent);
 }
 
 .alerts-panel__count--warning {
-  background-color: oklch(0.666 0.157 58.3 / 0.08);
-  color: oklch(0.666 0.157 58.3);
-  border: 1px solid oklch(0.666 0.157 58.3 / 0.2);
+  background-color: color-mix(in oklch, var(--fleet-severity-warning) 8%, transparent);
+  color: var(--fleet-severity-warning);
+  border: 1px solid color-mix(in oklch, var(--fleet-severity-warning) 20%, transparent);
 }
 
 .alerts-panel__dismiss-all {
@@ -256,13 +261,13 @@ const severityConfig = computed(() => {
 }
 
 .alert-card--critical {
-  background-color: oklch(0.577 0.215 27.3 / 0.05);
-  border-left-color: oklch(0.577 0.215 27.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-critical) 5%, transparent);
+  border-left-color: var(--fleet-severity-critical);
 }
 
 .alert-card--warning {
-  background-color: oklch(0.666 0.157 58.3 / 0.05);
-  border-left-color: oklch(0.666 0.157 58.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-warning) 5%, transparent);
+  border-left-color: var(--fleet-severity-warning);
 }
 
 .alert-card--info {
@@ -323,7 +328,7 @@ const severityConfig = computed(() => {
 
 .alert-card__dismiss:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.06);
+  background-color: var(--mtv-color-surface-accent);
 }
 
 .alert-card__title {

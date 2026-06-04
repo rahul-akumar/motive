@@ -55,15 +55,15 @@ defineProps<{
 }
 
 .panel-action-row__icon--critical {
-  background-color: oklch(0.577 0.215 27.3 / 0.1);
-  color: oklch(0.577 0.215 27.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-critical) 10%, transparent);
+  color: var(--fleet-severity-critical);
 }
 .panel-action-row__icon--warning {
-  background-color: oklch(0.666 0.157 58.3 / 0.1);
-  color: oklch(0.666 0.157 58.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-warning) 10%, transparent);
+  color: var(--fleet-severity-warning);
 }
 .panel-action-row__icon--info {
-  background-color: oklch(1 0 0 / 0.06);
+  background-color: var(--mtv-color-surface-accent);
   color: var(--mtv-color-foreground-subtle);
 }
 
@@ -83,15 +83,15 @@ defineProps<{
 }
 
 .panel-action-row__count--critical {
-  background-color: oklch(0.577 0.215 27.3 / 0.1);
-  color: oklch(0.577 0.215 27.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-critical) 10%, transparent);
+  color: var(--fleet-severity-critical);
 }
 .panel-action-row__count--warning {
-  background-color: oklch(0.666 0.157 58.3 / 0.1);
-  color: oklch(0.666 0.157 58.3);
+  background-color: color-mix(in oklch, var(--fleet-severity-warning) 10%, transparent);
+  color: var(--fleet-severity-warning);
 }
 .panel-action-row__count--info {
-  background-color: oklch(1 0 0 / 0.06);
+  background-color: var(--mtv-color-surface-accent);
   color: var(--mtv-color-foreground-subtle);
 }
 

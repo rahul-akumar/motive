@@ -149,9 +149,9 @@ const { mapFuelLossEvents } = useFuelLossData()
   height: 280px;
   background: linear-gradient(
     90deg,
-    oklch(1 0 0 / 0.02) 25%,
-    oklch(1 0 0 / 0.04) 50%,
-    oklch(1 0 0 / 0.02) 75%
+    var(--mtv-color-surface-accent-subtle) 25%,
+    var(--mtv-color-surface-accent-subtle) 50%,
+    var(--mtv-color-surface-accent-subtle) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;

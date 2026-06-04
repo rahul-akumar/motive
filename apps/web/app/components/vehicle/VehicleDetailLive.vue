@@ -1148,7 +1148,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 2px solid #f87171;
+  border: 2px solid var(--fleet-severity-critical);
   animation: jammed-pulse 1.5s ease-out infinite;
 }
 
@@ -1167,7 +1167,7 @@ onUnmounted(() => {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #f87171;
+  background: var(--fleet-severity-critical);
   border: 3px solid white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   display: flex;

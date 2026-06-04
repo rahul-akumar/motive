@@ -24,10 +24,10 @@ function getCSSVar(name: string): string {
 }
 
 function hosColor(driver: Driver): string {
-  if (driver.hos.hasViolation) return 'oklch(0.577 0.215 27.3)'
-  if (driver.hos.drivingRemaining <= 1) return 'oklch(0.666 0.157 58.3)'
-  if (driver.hos.drivingRemaining <= 3) return 'oklch(0.666 0.157 58.3)'
-  return getCSSVar('--accent') || 'oklch(0.913 0.000 0)'
+  if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'
+  if (driver.hos.drivingRemaining <= 1) return 'var(--fleet-severity-warning)'
+  if (driver.hos.drivingRemaining <= 3) return 'var(--fleet-severity-warning)'
+  return getCSSVar('--accent') || 'var(--mtv-color-brand-default)'
 }
 
 function hosStatus(driver: Driver): string {
@@ -38,10 +38,10 @@ function hosStatus(driver: Driver): string {
 }
 
 function hosStatusColor(driver: Driver): string {
-  if (driver.hos.hasViolation) return 'oklch(0.577 0.215 27.3)'
-  if (driver.hos.drivingRemaining <= 1) return 'oklch(0.577 0.215 27.3)'
-  if (driver.hos.drivingRemaining <= 3) return 'oklch(0.666 0.157 58.3)'
-  return 'oklch(0.450 0.000 0)'
+  if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'
+  if (driver.hos.drivingRemaining <= 1) return 'var(--fleet-severity-critical)'
+  if (driver.hos.drivingRemaining <= 3) return 'var(--fleet-severity-warning)'
+  return 'var(--mtv-color-foreground-subtle)'
 }
 </script>
 
@@ -158,7 +158,7 @@ function hosStatusColor(driver: Driver): string {
   width: 24px;
   height: 24px;
   border-radius: 25%;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
   color: var(--mtv-color-foreground-muted);
   font-family: var(--font-family-mono);
@@ -196,7 +196,7 @@ function hosStatusColor(driver: Driver): string {
 .hos-bar__track {
   position: relative;
   height: 4px;
-  background-color: oklch(1 0 0 / 0.05);
+  background-color: var(--mtv-color-surface-accent);
   border-radius: 0;
   overflow: hidden;
 }
@@ -214,7 +214,7 @@ function hosStatusColor(driver: Driver): string {
   position: absolute;
   top: 0;
   height: 100%;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   border-radius: 0;
 }
 

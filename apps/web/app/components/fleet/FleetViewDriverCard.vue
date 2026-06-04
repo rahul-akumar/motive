@@ -106,11 +106,11 @@ function formatLastUpdated(date: Date): string {
 }
 
 .fv-driver-card:hover {
-  background-color: oklch(1 0 0 / 0.03);
+  background-color: var(--mtv-color-surface-accent-subtle);
 }
 
 .fv-driver-card--selected {
-  background-color: oklch(1 0 0 / 0.05);
+  background-color: var(--mtv-color-surface-accent);
 }
 
 /* Left accent bar */
@@ -202,7 +202,7 @@ function formatLastUpdated(date: Date): string {
 .fv-driver-card__hos-bar-track {
   flex: 1;
   height: 3px;
-  background: oklch(1 0 0 / 0.08);
+  background: var(--mtv-color-surface-accent);
   border-radius: 1px;
   overflow: hidden;
 }

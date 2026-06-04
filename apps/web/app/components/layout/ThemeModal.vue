@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { X, Check, Sliders } from 'lucide-vue-next'
-import { MModal } from '@motive/ui'
+import { MIcon, MModal } from '@motive/ui'
 import { useTheme } from '~/composables/useTheme'
 
 const props = defineProps<{
@@ -25,7 +25,7 @@ function selectTheme(id: string) {
     <div class="modal-header">
       <div class="modal-header__left">
         <div class="modal-header__icon" aria-hidden="true">
-          <Sliders :size="14" />
+          <MIcon :icon="Sliders" :size="14" />
         </div>
         <div>
           <h2 class="modal-title font-mono-data">{{ t('themeModal.title') }}</h2>
@@ -38,7 +38,7 @@ function selectTheme(id: string) {
         :aria-label="t('themeModal.closeLabel')"
         @click="emit('close')"
       >
-        <X :size="14" />
+        <MIcon :icon="X" :size="14" />
       </button>
     </div>
 
@@ -94,7 +94,7 @@ function selectTheme(id: string) {
           <div class="theme-info__row">
             <span class="theme-info__name font-mono-data">{{ theme.name }}</span>
             <div v-if="currentTheme === theme.id" class="theme-info__check" aria-hidden="true">
-              <Check :size="10" />
+              <MIcon :icon="Check" :size="10" />
             </div>
           </div>
           <p class="theme-info__desc font-mono-data">{{ theme.description }}</p>
@@ -134,7 +134,7 @@ function selectTheme(id: string) {
   width: 28px;
   height: 28px;
   border-radius: 2px;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
   color: var(--mtv-color-foreground-muted);
   display: flex;
@@ -216,8 +216,8 @@ function selectTheme(id: string) {
 .theme-preview {
   display: flex;
   height: 72px;
-  background-color: var(--card-bg, oklch(0.159 0 0));
-  border-bottom: 1px solid oklch(1 0 0 / 0.06);
+  background-color: var(--card-bg, var(--mtv-color-surface-default));
+  border-bottom: 1px solid var(--mtv-color-border-subtle);
   overflow: hidden;
 }
 
@@ -225,9 +225,9 @@ function selectTheme(id: string) {
   width: 24px;
   background-color: var(
     --card-sidebar,
-    color-mix(in srgb, var(--card-bg, oklch(0.159 0 0)) 85%, white 15%)
+    color-mix(in srgb, var(--card-bg, var(--mtv-color-surface-default)) 85%, white 15%)
   );
-  border-right: 1px solid oklch(1 0 0 / 0.06);
+  border-right: 1px solid var(--mtv-color-border-subtle);
   padding: 5px 3px;
   display: flex;
   flex-direction: column;
@@ -239,20 +239,19 @@ function selectTheme(id: string) {
   width: 14px;
   height: 8px;
   border-radius: 0;
-  background-color: var(--card-accent, oklch(0.913 0 0));
-  margin-bottom: 3px;
+  background-color: var(--card-accent, var(--mtv-color-brand-default));
   flex-shrink: 0;
 }
 
 .theme-preview__nav-item {
   height: 5px;
   border-radius: 0;
-  background-color: oklch(1 0 0 / 0.08);
+  background-color: var(--mtv-color-surface-accent);
   flex-shrink: 0;
 }
 
 .theme-preview__nav-item--active {
-  background-color: var(--card-accent, oklch(0.913 0 0));
+  background-color: var(--card-accent, var(--mtv-color-brand-default));
   opacity: 0.6;
 }
 
@@ -267,7 +266,7 @@ function selectTheme(id: string) {
 
 /* Flat layout: no gap between sidebar and content */
 .theme-preview--flat .theme-preview__sidebar {
-  border-right-color: oklch(1 0 0 / 0.09);
+  border-right-color: var(--mtv-color-border-default);
 }
 
 .theme-preview--flat .theme-preview__content {
@@ -277,7 +276,7 @@ function selectTheme(id: string) {
 .theme-preview__topbar {
   height: 7px;
   border-radius: 0;
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
   flex-shrink: 0;
 }
 
@@ -291,20 +290,20 @@ function selectTheme(id: string) {
 .theme-preview__card {
   height: 16px;
   border-radius: 0;
-  background-color: var(--card-surface, oklch(0.178 0 0));
-  border: 1px solid oklch(1 0 0 / 0.06);
+  background-color: var(--card-surface, var(--mtv-color-surface-raised));
+  border: 1px solid var(--mtv-color-border-subtle);
 }
 
 .theme-preview__card--accent {
-  border-color: var(--card-accent, oklch(0.913 0 0));
+  border-color: var(--card-accent, var(--mtv-color-brand-default));
   border-left-width: 2px;
 }
 
 .theme-preview__chart {
   flex: 1;
   border-radius: 0;
-  background-color: oklch(1 0 0 / 0.02);
-  border: 1px solid oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
+  border: 1px solid var(--mtv-color-border-subtle);
   min-height: 10px;
 }
 

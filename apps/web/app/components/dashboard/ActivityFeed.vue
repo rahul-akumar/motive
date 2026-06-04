@@ -32,58 +32,58 @@ const eventConfig = computed(
     return {
       trip_started: {
         label: 'Trip Started',
-        color: 'oklch(0.686 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-trip)',
+        bg: 'color-mix(in oklch, var(--fleet-event-trip) 8%, transparent)',
       },
       trip_completed: {
         label: 'Trip Completed',
-        color: 'oklch(0.686 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-trip)',
+        bg: 'color-mix(in oklch, var(--fleet-event-trip) 8%, transparent)',
       },
       hos_warning: {
         label: 'HOS Warning',
-        color: 'oklch(0.666 0.157 58.3)',
-        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+        color: 'var(--fleet-severity-warning)',
+        bg: 'color-mix(in oklch, var(--fleet-severity-warning) 8%, transparent)',
       },
       hos_violation: {
         label: 'HOS Violation',
-        color: 'oklch(0.577 0.215 27.3)',
-        bg: 'oklch(0.577 0.215 27.3 / 0.06)',
+        color: 'var(--fleet-severity-critical)',
+        bg: 'color-mix(in oklch, var(--fleet-severity-critical) 8%, transparent)',
       },
       geofence_enter: {
         label: 'Geofence Enter',
-        color: 'oklch(0.633 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-geofence)',
+        bg: 'color-mix(in oklch, var(--fleet-event-geofence) 8%, transparent)',
       },
       geofence_exit: {
         label: 'Geofence Exit',
-        color: 'oklch(0.633 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-geofence)',
+        bg: 'color-mix(in oklch, var(--fleet-event-geofence) 8%, transparent)',
       },
       fuel_stop: {
         label: 'Fuel Stop',
-        color: 'oklch(0.633 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-fuel)',
+        bg: 'color-mix(in oklch, var(--fleet-event-fuel) 8%, transparent)',
       },
       alert_triggered: {
         label: 'Alert',
-        color: 'oklch(0.666 0.157 58.3)',
-        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+        color: 'var(--fleet-event-alert)',
+        bg: 'color-mix(in oklch, var(--fleet-event-alert) 8%, transparent)',
       },
       driver_login: {
         label: 'Driver Login',
-        color: 'oklch(0.633 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-login)',
+        bg: 'color-mix(in oklch, var(--fleet-event-login) 8%, transparent)',
       },
       inspection_passed: {
         label: 'Inspection',
-        color: 'oklch(0.633 0.000 0)',
-        bg: 'oklch(1.000 0.000 0 / 0.04)',
+        color: 'var(--fleet-event-inspection)',
+        bg: 'color-mix(in oklch, var(--fleet-event-inspection) 8%, transparent)',
       },
       vehicle_idle: {
         label: 'Vehicle Idle',
-        color: 'oklch(0.666 0.157 58.3)',
-        bg: 'oklch(0.666 0.157 58.3 / 0.06)',
+        color: 'var(--fleet-event-idle)',
+        bg: 'color-mix(in oklch, var(--fleet-event-idle) 8%, transparent)',
       },
     }
   },
@@ -93,8 +93,8 @@ function getConfig(type: ActivityEventType) {
   return (
     eventConfig.value[type] || {
       label: type,
-      color: 'oklch(0.554 0.041 257.4)',
-      bg: 'oklch(0.554 0.041 257.4 / 0.12)',
+      color: 'var(--mtv-color-neutral-500)',
+      bg: 'color-mix(in oklch, var(--mtv-color-neutral-500) 12%, transparent)',
     }
   )
 }
@@ -241,7 +241,7 @@ function getConfig(type: ActivityEventType) {
   display: flex;
   gap: 0.75rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid oklch(1 0 0 / 0.04);
+  border-bottom: 1px solid var(--mtv-color-border-subtle);
   position: relative;
 }
 
@@ -333,6 +333,6 @@ function getConfig(type: ActivityEventType) {
 
 .activity-feed__load-more:hover {
   color: var(--mtv-color-foreground-default);
-  background-color: oklch(1 0 0 / 0.04);
+  background-color: var(--mtv-color-surface-accent-subtle);
 }
 </style>

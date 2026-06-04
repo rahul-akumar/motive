@@ -101,7 +101,7 @@ function openMenu(id: string, el: HTMLElement) {
     <div class="fleet-filter-bar">
       <div class="fleet-filter-bar__left">
         <div class="fleet-filter-bar__search">
-          <Search :size="14" class="fleet-filter-bar__search-icon" aria-hidden="true" />
+          <MIcon :icon="Search" :size="14" class="fleet-filter-bar__search-icon" />
           <input
             :value="searchQuery"
             type="text"
@@ -117,7 +117,7 @@ function openMenu(id: string, el: HTMLElement) {
             aria-label="Clear search"
             @click="searchQuery = ''"
           >
-            <X :size="12" :stroke-width="2.5" />
+            <MIcon :icon="X" :size="12" :stroke-width="2.5" />
           </button>
         </div>
 
@@ -131,7 +131,7 @@ function openMenu(id: string, el: HTMLElement) {
         />
 
         <MButton v-if="hasActiveFilters" variant="ghost" size="sm" @click="clearFilters">
-          <X :size="13" :stroke-width="2" />
+          <MIcon :icon="X" :size="13" :stroke-width="2" />
           Clear
         </MButton>
       </div>
