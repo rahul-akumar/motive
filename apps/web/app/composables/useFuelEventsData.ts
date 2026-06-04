@@ -1,86 +1,8 @@
-import type {
-  FuelLossEvent,
-  IdlingEvent,
-  FuelEventType,
-  FuelDropStatus,
-  FleetVehicle,
-} from '@motive/shared'
+import type { IdlingEvent, FuelEventType, FuelDropStatus } from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
-import { linkedVehiclesByRegion } from '~/mocks/fleet-linked'
 import { idlingByRegion } from '~/mocks/idling'
-
-// ── Unified row shape ────────────────────────────────────────
-export interface FuelEventRow {
-  id: string
-  type: FuelEventType
-  vehicleId: string
-  vehicleName: string
-  vehicleMMY: string
-  driverId: string | null
-  driverName: string | null
-  location: string
-  startTime: Date
-  endTime: Date
-  /** fuel-loss only */
-  fuelDrop?: number
-  fuelStart?: number
-  fuelEnd?: number
-  /** idling only */
-  durationMins?: number
-  fuelWasted?: number
-  status: FuelDropStatus
-}
-
-// ── Vehicle lookup from linked fleet data ────────────────────
-function getVehicle(vehicleId: string): FleetVehicle | undefined {
-  const vehicles = linkedVehiclesByRegion[currentRegion.value]
-  return vehicles.find((v) => v.id === vehicleId)
-}
-
-function vehicleMMY(v: FleetVehicle | undefined): string {
-  if (!v) return ''
-  return `${v.year} ${v.make} ${v.model}`
-}
-
-// ── Normalize to unified rows ────────────────────────────────
-function fuelLossToRow(e: FuelLossEvent): FuelEventRow {
-  const vehicle = getVehicle(e.vehicleId)
-  return {
-    id: e.id,
-    type: 'fuel-loss',
-    vehicleId: e.vehicleId,
-    vehicleName: vehicle?.unitNumber ?? e.vehicleId,
-    vehicleMMY: vehicleMMY(vehicle),
-    driverId: vehicle?.driverId ?? null,
-    driverName: vehicle?.driverName ?? null,
-    location: e.location.address,
-    startTime: e.startTime,
-    endTime: e.endTime,
-    fuelDrop: e.fuelDrop,
-    fuelStart: e.fuelStart,
-    fuelEnd: e.fuelEnd,
-    status: e.status,
-  }
-}
-
-function idlingToRow(e: IdlingEvent): FuelEventRow {
-  const vehicle = getVehicle(e.vehicleId)
-  return {
-    id: e.id,
-    type: 'idling',
-    vehicleId: e.vehicleId,
-    vehicleName: vehicle?.unitNumber ?? e.vehicleId,
-    vehicleMMY: vehicleMMY(vehicle),
-    driverId: vehicle?.driverId ?? null,
-    driverName: vehicle?.driverName ?? null,
-    location: e.location.address,
-    startTime: e.startTime,
-    endTime: e.endTime,
-    durationMins: e.durationMins,
-    fuelWasted: e.fuelWasted,
-    status: e.status,
-  }
-}
+import { mapFuelLossToRow, mapIdlingToRow } from '~/composables/useFuelEventMappers'
+import type { FuelEventRow } from '~/composables/useFuelEventMappers'
 
 // ── Module-level singleton state ─────────────────────────────
 const filterSearch = ref('')
@@ -88,6 +10,13 @@ const filterEventType = ref<FuelEventType | null>(null)
 const filterStatus = ref<FuelDropStatus | null>(null)
 const filterVehicle = ref<string | null>(null)
 const filterDriver = ref<string | null>(null)
+
+/** In-memory status overrides (survives navigation, resets on hard refresh) */
+const statusOverrides = reactive<Map<string, FuelDropStatus>>(new Map())
+
+export function updateEventStatus(id: string, status: FuelDropStatus) {
+  statusOverrides.set(id, status)
+}
 
 watch(currentRegion, () => {
   filterSearch.value = ''
@@ -102,13 +31,15 @@ export function useFuelEventsData() {
 
   const idlingEvents = computed<IdlingEvent[]>(() => idlingByRegion[currentRegion.value])
 
-  // Merge both event types into unified rows
+  // Merge both event types into unified rows, applying status overrides
   const allRows = computed<FuelEventRow[]>(() => {
-    const flRows = fuelLossEvents.value.map(fuelLossToRow)
-    const idleRows = idlingEvents.value.map(idlingToRow)
-    return [...flRows, ...idleRows].sort(
-      (a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),
-    )
+    const flRows = fuelLossEvents.value.map(mapFuelLossToRow)
+    const idleRows = idlingEvents.value.map(mapIdlingToRow)
+    const rows = [...flRows, ...idleRows].map((row) => {
+      const override = statusOverrides.get(row.id)
+      return override ? { ...row, status: override } : row
+    })
+    return rows.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
   })
 
   // Filtered rows
@@ -168,6 +99,7 @@ export function useFuelEventsData() {
   }
 
   return {
+    allRows,
     filteredRows,
     filterSearch,
     filterEventType,
@@ -178,5 +110,6 @@ export function useFuelEventsData() {
     driverOptions,
     hasActiveFilters,
     clearFilters,
+    updateEventStatus,
   }
 }
