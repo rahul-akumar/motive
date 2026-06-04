@@ -2,7 +2,6 @@
 definePageMeta({
   title: 'Trips',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 </script>
 

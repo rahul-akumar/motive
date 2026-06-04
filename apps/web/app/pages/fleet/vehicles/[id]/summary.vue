@@ -1,8 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
+  layout: 'vehicle-detail',
   title: 'Vehicle Details',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 </script>
 

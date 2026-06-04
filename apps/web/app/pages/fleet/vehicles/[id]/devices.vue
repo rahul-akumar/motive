@@ -5,9 +5,9 @@ import { useVehicleDetail } from '~/composables/useVehicleDetail'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
 
 definePageMeta({
+  layout: 'vehicle-detail',
   title: 'Vehicle Details',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 
 const route = useRoute()

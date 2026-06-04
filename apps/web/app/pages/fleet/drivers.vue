@@ -17,7 +17,6 @@ import { useDriversTable } from '~/composables/useDriversTable'
 definePageMeta({
   title: 'Drivers',
   moduleName: 'Fleet',
-  mainVariant: 'default',
 })
 
 const {
