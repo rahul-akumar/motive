@@ -21,9 +21,7 @@ const { event, notFound } = useFuelEventDetail(eventId)
 
     <div v-else-if="event" class="fe-detail-page__content">
       <FuelDetailIdlingEventContent v-if="event.type === 'idling'" :event="event" />
-      <div v-else class="fe-detail-page__placeholder">
-        <p>Fuel loss event detail coming soon.</p>
-      </div>
+      <FuelDetailFuelLossEventContent v-else :event="event" />
     </div>
   </div>
 </template>

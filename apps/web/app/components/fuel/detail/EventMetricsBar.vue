@@ -32,10 +32,15 @@ const metrics = computed<Metric[]>(() => {
     ]
   }
   // fuel-loss
+  const fuelDrop = e.fuelDrop ?? 0
+  const dropPercent = e.fuelStart && e.fuelEnd ? e.fuelStart - e.fuelEnd : fuelDrop
+  const costPerGal = 3.52 // US avg $/gal
+  const cost = fuelDrop * costPerGal
   return [
-    { label: 'Fuel Drop', value: e.fuelDrop ? `${e.fuelDrop} gal` : '—' },
-    { label: 'Start Level', value: e.fuelStart ? `${e.fuelStart}%` : '—' },
-    { label: 'End Level', value: e.fuelEnd ? `${e.fuelEnd}%` : '—' },
+    { label: 'Fuel Drop', value: fuelDrop ? `${fuelDrop} gal` : '—' },
+    { label: 'Drop %', value: dropPercent ? `${dropPercent}%` : '—' },
+    { label: 'Cost', value: `$${cost.toFixed(2)}` },
+    { label: 'Fuel Price ($/gal)', value: `$${costPerGal.toFixed(2)}` },
   ]
 })
 
