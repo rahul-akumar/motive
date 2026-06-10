@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Film, Truck, Wrench, Phone, VideoOff, X, MoreHorizontal } from 'lucide-vue-next'
 import { MBadge, MDropdown, MIcon } from '@motive/ui'
-import type { MDropdownItem } from '@motive/ui'
+import type { MDropdownItem, MBadgeColor } from '@motive/ui'
 import {
   useCameraData,
   getStatusGroup,
@@ -26,7 +26,7 @@ const { cameras } = useCameraData()
 // ── Filtering + sorting ──────────────────────────────────────────────────────
 
 const filtered = computed(() => {
-  let list = cameras
+  let list = cameras.value
 
   if (props.typeFilter !== 'all') {
     list = list.filter((c) => c.type === props.typeFilter)
@@ -56,9 +56,7 @@ const STATUS_LABELS: Record<CameraStatus, string> = {
   'signal-issue': 'Signal Issue',
 }
 
-type BadgeColor = 'success' | 'danger' | 'warning' | 'error' | 'default'
-
-const STATUS_COLORS: Record<CameraStatus, BadgeColor> = {
+const STATUS_COLORS: Record<CameraStatus, MBadgeColor> = {
   online: 'success',
   offline: 'danger',
   'pending-setup': 'default',
