@@ -205,7 +205,7 @@ const activeLayerIds = ref<Set<string>>(
 function handleToggleLayer(id: string) {
   const next = new Set(activeLayerIds.value)
   if (id === 'incidents') {
-    const childIds = incidentLayers[0].children!.map((c) => c.id)
+    const childIds = incidentLayers[0]?.children?.map((c) => c.id) ?? []
     const allActive = childIds.every((cid) => next.has(cid))
     if (allActive) {
       childIds.forEach((cid) => next.delete(cid))
@@ -427,11 +427,13 @@ function initJammingLayers(L: typeof import('leaflet')) {
   if (event.routeTrail && event.routeTrail.length > 1) {
     const trail = event.routeTrail
     for (let i = 0; i < trail.length - 1; i++) {
-      const speed = trail[i].speed ?? 0
+      const a = trail[i]!
+      const b = trail[i + 1]!
+      const speed = a.speed ?? 0
       const seg = L.polyline(
         [
-          [trail[i].lat, trail[i].lng],
-          [trail[i + 1].lat, trail[i + 1].lng],
+          [a.lat, a.lng],
+          [b.lat, b.lng],
         ],
         {
           color: speedToColor(speed),

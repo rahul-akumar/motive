@@ -80,6 +80,11 @@ const eventConfig = computed(
         color: 'var(--fleet-event-idle)',
         bg: 'color-mix(in oklch, var(--fleet-event-idle) 8%, transparent)',
       },
+      fuel_loss_detected: {
+        label: 'Fuel Loss Detected',
+        color: 'var(--fleet-severity-critical)',
+        bg: 'color-mix(in oklch, var(--fleet-severity-critical) 8%, transparent)',
+      },
     }
   },
 )
