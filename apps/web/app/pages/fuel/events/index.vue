@@ -116,11 +116,6 @@ function handleRowClick(row: unknown) {
   drawerOpen.value = true
 }
 
-function handleViewDetails(id: string) {
-  drawerOpen.value = false
-  navigateTo(`/fuel/events/${id}`)
-}
-
 function handleStatusChange(v: string | number | null) {
   if (!selectedEvent.value || !v) return
   updateEventStatus(selectedEvent.value.id, v as FuelDropStatus)

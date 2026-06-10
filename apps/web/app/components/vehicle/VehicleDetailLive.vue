@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import {
   MapPin,
-  Clock,
   Navigation,
-  ShieldAlert,
   ChevronDown,
   ChevronRight,
   Thermometer,
-  Fuel,
-  Gauge,
-  CircleAlert,
   AlertTriangle,
 } from 'lucide-vue-next'
-import { MBadge, MButton, MIcon, MPopover, MMapControls } from '@motive/ui'
+import { MBadge, MIcon, MPopover, MMapControls } from '@motive/ui'
 import type { MMapControlsLayer } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, FleetVehicleStatus, JammingEvent } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
@@ -35,7 +30,6 @@ const {
   jammingEvent,
   elapsedSeconds,
   searchRadiusMeters,
-  searchRadiusKm,
   sectorPoints,
 } = useVehicleSecurityData(vehicleId)
 
@@ -54,7 +48,7 @@ let searchCircle: L.Circle | null = null
 let sectorPolygon: L.Polygon | null = null
 let headingLine: L.Polyline | null = null
 let headingArrow: L.Marker | null = null
-let incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
+const incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
 let lockBadge: L.Marker | null = null
 let routeSegments: L.Polyline[] = []
 
@@ -167,12 +161,6 @@ const INCIDENT_LABELS: Record<string, string> = {
   jamming: 'Jamming',
   'theft-attempt': 'Theft attempt',
   'unauthorized-movement': 'Unauthorized movement',
-}
-
-const INCIDENT_COLORS: Record<string, string> = {
-  jamming: 'var(--mtv-color-status-warning)',
-  'theft-attempt': '#f26040',
-  'unauthorized-movement': 'var(--mtv-color-status-critical)',
 }
 
 const INCIDENT_HEX: Record<string, string> = {

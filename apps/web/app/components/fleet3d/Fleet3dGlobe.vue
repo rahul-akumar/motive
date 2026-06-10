@@ -347,7 +347,9 @@ function animateAlertPulse(timestamp: number) {
   try {
     map?.setPaintProperty('drivers-alert', 'circle-radius', 8 + eased * 10)
     map?.setPaintProperty('drivers-alert', 'circle-opacity', 0.4 - eased * 0.4)
-  } catch {}
+  } catch {
+    // paint layer may not be initialised yet on the first frames
+  }
   animFrame = requestAnimationFrame(animateAlertPulse)
 }
 

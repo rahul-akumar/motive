@@ -10,7 +10,7 @@ export interface AppMainDetailProps {
   fullBleed?: boolean
 }
 
-const props = withDefaults(defineProps<AppMainDetailProps>(), {
+withDefaults(defineProps<AppMainDetailProps>(), {
   fullBleed: false,
 })
 </script>
@@ -39,13 +39,13 @@ const props = withDefaults(defineProps<AppMainDetailProps>(), {
 
     <!-- Content -->
     <main
-      :class="['detail-main__content', { 'detail-main__content--full-bleed': fullBleed }]"
       id="main-content"
+      :class="['detail-main__content', { 'detail-main__content--full-bleed': fullBleed }]"
     >
       <div
         v-if="!fullBleed"
-        class="detail-main__content-inner"
         v-motion
+        class="detail-main__content-inner"
         :initial="{ opacity: 0, y: 8 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
       >

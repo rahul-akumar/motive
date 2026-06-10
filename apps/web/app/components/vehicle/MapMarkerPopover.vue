@@ -10,7 +10,7 @@ export interface MapMarkerPopoverProps {
   signalStrength?: number
 }
 
-const props = defineProps<MapMarkerPopoverProps>()
+defineProps<MapMarkerPopoverProps>()
 
 const { formatDate, formatTime } = useFormatters()
 </script>

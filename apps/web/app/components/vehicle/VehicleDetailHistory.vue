@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Search, MapPin } from 'lucide-vue-next'
-import { MBadge, MIcon, MPopover } from '@motive/ui'
+import { Search } from 'lucide-vue-next'
+import { MIcon, MPopover } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, SignalEventPhase } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
 import MapMarkerPopover from '~/components/vehicle/MapMarkerPopover.vue'
@@ -67,7 +67,7 @@ const { formatTime, formatDate } = useFormatters()
 
 const mapContainer = ref<HTMLElement | null>(null)
 let map: L.Map | null = null
-let markers: L.Marker[] = []
+const markers: L.Marker[] = []
 
 const timelinePopoverOpen = ref(false)
 const timelinePopoverAnchorEl = ref<HTMLElement | null>(null)

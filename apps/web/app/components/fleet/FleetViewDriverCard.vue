@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Driver, DriverStatus } from '@motive/shared'
+import type { Driver } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{

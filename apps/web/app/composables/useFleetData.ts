@@ -1,6 +1,20 @@
-import type { Driver, Vehicle, FleetStatusCount } from '@motive/shared'
+import type {
+  Driver,
+  Vehicle,
+  FleetStatusCount,
+  FleetVehicle,
+  FleetDriver,
+  FleetAsset,
+} from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
 import { driversByRegion, vehiclesByRegion } from '~/mocks/fleet'
+
+// ── New fleet data composable (uses linked data) ──────────────────────────────
+import {
+  linkedVehiclesByRegion,
+  linkedDriversByRegion,
+  linkedAssetsByRegion,
+} from '~/mocks/fleet-linked'
 
 export function useFleetData() {
   const drivers = computed<Driver[]>(() => driversByRegion[currentRegion.value])
@@ -26,14 +40,6 @@ export function useFleetData() {
 
   return { drivers, vehicles, fleetStatus, loading, refresh }
 }
-
-// ── New fleet data composable (uses linked data) ──────────────────────────────
-import type { FleetVehicle, FleetDriver, FleetAsset } from '@motive/shared'
-import {
-  linkedVehiclesByRegion,
-  linkedDriversByRegion,
-  linkedAssetsByRegion,
-} from '~/mocks/fleet-linked'
 
 export function useFleetDataV2() {
   const fleetVehicles = computed<FleetVehicle[]>(() => linkedVehiclesByRegion[currentRegion.value])

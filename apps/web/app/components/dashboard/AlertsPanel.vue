@@ -3,7 +3,7 @@ import { TriangleAlert, Info, X, ChevronRight, CheckCircle2 } from 'lucide-vue-n
 import { MIcon } from '@motive/ui'
 import type { FleetAlert } from '@motive/shared'
 
-const props = defineProps<{
+defineProps<{
   alerts: FleetAlert[]
   criticalCount: number
   warningCount: number
@@ -15,11 +15,6 @@ const emit = defineEmits<{
 }>()
 
 const { formatTime } = useFormatters()
-
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return ''
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
 
 const severityConfig = computed(() => {
   return {
@@ -72,8 +67,8 @@ const severityConfig = computed(() => {
         v-if="alerts.length > 0"
         class="alerts-panel__dismiss-all"
         type="button"
-        @click="emit('dismissAll')"
         aria-label="Dismiss all alerts"
+        @click="emit('dismissAll')"
       >
         Dismiss all
       </button>
@@ -140,8 +135,8 @@ const severityConfig = computed(() => {
               <button
                 class="alert-card__dismiss"
                 type="button"
-                @click="emit('dismiss', alert.id)"
                 :aria-label="`Dismiss alert: ${alert.title}`"
+                @click="emit('dismiss', alert.id)"
               >
                 <MIcon :icon="X" :size="12" :stroke-width="2.5" />
               </button>
