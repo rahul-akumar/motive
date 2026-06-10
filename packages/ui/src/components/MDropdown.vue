@@ -217,8 +217,11 @@ onUnmounted(() => {
       >
         <div class="m-dropdown__list" role="menu" @keydown="handleMenuKeydown">
           <template v-for="(item, index) in items" :key="index">
+            <!-- `divider` draws a leading separator line; an item still renders
+                 if it has a label. A label-less item is a pure separator. -->
             <div v-if="item.divider" class="m-dropdown__divider" role="separator" />
             <button
+              v-if="item.label"
               :ref="
                 (el) => {
                   itemRefs[index] = el as HTMLElement
