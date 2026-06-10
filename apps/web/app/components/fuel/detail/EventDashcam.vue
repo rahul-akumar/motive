@@ -113,11 +113,6 @@ function generateFuelData(): FuelPoint[] {
   return points
 }
 
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return '#e2e2e2'
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
-
 function drawTimeline() {
   if (!timelineSvg.value || !timelineRef.value) return
 

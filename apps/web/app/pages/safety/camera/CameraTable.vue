@@ -19,6 +19,8 @@ export interface CameraTableProps {
 
 const props = defineProps<CameraTableProps>()
 
+defineEmits<{ clear: [] }>()
+
 const { cameras } = useCameraData()
 
 // ── Filtering + sorting ──────────────────────────────────────────────────────
@@ -115,7 +117,7 @@ function openMenu(index: number, el: HTMLElement) {
 <template>
   <div class="camera-table-wrap">
     <!-- Table -->
-    <table class="camera-table" v-if="filtered.length > 0">
+    <table v-if="filtered.length > 0" class="camera-table">
       <thead>
         <tr>
           <th>Vehicle / Asset</th>
@@ -211,32 +213,32 @@ function openMenu(index: number, el: HTMLElement) {
         }
       "
     />
-  </div>
 
-  <!-- Preview overlay -->
-  <Teleport to="body">
-    <Transition name="preview">
-      <div
-        v-if="previewSrc"
-        class="preview-overlay"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Camera preview"
-        @click.self="closePreview"
-        @keydown="handleOverlayKey"
-      >
-        <img :src="previewSrc" class="preview-overlay__img" alt="Camera preview" />
-        <button
-          class="preview-overlay__close"
-          type="button"
-          aria-label="Close preview"
-          @click="closePreview"
+    <!-- Preview overlay -->
+    <Teleport to="body">
+      <Transition name="preview">
+        <div
+          v-if="previewSrc"
+          class="preview-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Camera preview"
+          @click.self="closePreview"
+          @keydown="handleOverlayKey"
         >
-          <MIcon :icon="X" :size="18" />
-        </button>
-      </div>
-    </Transition>
-  </Teleport>
+          <img :src="previewSrc" class="preview-overlay__img" alt="Camera preview" />
+          <button
+            class="preview-overlay__close"
+            type="button"
+            aria-label="Close preview"
+            @click="closePreview"
+          >
+            <MIcon :icon="X" :size="18" />
+          </button>
+        </div>
+      </Transition>
+    </Teleport>
+  </div>
 </template>
 
 <style scoped>

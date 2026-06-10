@@ -185,7 +185,7 @@ function openMenu(id: string, el: HTMLElement) {
         </template>
 
         <!-- Break -->
-        <template #cell-hos.breakRemaining="{ row }">
+        <template #[`cell-hos.breakRemaining`]="{ row }">
           <span
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.breakRemaining) }"
@@ -195,7 +195,7 @@ function openMenu(id: string, el: HTMLElement) {
         </template>
 
         <!-- Drive -->
-        <template #cell-hos.driveRemaining="{ row }">
+        <template #[`cell-hos.driveRemaining`]="{ row }">
           <span
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.driveRemaining) }"
@@ -205,7 +205,7 @@ function openMenu(id: string, el: HTMLElement) {
         </template>
 
         <!-- Shift -->
-        <template #cell-hos.shiftRemaining="{ row }">
+        <template #[`cell-hos.shiftRemaining`]="{ row }">
           <span
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.shiftRemaining) }"
@@ -215,7 +215,7 @@ function openMenu(id: string, el: HTMLElement) {
         </template>
 
         <!-- Cycle -->
-        <template #cell-hos.cycleRemaining="{ row }">
+        <template #[`cell-hos.cycleRemaining`]="{ row }">
           <span
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.cycleRemaining) }"
@@ -225,12 +225,12 @@ function openMenu(id: string, el: HTMLElement) {
         </template>
 
         <!-- Hrs Today -->
-        <template #cell-hos.hoursToday="{ row }">
+        <template #[`cell-hos.hoursToday`]="{ row }">
           <span class="cell-mono">{{ (row as FleetDriver).hos.hoursToday.toFixed(1) }}h</span>
         </template>
 
         <!-- Hrs This Week -->
-        <template #cell-hos.hoursThisWeek="{ row }">
+        <template #[`cell-hos.hoursThisWeek`]="{ row }">
           <span class="cell-mono">{{ (row as FleetDriver).hos.hoursThisWeek.toFixed(1) }}h</span>
         </template>
 

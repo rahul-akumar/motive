@@ -29,7 +29,7 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { regionModuleConfig } = useRegion()
 
-const props = defineProps<{
+defineProps<{
   isOpen?: boolean
 }>()
 

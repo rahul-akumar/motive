@@ -10,7 +10,7 @@ const mapContainer = ref<HTMLElement | null>(null)
 const markerEl = ref<HTMLElement | null>(null)
 const popoverRef = ref<InstanceType<typeof MPopover> | null>(null)
 const popoverOpen = ref(false)
-let map: any = null
+let map: import('leaflet').Map | null = null
 
 const LIGHT_THEMES = new Set(['light', 'console-legacy'])
 function isDarkTheme(): boolean {

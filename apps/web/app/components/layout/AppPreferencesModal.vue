@@ -11,7 +11,7 @@ import {
   Check,
 } from 'lucide-vue-next'
 import { MIcon, MModal } from '@motive/ui'
-import { useTheme } from '~/composables/useTheme'
+import { useTheme, type ThemeId } from '~/composables/useTheme'
 import { useLocalePreferences } from '~/composables/useLocalePreferences'
 import { useFormatPreferences } from '~/composables/useFormatPreferences'
 
@@ -76,8 +76,8 @@ watch(
 
 const notificationMode = ref<'all' | 'dm' | 'none'>('all')
 
-function selectTheme(id: string) {
-  applyTheme(id as any)
+function selectTheme(id: ThemeId) {
+  applyTheme(id)
 }
 </script>
 

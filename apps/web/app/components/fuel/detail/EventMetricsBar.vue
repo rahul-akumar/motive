@@ -5,10 +5,6 @@ const props = defineProps<{
   event: FuelEventRow
 }>()
 
-const { formatTime } = useFormatters()
-
-// For idling: compute cost estimate ($0.02/min as rough proxy)
-const COST_PER_MIN = 0.02
 const COST_PER_GAL = 3.8
 
 interface Metric {
