@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { Search, X, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { Search, X, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import {
   MTable,
   MButton,
   MBadge,
   MSelect,
   MIcon,
-  MDropdown,
   MDrawer,
   type MSelectOption,
   type MTableColumn,
-  type MDropdownItem,
 } from '@motive/ui'
 import type { FuelEventType, FuelDropStatus } from '@motive/shared'
 import type { FuelEventRow } from '~/composables/useFuelEventMappers'
@@ -39,13 +37,15 @@ type SortKey = 'type' | 'driverName' | 'vehicleId' | 'startTime' | 'status'
 const sortKey = ref<SortKey>('startTime')
 const sortDir = ref<'asc' | 'desc'>('desc')
 
+// All columns hug their content; Status takes width:100% so it absorbs the
+// remaining width (the table is width:100%, table-layout:auto).
 const columns: MTableColumn[] = [
-  { key: 'type', label: 'Behavior', sortable: true, width: '120px' },
-  { key: 'driverName', label: 'Driver Name / ID', sortable: true, minWidth: '160px' },
-  { key: 'vehicleId', label: 'Vehicle ID / MMY', sortable: true, minWidth: '180px' },
-  { key: 'startTime', label: 'Date / Location / Geofence', sortable: true, minWidth: '220px' },
-  { key: 'status', label: 'Status', sortable: true, align: 'center', width: '140px' },
-  { key: 'actions', label: '', width: '50px' },
+  { key: 'type', label: 'Behavior', sortable: true },
+  { key: 'driverName', label: 'Driver Name / ID', sortable: true },
+  { key: 'vehicleId', label: 'Vehicle ID / MMY', sortable: true },
+  { key: 'startTime', label: 'Date / Location / Geofence', sortable: true },
+  { key: 'status', label: 'Status', sortable: true, width: '100%' },
+  { key: 'actions', label: '', align: 'right' },
 ]
 
 // ── Sorted rows ──────────────────────────────────────────────
@@ -128,53 +128,11 @@ function goToEventDetail() {
   navigateTo(`/fuel/events/${selectedEvent.value.id}`)
 }
 
-// ── Actions menu ─────────────────────────────────────────────
-const openMenuId = ref<string | null>(null)
-const menuAnchor = ref<HTMLElement | null>(null)
-
-function getActionItems(id: string): MDropdownItem[] {
-  return [
-    {
-      label: 'View Details',
-      action: () => {
-        openMenuId.value = null
-        navigateTo(`/fuel/events/${id}`)
-      },
-    },
-    {
-      label: 'Mark Reviewed',
-      action: () => {
-        openMenuId.value = null
-      },
-    },
-    { divider: true, label: '' },
-    {
-      label: 'Dismiss',
-      action: () => {
-        openMenuId.value = null
-      },
-    },
-  ]
-}
-
-const actionItems = computed(() => (openMenuId.value ? getActionItems(openMenuId.value) : []))
-
-function openMenu(id: string, el: HTMLElement) {
-  if (openMenuId.value === id) {
-    openMenuId.value = null
-    menuAnchor.value = null
-  } else {
-    openMenuId.value = id
-    menuAnchor.value = el
-  }
-}
-
-function closeMenu(open: boolean) {
-  if (!open) openMenuId.value = null
-}
-
-function handleActionClick(id: string, el: EventTarget | null) {
-  openMenu(id, el as HTMLElement)
+// ── Row actions ──────────────────────────────────────────────
+// The row itself opens the drawer (handleRowClick); the explicit
+// "View Details" button navigates to the full detail page instead.
+function viewDetails(id: string) {
+  navigateTo(`/fuel/events/${id}`)
 }
 
 // ── Template cast helper (avoids inline `as` breaking syntax highlight) ──
@@ -379,16 +337,12 @@ const STATUS_BADGE: Record<
           </MBadge>
         </template>
 
-        <!-- Actions (kebab) -->
+        <!-- Actions — explicit "View Details" navigates to the detail page
+             (row-click opens the drawer; this button must not). -->
         <template #cell-actions="{ row: r }">
-          <button
-            class="fe-action-btn"
-            type="button"
-            aria-label="Event actions"
-            @click.stop="handleActionClick(row(r).id, $event.currentTarget)"
-          >
-            <MIcon :icon="MoreVertical" :size="16" />
-          </button>
+          <MButton variant="ghost" size="xs" @click.stop="viewDetails(row(r).id)">
+            View details
+          </MButton>
         </template>
 
         <!-- Empty state -->
@@ -400,14 +354,6 @@ const STATUS_BADGE: Record<
         </template>
       </MTable>
 
-      <!-- Actions dropdown -->
-      <MDropdown
-        :items="actionItems"
-        :open="openMenuId !== null"
-        :anchor-el="menuAnchor"
-        placement="right"
-        @update:open="closeMenu"
-      />
     </div>
 
     <!-- Event detail drawer -->
@@ -581,26 +527,6 @@ const STATUS_BADGE: Record<
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
-}
-
-/* Action button */
-.fe-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  color: var(--mtv-color-foreground-muted);
-  cursor: pointer;
-  transition: background-color 0.15s;
-}
-
-.fe-action-btn:hover {
-  background: var(--mtv-color-background-hover);
-  color: var(--mtv-color-foreground-default);
 }
 
 /* Empty state */
