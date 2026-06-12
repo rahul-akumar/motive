@@ -253,7 +253,7 @@ function cellValue(row: T, key: string): unknown {
 .m-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
 }
 
 /* ── Head ────────────────────────────────────────────────── */
@@ -273,7 +273,7 @@ function cellValue(row: T, key: string): unknown {
 
 .m-table__th {
   padding: 0.625rem 1rem;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xsm);
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-subtle);
   letter-spacing: 0.04em;
