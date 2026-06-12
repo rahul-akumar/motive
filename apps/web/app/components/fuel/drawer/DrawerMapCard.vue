@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 const mapContainer = ref<HTMLElement | null>(null)
-let map: any = null
+let map: import('leaflet').Map | null = null
 
 const LIGHT_THEMES = new Set(['light', 'console-legacy'])
 function isDarkTheme(): boolean {

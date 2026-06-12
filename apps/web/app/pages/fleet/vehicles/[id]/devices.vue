@@ -12,7 +12,7 @@ definePageMeta({
 
 const route = useRoute()
 const vehicleId = computed(() => route.params.id as string)
-const { vehicle, loading, notFound } = useVehicleDetail(vehicleId)
+const { loading, notFound } = useVehicleDetail(vehicleId)
 const { devices, isJammed, jammingEvent } = useVehicleSecurityData(vehicleId)
 
 const { formatTime } = useFormatters()

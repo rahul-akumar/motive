@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@motive/eslint-config": "*",
     "@motive/tsconfig": "*",
     "typescript": "^5.7.0"
   }

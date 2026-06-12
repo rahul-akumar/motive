@@ -25,7 +25,7 @@ export interface MTableProps<T extends object = Record<string, unknown>> {
   infinite?: boolean
 }
 
-const props = withDefaults(defineProps<MTableProps>(), {
+const props = withDefaults(defineProps<MTableProps<T>>(), {
   sortDir: 'asc',
   page: 1,
   pageSize: 8,
@@ -66,6 +66,12 @@ function prevPage() {
 
 function nextPage() {
   if (props.page < totalPages.value) emit('update:page', props.page + 1)
+}
+
+// Rows are generic `T extends object` (no index signature), so reading an
+// arbitrary string column key requires a narrow cast in one place.
+function cellValue(row: T, key: string): unknown {
+  return (row as Record<string, unknown>)[key]
 }
 </script>
 
@@ -132,10 +138,13 @@ function nextPage() {
           <template v-if="!loading && paginated.length > 0">
             <tr
               v-for="row in paginated"
-              :key="String(row[rowKey] ?? row)"
+              :key="String(cellValue(row, rowKey) ?? row)"
               :class="[
                 'm-table__row',
-                { 'm-table__row--selected': selectedKey != null && row[rowKey] === selectedKey },
+                {
+                  'm-table__row--selected':
+                    selectedKey != null && cellValue(row, rowKey) === selectedKey,
+                },
               ]"
               role="row"
               tabindex="0"
@@ -148,8 +157,8 @@ function nextPage() {
                 :class="['m-table__td', `m-table__td--${col.align ?? 'left'}`]"
                 role="gridcell"
               >
-                <slot :name="`cell-${col.key}`" :row="row" :value="row[col.key]">
-                  {{ row[col.key] }}
+                <slot :name="`cell-${col.key}`" :row="row" :value="cellValue(row, col.key)">
+                  {{ cellValue(row, col.key) }}
                 </slot>
               </td>
             </tr>

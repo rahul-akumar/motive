@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ArrowRight, Check, TriangleAlert, XCircle, MapPin, Circle } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
-import type { ActivityEvent, ActivityEventType, ActivitySeverity } from '@motive/shared'
+import type { ActivityEvent, ActivityEventType } from '@motive/shared'
 
-const props = defineProps<{
+defineProps<{
   events: ActivityEvent[]
   hasMore: boolean
 }>()
@@ -20,11 +20,6 @@ function formatRelativeTime(date: Date): string {
   const diffHours = Math.floor(diffMins / 60)
   if (diffHours < 24) return `${diffHours}h ago`
   return `${Math.floor(diffHours / 24)}d ago`
-}
-
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return ''
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 }
 
 const eventConfig = computed(
@@ -85,6 +80,11 @@ const eventConfig = computed(
         color: 'var(--fleet-event-idle)',
         bg: 'color-mix(in oklch, var(--fleet-event-idle) 8%, transparent)',
       },
+      fuel_loss_detected: {
+        label: 'Fuel Loss Detected',
+        color: 'var(--fleet-severity-critical)',
+        bg: 'color-mix(in oklch, var(--fleet-severity-critical) 8%, transparent)',
+      },
     }
   },
 )
@@ -117,7 +117,7 @@ function getConfig(type: ActivityEventType) {
       aria-live="polite"
     >
       <article
-        v-for="(event, i) in events"
+        v-for="event in events"
         :key="event.id"
         class="activity-feed__item"
         :aria-label="`${event.driverName}: ${event.description}`"

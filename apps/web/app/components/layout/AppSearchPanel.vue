@@ -34,7 +34,6 @@ const overlayStyle = ref<Record<string, string>>({})
 
 // Captured at open time, reused by enter/leave hooks
 let triggerRect: DOMRect | null = null
-let measuredHeight = 0
 
 async function openPanel() {
   // Use whichever element is visible as the morph origin

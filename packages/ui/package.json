@@ -26,6 +26,7 @@
     "@motive/tailwind-config": "*"
   },
   "devDependencies": {
+    "@motive/eslint-config": "*",
     "@motive/tsconfig": "*",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/test-utils": "^2.4.0",

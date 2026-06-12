@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { X, Check, Sliders } from 'lucide-vue-next'
 import { MIcon, MModal } from '@motive/ui'
-import { useTheme } from '~/composables/useTheme'
+import { useTheme, type ThemeId } from '~/composables/useTheme'
 
-const props = defineProps<{
+defineProps<{
   open: boolean
 }>()
 
@@ -14,8 +14,8 @@ const emit = defineEmits<{
 const { currentTheme, themes, applyTheme } = useTheme()
 const { t } = useI18n()
 
-function selectTheme(id: string) {
-  applyTheme(id as any)
+function selectTheme(id: ThemeId) {
+  applyTheme(id)
 }
 </script>
 

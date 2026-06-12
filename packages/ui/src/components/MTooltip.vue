@@ -92,11 +92,11 @@ function hide() {
     <Teleport to="body">
       <div
         v-if="visible"
+        :id="tooltipId"
         ref="tooltipRef"
         v-motion
         :initial="{ opacity: 0 }"
         :enter="{ opacity: 1, transition: { duration: 120, ease: 'easeOut' } }"
-        :id="tooltipId"
         :class="['m-tooltip', `m-tooltip--${placement}`, { 'm-tooltip--arrow': arrow }]"
         :style="tooltipStyle"
         role="tooltip"

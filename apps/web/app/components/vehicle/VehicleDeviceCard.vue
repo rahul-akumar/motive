@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { Router, ShieldCheck, Radio, Satellite, Gauge, Cpu } from 'lucide-vue-next'
 import { MCard, MBadge, MIcon } from '@motive/ui'
-import type {
-  VehicleDevice,
-  VehicleDeviceType,
-  VehicleDeviceStatus,
-  VehicleDeviceSensor,
-} from '@motive/shared'
+import type { VehicleDevice, VehicleDeviceType, VehicleDeviceStatus } from '@motive/shared'
 
 const props = defineProps<{ device: VehicleDevice }>()
 

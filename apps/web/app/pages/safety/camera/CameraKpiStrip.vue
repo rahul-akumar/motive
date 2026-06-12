@@ -12,7 +12,7 @@ const { cameras } = useCameraData()
 
 const counts = computed(() => {
   const result = { online: 0, offline: 0, pending: 0, issues: 0 }
-  for (const cam of cameras) result[getStatusGroup(cam.status)]++
+  for (const cam of cameras.value) result[getStatusGroup(cam.status)]++
   return result
 })
 

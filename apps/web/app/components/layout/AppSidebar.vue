@@ -21,15 +21,25 @@ import {
   Tablet,
   Store,
 } from 'lucide-vue-next'
-import { MIcon, MTooltip, MBadge } from '@motive/ui'
+import type { Component } from 'vue'
+import { MIcon, MTooltip, MBadge, type MBadgeColor } from '@motive/ui'
 import { useMotion } from '@vueuse/motion'
+
+interface NavItem {
+  id: string
+  label: string
+  href: string
+  icon: Component
+  wip?: boolean
+  badge?: { label: string; color: MBadgeColor }
+}
 
 const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const { regionModuleConfig } = useRegion()
 
-const props = defineProps<{
+defineProps<{
   isOpen?: boolean
 }>()
 
@@ -40,7 +50,7 @@ const emit = defineEmits<{
 
 const navGroups = computed(() => {
   const cfg = regionModuleConfig.value
-  const filter = (items: { id: string; [k: string]: unknown }[]) =>
+  const filter = (items: NavItem[]) =>
     items.filter((item) => cfg[item.id as keyof typeof cfg]?.enabled !== false)
 
   return [

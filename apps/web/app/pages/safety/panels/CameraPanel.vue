@@ -7,16 +7,16 @@ const { cameras } = useCameraData()
 
 const totalVehicles = 30
 
-const equipped = computed(() => new Set(cameras.map((c) => c.assetId)).size)
+const equipped = computed(() => new Set(cameras.value.map((c) => c.assetId)).size)
 
 const typeCounts = computed(() => {
   const counts: Record<CameraType, number> = { dashcam: 0, 'ai-omnicam': 0, 'multi-cam-dvr': 0 }
-  for (const cam of cameras) counts[cam.type]++
+  for (const cam of cameras.value) counts[cam.type]++
   return counts
 })
 
 const alertFeed = computed(() =>
-  cameras
+  cameras.value
     .filter((c) => getStatusGroup(c.status) !== 'online' && getStatusGroup(c.status) !== 'pending')
     .slice(0, 5)
     .map((cam) => ({
