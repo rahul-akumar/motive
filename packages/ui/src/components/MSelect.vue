@@ -280,7 +280,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
     border-color 120ms ease,
     background-color 120ms ease;
   outline: none;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-family: inherit;
 }
 
@@ -378,7 +378,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.4375rem 0.75rem;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   outline: none;
