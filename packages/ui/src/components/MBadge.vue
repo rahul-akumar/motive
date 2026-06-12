@@ -190,13 +190,13 @@ const rootAriaLabel = computed(() => {
 
 .m-badge--text.m-badge--sm {
   height: 18px;
-  @apply px-1 text-xs;
+  @apply px-1 text-sm;
 }
 
 .m-badge--text.m-badge--md,
 .m-badge--text.m-badge--lg {
   height: 22px;
-  @apply px-2.5 text-xs;
+  @apply px-2.5 text-sm;
 }
 
 /* ── Number variant ──────────────────────────────────────── */
