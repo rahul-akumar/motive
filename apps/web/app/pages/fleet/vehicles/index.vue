@@ -2,6 +2,7 @@
 import { Search, X, MoreVertical, Truck, UserCheck, Wrench } from 'lucide-vue-next'
 import {
   MTable,
+  MTableCell,
   MBadge,
   MButton,
   MSelect,
@@ -11,6 +12,7 @@ import {
   type MDropdownItem,
   type MSelectOption,
 } from '@motive/ui'
+import { NuxtLinkLocale } from '#components'
 import type { FleetVehicle, FleetVehicleStatus } from '@motive/shared'
 import { useVehiclesTable } from '~/composables/useVehiclesTable'
 
@@ -150,42 +152,45 @@ function openMenu(id: string, el: HTMLElement) {
       >
         <!-- Vehicle ID / MMY -->
         <template #cell-unitNumber="{ row }">
-          <NuxtLinkLocale
+          <MTableCell
+            variant="link"
+            :tag="NuxtLinkLocale"
             :to="`/fleet/vehicles/${(row as FleetVehicle).id}/live`"
-            class="cell-link"
           >
             {{ (row as FleetVehicle).unitNumber }}
-          </NuxtLinkLocale>
-          <span class="cell-sub"
+          </MTableCell>
+          <MTableCell variant="secondary"
             >{{ (row as FleetVehicle).make }} · {{ (row as FleetVehicle).model }} ·
-            {{ (row as FleetVehicle).year }}</span
+            {{ (row as FleetVehicle).year }}</MTableCell
           >
         </template>
 
         <!-- Driver Name / ID -->
         <template #cell-driverName="{ row }">
           <template v-if="(row as FleetVehicle).driverName">
-            <span class="cell-link">{{ (row as FleetVehicle).driverName }}</span>
-            <span class="cell-sub">{{ (row as FleetVehicle).driverId }}</span>
+            <MTableCell variant="link">{{ (row as FleetVehicle).driverName }}</MTableCell>
+            <MTableCell variant="secondary">{{ (row as FleetVehicle).driverId }}</MTableCell>
           </template>
-          <span v-else class="cell-muted">—</span>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Asset ID -->
         <template #cell-assetName="{ row }">
-          <span v-if="(row as FleetVehicle).assetName" class="cell-link">
+          <MTableCell v-if="(row as FleetVehicle).assetName" variant="link">
             {{ (row as FleetVehicle).assetName }}
-          </span>
-          <span v-else class="cell-muted">—</span>
+          </MTableCell>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Location / Updated -->
         <template #cell-location="{ row }">
-          <span class="cell-primary"
+          <MTableCell
             >{{ (row as FleetVehicle).currentLocation.city }},
-            {{ (row as FleetVehicle).currentLocation.state }}</span
+            {{ (row as FleetVehicle).currentLocation.state }}</MTableCell
           >
-          <span class="cell-sub">{{ formatDate(new Date()) }} · {{ formatTime(new Date()) }}</span>
+          <MTableCell variant="secondary"
+            >{{ formatDate(new Date()) }} · {{ formatTime(new Date()) }}</MTableCell
+          >
         </template>
 
         <!-- Availability -->
@@ -199,14 +204,14 @@ function openMenu(id: string, el: HTMLElement) {
 
         <!-- Defects / Faults -->
         <template #cell-defects="{ row }">
-          <span :class="['cell-mono', { 'cell-danger': (row as FleetVehicle).defects > 0 }]">
+          <MTableCell variant="mono" :class="{ 'cell-danger': (row as FleetVehicle).defects > 0 }">
             {{ (row as FleetVehicle).defects }}
-          </span>
+          </MTableCell>
         </template>
 
         <!-- Cameras -->
         <template #cell-cameras="{ row }">
-          <span class="cell-mono">{{ (row as FleetVehicle).cameras }}</span>
+          <MTableCell variant="mono">{{ (row as FleetVehicle).cameras }}</MTableCell>
         </template>
 
         <!-- Actions -->
@@ -341,41 +346,9 @@ function openMenu(id: string, el: HTMLElement) {
 }
 
 /* ── Cell styles ─────────────────────────────────────────── */
-.cell-link {
-  display: block;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-brand-default);
-  cursor: pointer;
-}
-
-.cell-link:hover {
-  text-decoration: underline;
-}
-
-.cell-mono {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.cell-primary {
-  display: block;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-default);
-}
-
-.cell-sub {
-  display: block;
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-muted);
-}
-
-.cell-muted {
-  color: var(--mtv-color-foreground-muted);
-  font-size: var(--font-size-sm);
-}
-
+/* Layered onto MTableCell's mono variant when defects > 0 */
 .cell-danger {
-  color: var(--mtv-color-status-danger);
+  color: var(--mtv-color-status-critical);
   font-weight: 600;
 }
 
