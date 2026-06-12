@@ -184,10 +184,10 @@ const subNavTabs = computed(() => {
     <!-- Sub-navigation tab strip -->
     <LayoutAppSubNav v-if="subNavTabs" :tabs="subNavTabs" />
 
-    <main class="app-content bg-dot-grid" id="main-content">
+    <main id="main-content" class="app-content bg-dot-grid">
       <div
-        class="app-content-inner"
         v-motion
+        class="app-content-inner"
         :initial="{ opacity: 0, y: 8 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
       >

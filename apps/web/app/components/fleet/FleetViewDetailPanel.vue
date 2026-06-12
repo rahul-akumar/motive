@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { X, MapPin, Package, Clock, Truck, Fuel, AlertTriangle } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
-import type { Driver, Vehicle, DriverStatus } from '@motive/shared'
+import type { Driver, Vehicle } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{

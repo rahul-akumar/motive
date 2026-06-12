@@ -1,5 +1,4 @@
-import type { Driver, DriverStatus, Vehicle } from '@motive/shared'
-import type { FleetDriver } from '@motive/shared'
+import type { Driver, DriverStatus, Vehicle, FleetDriver } from '@motive/shared'
 import { useFleetDataV2 } from '~/composables/useFleetData'
 
 const ALL_STATUSES: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']

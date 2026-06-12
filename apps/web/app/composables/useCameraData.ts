@@ -1,3 +1,6 @@
+import { currentRegion } from '~/composables/useRegion'
+import { camerasByRegion } from '~/mocks/cameras'
+
 export type CameraType = 'dashcam' | 'ai-omnicam' | 'multi-cam-dvr'
 export type CameraFacing = 'road' | 'dual'
 export type CameraStatus =
@@ -28,9 +31,6 @@ export const STATUS_SEVERITY: Record<CameraStatus, number> = {
   'pending-setup': 3,
   online: 4,
 }
-
-import { currentRegion } from '~/composables/useRegion'
-import { camerasByRegion } from '~/mocks/cameras'
 
 export function getStatusGroup(status: CameraStatus): KpiFilter {
   if (status === 'online') return 'online'

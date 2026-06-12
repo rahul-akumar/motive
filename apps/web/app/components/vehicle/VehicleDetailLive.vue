@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import {
   MapPin,
-  Clock,
   Navigation,
-  ShieldAlert,
   ChevronDown,
   ChevronRight,
   Thermometer,
-  Fuel,
-  Gauge,
-  CircleAlert,
   AlertTriangle,
 } from 'lucide-vue-next'
-import { MBadge, MButton, MIcon, MPopover, MMapControls } from '@motive/ui'
+import { MBadge, MIcon, MPopover, MMapControls } from '@motive/ui'
 import type { MMapControlsLayer } from '@motive/ui'
 import type { FleetVehicle, FleetDriver, FleetVehicleStatus, JammingEvent } from '@motive/shared'
 import { useVehicleSecurityData } from '~/composables/useVehicleSecurityData'
@@ -35,7 +30,6 @@ const {
   jammingEvent,
   elapsedSeconds,
   searchRadiusMeters,
-  searchRadiusKm,
   sectorPoints,
 } = useVehicleSecurityData(vehicleId)
 
@@ -54,7 +48,7 @@ let searchCircle: L.Circle | null = null
 let sectorPolygon: L.Polygon | null = null
 let headingLine: L.Polyline | null = null
 let headingArrow: L.Marker | null = null
-let incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
+const incidentMarkers: Array<{ marker: L.Marker; type: string }> = []
 let lockBadge: L.Marker | null = null
 let routeSegments: L.Polyline[] = []
 
@@ -169,12 +163,6 @@ const INCIDENT_LABELS: Record<string, string> = {
   'unauthorized-movement': 'Unauthorized movement',
 }
 
-const INCIDENT_COLORS: Record<string, string> = {
-  jamming: 'var(--mtv-color-status-warning)',
-  'theft-attempt': '#f26040',
-  'unauthorized-movement': 'var(--mtv-color-status-critical)',
-}
-
 const INCIDENT_HEX: Record<string, string> = {
   jamming: '#d97706',
   'theft-attempt': '#f26040',
@@ -217,7 +205,7 @@ const activeLayerIds = ref<Set<string>>(
 function handleToggleLayer(id: string) {
   const next = new Set(activeLayerIds.value)
   if (id === 'incidents') {
-    const childIds = incidentLayers[0].children!.map((c) => c.id)
+    const childIds = incidentLayers[0]?.children?.map((c) => c.id) ?? []
     const allActive = childIds.every((cid) => next.has(cid))
     if (allActive) {
       childIds.forEach((cid) => next.delete(cid))
@@ -439,11 +427,13 @@ function initJammingLayers(L: typeof import('leaflet')) {
   if (event.routeTrail && event.routeTrail.length > 1) {
     const trail = event.routeTrail
     for (let i = 0; i < trail.length - 1; i++) {
-      const speed = trail[i].speed ?? 0
+      const a = trail[i]!
+      const b = trail[i + 1]!
+      const speed = a.speed ?? 0
       const seg = L.polyline(
         [
-          [trail[i].lat, trail[i].lng],
-          [trail[i + 1].lat, trail[i + 1].lng],
+          [a.lat, a.lng],
+          [b.lat, b.lng],
         ],
         {
           color: speedToColor(speed),

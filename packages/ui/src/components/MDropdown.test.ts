@@ -62,6 +62,26 @@ describe('MDropdown', () => {
     wrapper.unmount()
   })
 
+  it('renders a labelled divider item as BOTH a separator and a menuitem', () => {
+    // `divider: true` on a real item means "draw a leading divider line" — the
+    // item itself must still render (regression guard: it once got suppressed).
+    const wrapper = mount(MDropdown, {
+      props: {
+        items: [
+          { label: 'Profile', action: vi.fn() },
+          { label: 'Sign out', divider: true, action: vi.fn() },
+        ],
+        open: true,
+      },
+      attachTo: document.body,
+    })
+    const mainMenu = document.querySelector('[role="menu"]')!
+    expect(mainMenu.querySelectorAll('[role="menuitem"]').length).toBe(2)
+    expect(mainMenu.querySelectorAll('[role="separator"]').length).toBe(1)
+    expect(mainMenu.textContent).toContain('Sign out')
+    wrapper.unmount()
+  })
+
   it('emits update:open false when item with action is clicked', async () => {
     const wrapper = mount(MDropdown, {
       props: { items: ITEMS, open: true },

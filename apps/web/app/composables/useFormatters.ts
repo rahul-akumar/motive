@@ -11,10 +11,6 @@ function fahrenheitToCelsius(f: number): number {
   return (f - 32) * (5 / 9)
 }
 
-function celsiusToFahrenheit(c: number): number {
-  return c * (9 / 5) + 32
-}
-
 // ── Date formatting internals ────────────────────────────────────────────────
 function getIntlDateOptions(dateFormat: DateFormatCode): Intl.DateTimeFormatOptions {
   switch (dateFormat) {

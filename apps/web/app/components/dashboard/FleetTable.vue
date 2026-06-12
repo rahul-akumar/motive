@@ -105,10 +105,10 @@ function hosColor(driver: Driver): string {
             <th
               scope="col"
               :class="{ sorted: sortKey === 'name' }"
-              @click="setSort('name')"
               :aria-sort="
                 sortKey === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
               "
+              @click="setSort('name')"
             >
               Driver
               <span v-if="sortKey === 'name'" aria-hidden="true">{{
@@ -118,10 +118,10 @@ function hosColor(driver: Driver): string {
             <th
               scope="col"
               :class="{ sorted: sortKey === 'status' }"
-              @click="setSort('status')"
               :aria-sort="
                 sortKey === 'status' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
               "
+              @click="setSort('status')"
             >
               Status
               <span v-if="sortKey === 'status'" aria-hidden="true">{{
@@ -131,10 +131,10 @@ function hosColor(driver: Driver): string {
             <th
               scope="col"
               :class="{ sorted: sortKey === 'location' }"
-              @click="setSort('location')"
               :aria-sort="
                 sortKey === 'location' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
               "
+              @click="setSort('location')"
             >
               Location
               <span v-if="sortKey === 'location'" aria-hidden="true">{{
@@ -145,7 +145,6 @@ function hosColor(driver: Driver): string {
             <th
               scope="col"
               :class="{ sorted: sortKey === 'milesDrivenToday' }"
-              @click="setSort('milesDrivenToday')"
               :aria-sort="
                 sortKey === 'milesDrivenToday'
                   ? sortDir === 'asc'
@@ -153,6 +152,7 @@ function hosColor(driver: Driver): string {
                     : 'descending'
                   : 'none'
               "
+              @click="setSort('milesDrivenToday')"
             >
               Miles Today
               <span v-if="sortKey === 'milesDrivenToday'" aria-hidden="true">{{
@@ -162,7 +162,6 @@ function hosColor(driver: Driver): string {
             <th
               scope="col"
               :class="{ sorted: sortKey === 'hosRemaining' }"
-              @click="setSort('hosRemaining')"
               :aria-sort="
                 sortKey === 'hosRemaining'
                   ? sortDir === 'asc'
@@ -170,6 +169,7 @@ function hosColor(driver: Driver): string {
                     : 'descending'
                   : 'none'
               "
+              @click="setSort('hosRemaining')"
             >
               HOS Left
               <span v-if="sortKey === 'hosRemaining'" aria-hidden="true">{{
@@ -252,8 +252,8 @@ function hosColor(driver: Driver): string {
           class="fleet-table-card__page-btn"
           type="button"
           :disabled="currentPage === 1"
-          @click="currentPage--"
           aria-label="Previous page"
+          @click="currentPage--"
         >
           <MIcon :icon="ChevronLeft" :size="14" />
         </button>
@@ -261,8 +261,8 @@ function hosColor(driver: Driver): string {
           class="fleet-table-card__page-btn"
           type="button"
           :disabled="currentPage === totalPages"
-          @click="currentPage++"
           aria-label="Next page"
+          @click="currentPage++"
         >
           <MIcon :icon="ChevronRight" :size="14" />
         </button>

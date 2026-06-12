@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Film, Truck, Wrench, Phone, VideoOff, X, MoreHorizontal } from 'lucide-vue-next'
 import { MBadge, MDropdown, MIcon } from '@motive/ui'
-import type { MDropdownItem } from '@motive/ui'
+import type { MDropdownItem, MBadgeColor } from '@motive/ui'
 import {
   useCameraData,
   getStatusGroup,
@@ -19,12 +19,14 @@ export interface CameraTableProps {
 
 const props = defineProps<CameraTableProps>()
 
+defineEmits<{ clear: [] }>()
+
 const { cameras } = useCameraData()
 
 // ── Filtering + sorting ──────────────────────────────────────────────────────
 
 const filtered = computed(() => {
-  let list = cameras
+  let list = cameras.value
 
   if (props.typeFilter !== 'all') {
     list = list.filter((c) => c.type === props.typeFilter)
@@ -54,9 +56,7 @@ const STATUS_LABELS: Record<CameraStatus, string> = {
   'signal-issue': 'Signal Issue',
 }
 
-type BadgeColor = 'success' | 'danger' | 'warning' | 'error' | 'default'
-
-const STATUS_COLORS: Record<CameraStatus, BadgeColor> = {
+const STATUS_COLORS: Record<CameraStatus, MBadgeColor> = {
   online: 'success',
   offline: 'danger',
   'pending-setup': 'default',
@@ -115,7 +115,7 @@ function openMenu(index: number, el: HTMLElement) {
 <template>
   <div class="camera-table-wrap">
     <!-- Table -->
-    <table class="camera-table" v-if="filtered.length > 0">
+    <table v-if="filtered.length > 0" class="camera-table">
       <thead>
         <tr>
           <th>Vehicle / Asset</th>
@@ -211,32 +211,32 @@ function openMenu(index: number, el: HTMLElement) {
         }
       "
     />
-  </div>
 
-  <!-- Preview overlay -->
-  <Teleport to="body">
-    <Transition name="preview">
-      <div
-        v-if="previewSrc"
-        class="preview-overlay"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Camera preview"
-        @click.self="closePreview"
-        @keydown="handleOverlayKey"
-      >
-        <img :src="previewSrc" class="preview-overlay__img" alt="Camera preview" />
-        <button
-          class="preview-overlay__close"
-          type="button"
-          aria-label="Close preview"
-          @click="closePreview"
+    <!-- Preview overlay -->
+    <Teleport to="body">
+      <Transition name="preview">
+        <div
+          v-if="previewSrc"
+          class="preview-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Camera preview"
+          @click.self="closePreview"
+          @keydown="handleOverlayKey"
         >
-          <MIcon :icon="X" :size="18" />
-        </button>
-      </div>
-    </Transition>
-  </Teleport>
+          <img :src="previewSrc" class="preview-overlay__img" alt="Camera preview" />
+          <button
+            class="preview-overlay__close"
+            type="button"
+            aria-label="Close preview"
+            @click="closePreview"
+          >
+            <MIcon :icon="X" :size="18" />
+          </button>
+        </div>
+      </Transition>
+    </Teleport>
+  </div>
 </template>
 
 <style scoped>
