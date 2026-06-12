@@ -39,7 +39,7 @@ const groups = computed(() => {
 }
 
 .drawer-vehicle__label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -48,7 +48,7 @@ const groups = computed(() => {
 }
 
 .drawer-vehicle__name {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-brand-default);
   text-decoration: none;
@@ -59,7 +59,7 @@ const groups = computed(() => {
 }
 
 .drawer-vehicle__meta {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 </style>

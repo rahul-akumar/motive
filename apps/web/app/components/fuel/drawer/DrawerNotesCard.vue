@@ -98,7 +98,7 @@ function handleKeydown(e: KeyboardEvent) {
   display: block;
   text-align: right;
   padding: 0.25rem 0.625rem 0.375rem;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-subtle);
 }
 
@@ -116,18 +116,18 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 .drawer-notes__note-author {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-foreground-default);
 }
 
 .drawer-notes__note-text {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-default);
 }
 
 .drawer-notes__note-date {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 </style>

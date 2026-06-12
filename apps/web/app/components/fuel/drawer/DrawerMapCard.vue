@@ -101,7 +101,7 @@ watch(
   padding: 0.5rem 0.625rem;
   background: var(--mtv-color-surface-raised);
   border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-default);
 }
 </style>

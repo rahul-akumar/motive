@@ -40,7 +40,7 @@ function getSuffix(n: number): string {
 <style scoped>
 .drawer-ai {
   padding: 0.75rem;
-  background: oklch(0.92 0.04 230);
+  background: oklch(96.253% 0.02262 229.265);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
@@ -55,14 +55,14 @@ function getSuffix(n: number): string {
 }
 
 .drawer-ai__title {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .drawer-ai__message {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 500;
   color: oklch(0.25 0.06 240);
   line-height: 1.4;

@@ -14,7 +14,7 @@ html[data-theme='console-legacy'] {
 
   /* Surface */
   --mtv-color-surface-base: oklch(0.979 0 0);
-  --mtv-color-surface-sunken: oklch(0.955 0 0);
+  --mtv-color-surface-sunken: oklch(0.96 0 0);
   --mtv-color-surface-default: oklch(1 0 0);
   --mtv-color-surface-raised: oklch(1 0 0);
   --mtv-color-surface-overlay: oklch(1 0 0);

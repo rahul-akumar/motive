@@ -95,7 +95,7 @@ const ambientTemp = computed(() => {
 }
 
 .drawer-kpi__label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -103,7 +103,7 @@ const ambientTemp = computed(() => {
 }
 
 .drawer-kpi__value {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-foreground-default);
 }
