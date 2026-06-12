@@ -242,7 +242,7 @@ const subNavTabs = computed(() => {
 
 .app-content-inner {
   flex: 1;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.5rem 0;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;

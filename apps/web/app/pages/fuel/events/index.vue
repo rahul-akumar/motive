@@ -449,7 +449,7 @@ const STATUS_BADGE: Record<
 }
 
 .fe-page__search-input {
-  @apply h-8 rounded-sm border text-sm pl-7 pr-7 w-52;
+  @apply h-8 rounded-sm border text-base pl-7 pr-7 w-52;
   background: var(--mtv-color-background-card);
   border-color: var(--mtv-color-border-default);
   color: var(--mtv-color-foreground-default);
