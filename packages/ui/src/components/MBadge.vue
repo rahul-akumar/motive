@@ -104,7 +104,9 @@ const rootAriaLabel = computed(() => {
         class="m-badge__icon"
         aria-hidden="true"
       />
-      <slot>{{ label }}</slot>
+      <span class="m-badge__label"
+        ><slot>{{ label }}</slot></span
+      >
       <component
         :is="icon"
         v-if="icon && iconPosition === 'right'"
@@ -186,6 +188,12 @@ const rootAriaLabel = computed(() => {
   border-radius: 4px;
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-normal);
+  max-width: 100%;
+}
+
+.m-badge__label {
+  @apply truncate;
+  min-width: 0;
 }
 
 .m-badge--text.m-badge--sm {
