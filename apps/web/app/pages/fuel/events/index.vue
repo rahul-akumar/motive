@@ -497,6 +497,7 @@ const STATUS_BADGE: Record<
 
 .fe-cell-link {
   display: block;
+  width: fit-content;
   font-size: var(--font-size-sm);
   color: var(--mtv-color-brand-default);
   cursor: pointer;
