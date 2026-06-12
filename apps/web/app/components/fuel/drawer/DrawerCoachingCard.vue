@@ -56,7 +56,7 @@ const lastCoached = computed(() => {
 }
 
 .drawer-coaching__label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -69,13 +69,13 @@ const lastCoached = computed(() => {
 }
 
 .drawer-coaching__count {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-foreground-default);
 }
 
 .drawer-coaching__meta {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 </style>

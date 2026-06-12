@@ -67,7 +67,7 @@ function viewAllForDriver() {
 }
 
 .drawer-driver__section-label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -76,7 +76,7 @@ function viewAllForDriver() {
 }
 
 .drawer-driver__name {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-brand-default);
   text-decoration: none;
@@ -87,12 +87,12 @@ function viewAllForDriver() {
 }
 
 .drawer-driver__meta {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 
 .drawer-driver__unassigned {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-subtle);
 }
 
@@ -110,7 +110,7 @@ function viewAllForDriver() {
 }
 
 .drawer-driver__history-subtitle {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -127,7 +127,7 @@ function viewAllForDriver() {
 .drawer-driver__history-row {
   display: flex;
   justify-content: space-between;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-default);
 }
 

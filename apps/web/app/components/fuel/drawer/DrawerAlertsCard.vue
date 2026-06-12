@@ -55,7 +55,7 @@ const alert = computed(() => {
 }
 
 .drawer-alerts__label {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
@@ -81,18 +81,18 @@ const alert = computed(() => {
 }
 
 .drawer-alerts__type {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--mtv-color-foreground-default);
 }
 
 .drawer-alerts__meta {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 
 .drawer-alerts__time {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
 }
 </style>
