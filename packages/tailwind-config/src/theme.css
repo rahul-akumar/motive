@@ -266,6 +266,23 @@
   --font-size-5xl: 4.5rem; /* 72px */
   --font-size-6xl: 6rem; /* 96px */
 
+  /* Tailwind text-* utilities follow the design-system scale (theme-aware:
+     var() references resolve per html[data-theme], e.g. console-legacy's
+     14px base — do not replace with literal values) */
+  --text-2xs: var(--font-size-2xs);
+  --text-xs: var(--font-size-xs);
+  --text-xsm: var(--font-size-xsm);
+  --text-sm: var(--font-size-sm);
+  --text-base: var(--font-size-base);
+  --text-md: var(--font-size-md);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+  --text-3xl: var(--font-size-3xl);
+  --text-4xl: var(--font-size-4xl);
+  --text-5xl: var(--font-size-5xl);
+  --text-6xl: var(--font-size-6xl);
+
   /* Font Weights */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
