@@ -83,7 +83,8 @@ html[data-theme='console-legacy'] {
   --card-radius: 8px;
   --badge-radius: 4px;
   --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
-  --font-size-base: 14px;
+  --font-size-base: 0.875rem; /* 14px */
+  --font-size-sm: 0.75rem; /* 12px — keeps the 2px step below base, matching the default 15/13 scale */
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-family-display: 'Inter', system-ui, -apple-system, sans-serif;
   /* Layout geometry — flat, edge-to-edge */
