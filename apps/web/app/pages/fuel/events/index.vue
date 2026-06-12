@@ -2,6 +2,7 @@
 import { Search, X, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import {
   MTable,
+  MTableCell,
   MButton,
   MBadge,
   MSelect,
@@ -10,6 +11,7 @@ import {
   type MSelectOption,
   type MTableColumn,
 } from '@motive/ui'
+import { NuxtLinkLocale } from '#components'
 import type { FuelEventType, FuelDropStatus } from '@motive/shared'
 import type { FuelEventRow } from '~/composables/useFuelEventMappers'
 
@@ -296,37 +298,38 @@ const STATUS_BADGE: Record<
       >
         <!-- Behavior -->
         <template #cell-type="{ row: r }">
-          <span class="fe-cell-primary">{{ TYPE_LABEL[row(r).type] }}</span>
+          <MTableCell>{{ TYPE_LABEL[row(r).type] }}</MTableCell>
         </template>
 
         <!-- Driver Name / ID -->
         <template #cell-driverName="{ row: r }">
           <template v-if="row(r).driverName">
-            <span class="fe-cell-link">{{ row(r).driverName }}</span>
-            <span class="fe-cell-secondary">{{ row(r).driverId }}</span>
+            <MTableCell variant="link">{{ row(r).driverName }}</MTableCell>
+            <MTableCell variant="secondary">{{ row(r).driverId }}</MTableCell>
           </template>
-          <span v-else class="fe-cell-muted">—</span>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Vehicle ID / MMY -->
         <template #cell-vehicleId="{ row: r }">
-          <NuxtLinkLocale
+          <MTableCell
+            variant="link"
+            :tag="NuxtLinkLocale"
             :to="`/fleet/vehicles/${row(r).vehicleId}/live`"
-            class="fe-cell-link"
             @click.stop
           >
             {{ row(r).vehicleName }}
-          </NuxtLinkLocale>
-          <span class="fe-cell-secondary">{{ row(r).vehicleMMY }}</span>
+          </MTableCell>
+          <MTableCell variant="secondary">{{ row(r).vehicleMMY }}</MTableCell>
         </template>
 
         <!-- Date / Location / Geofence -->
         <template #cell-startTime="{ row: r }">
           <div class="fe-cell-stack">
-            <span class="fe-cell-primary">{{ formatDateLine(row(r)) }}</span>
-            <span class="fe-cell-secondary fe-cell-location" :title="row(r).location">
+            <MTableCell>{{ formatDateLine(row(r)) }}</MTableCell>
+            <MTableCell variant="secondary" class="fe-cell-location" :title="row(r).location">
               {{ row(r).location }}
-            </span>
+            </MTableCell>
           </div>
         </template>
 
@@ -340,7 +343,7 @@ const STATUS_BADGE: Record<
         <!-- Actions — explicit "View Details" navigates to the detail page
              (row-click opens the drawer; this button must not). -->
         <template #cell-actions="{ row: r }">
-          <MButton variant="ghost" size="xs" @click.stop="viewDetails(row(r).id)">
+          <MButton variant="ghost" size="sm" @click.stop="viewDetails(row(r).id)">
             View details
           </MButton>
         </template>
@@ -353,7 +356,6 @@ const STATUS_BADGE: Record<
           </div>
         </template>
       </MTable>
-
     </div>
 
     <!-- Event detail drawer -->
@@ -493,34 +495,6 @@ const STATUS_BADGE: Record<
   flex-direction: column;
   gap: 1px;
   line-height: 1.3;
-}
-
-.fe-cell-link {
-  display: block;
-  width: fit-content;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-brand-default);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.fe-cell-link:hover {
-  text-decoration: underline;
-}
-
-.fe-cell-muted {
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-muted);
-}
-
-.fe-cell-primary {
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-default);
-}
-
-.fe-cell-secondary {
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-muted);
 }
 
 .fe-cell-location {

@@ -2,6 +2,7 @@
 import { Search, X, MoreVertical, User, Truck, FileText } from 'lucide-vue-next'
 import {
   MTable,
+  MTableCell,
   MBadge,
   MButton,
   MSelect,
@@ -153,7 +154,7 @@ function openMenu(id: string, el: HTMLElement) {
         <!-- Driver Name + Status -->
         <template #cell-name="{ row }">
           <div class="cell-name-group">
-            <span class="cell-primary">{{ (row as FleetDriver).name }}</span>
+            <MTableCell>{{ (row as FleetDriver).name }}</MTableCell>
             <MBadge
               :label="STATUS_BADGE[(row as FleetDriver).status].label"
               :color="STATUS_BADGE[(row as FleetDriver).status].color"
@@ -164,74 +165,84 @@ function openMenu(id: string, el: HTMLElement) {
 
         <!-- Vehicle -->
         <template #cell-vehicleUnitNumber="{ row }">
-          <span v-if="(row as FleetDriver).vehicleUnitNumber" class="cell-mono">
+          <MTableCell v-if="(row as FleetDriver).vehicleUnitNumber" variant="mono">
             {{ (row as FleetDriver).vehicleUnitNumber }}
-          </span>
-          <span v-else class="cell-muted">—</span>
+          </MTableCell>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Asset -->
         <template #cell-assetName="{ row }">
-          <span v-if="(row as FleetDriver).assetName" class="cell-mono">
+          <MTableCell v-if="(row as FleetDriver).assetName" variant="mono">
             {{ (row as FleetDriver).assetName }}
-          </span>
-          <span v-else class="cell-muted">—</span>
+          </MTableCell>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Location -->
         <template #cell-location="{ row }">
-          <span class="cell-primary">{{ (row as FleetDriver).currentLocation.city }}</span>
-          <span class="cell-sub">{{ (row as FleetDriver).currentLocation.state }}</span>
+          <MTableCell>{{ (row as FleetDriver).currentLocation.city }}</MTableCell>
+          <MTableCell variant="secondary">{{
+            (row as FleetDriver).currentLocation.state
+          }}</MTableCell>
         </template>
 
         <!-- Break -->
         <template #[`cell-hos.breakRemaining`]="{ row }">
-          <span
+          <MTableCell
+            variant="mono"
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.breakRemaining) }"
           >
             {{ (row as FleetDriver).hos.breakRemaining.toFixed(1) }}h
-          </span>
+          </MTableCell>
         </template>
 
         <!-- Drive -->
         <template #[`cell-hos.driveRemaining`]="{ row }">
-          <span
+          <MTableCell
+            variant="mono"
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.driveRemaining) }"
           >
             {{ (row as FleetDriver).hos.driveRemaining.toFixed(1) }}h
-          </span>
+          </MTableCell>
         </template>
 
         <!-- Shift -->
         <template #[`cell-hos.shiftRemaining`]="{ row }">
-          <span
+          <MTableCell
+            variant="mono"
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.shiftRemaining) }"
           >
             {{ (row as FleetDriver).hos.shiftRemaining.toFixed(1) }}h
-          </span>
+          </MTableCell>
         </template>
 
         <!-- Cycle -->
         <template #[`cell-hos.cycleRemaining`]="{ row }">
-          <span
+          <MTableCell
+            variant="mono"
             class="cell-hos"
             :style="{ color: hosColor((row as FleetDriver).hos.cycleRemaining) }"
           >
             {{ (row as FleetDriver).hos.cycleRemaining.toFixed(1) }}h
-          </span>
+          </MTableCell>
         </template>
 
         <!-- Hrs Today -->
         <template #[`cell-hos.hoursToday`]="{ row }">
-          <span class="cell-mono">{{ (row as FleetDriver).hos.hoursToday.toFixed(1) }}h</span>
+          <MTableCell variant="mono"
+            >{{ (row as FleetDriver).hos.hoursToday.toFixed(1) }}h</MTableCell
+          >
         </template>
 
         <!-- Hrs This Week -->
         <template #[`cell-hos.hoursThisWeek`]="{ row }">
-          <span class="cell-mono">{{ (row as FleetDriver).hos.hoursThisWeek.toFixed(1) }}h</span>
+          <MTableCell variant="mono"
+            >{{ (row as FleetDriver).hos.hoursThisWeek.toFixed(1) }}h</MTableCell
+          >
         </template>
 
         <!-- Actions -->
@@ -372,31 +383,8 @@ function openMenu(id: string, el: HTMLElement) {
   gap: 0.5rem;
 }
 
-.cell-mono {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.cell-primary {
-  display: block;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-default);
-}
-
-.cell-sub {
-  display: block;
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-muted);
-}
-
-.cell-muted {
-  color: var(--mtv-color-foreground-muted);
-  font-size: var(--font-size-sm);
-}
-
+/* Layered onto MTableCell's mono variant — adds weight, color comes inline */
 .cell-hos {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
   font-weight: 600;
 }
 

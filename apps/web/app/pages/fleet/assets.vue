@@ -2,6 +2,7 @@
 import { Search, X, MoreVertical, Eye, Link, Wrench } from 'lucide-vue-next'
 import {
   MTable,
+  MTableCell,
   MBadge,
   MButton,
   MSelect,
@@ -180,34 +181,36 @@ function openMenu(id: string, el: HTMLElement) {
       >
         <!-- Asset Name -->
         <template #cell-name="{ row }">
-          <span class="cell-mono">{{ (row as FleetAsset).name }}</span>
+          <MTableCell variant="mono">{{ (row as FleetAsset).name }}</MTableCell>
         </template>
 
         <!-- Type -->
         <template #cell-type="{ row }">
-          <span class="cell-primary">{{ formatType(row as FleetAsset) }}</span>
+          <MTableCell>{{ formatType(row as FleetAsset) }}</MTableCell>
         </template>
 
         <!-- Driver -->
         <template #cell-driverName="{ row }">
-          <span v-if="(row as FleetAsset).driverName" class="cell-primary">
+          <MTableCell v-if="(row as FleetAsset).driverName">
             {{ (row as FleetAsset).driverName }}
-          </span>
-          <span v-else class="cell-muted">—</span>
+          </MTableCell>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Vehicle -->
         <template #cell-vehicleUnitNumber="{ row }">
-          <span v-if="(row as FleetAsset).vehicleUnitNumber" class="cell-mono">
+          <MTableCell v-if="(row as FleetAsset).vehicleUnitNumber" variant="mono">
             {{ (row as FleetAsset).vehicleUnitNumber }}
-          </span>
-          <span v-else class="cell-muted">—</span>
+          </MTableCell>
+          <MTableCell v-else variant="muted">—</MTableCell>
         </template>
 
         <!-- Location -->
         <template #cell-location="{ row }">
-          <span class="cell-primary">{{ (row as FleetAsset).currentLocation.city }}</span>
-          <span class="cell-sub">{{ (row as FleetAsset).currentLocation.state }}</span>
+          <MTableCell>{{ (row as FleetAsset).currentLocation.city }}</MTableCell>
+          <MTableCell variant="secondary">{{
+            (row as FleetAsset).currentLocation.state
+          }}</MTableCell>
         </template>
 
         <!-- Source -->
@@ -230,7 +233,7 @@ function openMenu(id: string, el: HTMLElement) {
 
         <!-- Cameras -->
         <template #cell-cameras="{ row }">
-          <span class="cell-mono">{{ (row as FleetAsset).cameras }}</span>
+          <MTableCell variant="mono">{{ (row as FleetAsset).cameras }}</MTableCell>
         </template>
 
         <!-- Actions -->
@@ -360,29 +363,6 @@ function openMenu(id: string, el: HTMLElement) {
 .fleet-filter-bar__clear-input:hover {
   color: var(--mtv-color-foreground-default);
   background-color: var(--mtv-color-surface-hover);
-}
-
-/* ── Cell styles ─────────────────────────────────────────── */
-.cell-mono {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.cell-primary {
-  display: block;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-default);
-}
-
-.cell-sub {
-  display: block;
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-muted);
-}
-
-.cell-muted {
-  color: var(--mtv-color-foreground-muted);
-  font-size: var(--font-size-sm);
 }
 
 .action-btn {
