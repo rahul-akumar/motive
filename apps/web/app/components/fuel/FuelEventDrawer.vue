@@ -13,9 +13,6 @@ defineProps<{
     <FuelDrawerDriverCard :event="event" />
     <FuelDrawerVehicleCard :event="event" />
     <FuelDrawerMapCard :event="event" />
-    <FuelDrawerGeofenceCard :event="event" />
-    <FuelDrawerCoachingCard v-if="event.type === 'fuel-loss'" :event="event" />
-    <FuelDrawerAlertsCard v-if="event.type === 'fuel-loss'" :event="event" />
     <FuelDrawerNotesCard :event="event" />
   </div>
 </template>
