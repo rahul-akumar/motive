@@ -50,19 +50,19 @@ defineEmits<{
 
 /* Sizes */
 .m-button--xs {
-  @apply h-5 px-1 text-xs rounded-sm;
+  @apply h-5 px-1 text-sm rounded-sm;
 }
 
 .m-button--sm {
-  @apply h-8 px-3 text-sm rounded-sm;
+  @apply h-8 px-3 text-base rounded-sm;
 }
 
 .m-button--md {
-  @apply h-10 px-4 text-sm rounded-md;
+  @apply h-10 px-4 text-base rounded-md;
 }
 
 .m-button--lg {
-  @apply h-12 px-6 text-base rounded-md;
+  @apply h-12 px-6 text-md rounded-md;
 }
 
 /* Icon-only: square, no horizontal padding */
