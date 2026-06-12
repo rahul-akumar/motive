@@ -101,7 +101,7 @@ function handlePanelKeydown(e: KeyboardEvent) {
 .m-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 200;
   background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
