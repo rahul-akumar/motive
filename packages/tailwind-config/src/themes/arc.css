@@ -1,45 +1,75 @@
-/* Arc — Futurist HUD. Deep violet-black, max rounded, violet glow. Blade Runner meets design tool. */
+/* Arc — Precision Black. Surgical, military intelligence. Zero noise.
+   Parametric hue-shift theme: two control vars set on the document root drive an
+   optional tint. Defaults below keep Arc pure neutral when JS hasn't set them.
+     --mtv-tint : 0 = neutral (pure arc) … 1 = full tint
+     --mtv-hue  : hue angle in degrees (0–360)
+   Every chromatic token is authored so that at --mtv-tint:0 it equals the original
+   achromatic Arc value, and at --mtv-tint:1 it matches the tinted-family value. */
+:root,
 html[data-theme='arc'] {
   /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
 
-  /* Foreground */
-  --mtv-color-foreground-default: oklch(0.82 0.028 285.8);
-  --mtv-color-foreground-muted: oklch(0.63 0.061 284.5);
-  --mtv-color-foreground-subtle: oklch(0.455 0.066 283.5);
-  --mtv-color-foreground-disabled: oklch(0.29 0.037 283.8);
-  --mtv-color-foreground-inverse: oklch(0.198 0.02 284.4);
-  --mtv-color-foreground-on-accent: oklch(1 0 0);
+  /* Foreground (kept neutral — tinted family chroma here was negligible) */
+  --mtv-color-foreground-default: oklch(0.885 0 0);
+  --mtv-color-foreground-muted: oklch(0.598 0 0);
+  --mtv-color-foreground-subtle: oklch(0.465 0 0);
+  --mtv-color-foreground-disabled: oklch(0.371 0 0);
+  --mtv-color-foreground-inverse: oklch(0.216 0 0);
+  /* Contrast flip: dark text on a near-white accent → white text on a vivid accent */
+  --mtv-color-foreground-on-accent: oklch(calc(0.216 + 0.784 * var(--mtv-tint, 0)) 0 0);
 
-  /* Surface */
-  --mtv-color-surface-base: oklch(0.147 0.014 292.3);
-  --mtv-color-surface-sunken: oklch(0.153 0.02 283.9);
-  --mtv-color-surface-default: oklch(0.133 0.014 284.3);
-  --mtv-color-surface-raised: oklch(0.172 0.025 283.4);
-  --mtv-color-surface-overlay: oklch(0.208 0.036 282.8);
-  --mtv-color-surface-hover: oklch(0.19 0.031 283.1);
-  --mtv-color-surface-active: oklch(0.216 0.039 282.7);
-  --mtv-color-surface-accent: oklch(0.541 0.247 293 / 0.08);
-  --mtv-color-surface-accent-subtle: oklch(0.541 0.247 293 / 0.04);
+  /* Surface (neutral L, subtle chroma at hue when tinted) */
+  --mtv-color-surface-base: oklch(0.216 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-sunken: oklch(0.182 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-default: oklch(0.158 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-raised: oklch(0.191 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-overlay: oklch(0.226 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-hover: oklch(0.209 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-active: oklch(0.244 calc(0.01 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --mtv-color-surface-accent: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.05
+  );
+  --mtv-color-surface-accent-subtle: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.03
+  );
 
-  /* Border */
-  --mtv-color-border-default: oklch(0.541 0.247 293 / 0.12);
-  --mtv-color-border-strong: oklch(0.541 0.247 293 / 0.3);
-  --mtv-color-border-accent: oklch(0.541 0.247 293 / 0.45);
-  --mtv-color-border-subtle: oklch(0.541 0.247 293 / 0.07);
+  /* Border (neutral white-alpha → accent-alpha, alpha preserved) */
+  --mtv-color-border-default: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.1
+  );
+  --mtv-color-border-strong: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.18
+  );
+  --mtv-color-border-accent: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.28
+  );
+  --mtv-color-border-subtle: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.06
+  );
 
   /* Link */
   --mtv-color-link-default: var(--mtv-color-blue-400);
   --mtv-color-link-hover: var(--mtv-color-blue-300);
-  --mtv-color-link-visited: var(--mtv-color-purple-300);
+  --mtv-color-link-visited: var(--mtv-color-purple-400);
   --mtv-color-link-active: var(--mtv-color-blue-500);
 
-  /* Brand */
-  --mtv-color-brand-default: oklch(0.542 0.245 293);
-  --mtv-color-brand-hover: oklch(0.638 0.196 297.5);
-  --mtv-color-brand-subtle: oklch(0.541 0.247 293 / 0.08);
-  --mtv-color-brand-muted: oklch(0.541 0.247 293 / 0.04);
-  --mtv-color-brand-foreground: oklch(1 0 0);
-  --mtv-color-brand-ring: oklch(0.542 0.245 293);
+  /* Brand (near-white → vivid accent: L drops, C rises with tint) */
+  --mtv-color-brand-default: oklch(
+    calc(0.913 - 0.336 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0)
+  );
+  --mtv-color-brand-hover: oklch(
+    calc(1 - 0.363 * var(--mtv-tint, 0)) calc(0.208 * var(--mtv-tint, 0)) var(--mtv-hue, 0)
+  );
+  --mtv-color-brand-subtle: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.05
+  );
+  --mtv-color-brand-muted: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.03
+  );
+  --mtv-color-brand-foreground: oklch(calc(0.216 + 0.784 * var(--mtv-tint, 0)) 0 0);
+  --mtv-color-brand-ring: oklch(
+    calc(0.916 - 0.339 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0)
+  );
 
   /* Status */
   --mtv-color-status-success: var(--mtv-color-green-500);
@@ -58,23 +88,26 @@ html[data-theme='arc'] {
   --mtv-color-chart-neutral: var(--mtv-color-neutral-500);
 
   /* ── App-specific vars ────────────────────────────────────────── */
-  --scrollbar-thumb: oklch(0.227 0.051 295.9);
-  --scrollbar-thumb-hover: oklch(0.278 0.068 295.4);
+  --scrollbar-thumb: oklch(0.238 calc(0.032 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
+  --scrollbar-thumb-hover: oklch(0.28 calc(0.042 * var(--mtv-tint, 0)) var(--mtv-hue, 0));
   --logo-bg: var(--mtv-color-brand-default);
   --logo-text: var(--mtv-color-brand-foreground);
-  --sidebar-active-bg: oklch(0.541 0.247 293 / 0.14);
-  --sidebar-active-border: oklch(0.542 0.245 293);
-  --sidebar-active-icon: oklch(0.542 0.245 293);
-  --sidebar-active-glow:
-    inset 2px 0 12px oklch(0.541 0.247 293 / 0.2), 0 0 20px oklch(0.541 0.247 293 / 0.06);
+  --sidebar-active-bg: oklch(
+    calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.09
+  );
+  --sidebar-active-border: var(--mtv-color-brand-ring);
+  --sidebar-active-icon: var(--mtv-color-brand-ring);
+  --sidebar-active-glow: none;
   --avatar-bg: var(--mtv-color-surface-accent);
-  --avatar-text: oklch(0.542 0.245 293);
+  --avatar-text: oklch(
+    calc(0.683 - 0.106 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0)
+  );
   --table-sorted-color: var(--mtv-color-brand-default);
-  --search-focus-border: oklch(0.541 0.247 293 / 0.5);
-  --search-focus-shadow: 0 0 0 3px oklch(0.541 0.247 293 / 0.15);
-  --card-radius: 10px;
-  --badge-radius: 4px;
-  --shadow-card: 0 4px 24px oklch(0.541 0.247 293 / 0.1), 0 1px 6px oklch(0 0 0 / 0.5);
+  --search-focus-border: var(--mtv-color-border-accent);
+  --search-focus-shadow: none;
+  --card-radius: 8px;
+  --badge-radius: 0px;
+  --shadow-card: none;
   --main-margin: 0.5rem 0.5rem 0.5rem 0;
   --main-radius: var(--card-radius);
 }

@@ -78,7 +78,7 @@ const STATUS_COLORS: Record<FleetVehicleStatus, string> = {
   maintenance: '#94a3b8',
 }
 
-const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+const LIGHT_THEMES = new Set(['light', 'legacy'])
 
 const SEARCH_ZONE_STYLES = {
   active: {
