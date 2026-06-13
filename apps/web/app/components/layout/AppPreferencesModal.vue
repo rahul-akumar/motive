@@ -28,7 +28,8 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const { currentTheme, themes, applyTheme } = useTheme()
+const { currentTheme, themes, applyTheme, arcHue, arcTint, setHue, setNeutral, huePresets } =
+  useTheme()
 const { currentLocale, availableLocales, applyLocale } = useLocalePreferences()
 const { currentRegion, availableRegions, applyRegion } = useRegion()
 const {
@@ -78,6 +79,35 @@ const notificationMode = ref<'all' | 'dm' | 'none'>('all')
 
 function selectTheme(id: ThemeId) {
   applyTheme(id)
+}
+
+function onHueInput(event: Event) {
+  setHue(Number((event.target as HTMLInputElement).value))
+}
+
+/** Live accent for the Arc preview/swatch (tracks the chosen hue). */
+function themeAccent(theme: (typeof themes)[number]) {
+  if (theme.id !== 'arc') return theme.accent
+  return arcTint.value ? `oklch(0.577 0.215 ${arcHue.value})` : theme.accent
+}
+
+/** Card preview CSS vars — Arc reflects the live hue/tint, others are static. */
+function cardStyle(theme: (typeof themes)[number]) {
+  if (theme.id === 'arc') {
+    const chroma = arcTint.value ? 0.01 : 0
+    return {
+      '--card-accent': themeAccent(theme),
+      '--card-bg': `oklch(0.168 ${chroma} ${arcHue.value})`,
+      '--card-surface': `oklch(0.191 ${chroma} ${arcHue.value})`,
+      '--card-text': theme.textPrimary,
+    }
+  }
+  return {
+    '--card-accent': theme.accent,
+    '--card-bg': theme.bgBase,
+    '--card-surface': theme.bgCard,
+    '--card-text': theme.textPrimary,
+  }
 }
 </script>
 
@@ -189,64 +219,110 @@ function selectTheme(id: ThemeId) {
             </div>
             <div class="pref-section__body">
               <div class="theme-grid" role="radiogroup" aria-label="Available themes">
-                <button
+                <div
                   v-for="theme in themes"
                   :key="theme.id"
                   class="theme-card"
-                  :class="{ 'theme-card--active': currentTheme === theme.id }"
-                  :style="{
-                    '--card-accent': theme.accent,
-                    '--card-bg': theme.bgBase,
-                    '--card-surface': theme.bgCard,
-                    '--card-text': theme.textPrimary,
+                  :class="{
+                    'theme-card--active': currentTheme === theme.id,
+                    'theme-card--arc': theme.id === 'arc',
                   }"
-                  type="button"
-                  role="radio"
-                  :aria-checked="currentTheme === theme.id"
-                  :aria-label="`${theme.name}: ${theme.description}`"
-                  @click="selectTheme(theme.id)"
+                  :style="cardStyle(theme)"
                 >
-                  <div
-                    class="theme-preview"
-                    :class="{ 'theme-preview--flat': theme.layout === 'flat' }"
-                    aria-hidden="true"
+                  <button
+                    class="theme-card__select"
+                    type="button"
+                    role="radio"
+                    :aria-checked="currentTheme === theme.id"
+                    :aria-label="`${theme.name}: ${theme.description}`"
+                    @click="selectTheme(theme.id)"
                   >
-                    <div class="theme-preview__sidebar">
-                      <div class="theme-preview__logo" />
-                      <div class="theme-preview__nav-item theme-preview__nav-item--active" />
-                      <div class="theme-preview__nav-item" />
-                      <div class="theme-preview__nav-item" />
-                      <div class="theme-preview__nav-item" />
-                    </div>
-                    <div class="theme-preview__content">
-                      <div class="theme-preview__topbar" />
-                      <div class="theme-preview__cards">
-                        <div class="theme-preview__card" />
-                        <div class="theme-preview__card" />
-                        <div class="theme-preview__card theme-preview__card--accent" />
-                        <div class="theme-preview__card" />
+                    <div
+                      class="theme-preview"
+                      :class="{ 'theme-preview--flat': theme.layout === 'flat' }"
+                      aria-hidden="true"
+                    >
+                      <div class="theme-preview__sidebar">
+                        <div class="theme-preview__logo" />
+                        <div class="theme-preview__nav-item theme-preview__nav-item--active" />
+                        <div class="theme-preview__nav-item" />
+                        <div class="theme-preview__nav-item" />
+                        <div class="theme-preview__nav-item" />
                       </div>
-                      <div class="theme-preview__chart" />
+                      <div class="theme-preview__content">
+                        <div class="theme-preview__topbar" />
+                        <div class="theme-preview__cards">
+                          <div class="theme-preview__card" />
+                          <div class="theme-preview__card" />
+                          <div class="theme-preview__card theme-preview__card--accent" />
+                          <div class="theme-preview__card" />
+                        </div>
+                        <div class="theme-preview__chart" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="theme-info">
-                    <div class="theme-info__row">
-                      <span class="theme-info__name">{{ theme.name }}</span>
-                      <div
-                        v-if="currentTheme === theme.id"
-                        class="theme-info__check"
-                        aria-hidden="true"
+                    <div class="theme-info">
+                      <div class="theme-info__row">
+                        <span class="theme-info__name">{{ theme.name }}</span>
+                        <div
+                          v-if="currentTheme === theme.id"
+                          class="theme-info__check"
+                          aria-hidden="true"
+                        >
+                          <MIcon :icon="Check" :size="10" />
+                        </div>
+                      </div>
+                      <p class="theme-info__desc">{{ theme.description }}</p>
+                      <div class="theme-info__swatch" aria-hidden="true">
+                        <div class="theme-info__swatch-dot" />
+                        <span class="theme-info__swatch-label">
+                          {{
+                            theme.id === 'arc'
+                              ? arcTint
+                                ? `${t('preferences.appearance.hueLabel')} ${arcHue}°`
+                                : t('preferences.appearance.neutral')
+                              : theme.accent
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+
+                  <!-- Hue-shift control (Arc only) -->
+                  <div v-if="theme.id === 'arc'" class="theme-hue">
+                    <div class="theme-hue__presets">
+                      <button
+                        class="theme-hue__chip theme-hue__chip--neutral"
+                        :class="{ 'theme-hue__chip--active': !arcTint }"
+                        type="button"
+                        @click="setNeutral()"
                       >
-                        <MIcon :icon="Check" :size="10" />
-                      </div>
+                        {{ t('preferences.appearance.neutral') }}
+                      </button>
+                      <button
+                        v-for="preset in huePresets"
+                        :key="preset.id"
+                        class="theme-hue__chip theme-hue__chip--swatch"
+                        :class="{
+                          'theme-hue__chip--active': arcTint && arcHue === preset.hue,
+                        }"
+                        :style="{ '--chip-hue': preset.hue }"
+                        type="button"
+                        :aria-label="t(`preferences.appearance.presets.${preset.id}`)"
+                        @click="setHue(preset.hue)"
+                      />
                     </div>
-                    <p class="theme-info__desc">{{ theme.description }}</p>
-                    <div class="theme-info__swatch" aria-hidden="true">
-                      <div class="theme-info__swatch-dot" />
-                      <span class="theme-info__swatch-label">{{ theme.accent }}</span>
-                    </div>
+                    <input
+                      class="theme-hue__slider"
+                      type="range"
+                      min="0"
+                      max="360"
+                      :value="arcHue"
+                      :aria-label="t('preferences.appearance.hueLabel')"
+                      @input="onHueInput"
+                    />
+                    <p class="theme-hue__hint">{{ t('preferences.appearance.hueHint') }}</p>
                   </div>
-                </button>
+                </div>
               </div>
               <p class="pref-hint">{{ t('preferences.appearance.hint') }}</p>
             </div>
@@ -941,12 +1017,15 @@ function selectTheme(id: ThemeId) {
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: 2px;
-  padding: 0;
-  cursor: pointer;
-  text-align: left;
   transition: border-color 100ms ease;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-card--arc {
+  grid-column: 1 / -1;
 }
 
 .theme-card:hover {
@@ -955,6 +1034,18 @@ function selectTheme(id: ThemeId) {
 
 .theme-card--active {
   border-color: var(--card-accent, var(--mtv-color-brand-default)) !important;
+}
+
+.theme-card__select {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
 }
 
 .theme-preview {
@@ -1103,6 +1194,102 @@ function selectTheme(id: ThemeId) {
   color: var(--mtv-color-foreground-subtle);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
+}
+
+/* ── Arc hue-shift control ── */
+.theme-hue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border-top: 1px solid var(--mtv-color-border-subtle);
+}
+
+.theme-hue__presets {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.theme-hue__chip {
+  height: 20px;
+  border: 1px solid var(--mtv-color-border-default);
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  transition:
+    border-color 100ms ease,
+    box-shadow 100ms ease;
+}
+
+.theme-hue__chip:hover {
+  border-color: var(--mtv-color-border-strong);
+}
+
+.theme-hue__chip--neutral {
+  padding: 0 0.5rem;
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--mtv-color-foreground-muted);
+  background: var(--mtv-color-surface-default);
+}
+
+.theme-hue__chip--swatch {
+  width: 24px;
+  background-color: oklch(0.62 0.2 var(--chip-hue, 0));
+}
+
+.theme-hue__chip--active {
+  border-color: var(--mtv-color-brand-default);
+  box-shadow: 0 0 0 1px var(--mtv-color-brand-default);
+}
+
+.theme-hue__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    oklch(0.62 0.2 0),
+    oklch(0.62 0.2 60),
+    oklch(0.62 0.2 120),
+    oklch(0.62 0.2 180),
+    oklch(0.62 0.2 240),
+    oklch(0.62 0.2 300),
+    oklch(0.62 0.2 360)
+  );
+}
+
+.theme-hue__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--mtv-color-foreground-default);
+  border: 2px solid var(--mtv-color-surface-base);
+  cursor: pointer;
+}
+
+.theme-hue__slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--mtv-color-foreground-default);
+  border: 2px solid var(--mtv-color-surface-base);
+  cursor: pointer;
+}
+
+.theme-hue__hint {
+  font-size: var(--font-size-sm);
+  color: var(--mtv-color-foreground-subtle);
+  letter-spacing: var(--tracking-normal);
+  margin: 0;
 }
 
 .pref-hint {

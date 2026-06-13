@@ -158,7 +158,16 @@
     "appearance": {
       "title": "Appearance",
       "desc": "Select interface theme.",
-      "hint": "Changes apply instantly and persist across sessions."
+      "hint": "Changes apply instantly and persist across sessions.",
+      "hueLabel": "Accent hue",
+      "neutral": "Neutral",
+      "hueHint": "Tint Arc with a custom accent hue.",
+      "presets": {
+        "red": "Red",
+        "amber": "Amber",
+        "slate": "Slate",
+        "violet": "Violet"
+      }
     },
     "sidebarSection": {
       "title": "Sidebar",
