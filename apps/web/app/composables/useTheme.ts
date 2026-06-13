@@ -1,11 +1,4 @@
-export type ThemeId =
-  | 'stealth'
-  | 'danger-red'
-  | 'amber-ops'
-  | 'slate'
-  | 'arc'
-  | 'console'
-  | 'console-legacy'
+export type ThemeId = 'arc' | 'console' | 'legacy'
 
 export interface Theme {
   id: ThemeId
@@ -21,49 +14,13 @@ export interface Theme {
 
 export const THEMES: Theme[] = [
   {
-    id: 'stealth',
-    name: 'Stealth',
-    description: 'Precision black. Surgical, zero noise, razor-sharp.',
+    id: 'arc',
+    name: 'Arc',
+    description: 'Precision black. Surgical, zero noise — shift the hue to taste.',
     accent: 'oklch(0.913 0.000 0)',
     bgBase: 'oklch(0.168 0.000 0)',
     bgCard: 'oklch(0.191 0.000 0)',
     textPrimary: 'oklch(0.876 0.000 0)',
-  },
-  {
-    id: 'danger-red',
-    name: 'Danger Red',
-    description: 'Alert command. Warm-red surfaces, command center on alert.',
-    accent: 'oklch(0.537 0.210 18.0)',
-    bgBase: 'oklch(0.159 0.012 19.2)',
-    bgCard: 'oklch(0.185 0.017 19.2)',
-    textPrimary: 'oklch(0.950 0.005 18.0)',
-  },
-  {
-    id: 'amber-ops',
-    name: 'Amber Ops',
-    description: 'Night vision. Cockpit phosphor warmth, AN/PVS aesthetic.',
-    accent: 'oklch(0.666 0.157 58.3)',
-    bgBase: 'oklch(0.158 0.009 71.7)',
-    bgCard: 'oklch(0.181 0.013 71.7)',
-    textPrimary: 'oklch(0.893 0.034 80.7)',
-  },
-  {
-    id: 'slate',
-    name: 'Slate',
-    description: 'Enterprise terminal. Cool blue-black, Bloomberg authority.',
-    accent: 'oklch(0.532 0.044 248.0)',
-    bgBase: 'oklch(0.176 0.010 248.0)',
-    bgCard: 'oklch(0.210 0.021 255.5)',
-    textPrimary: 'oklch(0.903 0.013 255.5)',
-  },
-  {
-    id: 'arc',
-    name: 'Arc',
-    description: 'Futurist HUD. Deep violet-black, Blade Runner glow.',
-    accent: 'oklch(0.476 0.257 286.4)',
-    bgBase: 'oklch(0.162 0.016 295.5)',
-    bgCard: 'oklch(0.183 0.031 295.5)',
-    textPrimary: 'oklch(0.909 0.019 295.5)',
   },
   {
     id: 'console',
@@ -76,8 +33,8 @@ export const THEMES: Theme[] = [
     layout: 'flat',
   },
   {
-    id: 'console-legacy',
-    name: 'Console Legacy',
+    id: 'legacy',
+    name: 'Legacy',
     description: 'Split chrome. Black sidebar, white main — classic terminal discipline.',
     accent: 'oklch(0.623 0.188 259.8)',
     bgBase: 'oklch(0.979 0.000 0)',
@@ -88,13 +45,60 @@ export const THEMES: Theme[] = [
   },
 ]
 
+export interface HuePreset {
+  id: string
+  hue: number
+}
+
+/** Quick-pick hues for the Arc tint control. Values are the accent hues of the
+ *  former danger-red / amber-ops / slate / violet tinted themes. */
+export const HUE_PRESETS: HuePreset[] = [
+  { id: 'red', hue: 27 },
+  { id: 'amber', hue: 58 },
+  { id: 'slate', hue: 248 },
+  { id: 'violet', hue: 286 },
+]
+
+/** Former standalone themes → the hue they collapse into on the Arc slider. */
+const DELETED_HUE_MAP: Record<string, number> = {
+  'danger-red': 27,
+  'amber-ops': 58,
+  slate: 248,
+}
+
+/** Renamed themes → their current id, so persisted values keep resolving. */
+const RENAMED_THEME_MAP: Record<string, ThemeId> = {
+  stealth: 'arc',
+  'console-legacy': 'legacy',
+}
+
 const STORAGE_KEY = 'motive-theme'
-const DEFAULT_THEME: ThemeId = 'stealth'
+const HUE_STORAGE_KEY = 'motive-arc-hue'
+const TINT_STORAGE_KEY = 'motive-arc-tint'
+const DEFAULT_THEME: ThemeId = 'arc'
+const DEFAULT_HUE = 27
 
 // Singleton reactive state
 const currentTheme = ref<ThemeId>(DEFAULT_THEME)
+const arcHue = ref<number>(DEFAULT_HUE)
+const arcTint = ref<boolean>(false)
 
 export function useTheme() {
+  /** Push the current hue/tint to the document root and persist them. */
+  function applyTint() {
+    if (import.meta.client) {
+      const root = document.documentElement
+      root.style.setProperty('--mtv-tint', arcTint.value ? '1' : '0')
+      root.style.setProperty('--mtv-hue', String(arcHue.value))
+      try {
+        localStorage.setItem(HUE_STORAGE_KEY, String(arcHue.value))
+        localStorage.setItem(TINT_STORAGE_KEY, arcTint.value ? '1' : '0')
+      } catch (e) {
+        console.warn('[useTheme] Failed to persist tint:', e)
+      }
+    }
+  }
+
   function applyTheme(id: ThemeId) {
     if (import.meta.client) {
       document.documentElement.setAttribute('data-theme', id)
@@ -105,28 +109,69 @@ export function useTheme() {
       }
     }
     currentTheme.value = id
+    applyTint()
+  }
+
+  /** Set the Arc tint hue and enable tinting. */
+  function setHue(hue: number) {
+    arcHue.value = hue
+    arcTint.value = true
+    applyTint()
+  }
+
+  /** Disable tinting — Arc returns to pure neutral. */
+  function setNeutral() {
+    arcTint.value = false
+    applyTint()
   }
 
   function loadSavedTheme() {
     if (!import.meta.client) return
-    let saved: ThemeId | null = null
+
+    let savedTheme: string | null = null
+    let savedHue: string | null = null
+    let savedTint: string | null = null
     try {
-      saved = localStorage.getItem(STORAGE_KEY) as ThemeId | null
+      savedTheme = localStorage.getItem(STORAGE_KEY)
+      savedHue = localStorage.getItem(HUE_STORAGE_KEY)
+      savedTint = localStorage.getItem(TINT_STORAGE_KEY)
     } catch (e) {
       console.warn('[useTheme] Failed to read saved theme:', e)
     }
-    const valid = THEMES.find((t) => t.id === saved)
-    const id = valid ? saved! : DEFAULT_THEME
-    applyTheme(id)
+
+    // Restore tint preferences first so they apply on whichever theme loads.
+    if (savedHue !== null) {
+      const parsed = Number(savedHue)
+      if (Number.isFinite(parsed)) arcHue.value = parsed
+    }
+    if (savedTint !== null) arcTint.value = savedTint === '1'
+
+    // Migrate a removed theme id → Arc with the equivalent hue.
+    if (savedTheme !== null && savedTheme in DELETED_HUE_MAP) {
+      arcHue.value = DELETED_HUE_MAP[savedTheme]!
+      arcTint.value = true
+      applyTheme(DEFAULT_THEME)
+      return
+    }
+
+    // Resolve renamed ids (stealth → arc, console-legacy → legacy).
+    const resolved = (savedTheme && RENAMED_THEME_MAP[savedTheme]) || savedTheme
+    const valid = THEMES.find((t) => t.id === resolved)
+    applyTheme(valid ? (resolved as ThemeId) : DEFAULT_THEME)
   }
 
   const activeTheme = computed(() => THEMES.find((t) => t.id === currentTheme.value) ?? THEMES[0])
 
   return {
     currentTheme: readonly(currentTheme),
+    arcHue: readonly(arcHue),
+    arcTint: readonly(arcTint),
     activeTheme,
     themes: THEMES,
+    huePresets: HUE_PRESETS,
     applyTheme,
+    setHue,
+    setNeutral,
     loadSavedTheme,
   }
 }

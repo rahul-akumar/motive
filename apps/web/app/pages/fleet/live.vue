@@ -46,7 +46,7 @@ const mapLayers = computed<MMapControlsLayer[]>(() =>
   })),
 )
 
-const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+const LIGHT_THEMES = new Set(['light', 'legacy'])
 
 function isDark(): boolean {
   if (!import.meta.client) return true

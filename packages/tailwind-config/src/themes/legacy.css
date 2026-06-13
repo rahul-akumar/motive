@@ -1,5 +1,5 @@
-/* Console Legacy — Split chrome. Black sidebar, white main — classic terminal discipline. */
-html[data-theme='console-legacy'] {
+/* Legacy — Split chrome. Black sidebar, white main — classic terminal discipline. */
+html[data-theme='legacy'] {
   /* ── Layer 2: Semantic tokens ─────────────────────────────────── */
 
   /* Foreground */
@@ -94,7 +94,7 @@ html[data-theme='console-legacy'] {
 }
 
 /* Sidebar overrides — dark */
-html[data-theme='console-legacy'] .sidebar {
+html[data-theme='legacy'] .sidebar {
   --mtv-color-foreground-default: oklch(0.923 0 0);
   --mtv-color-foreground-muted: oklch(0.598 0 0);
   --mtv-color-foreground-subtle: oklch(0.418 0 0);
@@ -118,7 +118,7 @@ html[data-theme='console-legacy'] .sidebar {
 }
 
 /* Main area override — right border only */
-html[data-theme='console-legacy'] .app-main {
+html[data-theme='legacy'] .app-main {
   border: none;
   border-right: 1px solid var(--mtv-color-border-default);
 }

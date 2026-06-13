@@ -102,7 +102,7 @@ function openTimelinePopover(markerEl: L.Marker, entry: TimelineDisplayEntry) {
   timelinePopoverOpen.value = true
 }
 
-const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+const LIGHT_THEMES = new Set(['light', 'legacy'])
 
 function isDark(): boolean {
   const theme = document.documentElement.getAttribute('data-theme') ?? 'dark'

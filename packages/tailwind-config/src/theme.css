@@ -267,7 +267,7 @@
   --font-size-6xl: 6rem; /* 96px */
 
   /* Tailwind text-* utilities follow the design-system scale (theme-aware:
-     var() references resolve per html[data-theme], e.g. console-legacy's
+     var() references resolve per html[data-theme], e.g. legacy's
      14px base — do not replace with literal values) */
   --text-2xs: var(--font-size-2xs);
   --text-xs: var(--font-size-xs);
@@ -325,10 +325,6 @@
    Applied via html[data-theme="..."] attribute
    ============================================================ */
 
-@import './themes/stealth.css';
-@import './themes/danger-red.css';
-@import './themes/amber-ops.css';
-@import './themes/slate.css';
 @import './themes/arc.css';
 @import './themes/console.css';
-@import './themes/console-legacy.css';
+@import './themes/legacy.css';

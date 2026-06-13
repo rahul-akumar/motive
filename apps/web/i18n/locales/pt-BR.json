@@ -158,7 +158,16 @@
     "appearance": {
       "title": "Aparência",
       "desc": "Selecione o tema da interface.",
-      "hint": "As alterações são aplicadas imediatamente e persistem entre sessões."
+      "hint": "As alterações são aplicadas imediatamente e persistem entre sessões.",
+      "hueLabel": "Matiz de destaque",
+      "neutral": "Neutro",
+      "hueHint": "Tinja o Arc com uma matiz de destaque personalizada.",
+      "presets": {
+        "red": "Vermelho",
+        "amber": "Âmbar",
+        "slate": "Ardósia",
+        "violet": "Violeta"
+      }
     },
     "sidebarSection": {
       "title": "Barra Lateral",
