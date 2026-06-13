@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 // ── Theme detection ───────────────────────────────────────────
-const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+const LIGHT_THEMES = new Set(['light', 'legacy'])
 
 function isDarkTheme(): boolean {
   if (!import.meta.client) return true

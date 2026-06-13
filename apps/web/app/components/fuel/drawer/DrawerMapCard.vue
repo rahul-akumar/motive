@@ -8,7 +8,7 @@ const props = defineProps<{
 const mapContainer = ref<HTMLElement | null>(null)
 let map: import('leaflet').Map | null = null
 
-const LIGHT_THEMES = new Set(['light', 'console-legacy'])
+const LIGHT_THEMES = new Set(['light', 'legacy'])
 function isDarkTheme(): boolean {
   if (!import.meta.client) return true
   return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
