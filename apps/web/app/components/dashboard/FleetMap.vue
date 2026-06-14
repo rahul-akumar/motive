@@ -3,10 +3,10 @@ import { select } from 'd3-selection'
 import 'd3-transition'
 import { geoAlbersUsa, geoMercator, geoPath } from 'd3-geo'
 import { easeBackOut } from 'd3-ease'
-import type { Driver, DriverStatus, FuelLossEvent } from '@motive/shared'
+import type { FleetDriver, FleetDriverStatus, FuelLossEvent } from '@motive/shared'
 
 const props = defineProps<{
-  drivers: Driver[]
+  drivers: FleetDriver[]
   fuelLossEvents: FuelLossEvent[]
 }>()
 
@@ -15,7 +15,7 @@ const { geoData, loading } = useFleetMap()
 const svgRef = ref<SVGSVGElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 
-type TooltipData = { driver: Driver; fuelLoss?: FuelLossEvent }
+type TooltipData = { driver: FleetDriver; fuelLoss?: FuelLossEvent }
 
 interface TooltipState {
   visible: boolean
@@ -40,7 +40,7 @@ function readCSSColor(varName: string, fallback: string): string {
   return resolved || fallback
 }
 
-const STATUS_LABELS: Record<DriverStatus, string> = {
+const STATUS_LABELS: Record<FleetDriverStatus, string> = {
   driving: 'Driving',
   idle: 'Idle',
   alert: 'Alert',
@@ -51,7 +51,7 @@ const STATUS_LABELS: Record<DriverStatus, string> = {
 // Only show statuses that have at least one driver
 const activeLegendStatuses = computed(() => {
   const seen = new Set(props.drivers.map((d) => d.status))
-  return (Object.keys(STATUS_LABELS) as DriverStatus[]).filter((s) => seen.has(s))
+  return (Object.keys(STATUS_LABELS) as FleetDriverStatus[]).filter((s) => seen.has(s))
 })
 
 function getCSSVar(name: string): string {
@@ -63,7 +63,7 @@ function drawMap() {
   if (!svgRef.value || !containerRef.value || !geoData.value) return
 
   // Resolve CSS vars to browser-computed RGB values for SVG attribute compatibility
-  const statusColors: Record<DriverStatus, string> = {
+  const statusColors: Record<FleetDriverStatus, string> = {
     driving: readCSSColor('--fleet-status-driving', '#4ade80'),
     idle: readCSSColor('--fleet-status-idle', '#fbbf24'),
     alert: readCSSColor('--fleet-status-alert', '#f87171'),
@@ -130,13 +130,15 @@ function drawMap() {
       if (!projected) return null
       return {
         driver,
-        fuelLoss: fuelByVehicle.get(driver.vehicleId),
+        fuelLoss: driver.vehicleId ? fuelByVehicle.get(driver.vehicleId) : undefined,
         x: projected[0],
         y: projected[1],
       }
     })
     .filter(
-      (d): d is { driver: Driver; fuelLoss: FuelLossEvent | undefined; x: number; y: number } =>
+      (
+        d,
+      ): d is { driver: FleetDriver; fuelLoss: FuelLossEvent | undefined; x: number; y: number } =>
         d !== null,
     )
 
@@ -230,8 +232,8 @@ onMounted(() => {
   onUnmounted(() => themeObserver?.disconnect())
 })
 
-function formatHos(driver: Driver): string {
-  const h = driver.hos.drivingRemaining
+function formatHos(driver: FleetDriver): string {
+  const h = driver.hos.driveRemaining
   if (h <= 0) return 'Violation'
   return `${h.toFixed(1)}h drive left`
 }
@@ -251,11 +253,7 @@ function timeAgo(date: Date): string {
     <div class="fleet-map__header">
       <div>
         <h2 class="fleet-map__title">Fleet Locations</h2>
-        <p class="fleet-map__subtitle font-mono-data">{{ drivers.length }} trucks · live</p>
-      </div>
-      <div class="fleet-map__live">
-        <span class="fleet-map__live-dot" aria-hidden="true" />
-        <span class="fleet-map__live-label">LIVE</span>
+        <p class="fleet-map__subtitle font-mono-data">{{ drivers.length }} trucks</p>
       </div>
     </div>
 
@@ -287,8 +285,8 @@ function timeAgo(date: Date): string {
             {{ tooltip.data.driver.currentLocation.city }},
             {{ tooltip.data.driver.currentLocation.state }}
           </div>
-          <div v-if="tooltip.data.driver.currentLoad" class="fleet-map__tooltip-load">
-            {{ tooltip.data.driver.currentLoad }}
+          <div v-if="tooltip.data.driver.vehicleUnitNumber" class="fleet-map__tooltip-load">
+            Unit {{ tooltip.data.driver.vehicleUnitNumber }}
           </div>
           <div
             class="fleet-map__tooltip-hos"
@@ -360,41 +358,6 @@ function timeAgo(date: Date): string {
   color: var(--mtv-color-foreground-subtle);
   margin: 2px 0 0;
   letter-spacing: var(--tracking-widest);
-}
-
-/* Live indicator */
-.fleet-map__live {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.fleet-map__live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 25%;
-  background-color: var(--fleet-severity-success);
-  animation: live-pulse 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-@keyframes live-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.4;
-  }
-}
-
-.fleet-map__live-label {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--tracking-loose);
-  color: var(--mtv-color-foreground-subtle);
 }
 
 /* Canvas */

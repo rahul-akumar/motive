@@ -13,10 +13,22 @@ const props = defineProps<{
 
 const svgRef = ref<SVGSVGElement | null>(null)
 
-// Read CSS custom properties from the document root at draw time
 function getCSSVar(name: string): string {
   if (!import.meta.client) return ''
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+}
+
+// Resolves a CSS var to browser-computed RGB — needed for D3 SVG fill attributes
+// which don't support oklch or var() as presentation attributes.
+function readCSSColor(varName: string, fallback: string): string {
+  if (!import.meta.client) return fallback
+  const el = document.createElement('div')
+  el.style.display = 'none'
+  el.style.color = `var(${varName})`
+  document.body.appendChild(el)
+  const resolved = getComputedStyle(el).color
+  document.body.removeChild(el)
+  return resolved || fallback
 }
 
 // CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill attributes; oklch is not supported in SVG presentation attributes.
@@ -25,30 +37,66 @@ const segments = computed(() => [
     key: 'driving',
     label: 'Driving',
     value: props.status.driving,
-    color: getCSSVar('--accent') || '#e2e2e2',
+    color: getCSSVar('--fleet-status-driving'),
   },
-  { key: 'idle', label: 'Idle', value: props.status.idle, color: '#d97706' },
+  { key: 'idle', label: 'Idle', value: props.status.idle, color: getCSSVar('--fleet-status-idle') },
+  {
+    key: 'sleeper',
+    label: 'Sleeper',
+    value: props.status.sleeper,
+    color: getCSSVar('--fleet-status-sleeper'),
+  },
   {
     key: 'offline',
     label: 'Offline',
     value: props.status.offline,
-    color: getCSSVar('--text-muted') || '#2a2a2a',
+    color: getCSSVar('--fleet-status-offline'),
   },
-  { key: 'alert', label: 'Alert', value: props.status.alert, color: '#dc2626' },
+  {
+    key: 'alert',
+    label: 'Alert',
+    value: props.status.alert,
+    color: getCSSVar('--fleet-status-alert'),
+  },
 ])
 
 function drawChart() {
   if (!svgRef.value) return
 
-  const accentColor = getCSSVar('--accent') || '#e2e2e2'
   const textPrimary = getCSSVar('--text-primary') || '#e2e2e2'
-  const textMuted = getCSSVar('--text-muted') || '#2a2a2a'
+  const textMuted = getCSSVar('--text-muted') || '#6b7280'
 
   const currentSegments = [
-    { key: 'driving', label: 'Driving', value: props.status.driving, color: accentColor },
-    { key: 'idle', label: 'Idle', value: props.status.idle, color: '#d97706' },
-    { key: 'offline', label: 'Offline', value: props.status.offline, color: textMuted },
-    { key: 'alert', label: 'Alert', value: props.status.alert, color: '#dc2626' },
+    {
+      key: 'driving',
+      label: 'Driving',
+      value: props.status.driving,
+      color: readCSSColor('--fleet-status-driving', '#4ade80'),
+    },
+    {
+      key: 'idle',
+      label: 'Idle',
+      value: props.status.idle,
+      color: readCSSColor('--fleet-status-idle', '#fb923c'),
+    },
+    {
+      key: 'sleeper',
+      label: 'Sleeper',
+      value: props.status.sleeper,
+      color: readCSSColor('--fleet-status-sleeper', '#a78bfa'),
+    },
+    {
+      key: 'offline',
+      label: 'Offline',
+      value: props.status.offline,
+      color: readCSSColor('--fleet-status-offline', '#525252'),
+    },
+    {
+      key: 'alert',
+      label: 'Alert',
+      value: props.status.alert,
+      color: readCSSColor('--fleet-status-alert', '#f87171'),
+    },
   ]
 
   const size = 200
@@ -64,7 +112,7 @@ function drawChart() {
     .attr('role', 'img')
     .attr(
       'aria-label',
-      `Fleet status: ${props.status.driving} driving, ${props.status.idle} idle, ${props.status.offline} offline, ${props.status.alert} alert`,
+      `Fleet status: ${props.status.driving} driving, ${props.status.idle} idle, ${props.status.sleeper} sleeper, ${props.status.offline} offline, ${props.status.alert} alert`,
     )
 
   const g = svg.append('g').attr('transform', `translate(${radius},${radius})`)
@@ -134,7 +182,7 @@ function drawChart() {
       'font-family',
       getComputedStyle(document.documentElement).getPropertyValue('--font-family-condensed').trim(),
     )
-    .attr('font-size', '28px')
+    .style('font-size', 'var(--font-size-xl)')
     .attr('font-weight', '700')
     .text(props.status.total)
 
@@ -146,7 +194,7 @@ function drawChart() {
       'font-family',
       getComputedStyle(document.documentElement).getPropertyValue('--font-family-mono').trim(),
     )
-    .attr('font-size', '9px')
+    .style('font-size', 'var(--font-size-xs)')
     .attr('letter-spacing', '0.08em')
     .text('VEHICLES')
 }
@@ -174,7 +222,6 @@ watch(() => props.status, drawChart, { deep: true })
   <div class="fleet-donut fleet-card">
     <div class="fleet-donut__header">
       <h2 class="fleet-donut__title">Fleet Status</h2>
-      <p class="fleet-donut__subtitle font-mono-data">Real-time</p>
     </div>
 
     <div class="fleet-donut__body">
@@ -229,13 +276,6 @@ watch(() => props.status, drawChart, { deep: true })
   margin: 0;
 }
 
-.fleet-donut__subtitle {
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  margin: 2px 0 0;
-  letter-spacing: var(--tracking-wide);
-}
-
 .fleet-donut__body {
   display: flex;
   flex-direction: column;
@@ -251,9 +291,9 @@ watch(() => props.status, drawChart, { deep: true })
 
 .fleet-donut__legend {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .fleet-donut__legend-item {
