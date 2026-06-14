@@ -59,11 +59,26 @@ function openPreferences(section?: string) {
 
 <style scoped>
 .app-shell {
+  /* Single source of truth for the page gutter — shared by every layout (AppMain,
+     AppMainDetail) so headers and content keep one hard left alignment everywhere. */
+  --page-gutter: 2rem;
   display: flex;
   flex-direction: row;
   height: 100vh;
   background-color: var(--mtv-color-surface-base);
   transition: background-color 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    --page-gutter: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    --page-gutter: 0.75rem;
+  }
 }
 
 /* Mobile overlay backdrop */

@@ -161,16 +161,25 @@ const pageTitleDisplay = computed(() => {
   return key ? t(key) : raw
 })
 
-const subNavTabs = computed(() => {
-  // Strip locale prefix (e.g. /pt-BR, /en-GB) so bare keys like /safety still match
+// Strip locale prefix (e.g. /pt-BR, /en-GB) so bare keys like /safety still match
+const basePath = computed(() => {
   const localePrefix = LOCALE_URL_PREFIXES[locale.value as LocaleCode] ?? ''
-  const basePath =
-    localePrefix && route.path.startsWith(localePrefix)
-      ? route.path.slice(localePrefix.length) || '/'
-      : route.path
-  const prefix = Object.keys(subNavMap.value).find((k) => basePath.startsWith(k))
+  return localePrefix && route.path.startsWith(localePrefix)
+    ? route.path.slice(localePrefix.length) || '/'
+    : route.path
+})
+
+const subNavTabs = computed(() => {
+  const prefix = Object.keys(subNavMap.value).find((k) => basePath.value.startsWith(k))
   return prefix ? subNavMap.value[prefix] : null
 })
+
+// Canvas (full-bleed map) pages render without the page gutter. Layout-owned exception
+// list — content pages cannot opt themselves out.
+const CANVAS_ROUTES = ['/fleet/live', '/fleet/live-3d']
+const isCanvas = computed(() =>
+  CANVAS_ROUTES.some((r) => basePath.value === r || basePath.value.startsWith(`${r}/`)),
+)
 </script>
 
 <template>
@@ -188,6 +197,7 @@ const subNavTabs = computed(() => {
       <div
         v-motion
         class="app-content-inner"
+        :class="{ 'app-content-inner--canvas': isCanvas }"
         :initial="{ opacity: 0, y: 8 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 300, ease: 'easeOut' } }"
       >
@@ -211,7 +221,7 @@ const subNavTabs = computed(() => {
 }
 
 .app-page-header {
-  padding: 1rem 2rem 0;
+  padding: 1rem var(--page-gutter) 0;
   flex-shrink: 0;
 }
 
@@ -242,7 +252,7 @@ const subNavTabs = computed(() => {
 
 .app-content-inner {
   flex: 1;
-  padding: 1rem 0.5rem 0;
+  padding: 1rem var(--page-gutter) 1.5rem;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -251,15 +261,8 @@ const subNavTabs = computed(() => {
   min-height: 0;
 }
 
-@media (max-width: 768px) {
-  .app-content-inner {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .app-content-inner {
-    padding: 0.75rem;
-  }
+/* Canvas pages (maps/3d) fill the panel edge-to-edge — see CANVAS_ROUTES. */
+.app-content-inner--canvas {
+  padding: 0;
 }
 </style>
