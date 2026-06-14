@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Driver } from '@motive/shared'
+import type { FleetDriver } from '@motive/shared'
 
 const props = defineProps<{
-  drivers: Driver[]
+  drivers: FleetDriver[]
 }>()
 
 const MAX_HOURS = 11 // 11-hour driving limit
@@ -10,7 +10,7 @@ const MAX_HOURS = 11 // 11-hour driving limit
 const topDrivers = computed(() =>
   [...props.drivers]
     .filter((d) => d.status !== 'offline')
-    .sort((a, b) => b.hos.drivingToday - a.hos.drivingToday)
+    .sort((a, b) => b.hos.hoursToday - a.hos.hoursToday)
     .slice(0, 5),
 )
 
@@ -23,24 +23,24 @@ function getCSSVar(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 }
 
-function hosColor(driver: Driver): string {
+function hosColor(driver: FleetDriver): string {
   if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'
-  if (driver.hos.drivingRemaining <= 1) return 'var(--fleet-severity-warning)'
-  if (driver.hos.drivingRemaining <= 3) return 'var(--fleet-severity-warning)'
+  if (driver.hos.driveRemaining <= 1) return 'var(--fleet-severity-warning)'
+  if (driver.hos.driveRemaining <= 3) return 'var(--fleet-severity-warning)'
   return getCSSVar('--accent') || 'var(--mtv-color-brand-default)'
 }
 
-function hosStatus(driver: Driver): string {
+function hosStatus(driver: FleetDriver): string {
   if (driver.hos.hasViolation) return 'VIOLATION'
-  if (driver.hos.drivingRemaining <= 1) return 'CRITICAL'
-  if (driver.hos.drivingRemaining <= 3) return 'WARNING'
+  if (driver.hos.driveRemaining <= 1) return 'CRITICAL'
+  if (driver.hos.driveRemaining <= 3) return 'WARNING'
   return 'OK'
 }
 
-function hosStatusColor(driver: Driver): string {
+function hosStatusColor(driver: FleetDriver): string {
   if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'
-  if (driver.hos.drivingRemaining <= 1) return 'var(--fleet-severity-critical)'
-  if (driver.hos.drivingRemaining <= 3) return 'var(--fleet-severity-warning)'
+  if (driver.hos.driveRemaining <= 1) return 'var(--fleet-severity-critical)'
+  if (driver.hos.driveRemaining <= 3) return 'var(--fleet-severity-warning)'
   return 'var(--mtv-color-foreground-subtle)'
 }
 </script>
@@ -72,32 +72,32 @@ function hosStatusColor(driver: Driver): string {
         <!-- Bar -->
         <div
           class="hos-bar__track"
-          :aria-label="`${driver.hos.drivingToday.toFixed(1)} of ${MAX_HOURS} hours driven`"
+          :aria-label="`${driver.hos.hoursToday.toFixed(1)} of ${MAX_HOURS} hours driven`"
         >
           <div
             class="hos-bar__fill"
             :style="{
-              width: hosBarWidth(driver.hos.drivingToday),
+              width: hosBarWidth(driver.hos.hoursToday),
               backgroundColor: hosColor(driver),
             }"
           />
           <!-- Remaining indicator -->
           <div
-            v-if="!driver.hos.hasViolation && driver.hos.drivingRemaining > 0"
+            v-if="!driver.hos.hasViolation && driver.hos.driveRemaining > 0"
             class="hos-bar__remaining"
             :style="{
-              width: hosBarWidth(driver.hos.drivingRemaining),
-              left: hosBarWidth(driver.hos.drivingToday),
+              width: hosBarWidth(driver.hos.driveRemaining),
+              left: hosBarWidth(driver.hos.hoursToday),
             }"
           />
         </div>
 
         <!-- Hours -->
         <div class="hos-bar__hours font-mono-data">
-          <span class="hos-bar__hours-driven">{{ driver.hos.drivingToday.toFixed(1) }}h</span>
+          <span class="hos-bar__hours-driven">{{ driver.hos.hoursToday.toFixed(1) }}h</span>
           <span class="hos-bar__hours-sep">/</span>
           <span class="hos-bar__hours-remaining" :style="{ color: hosStatusColor(driver) }">
-            {{ driver.hos.drivingRemaining.toFixed(1) }}h left
+            {{ driver.hos.driveRemaining.toFixed(1) }}h left
           </span>
         </div>
       </div>

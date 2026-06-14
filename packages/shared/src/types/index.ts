@@ -163,6 +163,7 @@ export interface DailyMilesData {
 export interface FleetStatusCount {
   driving: number
   idle: number
+  sleeper: number
   offline: number
   alert: number
   total: number

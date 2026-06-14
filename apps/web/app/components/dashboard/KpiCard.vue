@@ -3,7 +3,8 @@ import {
   Users,
   Truck,
   CheckCircle2,
-  TriangleAlert,
+  MapPin,
+  Clock,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -18,17 +19,12 @@ const props = defineProps<{
 
 const iconMap: Record<string, Component> = {
   drivers: Users,
-  miles: Truck,
+  stops: MapPin,
   ontime: CheckCircle2,
-  alerts: TriangleAlert,
+  hos: Clock,
 }
 
 const deltaColor = computed(() => {
-  if (props.metric.id === 'active-alerts') {
-    return props.metric.deltaType === 'decrease'
-      ? 'var(--fleet-delta-decrease)'
-      : 'var(--fleet-delta-neutral)'
-  }
   return props.metric.deltaType === 'increase'
     ? 'var(--fleet-delta-increase)'
     : 'var(--fleet-delta-decrease)'

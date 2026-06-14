@@ -6,11 +6,11 @@
    Used as inline styles in map markers, list accents, gauges.
    ============================================================ */
 :root {
-  --fleet-status-driving: var(--mtv-color-emerald-500);
-  --fleet-status-idle: var(--mtv-color-coral-500);
+  --fleet-status-driving: var(--mtv-color-green-500);
+  --fleet-status-idle: var(--mtv-color-yellow-500);
   --fleet-status-alert: var(--mtv-color-rose-500);
-  --fleet-status-offline: var(--mtv-color-neutral-500);
-  --fleet-status-sleeper: var(--mtv-color-indigo-500);
+  --fleet-status-offline: var(--mtv-color-neutral-300);
+  --fleet-status-sleeper: var(--mtv-color-blue-500);
 
   /* Severity tokens (alerts, events) */
   --fleet-severity-critical: var(--mtv-color-red-500);
