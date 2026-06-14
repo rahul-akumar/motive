@@ -95,7 +95,7 @@ function formatLastUpdated(date: Date): string {
   align-items: center;
   gap: 0.625rem;
   width: 100%;
-  padding: 0.625rem 0.75rem 0.625rem 0.875rem;
+  padding: 0.625rem 0.75rem 0.625rem var(--page-gutter);
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--mtv-color-border-default);

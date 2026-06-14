@@ -277,7 +277,6 @@ function openMenu(id: string, el: HTMLElement) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0 1.5rem 1.5rem;
   overflow: hidden;
 }
 
