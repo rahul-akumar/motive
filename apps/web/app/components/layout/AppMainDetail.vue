@@ -73,7 +73,7 @@ withDefaults(defineProps<AppMainDetailProps>(), {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 1rem var(--page-gutter);
   flex-shrink: 0;
   gap: 0.75rem;
   border-bottom: 1px solid var(--mtv-color-border-default);
@@ -128,24 +128,12 @@ withDefaults(defineProps<AppMainDetailProps>(), {
 
 .detail-main__content-inner {
   flex: 1;
-  padding: 1rem 2rem;
+  padding: 1rem var(--page-gutter);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
-}
-
-@media (max-width: 768px) {
-  .detail-main__content-inner {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .detail-main__content-inner {
-    padding: 0.75rem;
-  }
 }
 </style>
