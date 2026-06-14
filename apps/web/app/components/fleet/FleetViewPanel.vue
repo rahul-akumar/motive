@@ -186,7 +186,7 @@ const localSearch = computed({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0.75rem 0.75rem 0.875rem;
+  padding: 0.75rem 0.75rem 0.75rem var(--page-gutter);
   border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
@@ -246,7 +246,7 @@ const localSearch = computed({
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
-  padding: 0.625rem 0.75rem;
+  padding: 0.625rem 0.75rem 0.625rem var(--page-gutter);
   border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
@@ -292,14 +292,14 @@ const localSearch = computed({
 /* Search */
 .fv-panel__search {
   position: relative;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem 0.5rem var(--page-gutter);
   border-bottom: 1px solid var(--mtv-color-border-default);
   flex-shrink: 0;
 }
 
 .fv-panel__search-icon {
   position: absolute;
-  left: 1.125rem;
+  left: calc(var(--page-gutter) + 0.375rem);
   top: 50%;
   transform: translateY(-50%);
   color: var(--mtv-color-foreground-subtle);
