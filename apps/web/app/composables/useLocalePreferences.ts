@@ -12,7 +12,9 @@ export const LOCALES: LocaleOption[] = [
 ]
 
 // URL prefix for each non-default locale (en-US has no prefix)
-export const LOCALE_URL_PREFIXES: Partial<Record<LocaleCode, string>> = {
+type LocaleUrlPrefixMap = Partial<Record<LocaleCode, string>>
+
+export const LOCALE_URL_PREFIXES: LocaleUrlPrefixMap = {
   'en-GB': '/en-GB',
   'pt-BR': '/pt-BR',
 }

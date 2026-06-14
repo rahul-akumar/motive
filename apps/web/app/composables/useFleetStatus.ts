@@ -6,7 +6,9 @@ import type { DriverStatus } from '@motive/shared'
  * automatically participate in theme changes.
  */
 
-export const FLEET_STATUS_COLORS: Record<DriverStatus, string> = {
+type DriverStatusMap = Record<DriverStatus, string>
+
+export const FLEET_STATUS_COLORS: DriverStatusMap = {
   driving: 'var(--fleet-status-driving)',
   idle: 'var(--fleet-status-idle)',
   alert: 'var(--fleet-status-alert)',
@@ -14,7 +16,7 @@ export const FLEET_STATUS_COLORS: Record<DriverStatus, string> = {
   sleeper: 'var(--fleet-status-sleeper)',
 }
 
-export const FLEET_STATUS_LABELS: Record<DriverStatus, string> = {
+export const FLEET_STATUS_LABELS: DriverStatusMap = {
   driving: 'Driving',
   idle: 'Idle',
   alert: 'Alert',
