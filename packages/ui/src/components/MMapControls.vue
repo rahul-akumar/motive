@@ -97,18 +97,20 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
               <template v-for="layer in props.layers" :key="layer.id">
                 <!-- Layer with children (group) -->
                 <template v-if="layer.children?.length">
-                  <button
-                    type="button"
-                    class="m-map-controls__layer-item"
-                    :class="{ 'm-map-controls__layer-item--active': isParentActive(layer) }"
-                    :aria-pressed="isParentFullyActive(layer)"
-                    :title="layer.label"
-                    role="menuitemcheckbox"
-                    :aria-checked="isParentFullyActive(layer)"
-                    @click="emit('toggleLayer', layer.id)"
-                  >
-                    <MIcon :icon="layer.icon" :size="13" />
-                    <span class="m-map-controls__layer-label">{{ layer.label }}</span>
+                  <div class="m-map-controls__layer-group">
+                    <button
+                      type="button"
+                      class="m-map-controls__layer-item m-map-controls__layer-toggle"
+                      :class="{ 'm-map-controls__layer-item--active': isParentActive(layer) }"
+                      :aria-pressed="isParentFullyActive(layer)"
+                      :title="layer.label"
+                      role="menuitemcheckbox"
+                      :aria-checked="isParentFullyActive(layer)"
+                      @click="emit('toggleLayer', layer.id)"
+                    >
+                      <MIcon :icon="layer.icon" :size="13" />
+                      <span class="m-map-controls__layer-label">{{ layer.label }}</span>
+                    </button>
                     <button
                       type="button"
                       class="m-map-controls__layer-expand"
@@ -125,7 +127,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
                         }"
                       />
                     </button>
-                  </button>
+                  </div>
 
                   <!-- Children -->
                   <template v-if="expandedGroups.has(layer.id)">
@@ -356,8 +358,24 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   color: var(--mtv-color-brand-default);
 }
 
-.m-map-controls__layer-item + .m-map-controls__layer-item {
+.m-map-controls__layers-popup > * + * {
   border-top: 1px solid var(--mtv-color-border-default);
+}
+
+/* Group row: toggle button + expand button as siblings */
+.m-map-controls__layer-group {
+  display: flex;
+  align-items: center;
+}
+
+.m-map-controls__layer-toggle {
+  flex: 1;
+  min-width: 0;
+  padding-right: 4px;
+}
+
+.m-map-controls__layer-group .m-map-controls__layer-expand {
+  margin-right: 6px;
 }
 
 /* Child layer items */
