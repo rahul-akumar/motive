@@ -219,11 +219,7 @@ watch(() => props.status, drawChart, { deep: true })
 </script>
 
 <template>
-  <div class="fleet-donut fleet-card">
-    <div class="fleet-donut__header">
-      <h2 class="fleet-donut__title">Fleet Status</h2>
-    </div>
-
+  <DashboardCard title="Fleet status" class="fleet-donut">
     <div class="fleet-donut__body">
       <!-- Chart -->
       <div class="fleet-donut__chart-wrap" role="figure">
@@ -250,32 +246,10 @@ watch(() => props.status, drawChart, { deep: true })
         </div>
       </div>
     </div>
-  </div>
+  </DashboardCard>
 </template>
 
 <style scoped>
-.fleet-donut {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.fleet-donut__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.fleet-donut__title {
-  font-family: var(--font-family-condensed);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--mtv-color-foreground-default);
-  letter-spacing: var(--tracking-tight);
-  margin: 0;
-}
-
 .fleet-donut__body {
   display: flex;
   flex-direction: column;
