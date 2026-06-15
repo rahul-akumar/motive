@@ -4,9 +4,8 @@ definePageMeta({
   moduleName: 'Dashboard',
 })
 
-const { fleetDrivers, fleetStatus } = useFleetData()
+const { fleetDrivers } = useFleetData()
 const { metrics } = useKPIMetrics()
-const { mapFuelLossEvents } = useFuelLossData()
 </script>
 
 <template>
@@ -25,25 +24,18 @@ const { mapFuelLossEvents } = useFuelLossData()
     <!-- Charts Row -->
     <section class="charts-row" aria-label="Fleet analytics charts">
       <ClientOnly>
-        <DashboardFleetStatusDonut
-          :status="fleetStatus"
-          class="charts-row__donut animate-card-enter animate-card-enter-5"
-        />
-        <template #fallback>
-          <div class="chart-skeleton fleet-card charts-row__donut" aria-hidden="true" />
-        </template>
-      </ClientOnly>
-
-      <ClientOnly>
         <DashboardFleetMap
           :drivers="fleetDrivers"
-          :fuel-loss-events="mapFuelLossEvents"
-          class="charts-row__map animate-card-enter animate-card-enter-6"
+          class="charts-row__map animate-card-enter animate-card-enter-5"
         />
         <template #fallback>
           <div class="chart-skeleton fleet-card charts-row__map" aria-hidden="true" />
         </template>
       </ClientOnly>
+
+      <DashboardFleetSafetyCard
+        class="charts-row__safety animate-card-enter animate-card-enter-6"
+      />
     </section>
 
     <!-- HOS Compliance -->
@@ -73,12 +65,17 @@ const { mapFuelLossEvents } = useFuelLossData()
 /* Charts Row */
 .charts-row {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 
-.charts-row__map,
-.charts-row__donut {
+.charts-row__map {
+  grid-column: span 3;
+  min-height: 280px;
+}
+
+.charts-row__safety {
+  grid-column: span 1;
   min-height: 280px;
 }
 

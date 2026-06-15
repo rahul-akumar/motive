@@ -46,12 +46,7 @@ function hosStatusColor(driver: FleetDriver): string {
 </script>
 
 <template>
-  <div class="hos-bar fleet-card">
-    <div class="hos-bar__header">
-      <h2 class="hos-bar__title">HOS Compliance</h2>
-      <p class="hos-bar__subtitle font-mono-data">Top 5 drivers by hours driven</p>
-    </div>
-
+  <DashboardCard title="HOS compliance" subtitle="Top 5 drivers by hours driven" class="hos-bar">
     <div class="hos-bar__list" role="list" aria-label="HOS compliance by driver">
       <div v-for="driver in topDrivers" :key="driver.id" class="hos-bar__item" role="listitem">
         <!-- Driver info -->
@@ -102,39 +97,10 @@ function hosStatusColor(driver: FleetDriver): string {
         </div>
       </div>
     </div>
-  </div>
+  </DashboardCard>
 </template>
 
 <style scoped>
-.hos-bar {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.hos-bar__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.hos-bar__title {
-  font-family: var(--font-family-condensed);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--mtv-color-foreground-default);
-  letter-spacing: var(--tracking-tight);
-  margin: 0;
-}
-
-.hos-bar__subtitle {
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  margin: 2px 0 0;
-  letter-spacing: var(--tracking-wide);
-}
-
 .hos-bar__list {
   display: flex;
   flex-direction: column;

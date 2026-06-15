@@ -3,11 +3,13 @@ import { select } from 'd3-selection'
 import 'd3-transition'
 import { geoAlbersUsa, geoMercator, geoPath } from 'd3-geo'
 import { easeBackOut } from 'd3-ease'
-import type { FleetDriver, FleetDriverStatus, FuelLossEvent } from '@motive/shared'
+import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
+import { MButton } from '@motive/ui'
+
+const router = useRouter()
 
 const props = defineProps<{
   drivers: FleetDriver[]
-  fuelLossEvents: FuelLossEvent[]
 }>()
 
 const { geoData, loading } = useFleetMap()
@@ -15,16 +17,35 @@ const { geoData, loading } = useFleetMap()
 const svgRef = ref<SVGSVGElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 
-type TooltipData = { driver: FleetDriver; fuelLoss?: FuelLossEvent }
-
 interface TooltipState {
   visible: boolean
   x: number
   y: number
-  data: TooltipData | null
+  data: { driver: FleetDriver } | null
 }
 
 const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, data: null })
+
+const activeFilters = ref<Set<FleetDriverStatus>>(new Set())
+const isFiltering = computed(() => activeFilters.value.size > 0)
+
+function toggleFilter(status: FleetDriverStatus) {
+  const next = new Set(activeFilters.value)
+  next.has(status) ? next.delete(status) : next.add(status)
+  activeFilters.value = next
+}
+
+const statusCounts = computed(() => {
+  const counts: Record<FleetDriverStatus, number> = {
+    driving: 0,
+    idle: 0,
+    alert: 0,
+    offline: 0,
+    sleeper: 0,
+  }
+  for (const d of props.drivers) counts[d.status]++
+  return counts
+})
 
 // Resolve a CSS custom property to a browser-computed RGB color.
 // Uses a temporary DOM element so the browser resolves OKLCH → rgb().
@@ -70,11 +91,6 @@ function drawMap() {
     offline: readCSSColor('--fleet-status-offline', '#525252'),
     sleeper: readCSSColor('--fleet-status-sleeper', '#a78bfa'),
   }
-  const fuelLossColor = readCSSColor('--mtv-color-status-warning', '#f97316')
-  const fuelByVehicle = new Map<string, FuelLossEvent>(
-    props.fuelLossEvents.map((e) => [e.vehicleId, e]),
-  )
-
   const bgCard = getCSSVar('--bg-card') || '#111111'
   const borderColor = getCSSVar('--border') || 'rgba(255,255,255,0.07)'
   const borderStrong = getCSSVar('--border-strong') || 'rgba(255,255,255,0.12)'
@@ -89,7 +105,7 @@ function drawMap() {
     .attr('width', width)
     .attr('height', height)
     .attr('role', 'img')
-    .attr('aria-label', 'Live fleet location map showing truck positions and fuel theft events')
+    .attr('aria-label', 'Live fleet location map showing truck positions')
 
   // Projection — AlbersUSA for US (handles AK + HI); Mercator fitted to country outline for MX/UK
   const projection =
@@ -123,24 +139,19 @@ function drawMap() {
     .attr('stroke', borderStrong)
     .attr('stroke-width', 0.3)
 
-  // Project driver locations
-  const pinData = props.drivers
+  // Project driver locations (respect active status filters)
+  const visibleDrivers =
+    activeFilters.value.size === 0
+      ? props.drivers
+      : props.drivers.filter((d) => activeFilters.value.has(d.status))
+
+  const pinData = visibleDrivers
     .map((driver) => {
       const projected = projection([driver.currentLocation.lng, driver.currentLocation.lat])
       if (!projected) return null
-      return {
-        driver,
-        fuelLoss: driver.vehicleId ? fuelByVehicle.get(driver.vehicleId) : undefined,
-        x: projected[0],
-        y: projected[1],
-      }
+      return { driver, x: projected[0], y: projected[1] }
     })
-    .filter(
-      (
-        d,
-      ): d is { driver: FleetDriver; fuelLoss: FuelLossEvent | undefined; x: number; y: number } =>
-        d !== null,
-    )
+    .filter((d): d is { driver: FleetDriver; x: number; y: number } => d !== null)
 
   const pinsGroup = svg.append('g').attr('class', 'pins')
 
@@ -158,7 +169,7 @@ function drawMap() {
     .attr('stroke-width', 1.5)
     .attr('opacity', 0.5)
 
-  // Truck pins — orange when the vehicle has an active fuel loss event
+  // Driver pins — circles by status color
   pinsGroup
     .selectAll('.pin')
     .data(pinData)
@@ -167,7 +178,7 @@ function drawMap() {
     .attr('cx', (d) => d.x)
     .attr('cy', (d) => d.y)
     .attr('r', 0)
-    .attr('fill', (d) => (d.fuelLoss ? fuelLossColor : statusColors[d.driver.status]))
+    .attr('fill', (d) => statusColors[d.driver.status])
     .attr('stroke', bgCard)
     .attr('stroke-width', 1.5)
     .style('cursor', 'pointer')
@@ -198,7 +209,7 @@ function drawMap() {
         visible: true,
         x: tx,
         y: ty,
-        data: { driver: d.driver, fuelLoss: d.fuelLoss },
+        data: { driver: d.driver },
       }
     })
     .on('mouseleave', () => {
@@ -206,9 +217,8 @@ function drawMap() {
     })
 }
 
-// Watch for geo data load + driver changes + fuel events
 watch(
-  [geoData, () => props.drivers, () => props.fuelLossEvents],
+  [geoData, () => props.drivers, activeFilters],
   () => {
     nextTick(drawMap)
   },
@@ -237,32 +247,20 @@ function formatHos(driver: FleetDriver): string {
   if (h <= 0) return 'Violation'
   return `${h.toFixed(1)}h drive left`
 }
-
-function timeAgo(date: Date): string {
-  const mins = Math.floor((Date.now() - date.getTime()) / 60_000)
-  if (mins < 60) return `${mins}m ago`
-  const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs}h ago`
-  return `${Math.floor(hrs / 24)}d ago`
-}
 </script>
 
 <template>
-  <div class="fleet-map fleet-card">
-    <!-- Header -->
-    <div class="fleet-map__header">
-      <div>
-        <h2 class="fleet-map__title">Fleet Locations</h2>
-        <p class="fleet-map__subtitle font-mono-data">{{ drivers.length }} trucks</p>
-      </div>
-    </div>
+  <DashboardCard title="Fleet" class="fleet-map">
+    <template #action>
+      <MButton variant="link" size="sm" @click="router.push('/fleet/live')">Fleet view</MButton>
+    </template>
 
     <!-- Map Canvas -->
     <div
       ref="containerRef"
       class="fleet-map__canvas"
       role="figure"
-      aria-label="Live fleet map showing truck positions and fuel theft events"
+      aria-label="Live fleet map showing truck positions"
     >
       <!-- Loading skeleton -->
       <div v-if="loading" class="fleet-map__skeleton" aria-hidden="true">
@@ -294,21 +292,19 @@ function timeAgo(date: Date): string {
           >
             {{ formatHos(tooltip.data.driver) }}
           </div>
-          <div v-if="tooltip.data.fuelLoss" class="fleet-map__tooltip-fuel-drop">
-            &#x2212;{{ tooltip.data.fuelLoss.fuelDrop }}% fuel &middot;
-            {{ timeAgo(tooltip.data.fuelLoss.startTime) }}
-          </div>
         </div>
       </Transition>
     </div>
 
     <!-- Legend -->
-    <div class="fleet-map__legend" role="list" aria-label="Map legend">
-      <div
+    <div class="fleet-map__legend" aria-label="Map legend">
+      <button
         v-for="status in activeLegendStatuses"
         :key="status"
         class="fleet-map__legend-item"
-        role="listitem"
+        :class="{ 'fleet-map__legend-item--dimmed': isFiltering && !activeFilters.has(status) }"
+        :aria-pressed="activeFilters.has(status)"
+        @click="toggleFilter(status)"
       >
         <span
           class="fleet-map__legend-dot"
@@ -316,50 +312,13 @@ function timeAgo(date: Date): string {
           aria-hidden="true"
         />
         <span class="fleet-map__legend-label">{{ STATUS_LABELS[status] }}</span>
-      </div>
-      <div v-if="fuelLossEvents.length > 0" class="fleet-map__legend-item" role="listitem">
-        <span
-          class="fleet-map__legend-dot"
-          :style="{ backgroundColor: 'var(--mtv-color-status-warning)' }"
-          aria-hidden="true"
-        />
-        <span class="fleet-map__legend-label">Fuel Loss</span>
-      </div>
+        <span class="fleet-map__legend-count">{{ statusCounts[status] }}</span>
+      </button>
     </div>
-  </div>
+  </DashboardCard>
 </template>
 
 <style scoped>
-.fleet-map {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
-}
-
-/* Header */
-.fleet-map__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.fleet-map__title {
-  font-family: var(--font-family-condensed);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--mtv-color-foreground-default);
-  letter-spacing: var(--tracking-tight);
-  margin: 0;
-}
-
-.fleet-map__subtitle {
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  margin: 2px 0 0;
-  letter-spacing: var(--tracking-widest);
-}
-
 /* Canvas */
 .fleet-map__canvas {
   position: relative;
@@ -456,27 +415,26 @@ function timeAgo(date: Date): string {
   color: var(--fleet-severity-success);
 }
 
-/* Fuel loss line in driver tooltip */
-.fleet-map__tooltip-fuel-drop {
-  font-size: var(--font-size-xs);
-  font-family: var(--font-family-mono);
-  color: var(--mtv-color-status-warning);
-  font-weight: var(--font-weight-semibold);
-  margin-top: 2px;
-}
-
 /* Legend */
 
 .fleet-map__legend {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  justify-content: space-between;
 }
 
 .fleet-map__legend-item {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: opacity 150ms ease;
+}
+
+.fleet-map__legend-item--dimmed {
+  opacity: 0.35;
 }
 
 .fleet-map__legend-dot {
@@ -487,10 +445,18 @@ function timeAgo(date: Date): string {
 }
 
 .fleet-map__legend-label {
-  font-size: var(--font-size-xs);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-muted);
-  font-family: var(--font-family-mono);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-normal);
+}
+
+.fleet-map__legend-count {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--mtv-color-foreground-default);
+  letter-spacing: var(--tracking-normal);
 }
 
 /* Tooltip transition */
