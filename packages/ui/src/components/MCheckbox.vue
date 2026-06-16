@@ -1,7 +1,10 @@
 <script setup lang="ts">
 export interface MCheckboxProps {
+  /** Checked state of the checkbox. @default false */
   modelValue?: boolean
+  /** Text label shown beside the checkbox; falls back to the default slot when unset. */
   label?: string
+  /** Disables interaction and dims the checkbox. @default false */
   disabled?: boolean
 }
 
@@ -11,6 +14,7 @@ withDefaults(defineProps<MCheckboxProps>(), {
 })
 
 defineEmits<{
+  /** Fired when the checked state changes. */
   'update:modelValue': [value: boolean]
 }>()
 </script>

@@ -8,12 +8,19 @@ import MIcon from './MIcon.vue'
 export type MToastVariant = 'critical' | 'warning' | 'info' | 'success'
 
 export interface MToastProps {
+  /** Primary message text of the toast. */
   message: string
+  /** Optional secondary line shown below the message. */
   subtext?: string
+  /** Severity styling of the toast. @default 'info' */
   variant?: MToastVariant
+  /** Auto-dismiss delay in ms; 0 keeps it until dismissed. @default 0 */
   duration?: number
+  /** Shows a close button to manually dismiss. @default true */
   dismissible?: boolean
+  /** Label for an optional inline action button. */
   actionLabel?: string
+  /** Callback invoked when the action button is clicked. */
   onAction?: () => void
 }
 
@@ -24,6 +31,7 @@ const props = withDefaults(defineProps<MToastProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the toast is dismissed (timeout or close button). */
   dismiss: []
 }>()
 

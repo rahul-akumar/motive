@@ -2,14 +2,23 @@
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 export interface MPopoverProps {
+  /** Controls whether the popover is shown. */
   open: boolean
+  /** Element the popover is positioned relative to. */
   anchorEl?: HTMLElement | null
+  /** Preferred placement relative to the anchor; flips if it would overflow. @default 'top' */
   placement?: 'top' | 'bottom' | 'left' | 'right'
+  /** Renders a pointing arrow toward the anchor. @default true */
   arrow?: boolean
+  /** Gap in pixels between the anchor and the popover. @default 8 */
   offset?: number
+  /** Maximum width of the popover (any CSS length). @default 'none' */
   maxWidth?: string
+  /** When true, the popover stays open on click-outside. @default false */
   persistent?: boolean
+  /** Accessible label for the popover when no visible title is referenced. */
   ariaLabel?: string
+  /** ID of an element that labels the popover for assistive tech. */
   ariaLabelledby?: string
 }
 
@@ -22,6 +31,7 @@ const props = withDefaults(defineProps<MPopoverProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the popover requests to open or close. */
   'update:open': [value: boolean]
 }>()
 

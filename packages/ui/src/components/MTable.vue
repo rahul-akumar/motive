@@ -12,16 +12,27 @@ export interface MTableColumn {
 }
 
 export interface MTableProps<T extends object = Record<string, unknown>> {
+  /** Column definitions controlling headers, sorting, and alignment. */
   columns: MTableColumn[]
+  /** Row data objects to render. */
   rows: T[]
+  /** Key of the column currently sorted by. */
   sortKey?: string
+  /** Direction of the active sort. @default 'asc' */
   sortDir?: 'asc' | 'desc'
+  /** Current 1-based page number. @default 1 */
   page?: number
+  /** Number of rows shown per page. @default 8 */
   pageSize?: number
+  /** Property on each row used as its unique key. @default 'id' */
   rowKey?: string
+  /** Key value of the currently selected/highlighted row. */
   selectedKey?: string | number
+  /** Shows a loading state when true. @default false */
   loading?: boolean
+  /** Keeps the header fixed while the body scrolls. @default true */
   stickyHeader?: boolean
+  /** Renders all rows without pagination (infinite scroll mode). @default false */
   infinite?: boolean
 }
 
@@ -36,8 +47,11 @@ const props = withDefaults(defineProps<MTableProps<T>>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when a sortable column header is clicked. */
   sort: [key: string, dir: 'asc' | 'desc']
+  /** Fired when the active page changes. */
   'update:page': [page: number]
+  /** Fired when a row is clicked; carries the row data. */
   'row-click': [row: T]
 }>()
 

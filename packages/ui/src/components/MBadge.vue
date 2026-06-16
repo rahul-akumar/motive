@@ -7,15 +7,25 @@ export type MBadgeSize = 'sm' | 'md' | 'lg'
 export type MBadgeScoreKind = 'safety' | 'speed' | 'health' | 'risk' | 'performance'
 
 export interface MBadgeProps {
+  /** Badge form: plain `text`, a `number` counter, or a shaped `score`. @default 'text' */
   variant?: MBadgeVariant
+  /** Semantic color. @default 'default' */
   color?: MBadgeColor
+  /** Size scale. @default 'md' */
   size?: MBadgeSize
+  /** Text label (used by the `text` variant and as fallback content). */
   label?: string
+  /** Optional leading/trailing icon component. */
   icon?: Component
+  /** Which side the icon sits on relative to the label. @default 'left' */
   iconPosition?: 'left' | 'right'
+  /** Value for the `number` variant. */
   count?: number
+  /** Cap for the `number` variant; values above show as `{max}+`. @default 99 */
   max?: number
+  /** Value (0–100) for the `score` variant. @default 0 */
   score?: number
+  /** Icon shape for the `score` variant. @default 'safety' */
   kind?: MBadgeScoreKind
 }
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 export interface MCardProps {
+  /** Inner padding applied to the card content. @default 'none' */
   padding?: 'none' | 'sm' | 'md'
 }
 

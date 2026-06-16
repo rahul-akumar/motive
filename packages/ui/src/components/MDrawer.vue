@@ -14,13 +14,19 @@ const FOCUSABLE_SEL = [
 ].join(', ')
 
 export interface MDrawerProps {
+  /** Controls whether the drawer is shown. */
   open: boolean
+  /** Edge of the screen the drawer slides in from. @default 'right' */
   placement?: 'left' | 'right'
+  /** Width of the drawer panel (any CSS length). @default '420px' */
   width?: string
+  /** Renders a modal backdrop and traps focus when true. @default false */
   overlay?: boolean
   /** When true, drawer stays open on click-outside (close only via Escape or close button) */
   persistent?: boolean
+  /** Accessible label for the drawer when no visible title is referenced. */
   ariaLabel?: string
+  /** ID of an element that labels the drawer for assistive tech. */
   ariaLabelledby?: string
 }
 
@@ -32,6 +38,7 @@ const props = withDefaults(defineProps<MDrawerProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the drawer requests to open or close. */
   'update:open': [value: boolean]
 }>()
 

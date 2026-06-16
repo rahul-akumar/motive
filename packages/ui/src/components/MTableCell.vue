@@ -4,6 +4,7 @@ import type { Component } from 'vue'
 export type MTableCellVariant = 'primary' | 'secondary' | 'muted' | 'link' | 'mono' | 'danger'
 
 export interface MTableCellProps {
+  /** Visual treatment of the cell content. @default 'primary' */
   variant?: MTableCellVariant
   /** Element or component to render as (e.g. 'a', NuxtLink) — useful for link cells. */
   tag?: string | Component
