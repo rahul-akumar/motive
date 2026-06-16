@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight, Globe, Search } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
-import type { Driver, DriverStatus } from '@motive/shared'
+import type { FleetDriver, DriverStatus } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
-  drivers: Driver[]
-  filteredDrivers: Driver[]
+  drivers: FleetDriver[]
+  filteredDrivers: FleetDriver[]
   selectedDriverId: string | null
   activeFilters: Set<DriverStatus>
   isAllSelected: boolean

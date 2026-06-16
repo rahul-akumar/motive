@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import L from 'leaflet'
-import type { Driver, DriverStatus, FuelLossEvent } from '@motive/shared'
+import type { FleetDriver, DriverStatus, FuelLossEvent } from '@motive/shared'
 
 const props = defineProps<{
-  drivers: Driver[]
+  drivers: FleetDriver[]
   selectedDriverId: string | null
   fitAllTrigger: number
   overlays: Array<{ id: string; tileUrl: string; opacity: number; zIndex: number }>
@@ -57,7 +57,11 @@ function getTileUrl(): string {
   return isDarkTheme() ? TILE_DARK : TILE_LIGHT
 }
 
-function createMarkerIcon(driver: Driver, isSelected: boolean, hasFuelLoss: boolean): L.DivIcon {
+function createMarkerIcon(
+  driver: FleetDriver,
+  isSelected: boolean,
+  hasFuelLoss: boolean,
+): L.DivIcon {
   const color = hasFuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
   const size = isSelected ? 36 : 28
   const borderWidth = isSelected ? 3 : 2
@@ -88,18 +92,12 @@ function createMarkerIcon(driver: Driver, isSelected: boolean, hasFuelLoss: bool
   })
 }
 
-function createPopupContent(driver: Driver, fuelLoss?: FuelLossEvent): string {
+function createPopupContent(driver: FleetDriver, fuelLoss?: FuelLossEvent): string {
   const color = fuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
   const statusLabel = fuelLoss ? 'FUEL LOSS' : driver.status.toUpperCase()
   const hosText = driver.hos.hasViolation
     ? `<span style="color:${STATUS_COLORS.alert}">HOS Violation</span>`
-    : `<span style="color:${STATUS_COLORS.driving}">${driver.hos.drivingRemaining.toFixed(1)}h drive left</span>`
-  const loadText = driver.currentLoad
-    ? `<div style="color:${STATUS_COLORS.offline};font-size:10px;margin-top:2px">${driver.currentLoad}</div>`
-    : ''
-  const etaText = driver.etaNextStop
-    ? `<div style="color:${STATUS_COLORS.offline};font-size:10px">ETA ${driver.etaNextStop}</div>`
-    : ''
+    : `<span style="color:${STATUS_COLORS.driving}">${driver.hos.driveRemaining.toFixed(1)}h drive left</span>`
   const fuelLossText = fuelLoss
     ? `<div style="color:${STATUS_COLORS.alert};font-size:10px;margin-top:4px">&minus;${fuelLoss.fuelDrop}% fuel &middot; ${timeAgo(fuelLoss.startTime)}</div>`
     : ''
@@ -109,15 +107,13 @@ function createPopupContent(driver: Driver, fuelLoss?: FuelLossEvent): string {
       <div class="fv-popup__name">${driver.name}</div>
       <div class="fv-popup__status" style="color:${color}">${statusLabel}</div>
       <div class="fv-popup__location">${driver.currentLocation.city}, ${driver.currentLocation.state}</div>
-      ${loadText}
-      ${etaText}
       <div class="fv-popup__hos">${hosText}</div>
       ${fuelLossText}
     </div>
   `
 }
 
-function addOrUpdateMarker(driver: Driver, fuelLoss?: FuelLossEvent) {
+function addOrUpdateMarker(driver: FleetDriver, fuelLoss?: FuelLossEvent) {
   if (!map) return
   const isSelected = driver.id === props.selectedDriverId
   const icon = createMarkerIcon(driver, isSelected, !!fuelLoss)
@@ -175,7 +171,7 @@ function syncMarkers() {
   const currentIds = new Set(props.drivers.map((d) => d.id))
   removeStaleMarkers(currentIds)
   for (const driver of props.drivers) {
-    addOrUpdateMarker(driver, fuelByVehicle.get(driver.vehicleId))
+    addOrUpdateMarker(driver, fuelByVehicle.get(driver.vehicleId ?? ''))
   }
 }
 
