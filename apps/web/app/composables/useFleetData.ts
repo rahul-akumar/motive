@@ -1,15 +1,18 @@
 import type { FleetStatusCount, FleetVehicle, FleetDriver, FleetAsset } from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
 import {
-  linkedVehiclesByRegion,
-  linkedDriversByRegion,
-  linkedAssetsByRegion,
-} from '~/mocks/fleet-linked'
+  vehiclesForRegion,
+  driversForRegion,
+  assetsForRegion,
+  getVehicles,
+  getDrivers,
+  getAssets,
+} from '~/services/fleetRepository'
 
 export function useFleetData() {
-  const fleetVehicles = computed<FleetVehicle[]>(() => linkedVehiclesByRegion[currentRegion.value])
-  const fleetDrivers = computed<FleetDriver[]>(() => linkedDriversByRegion[currentRegion.value])
-  const fleetAssets = computed<FleetAsset[]>(() => linkedAssetsByRegion[currentRegion.value])
+  const fleetVehicles = computed<FleetVehicle[]>(() => vehiclesForRegion(currentRegion.value))
+  const fleetDrivers = computed<FleetDriver[]>(() => driversForRegion(currentRegion.value))
+  const fleetAssets = computed<FleetAsset[]>(() => assetsForRegion(currentRegion.value))
   const loading = ref(false)
 
   const fleetStatus = computed<FleetStatusCount>(() => {
@@ -33,7 +36,9 @@ export function useFleetData() {
 
   async function refresh() {
     loading.value = true
-    await new Promise((r) => setTimeout(r, 800))
+    // Re-fetch the active region's data through the repository seam.
+    const region = currentRegion.value
+    await Promise.all([getVehicles(region), getDrivers(region), getAssets(region)])
     loading.value = false
   }
 
