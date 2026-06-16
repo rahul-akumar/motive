@@ -3,11 +3,12 @@ import { currentRegion } from '~/composables/useRegion'
 import type { RegionCode } from '~/composables/useRegion'
 import { alertsByRegion } from '~/mocks/alerts'
 
-// Per-region dismissed state (so switching region shows fresh alerts)
+// Per-region dismissed state (so switching region shows fresh alerts).
+// Sets are reactive so dismiss/dismissAll invalidate the alerts computed.
 const dismissedByRegion: Record<RegionCode, Set<string>> = {
-  us: new Set(),
-  mx: new Set(),
-  uk: new Set(),
+  us: reactive(new Set<string>()),
+  mx: reactive(new Set<string>()),
+  uk: reactive(new Set<string>()),
 }
 
 export function useAlerts() {
