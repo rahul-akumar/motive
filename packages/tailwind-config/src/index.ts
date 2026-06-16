@@ -1,2 +1,2 @@
 export { motivePreset } from './preset'
-export { tokens } from './tokens'
+export { tokens, mtvColors } from './tokens'

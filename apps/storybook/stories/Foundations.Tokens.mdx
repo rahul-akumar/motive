@@ -1,0 +1,258 @@
+import { Meta } from '@storybook/blocks'
+import { mtvColors, tokens } from '@motive/tailwind-config'
+
+<Meta title="Foundations/Tokens" />
+
+export const SEMANTIC_GROUPS = [
+  {
+    name: 'Foreground',
+    vars: [
+      'foreground-default',
+      'foreground-muted',
+      'foreground-subtle',
+      'foreground-disabled',
+      'foreground-inverse',
+      'foreground-on-accent',
+    ],
+  },
+  {
+    name: 'Surface',
+    vars: [
+      'surface-base',
+      'surface-sunken',
+      'surface-default',
+      'surface-raised',
+      'surface-overlay',
+      'surface-hover',
+      'surface-active',
+      'surface-accent',
+      'surface-accent-subtle',
+    ],
+  },
+  {
+    name: 'Border',
+    vars: ['border-subtle', 'border-default', 'border-strong', 'border-accent'],
+  },
+  {
+    name: 'Brand',
+    vars: [
+      'brand-default',
+      'brand-hover',
+      'brand-subtle',
+      'brand-muted',
+      'brand-foreground',
+      'brand-ring',
+    ],
+  },
+  {
+    name: 'Status',
+    vars: [
+      'status-success',
+      'status-success-subtle',
+      'status-warning',
+      'status-warning-subtle',
+      'status-critical',
+      'status-critical-subtle',
+      'status-info',
+      'status-info-subtle',
+    ],
+  },
+  {
+    name: 'Chart',
+    vars: ['chart-positive', 'chart-warning', 'chart-critical', 'chart-neutral'],
+  },
+  {
+    name: 'Link',
+    vars: ['link-default', 'link-hover', 'link-active', 'link-visited'],
+  },
+]
+
+export const mono = {
+  fontFamily: 'var(--font-family-mono, monospace)',
+  fontSize: '11px',
+  color: 'var(--mtv-color-foreground-muted)',
+}
+
+export const Caption = ({ children }) => (
+  <div style={{ ...mono, marginTop: 4, wordBreak: 'break-all' }}>{children}</div>
+)
+
+export const PrimitivePalette = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    {Object.entries(mtvColors).map(([name, shades]) => (
+      <div key={name}>
+        <div
+          style={{
+            ...mono,
+            color: 'var(--mtv-color-foreground-default)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            marginBottom: 6,
+          }}
+        >
+          {name}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          {Object.entries(shades).map(([shade, hex]) => (
+            <div key={shade} style={{ width: 64 }}>
+              <div
+                style={{
+                  height: 40,
+                  background: hex,
+                  borderRadius: 4,
+                  border: '1px solid var(--mtv-color-border-subtle)',
+                }}
+              />
+              <div style={{ ...mono, fontSize: 10 }}>{shade}</div>
+              <div style={{ ...mono, fontSize: 9 }}>{hex}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+)
+
+export const SemanticSwatches = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    {SEMANTIC_GROUPS.map((group) => (
+      <div key={group.name}>
+        <div
+          style={{
+            ...mono,
+            color: 'var(--mtv-color-foreground-default)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            marginBottom: 6,
+          }}
+        >
+          {group.name}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {group.vars.map((v) => (
+            <div key={v} style={{ width: 130 }}>
+              <div
+                style={{
+                  height: 44,
+                  background: `var(--mtv-color-${v})`,
+                  borderRadius: 6,
+                  border: '1px solid var(--mtv-color-border-default)',
+                }}
+              />
+              <Caption>--mtv-color-{v}</Caption>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+)
+
+export const TypeScale = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    {Object.entries(tokens.fontSize).map(([name, value]) => {
+      const size = Array.isArray(value) ? value[0] : value
+      return (
+        <div key={name} style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+          <span style={{ ...mono, width: 96 }}>
+            {name} · {size}
+          </span>
+          <span style={{ fontSize: size, color: 'var(--mtv-color-foreground-default)' }}>
+            The quick brown fox
+          </span>
+        </div>
+      )
+    })}
+  </div>
+)
+
+export const Weights = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    {Object.entries(tokens.fontWeight).map(([name, weight]) => (
+      <div key={name} style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+        <span style={{ ...mono, width: 96 }}>
+          {name} · {weight}
+        </span>
+        <span
+          style={{ fontWeight: weight, fontSize: 18, color: 'var(--mtv-color-foreground-default)' }}
+        >
+          The quick brown fox
+        </span>
+      </div>
+    ))}
+  </div>
+)
+
+export const Spacing = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+    {Object.entries(tokens.spacing).map(([name, value]) => (
+      <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <span style={{ ...mono, width: 110 }}>
+          {name} · {value}
+        </span>
+        <div style={{ height: 12, width: value, background: 'var(--mtv-color-brand-default)' }} />
+      </div>
+    ))}
+  </div>
+)
+
+export const Radii = () => (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+    {Object.entries(tokens.borderRadius).map(([name, value]) => (
+      <div key={name} style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            width: 72,
+            height: 72,
+            background: 'var(--mtv-color-surface-accent)',
+            border: '1px solid var(--mtv-color-border-strong)',
+            borderRadius: value,
+          }}
+        />
+        <Caption>
+          {name} · {value}
+        </Caption>
+      </div>
+    ))}
+  </div>
+)
+
+# Design Tokens
+
+Motive's design system is a **three-layer token model**:
+
+1. **Primitive palette** (`mtvColors`) — the raw hex source of truth, exported from
+   `@motive/tailwind-config`. The runtime CSS layer uses the oklch equivalents.
+2. **Semantic tokens** (`--mtv-color-*` CSS custom properties) — purpose-named roles
+   (foreground, surface, border, brand, status, chart, link) that map onto primitives and
+   shift per `data-theme` (Arc / Console / Legacy) and the Arc hue/tint controls.
+3. **Component usage** — components reference the semantic tokens, never primitives directly,
+   so a theme switch re-skins everything consistently.
+
+Everything below is generated programmatically from the exported `mtvColors` and `tokens`
+objects (and the semantic CSS variables), so it stays in sync with the source. Use the theme
+and Arc tint toolbar controls to watch the **semantic** swatches react.
+
+## Semantic colors
+
+<SemanticSwatches />
+
+## Primitive palette
+
+<PrimitivePalette />
+
+## Typography — size scale
+
+<TypeScale />
+
+## Typography — weight
+
+<Weights />
+
+## Spacing
+
+<Spacing />
+
+## Radius
+
+<Radii />

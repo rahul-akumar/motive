@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 
 const config: StorybookConfig = {
   stories: [
+    '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
