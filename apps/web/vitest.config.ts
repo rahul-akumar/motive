@@ -7,6 +7,7 @@ export default defineVitestConfig({
     environmentOptions: {
       nuxt: {
         rootDir: '.',
+        domEnvironment: 'jsdom',
       },
     },
   },
