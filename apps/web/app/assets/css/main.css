@@ -14,13 +14,13 @@
 
   /* Severity tokens (alerts, events) */
   --fleet-severity-critical: var(--mtv-color-red-500);
-  --fleet-severity-critical-subtle: var(--mtv-color-red-500) / 0.12;
+  --fleet-severity-critical-subtle: oklch(from var(--mtv-color-red-500) l c h / 0.12);
   --fleet-severity-warning: var(--mtv-color-gold-500);
-  --fleet-severity-warning-subtle: var(--mtv-color-gold-500) / 0.12;
+  --fleet-severity-warning-subtle: oklch(from var(--mtv-color-gold-500) l c h / 0.12);
   --fleet-severity-info: var(--mtv-color-blue-400);
-  --fleet-severity-info-subtle: var(--mtv-color-blue-400) / 0.12;
+  --fleet-severity-info-subtle: oklch(from var(--mtv-color-blue-400) l c h / 0.12);
   --fleet-severity-success: var(--mtv-color-emerald-500);
-  --fleet-severity-success-subtle: var(--mtv-color-emerald-500) / 0.12;
+  --fleet-severity-success-subtle: oklch(from var(--mtv-color-emerald-500) l c h / 0.12);
 
   /* Activity event type tokens */
   --fleet-event-violation: var(--mtv-color-red-400);
