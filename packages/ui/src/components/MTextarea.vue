@@ -1,9 +1,14 @@
 <script setup lang="ts">
 export interface MTextareaProps {
+  /** Current text value of the textarea. @default '' */
   modelValue?: string
+  /** Placeholder text shown when empty. @default '' */
   placeholder?: string
+  /** Number of visible text rows. @default 3 */
   rows?: number
+  /** Disables interaction with the textarea. @default false */
   disabled?: boolean
+  /** Directions in which the user can resize the textarea. @default 'none' */
   resize?: 'none' | 'vertical' | 'both'
 }
 
@@ -16,6 +21,7 @@ withDefaults(defineProps<MTextareaProps>(), {
 })
 
 defineEmits<{
+  /** Fired on input as the text value changes. */
   'update:modelValue': [value: string]
 }>()
 </script>

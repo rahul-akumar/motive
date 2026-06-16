@@ -14,9 +14,13 @@ export interface MMapControlsLayer {
 }
 
 export interface MMapControlsProps {
+  /** Selectable map layers, optionally grouped with children. @default [] */
   layers?: MMapControlsLayer[]
+  /** Set of layer ids currently toggled on. @default empty Set */
   activeLayers?: Set<string>
+  /** Shows the "fit all in view" button when true. @default false */
   showFitAll?: boolean
+  /** Shows the pulsing live-data indicator when true. @default false */
   showLiveIndicator?: boolean
 }
 
@@ -28,9 +32,13 @@ const props = withDefaults(defineProps<MMapControlsProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the zoom-in control is clicked. */
   zoomIn: []
+  /** Fired when the zoom-out control is clicked. */
   zoomOut: []
+  /** Fired when the fit-all control is clicked. */
   fitAll: []
+  /** Fired when a layer is toggled; carries the layer id. */
   toggleLayer: [id: string]
 }>()
 

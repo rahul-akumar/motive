@@ -13,9 +13,13 @@ export interface MDropdownItem {
 }
 
 export interface MDropdownProps {
+  /** Menu entries to render, supporting nested submenus and dividers. */
   items: MDropdownItem[]
+  /** Controls whether the menu is shown. */
   open: boolean
+  /** Element the menu is positioned relative to. */
   anchorEl?: HTMLElement | null
+  /** Placement of the menu relative to its anchor. @default 'right' */
   placement?: 'right' | 'top-right'
 }
 
@@ -24,6 +28,7 @@ const props = withDefaults(defineProps<MDropdownProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the menu requests to open or close. */
   'update:open': [value: boolean]
 }>()
 

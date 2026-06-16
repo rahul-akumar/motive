@@ -11,10 +11,13 @@ const FOCUSABLE_SEL = [
 ].join(', ')
 
 export interface MModalProps {
+  /** Controls whether the modal is shown. */
   open: boolean
+  /** Maximum width of the modal panel (any CSS length). @default '520px' */
   maxWidth?: string
   /** Accessible name for the dialog. Use ariaLabel for a string or ariaLabelledby to reference a heading element inside the modal. */
   ariaLabel?: string
+  /** ID of an element that labels the modal for assistive tech. */
   ariaLabelledby?: string
 }
 
@@ -23,6 +26,7 @@ const props = withDefaults(defineProps<MModalProps>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the modal requests to close (backdrop click or Escape). */
   close: []
 }>()
 

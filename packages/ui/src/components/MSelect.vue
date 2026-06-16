@@ -10,14 +10,21 @@ export interface MSelectOption<V extends string | number = string | number> {
 }
 
 export interface MSelectProps<V extends string | number = string | number> {
+  /** Currently selected value, or null when nothing is selected. */
   modelValue: V | null
+  /** List of selectable options. */
   options: MSelectOption<V>[]
   /** Static label shown on the trigger when no value is selected (e.g. "Status", "Behavior") */
   label?: string
+  /** Placeholder text shown on the trigger when empty. */
   placeholder?: string
+  /** Size of the select control. @default 'sm' */
   size?: 'sm' | 'md'
+  /** Disables interaction with the select. @default false */
   disabled?: boolean
+  /** Shows a clear button to reset the selection. @default false */
   clearable?: boolean
+  /** Form field name associated with the select. */
   name?: string
   /** Accessible label — required if no visible label surrounds the component */
   ariaLabel?: string
@@ -30,6 +37,7 @@ const props = withDefaults(defineProps<MSelectProps<T>>(), {
 })
 
 const emit = defineEmits<{
+  /** Fired when the selected value changes. */
   'update:modelValue': [value: T | null]
 }>()
 

@@ -1,10 +1,16 @@
 <script setup lang="ts">
 export interface MButtonProps {
+  /** Visual style of the button. @default 'primary' */
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link'
+  /** Height/padding scale. @default 'md' */
   size?: 'xs' | 'sm' | 'md' | 'lg'
+  /** Native button `type` attribute. @default 'button' */
   type?: 'button' | 'submit' | 'reset'
+  /** Disables interaction and dims the button. @default false */
   disabled?: boolean
+  /** Shows a spinner and blocks clicks while an action is in flight. @default false */
   loading?: boolean
+  /** Square padding for a single-icon button with no text label. @default false */
   iconOnly?: boolean
 }
 
@@ -18,6 +24,7 @@ withDefaults(defineProps<MButtonProps>(), {
 })
 
 defineEmits<{
+  /** Fired on click; suppressed while disabled or loading. */
   click: [event: MouseEvent]
 }>()
 </script>

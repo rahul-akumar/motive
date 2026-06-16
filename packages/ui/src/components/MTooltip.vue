@@ -2,9 +2,13 @@
 import { ref, watch, nextTick } from 'vue'
 
 export interface MTooltipProps {
+  /** Text content shown inside the tooltip. */
   content: string
+  /** Preferred placement relative to the anchor. @default 'right' */
   placement?: 'right' | 'top' | 'bottom' | 'left'
+  /** Renders a pointing arrow toward the anchor. @default true */
   arrow?: boolean
+  /** Suppresses the tooltip from showing when true. @default false */
   disabled?: boolean
 }
 
