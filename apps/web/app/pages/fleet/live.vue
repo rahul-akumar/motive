@@ -46,15 +46,8 @@ const mapLayers = computed<MMapControlsLayer[]>(() =>
   })),
 )
 
-const LIGHT_THEMES = new Set(['light', 'legacy'])
-
-function isDark(): boolean {
-  if (!import.meta.client) return true
-  return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
-}
-
 const activeOverlayDefs = computed(() => {
-  const dark = isDark()
+  const dark = isDarkTheme()
   return allOverlays
     .filter((o: OverlayDef) => activeOverlayIds.value.has(o.id))
     .map((o: OverlayDef) => ({

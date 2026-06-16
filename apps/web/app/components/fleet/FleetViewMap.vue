@@ -15,14 +15,6 @@ const emit = defineEmits<{
   hoverDriver: [id: string | null]
 }>()
 
-// ── Theme detection ───────────────────────────────────────────
-const LIGHT_THEMES = new Set(['light', 'legacy'])
-
-function isDarkTheme(): boolean {
-  if (!import.meta.client) return true
-  return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
-}
-
 const TILE_DARK = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
 const TILE_ATTRIBUTION =
@@ -204,6 +196,9 @@ function updateTileLayer() {
   syncOverlays(props.overlays)
 }
 
+// Re-skin tiles/overlays when the theme changes
+useThemeObserver(updateTileLayer)
+
 function syncOverlays(overlays: typeof props.overlays) {
   if (!map) return
   const incomingIds = new Set(overlays.map((o) => o.id))
@@ -249,14 +244,6 @@ onMounted(() => {
 
   syncMarkers()
   fitAllBounds()
-
-  // Watch theme changes
-  const themeObserver = new MutationObserver(updateTileLayer)
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
-  onUnmounted(() => themeObserver.disconnect())
 
   // Notify Leaflet when the container resizes (e.g. window resize or panel open/close)
   const resizeObserver = new ResizeObserver(() => {

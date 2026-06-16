@@ -175,3 +175,34 @@ export function useTheme() {
     loadSavedTheme,
   }
 }
+
+/** Theme ids that render on a light background. */
+const LIGHT_THEMES = new Set(['light', 'legacy'])
+
+/**
+ * Whether the active theme renders on a dark background. Reads the root
+ * `data-theme` attribute; treats anything not in {@link LIGHT_THEMES} (and the
+ * server) as dark. Used by map/chart layers that need a concrete light/dark
+ * choice (tile sets, marker colors) rather than a CSS variable.
+ */
+export function isDarkTheme(): boolean {
+  if (!import.meta.client) return true
+  return !LIGHT_THEMES.has(document.documentElement.getAttribute('data-theme') ?? '')
+}
+
+/**
+ * Run `onThemeChange` whenever the root `data-theme` attribute changes,
+ * disconnecting automatically on unmount. Client-only no-op on the server.
+ * Call at setup top level (it registers its own onMounted/onUnmounted hooks).
+ */
+export function useThemeObserver(onThemeChange: () => void) {
+  if (!import.meta.client) return
+  onMounted(() => {
+    const observer = new MutationObserver(() => onThemeChange())
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
+    onUnmounted(() => observer.disconnect())
+  })
+}

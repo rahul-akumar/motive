@@ -197,24 +197,14 @@ function drawChart() {
     .attr('dx', '-0.5em')
 }
 
-// Watch for theme changes by observing the data-theme attribute
-let themeObserver: MutationObserver | null = null
+// Redraw when the theme changes
+useThemeObserver(drawChart)
 
 onMounted(() => {
   drawChart()
   const ro = new ResizeObserver(() => drawChart())
   if (containerRef.value) ro.observe(containerRef.value)
   onUnmounted(() => ro.disconnect())
-
-  // Redraw when theme changes
-  themeObserver = new MutationObserver(() => {
-    drawChart()
-  })
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
-  onUnmounted(() => themeObserver?.disconnect())
 })
 
 watch(() => props.data, drawChart, { deep: true })
