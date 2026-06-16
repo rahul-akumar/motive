@@ -1,4 +1,4 @@
-import type { DriverStatus } from '@motive/shared'
+import type { FleetDriverStatus } from '@motive/shared'
 
 /**
  * Fleet driver status — single source of truth for colors and labels.
@@ -6,7 +6,7 @@ import type { DriverStatus } from '@motive/shared'
  * automatically participate in theme changes.
  */
 
-type DriverStatusMap = Record<DriverStatus, string>
+type DriverStatusMap = Record<FleetDriverStatus, string>
 
 export const FLEET_STATUS_COLORS: DriverStatusMap = {
   driving: 'var(--fleet-status-driving)',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import L from 'leaflet'
-import type { FleetDriver, DriverStatus, FuelLossEvent } from '@motive/shared'
+import type { FleetDriver, FleetDriverStatus, FuelLossEvent } from '@motive/shared'
 
 const props = defineProps<{
   drivers: FleetDriver[]
@@ -24,7 +24,7 @@ const TILE_ATTRIBUTION =
 // Resolve design tokens to computed color strings for Leaflet HTML markers.
 const { readCSSColor } = useCssColors()
 
-function getStatusColors(): Record<DriverStatus, string> {
+function getStatusColors(): Record<FleetDriverStatus, string> {
   return {
     driving: readCSSColor('--fleet-status-driving', '#4ade80'),
     idle: readCSSColor('--fleet-status-idle', '#fbbf24'),
@@ -34,7 +34,7 @@ function getStatusColors(): Record<DriverStatus, string> {
   }
 }
 
-let STATUS_COLORS: Record<DriverStatus, string> = {
+let STATUS_COLORS: Record<FleetDriverStatus, string> = {
   driving: '#4ade80',
   idle: '#fbbf24',
   alert: '#f87171',

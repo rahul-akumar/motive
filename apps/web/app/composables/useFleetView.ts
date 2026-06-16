@@ -1,7 +1,7 @@
-import type { DriverStatus, FleetDriver, FleetVehicle } from '@motive/shared'
+import type { FleetDriverStatus, FleetDriver, FleetVehicle } from '@motive/shared'
 import { useFleetData } from '~/composables/useFleetData'
 
-const ALL_STATUSES: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
+const ALL_STATUSES: FleetDriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
 export function useFleetView() {
   const { fleetVehicles, fleetDrivers } = useFleetData()
@@ -12,9 +12,9 @@ export function useFleetView() {
   const vehicles = fleetVehicles
 
   // ── Filter state ──────────────────────────────────────────────
-  const activeFilters = ref<Set<DriverStatus>>(new Set(ALL_STATUSES))
+  const activeFilters = ref<Set<FleetDriverStatus>>(new Set(ALL_STATUSES))
 
-  function toggleFilter(status: DriverStatus) {
+  function toggleFilter(status: FleetDriverStatus) {
     const next = new Set(activeFilters.value)
     if (next.has(status)) {
       // Don't allow deselecting all
@@ -46,7 +46,7 @@ export function useFleetView() {
 
   // ── Status counts (for filter chips) ─────────────────────────
   const statusCounts = computed(() => {
-    const counts: Record<DriverStatus, number> = {
+    const counts: Record<FleetDriverStatus, number> = {
       driving: 0,
       idle: 0,
       alert: 0,

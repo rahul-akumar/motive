@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight, Search, Truck } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
-import type { FleetDriver, DriverStatus } from '@motive/shared'
+import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   drivers: FleetDriver[]
   filteredDrivers: FleetDriver[]
   selectedDriverId: string | null
-  activeFilters: Set<DriverStatus>
+  activeFilters: Set<FleetDriverStatus>
   isAllSelected: boolean
-  statusCounts: Record<DriverStatus, number>
+  statusCounts: Record<FleetDriverStatus, number>
   isPanelOpen: boolean
   searchQuery: string
 }>()
 
 const emit = defineEmits<{
   selectDriver: [id: string | null]
-  toggleFilter: [status: DriverStatus]
+  toggleFilter: [status: FleetDriverStatus]
   setAllFilters: []
   togglePanel: []
   'update:searchQuery': [value: string]
 }>()
 
-const FILTER_ORDER: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
+const FILTER_ORDER: FleetDriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
 const localSearch = computed({
   get: () => props.searchQuery,
