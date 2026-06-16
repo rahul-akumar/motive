@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
-import type { Driver, Vehicle } from '@motive/shared'
+import type { FleetDriver, FleetVehicle } from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
 import { mockDriverOriginsByRegion, mockDriverSpeedsByRegion } from '~/mocks/globe-animation'
 
@@ -168,7 +168,7 @@ function startMovement(onTick: () => void) {
   }, 50)
 }
 
-async function fetchOSRMRoutes(drivers: Driver[]): Promise<GeoJSON.FeatureCollection> {
+async function fetchOSRMRoutes(drivers: FleetDriver[]): Promise<GeoJSON.FeatureCollection> {
   const features: GeoJSON.Feature[] = []
   await Promise.allSettled(
     drivers
@@ -202,8 +202,8 @@ async function fetchOSRMRoutes(drivers: Driver[]): Promise<GeoJSON.FeatureCollec
 }
 
 const props = defineProps<{
-  drivers: Driver[]
-  vehicles: Vehicle[]
+  drivers: FleetDriver[]
+  vehicles: FleetVehicle[]
   selectedDriverId: string | null
   fitAllTrigger: number
 }>()
@@ -220,7 +220,10 @@ let animStart: number | null = null
 
 // ── GeoJSON builders ──────────────────────────────────────────────────────────
 
-function driversToGeoJSON(drivers: Driver[], vehicles: Vehicle[]): GeoJSON.FeatureCollection {
+function driversToGeoJSON(
+  drivers: FleetDriver[],
+  vehicles: FleetVehicle[],
+): GeoJSON.FeatureCollection {
   const vehicleMap = new Map(vehicles.map((v) => [v.id, v]))
   return {
     type: 'FeatureCollection',
@@ -245,10 +248,8 @@ function driversToGeoJSON(drivers: Driver[], vehicles: Vehicle[]): GeoJSON.Featu
           city: d.currentLocation.city,
           state: d.currentLocation.state,
           hosViolation: d.hos.hasViolation,
-          hosDrivingRemaining: d.hos.drivingRemaining,
-          currentLoad: d.currentLoad ?? null,
-          etaNextStop: d.etaNextStop ?? null,
-          fuelLevel: vehicleMap.get(d.vehicleId)?.fuelLevel ?? 50,
+          hosDrivingRemaining: d.hos.driveRemaining,
+          fuelLevel: vehicleMap.get(d.vehicleId ?? '')?.fuelLevel ?? 50,
           heading,
           speed,
         },
@@ -257,7 +258,7 @@ function driversToGeoJSON(drivers: Driver[], vehicles: Vehicle[]): GeoJSON.Featu
   }
 }
 
-function buildStraightRoutes(drivers: Driver[]): GeoJSON.FeatureCollection {
+function buildStraightRoutes(drivers: FleetDriver[]): GeoJSON.FeatureCollection {
   return {
     type: 'FeatureCollection',
     features: drivers
@@ -278,7 +279,7 @@ function buildStraightRoutes(drivers: Driver[]): GeoJSON.FeatureCollection {
 
 function computeHosGeoJSON(
   statesGeoJSON: GeoJSON.FeatureCollection,
-  drivers: Driver[],
+  drivers: FleetDriver[],
 ): GeoJSON.FeatureCollection {
   return {
     ...statesGeoJSON,
@@ -292,7 +293,7 @@ function computeHosGeoJSON(
         ? 0
         : stateDrivers.length === 0
           ? null
-          : stateDrivers.reduce((sum, d) => sum + d.hos.drivingRemaining / 11, 0) /
+          : stateDrivers.reduce((sum, d) => sum + d.hos.driveRemaining / 11, 0) /
             stateDrivers.length
       return { ...f, properties: { ...f.properties, hosScore } }
     }),
@@ -308,22 +309,16 @@ function popupHTML(p: {
   state: string
   hosViolation: boolean
   hosDrivingRemaining: number
-  currentLoad: string | null
-  etaNextStop: string | null
 }): string {
   const statusColor = STATUS_COLORS[p.status] ?? STATUS_COLORS.offline
   const hosText = p.hosViolation
     ? `<div class="f3d-popup__hos" style="color:${STATUS_COLORS.alert}">HOS Violation</div>`
     : `<div class="f3d-popup__hos" style="color:${STATUS_COLORS.driving}">${p.hosDrivingRemaining.toFixed(1)}h drive left</div>`
-  const loadText = p.currentLoad ? `<div class="f3d-popup__meta">${p.currentLoad}</div>` : ''
-  const etaText = p.etaNextStop ? `<div class="f3d-popup__meta">ETA ${p.etaNextStop}</div>` : ''
   return `
     <div class="f3d-popup">
       <div class="f3d-popup__name">${p.name}</div>
       <div class="f3d-popup__status" style="color:${statusColor}">${p.status.toUpperCase()}</div>
       <div class="f3d-popup__location">${p.city}, ${p.state}</div>
-      ${loadText}
-      ${etaText}
       ${hosText}
     </div>
   `
@@ -569,8 +564,6 @@ async function initLayers() {
       state: string
       hosViolation: boolean
       hosDrivingRemaining: number
-      currentLoad: string | null
-      etaNextStop: string | null
     }
     popup.setLngLat(coords).setHTML(popupHTML(p)).addTo(map)
   })

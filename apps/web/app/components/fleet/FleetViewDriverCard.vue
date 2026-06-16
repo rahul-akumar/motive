@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Driver } from '@motive/shared'
+import type { FleetDriver } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
-  driver: Driver
+  driver: FleetDriver
   isSelected: boolean
 }>()
 
@@ -13,24 +13,16 @@ const emit = defineEmits<{
 
 const hosPercent = computed(() => {
   const max = 11
-  return Math.max(0, Math.min(100, (props.driver.hos.drivingRemaining / max) * 100))
+  return Math.max(0, Math.min(100, (props.driver.hos.driveRemaining / max) * 100))
 })
 
 const hosColor = computed(() => {
-  const h = props.driver.hos.drivingRemaining
+  const h = props.driver.hos.driveRemaining
   return hosBarColor((h / 11) * 100, props.driver.hos.hasViolation)
 })
 
 const statusColor = computed(() => FLEET_STATUS_COLORS[props.driver.status])
 const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
-
-function formatLastUpdated(date: Date): string {
-  const diff = Date.now() - new Date(date).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'just now'
-  if (mins < 60) return `${mins}m ago`
-  return `${Math.floor(mins / 60)}h ago`
-}
 </script>
 
 <template>
@@ -63,9 +55,6 @@ function formatLastUpdated(date: Date): string {
       </div>
       <div class="fv-driver-card__location">
         {{ driver.currentLocation.city }}, {{ driver.currentLocation.state }}
-        <span v-if="driver.currentLoad" class="fv-driver-card__load"
-          >· {{ driver.currentLoad }}</span
-        >
       </div>
 
       <!-- HOS bar -->
@@ -78,13 +67,10 @@ function formatLastUpdated(date: Date): string {
         </div>
         <span class="fv-driver-card__hos-label" :style="{ color: hosColor }">
           <template v-if="driver.hos.hasViolation">VIOLATION</template>
-          <template v-else>{{ driver.hos.drivingRemaining.toFixed(1) }}h</template>
+          <template v-else>{{ driver.hos.driveRemaining.toFixed(1) }}h</template>
         </span>
       </div>
     </div>
-
-    <!-- Updated time -->
-    <div class="fv-driver-card__updated">{{ formatLastUpdated(driver.lastUpdated) }}</div>
   </button>
 </template>
 
@@ -187,10 +173,6 @@ function formatLastUpdated(date: Date): string {
   text-overflow: ellipsis;
 }
 
-.fv-driver-card__load {
-  color: var(--mtv-color-foreground-subtle);
-}
-
 /* HOS bar */
 .fv-driver-card__hos-row {
   display: flex;
@@ -219,15 +201,5 @@ function formatLastUpdated(date: Date): string {
   font-weight: var(--font-weight-semibold);
   flex-shrink: 0;
   letter-spacing: var(--tracking-wide);
-}
-
-/* Updated time */
-.fv-driver-card__updated {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 2px;
 }
 </style>

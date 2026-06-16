@@ -1,66 +1,15 @@
-import type { Driver, DriverStatus, Vehicle, FleetDriver } from '@motive/shared'
+import type { DriverStatus, FleetDriver, FleetVehicle } from '@motive/shared'
 import { useFleetData } from '~/composables/useFleetData'
 
 const ALL_STATUSES: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
-/**
- * Maps the new FleetDriver data to the legacy Driver type for map/panel compat.
- */
-function toDriver(fd: FleetDriver): Driver {
-  return {
-    id: fd.id,
-    name: fd.name,
-    initials: fd.initials,
-    licenseNumber: fd.licenseNumber,
-    phone: fd.phone,
-    status: fd.status,
-    vehicleId: fd.vehicleId ?? '',
-    currentLocation: fd.currentLocation,
-    hos: {
-      drivingRemaining: fd.hos.driveRemaining,
-      onDutyRemaining: fd.hos.shiftRemaining,
-      drivingToday: fd.hos.hoursToday,
-      onDutyToday: fd.hos.hoursToday,
-      sleeperToday: 0,
-      offDutyToday: 0,
-      hasViolation: fd.hos.hasViolation,
-      cycleUsed: 70 - fd.hos.cycleRemaining,
-      cycleRemaining: fd.hos.cycleRemaining,
-    },
-    milesDrivenToday: Math.floor(fd.hos.hoursToday * 55),
-    lastUpdated: new Date(),
-  }
-}
-
 export function useFleetView() {
   const { fleetVehicles, fleetDrivers } = useFleetData()
 
-  // Map FleetDriver[] → Driver[] for legacy map/panel components
-  const drivers = computed<Driver[]>(() => fleetDrivers.value.map(toDriver))
-
-  // Map FleetVehicle[] → Vehicle[] for legacy detail panel
-  const vehicles = computed<Vehicle[]>(() =>
-    fleetVehicles.value.map((v) => ({
-      id: v.id,
-      make: v.make,
-      model: v.model,
-      year: v.year,
-      vin: v.vin,
-      licensePlate: v.licensePlate,
-      status:
-        v.status === 'active'
-          ? 'active'
-          : v.status === 'idle'
-            ? 'idle'
-            : v.status === 'maintenance'
-              ? 'maintenance'
-              : 'offline',
-      mileage: v.mileage,
-      fuelLevel: v.fuelLevel,
-      driverId: v.driverId ?? undefined,
-      lastInspection: new Date(),
-    })),
-  )
+  // Drivers/vehicles flow straight from the canonical fleet data source — no
+  // legacy bridge, so map/panel components consume honest FleetDriver/FleetVehicle.
+  const drivers = fleetDrivers
+  const vehicles = fleetVehicles
 
   // ── Filter state ──────────────────────────────────────────────
   const activeFilters = ref<Set<DriverStatus>>(new Set(ALL_STATUSES))
@@ -86,7 +35,7 @@ export function useFleetView() {
   const searchQuery = ref('')
 
   // ── Filtered drivers ──────────────────────────────────────────
-  const filteredDrivers = computed<Driver[]>(() => {
+  const filteredDrivers = computed<FleetDriver[]>(() => {
     const q = searchQuery.value.trim().toLowerCase()
     return drivers.value.filter((d) => {
       if (!activeFilters.value.has(d.status)) return false
@@ -113,12 +62,12 @@ export function useFleetView() {
   // ── Selected driver (detail panel) ───────────────────────────
   const selectedDriverId = ref<string | null>(null)
 
-  const selectedDriver = computed<Driver | null>(
+  const selectedDriver = computed<FleetDriver | null>(
     () => drivers.value.find((d) => d.id === selectedDriverId.value) ?? null,
   )
 
-  const selectedVehicle = computed(() =>
-    selectedDriver.value
+  const selectedVehicle = computed<FleetVehicle | null>(() =>
+    selectedDriver.value?.vehicleId
       ? (vehicles.value.find((v) => v.id === selectedDriver.value!.vehicleId) ?? null)
       : null,
   )

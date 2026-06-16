@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { X, MapPin, Package, Clock, Truck, Fuel, AlertTriangle } from 'lucide-vue-next'
+import { X, MapPin, Clock, Truck, Fuel, AlertTriangle } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
-import type { Driver, Vehicle } from '@motive/shared'
+import type { FleetDriver, FleetVehicle } from '@motive/shared'
 import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS, hosBarColor } from '~/composables/useFleetStatus'
 
 const props = defineProps<{
-  driver: Driver | null
-  vehicle: Vehicle | null
+  driver: FleetDriver | null
+  vehicle: FleetVehicle | null
 }>()
 
 const emit = defineEmits<{
@@ -16,28 +16,19 @@ const emit = defineEmits<{
 // HOS gauge calculations
 const drivingPercent = computed(() => {
   if (!props.driver) return 0
-  return Math.max(0, Math.min(100, (props.driver.hos.drivingRemaining / 11) * 100))
+  return Math.max(0, Math.min(100, (props.driver.hos.driveRemaining / 11) * 100))
 })
 
 const onDutyPercent = computed(() => {
   if (!props.driver) return 0
-  return Math.max(0, Math.min(100, (props.driver.hos.onDutyRemaining / 14) * 100))
+  return Math.max(0, Math.min(100, (props.driver.hos.shiftRemaining / 14) * 100))
 })
 
+// Cycle gauge against the FMCSA 70-hour/8-day rule.
 const cyclePercent = computed(() => {
   if (!props.driver) return 0
-  const total = props.driver.hos.cycleUsed + props.driver.hos.cycleRemaining
-  if (total === 0) return 0
-  return Math.max(0, Math.min(100, (props.driver.hos.cycleRemaining / total) * 100))
+  return Math.max(0, Math.min(100, (props.driver.hos.cycleRemaining / 70) * 100))
 })
-
-function formatLastUpdated(date: Date): string {
-  const diff = Date.now() - new Date(date).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'just now'
-  if (mins < 60) return `${mins}m ago`
-  return `${Math.floor(mins / 60)}h ago`
-}
 
 const { formatDistance } = useFormatters()
 
@@ -92,7 +83,6 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
           <div class="fv-detail__value">
             {{ driver.currentLocation.city }}, {{ driver.currentLocation.state }}
           </div>
-          <div class="fv-detail__meta">Updated {{ formatLastUpdated(driver.lastUpdated) }}</div>
         </section>
 
         <!-- HOS Violation Banner -->
@@ -116,10 +106,10 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
                 class="fv-detail__hos-value"
                 :style="{ color: hosBarColor(drivingPercent, driver.hos.hasViolation) }"
               >
-                <template v-if="driver.hos.hasViolation || driver.hos.drivingRemaining <= 0">
+                <template v-if="driver.hos.hasViolation || driver.hos.driveRemaining <= 0">
                   VIOLATION
                 </template>
-                <template v-else> {{ driver.hos.drivingRemaining.toFixed(1) }}h / 11h </template>
+                <template v-else> {{ driver.hos.driveRemaining.toFixed(1) }}h / 11h </template>
               </span>
             </div>
             <div class="fv-detail__hos-track">
@@ -141,10 +131,10 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
                 class="fv-detail__hos-value"
                 :style="{ color: hosBarColor(onDutyPercent, driver.hos.hasViolation) }"
               >
-                <template v-if="driver.hos.hasViolation || driver.hos.onDutyRemaining <= 0">
+                <template v-if="driver.hos.hasViolation || driver.hos.shiftRemaining <= 0">
                   VIOLATION
                 </template>
-                <template v-else> {{ driver.hos.onDutyRemaining.toFixed(1) }}h / 14h </template>
+                <template v-else> {{ driver.hos.shiftRemaining.toFixed(1) }}h / 14h </template>
               </span>
             </div>
             <div class="fv-detail__hos-track">
@@ -180,48 +170,26 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
             </div>
           </div>
 
-          <!-- Today breakdown -->
+          <!-- Today / period breakdown -->
           <div class="fv-detail__hos-breakdown">
             <div class="fv-detail__hos-breakdown-item">
-              <span class="fv-detail__hos-breakdown-label">Driving</span>
+              <span class="fv-detail__hos-breakdown-label">Today</span>
               <span class="fv-detail__hos-breakdown-val"
-                >{{ driver.hos.drivingToday.toFixed(1) }}h</span
+                >{{ driver.hos.hoursToday.toFixed(1) }}h</span
               >
             </div>
             <div class="fv-detail__hos-breakdown-item">
-              <span class="fv-detail__hos-breakdown-label">On Duty</span>
+              <span class="fv-detail__hos-breakdown-label">This Week</span>
               <span class="fv-detail__hos-breakdown-val"
-                >{{ driver.hos.onDutyToday.toFixed(1) }}h</span
+                >{{ driver.hos.hoursThisWeek.toFixed(1) }}h</span
               >
             </div>
             <div class="fv-detail__hos-breakdown-item">
-              <span class="fv-detail__hos-breakdown-label">Sleeper</span>
+              <span class="fv-detail__hos-breakdown-label">Break Left</span>
               <span class="fv-detail__hos-breakdown-val"
-                >{{ driver.hos.sleeperToday.toFixed(1) }}h</span
+                >{{ driver.hos.breakRemaining.toFixed(1) }}h</span
               >
             </div>
-            <div class="fv-detail__hos-breakdown-item">
-              <span class="fv-detail__hos-breakdown-label">Off Duty</span>
-              <span class="fv-detail__hos-breakdown-val"
-                >{{ driver.hos.offDutyToday.toFixed(1) }}h</span
-              >
-            </div>
-          </div>
-        </section>
-
-        <!-- Load & ETA -->
-        <section v-if="driver.currentLoad || driver.etaNextStop" class="fv-detail__section">
-          <div class="fv-detail__section-label">
-            <MIcon :icon="Package" :size="16" />
-            Current Load
-          </div>
-          <div v-if="driver.currentLoad" class="fv-detail__value">{{ driver.currentLoad }}</div>
-          <div v-if="driver.etaNextStop" class="fv-detail__meta">
-            ETA next stop: <span class="fv-detail__eta">{{ driver.etaNextStop }}</span>
-          </div>
-          <div class="fv-detail__meta">
-            Miles today:
-            <span class="fv-detail__eta">{{ formatDistance(driver.milesDrivenToday) }}</span>
           </div>
         </section>
 
