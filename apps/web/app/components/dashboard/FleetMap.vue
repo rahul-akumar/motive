@@ -4,7 +4,7 @@ import 'd3-transition'
 import { geoAlbersUsa, geoMercator, geoPath } from 'd3-geo'
 import { easeBackOut } from 'd3-ease'
 import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
-import { MButton } from '@motive/ui'
+import { MButton, MCard } from '@motive/ui'
 
 const router = useRouter()
 
@@ -232,7 +232,7 @@ function formatHos(driver: FleetDriver): string {
 </script>
 
 <template>
-  <DashboardCard title="Fleet" class="fleet-map">
+  <MCard padding="lg" title="Fleet" class="fleet-map">
     <template #action>
       <MButton variant="link" size="sm" @click="router.push('/fleet/live')">Fleet view</MButton>
     </template>
@@ -297,7 +297,7 @@ function formatHos(driver: FleetDriver): string {
         <span class="fleet-map__legend-count">{{ statusCounts[status] }}</span>
       </button>
     </div>
-  </DashboardCard>
+  </MCard>
 </template>
 
 <style scoped>
