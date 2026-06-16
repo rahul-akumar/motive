@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { useFleetData } from '~/composables/useFleetData'
+import { currentRegion } from '~/composables/useRegion'
 
 describe('useFleetData', () => {
   it('returns non-empty fleetDrivers and fleetVehicles arrays', () => {
@@ -42,5 +43,23 @@ describe('useFleetData', () => {
   it('loading starts as false', () => {
     const { loading } = useFleetData()
     expect(loading.value).toBe(false)
+  })
+
+  it('switching region drives the loading state', async () => {
+    vi.useFakeTimers()
+    try {
+      const { loading } = useFleetData()
+      expect(loading.value).toBe(false)
+
+      currentRegion.value = currentRegion.value === 'us' ? 'mx' : 'us'
+      await nextTick()
+      expect(loading.value).toBe(true)
+
+      await vi.runAllTimersAsync()
+      expect(loading.value).toBe(false)
+    } finally {
+      vi.useRealTimers()
+      currentRegion.value = 'us'
+    }
   })
 })

@@ -42,5 +42,12 @@ export function useFleetData() {
     loading.value = false
   }
 
+  // Switching region is a deliberate selection — surface the loading state while
+  // the repository "fetches" the new region's data (the computeds derive from the
+  // synchronous *ForRegion path, so this only drives the loading window).
+  watch(currentRegion, () => {
+    refresh()
+  })
+
   return { fleetVehicles, fleetDrivers, fleetAssets, fleetStatus, loading, refresh }
 }
