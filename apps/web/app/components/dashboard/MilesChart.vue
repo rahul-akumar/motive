@@ -20,11 +20,8 @@ const tooltip = ref({ visible: false, x: 0, y: 0, label: '', miles: 0, trips: 0 
 
 const margin = { top: 16, right: 16, bottom: 32, left: 52 }
 
-// Read CSS custom properties from the document root at draw time
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return '#e2e2e2'
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
+// Read design tokens from the document root at draw time
+const { getCSSVar } = useCssColors()
 
 function drawChart() {
   if (!svgRef.value || !containerRef.value || !props.data.length) return

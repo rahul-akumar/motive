@@ -18,10 +18,7 @@ function hosBarWidth(hours: number): string {
   return `${Math.min((hours / MAX_HOURS) * 100, 100)}%`
 }
 
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return ''
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
+const { getCSSVar } = useCssColors()
 
 function hosColor(driver: FleetDriver): string {
   if (driver.hos.hasViolation) return 'var(--fleet-severity-critical)'

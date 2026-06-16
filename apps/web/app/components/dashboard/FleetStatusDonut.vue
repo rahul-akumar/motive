@@ -13,23 +13,8 @@ const props = defineProps<{
 
 const svgRef = ref<SVGSVGElement | null>(null)
 
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return ''
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
-
-// Resolves a CSS var to browser-computed RGB — needed for D3 SVG fill attributes
-// which don't support oklch or var() as presentation attributes.
-function readCSSColor(varName: string, fallback: string): string {
-  if (!import.meta.client) return fallback
-  const el = document.createElement('div')
-  el.style.display = 'none'
-  el.style.color = `var(${varName})`
-  document.body.appendChild(el)
-  const resolved = getComputedStyle(el).color
-  document.body.removeChild(el)
-  return resolved || fallback
-}
+// Resolve design tokens to browser-computed colors for D3 SVG fill attributes.
+const { getCSSVar, readCSSColor } = useCssColors()
 
 // CANVAS-COLORS: Keep as hex. D3 passes these as SVG fill attributes; oklch is not supported in SVG presentation attributes.
 const segments = computed(() => [
