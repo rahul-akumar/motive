@@ -26,9 +26,9 @@ describe('useKPIMetrics', () => {
     expect(driverMetric!.value).toBeGreaterThan(0)
   })
 
-  it('includes an active-alerts metric', () => {
+  it('includes an hos-compliance metric', () => {
     const { metrics } = useKPIMetrics()
-    const alertMetric = metrics.value.find((m) => m.id === 'active-alerts')
-    expect(alertMetric).toBeDefined()
+    const hosMetric = metrics.value.find((m) => m.id === 'hos-compliance')
+    expect(hosMetric).toBeDefined()
   })
 })
