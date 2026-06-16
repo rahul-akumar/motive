@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { ref } from 'vue'
+import { within, userEvent, expect } from '@storybook/test'
 import { MButton } from '@motive/ui'
 
 const meta: Meta<typeof MButton> = {
@@ -90,4 +92,41 @@ export const AllVariants: Story = {
       </div>
     `,
   }),
+}
+
+export const ClickInteraction: Story = {
+  render: () => ({
+    components: { MButton },
+    setup() {
+      const count = ref(0)
+      return { count }
+    },
+    template: `<MButton @click="count++">Clicked {{ count }} times</MButton>`,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button')
+    await expect(button).toHaveTextContent('Clicked 0 times')
+    await userEvent.click(button)
+    await userEvent.click(button)
+    await expect(button).toHaveTextContent('Clicked 2 times')
+  },
+}
+
+export const DisabledBlocksClicks: Story = {
+  render: () => ({
+    components: { MButton },
+    setup() {
+      const count = ref(0)
+      return { count }
+    },
+    template: `<MButton :disabled="true" @click="count++">Clicked {{ count }} times</MButton>`,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button')
+    await expect(button).toBeDisabled()
+    await userEvent.click(button)
+    await expect(button).toHaveTextContent('Clicked 0 times')
+  },
 }

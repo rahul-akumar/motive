@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
+import { within, userEvent, expect } from '@storybook/test'
 import { MPopover, MButton } from '@motive/ui'
 
 const meta: Meta<typeof MPopover> = {
@@ -87,4 +88,31 @@ export const WithoutArrow: Story = {
       </div>
     `,
   }),
+}
+
+export const OpenInteraction: Story = {
+  render: () => ({
+    components: { MPopover, MButton },
+    setup() {
+      const open = ref(false)
+      const anchor = ref<HTMLElement | null>(null)
+      return { open, anchor }
+    },
+    template: `
+      <div>
+        <span ref="anchor"><MButton @click="open = !open">Toggle popover</MButton></span>
+        <MPopover :open="open" :anchor-el="anchor" placement="bottom" @update:open="open = $event">
+          <div style="padding: 12px;">Popover is open</div>
+        </MPopover>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Popover content teleports to <body>, so query the whole document.
+    const body = within(canvasElement.ownerDocument.body)
+    await expect(body.queryByText('Popover is open')).toBeNull()
+    await userEvent.click(canvas.getByRole('button', { name: /toggle popover/i }))
+    await expect(await body.findByText('Popover is open')).toBeVisible()
+  },
 }
