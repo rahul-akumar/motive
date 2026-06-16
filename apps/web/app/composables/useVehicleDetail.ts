@@ -1,8 +1,8 @@
 import type { FleetVehicle, FleetDriver } from '@motive/shared'
-import { useFleetDataV2 } from '~/composables/useFleetData'
+import { useFleetData } from '~/composables/useFleetData'
 
 export function useVehicleDetail(vehicleId: Ref<string>) {
-  const { fleetVehicles, fleetDrivers, loading } = useFleetDataV2()
+  const { fleetVehicles, fleetDrivers, loading } = useFleetData()
 
   const vehicle = computed<FleetVehicle | undefined>(() =>
     fleetVehicles.value.find((v) => v.id === vehicleId.value),

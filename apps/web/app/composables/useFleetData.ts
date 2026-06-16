@@ -39,5 +39,3 @@ export function useFleetData() {
 
   return { fleetVehicles, fleetDrivers, fleetAssets, fleetStatus, loading, refresh }
 }
-
-export const useFleetDataV2 = useFleetData

@@ -1,8 +1,8 @@
 import type { FleetAsset, FleetAssetAvailability, FleetAssetType } from '@motive/shared'
-import { useFleetDataV2 } from '~/composables/useFleetData'
+import { useFleetData } from '~/composables/useFleetData'
 
 export function useAssetsTable() {
-  const { fleetAssets, loading } = useFleetDataV2()
+  const { fleetAssets, loading } = useFleetData()
 
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')
