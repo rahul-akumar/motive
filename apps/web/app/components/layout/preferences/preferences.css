@@ -1,0 +1,193 @@
+/**
+ * Shared styles for the preferences modal section bodies.
+ * Imported once (globally) by AppPreferencesModal so the extracted section
+ * SFCs can share these without duplicating rules. Class names are prefixed
+ * (`pref-`) to avoid collisions. Modal-shell styles live scoped in the parent;
+ * appearance/theme-grid styles live scoped in PreferencesAppearance.
+ */
+
+/* ── Section shell ── */
+.pref-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pref-section__head {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--mtv-color-border-default);
+  flex-shrink: 0;
+}
+
+.pref-section__title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--tracking-looser);
+  color: var(--mtv-color-foreground-default);
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.pref-section__desc {
+  font-size: var(--font-size-sm);
+  color: var(--mtv-color-foreground-muted);
+  letter-spacing: var(--tracking-normal);
+  margin: 0;
+}
+
+.pref-section__body {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── Group label ── */
+.pref-group-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-loose);
+  color: var(--mtv-color-foreground-subtle);
+  margin: 0 0 0.625rem;
+  text-transform: uppercase;
+}
+
+.pref-group-label + .pref-row ~ .pref-group-label {
+  margin-top: 1.25rem;
+}
+
+/* ── Radio group (notifications) ── */
+.pref-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pref-radio-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--mtv-color-border-default);
+  cursor: pointer;
+}
+
+.pref-radio-row:last-child {
+  border-bottom: none;
+}
+
+.pref-radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.pref-radio__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--mtv-color-border-strong);
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  transition: border-color 100ms ease;
+}
+
+.pref-radio-row:has(.pref-radio__input:checked) .pref-radio__dot {
+  border-color: var(--mtv-color-brand-default);
+  background-color: var(--mtv-color-brand-default);
+  box-shadow: inset 0 0 0 3px var(--mtv-color-surface-default);
+}
+
+.pref-radio__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pref-radio__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--mtv-color-foreground-default);
+}
+
+.pref-radio__hint {
+  font-size: var(--font-size-sm);
+  color: var(--mtv-color-foreground-muted);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* ── Rows (placeholders + language selects) ── */
+.pref-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--mtv-color-border-default);
+}
+
+.pref-row:last-child {
+  border-bottom: none;
+}
+
+.pref-row__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-normal);
+  color: var(--mtv-color-foreground-default);
+}
+
+.pref-row__value {
+  font-size: var(--font-size-sm);
+  color: var(--mtv-color-foreground-muted);
+  letter-spacing: var(--tracking-normal);
+}
+
+.pref-row__value--danger {
+  color: var(--fleet-severity-critical);
+  cursor: pointer;
+}
+
+/* ── Select ── */
+.pref-select {
+  appearance: none;
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
+  border-radius: 2px;
+  color: var(--mtv-color-foreground-default);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--tracking-normal);
+  padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  transition: border-color 100ms ease;
+}
+
+.pref-select:hover {
+  border-color: var(--mtv-color-border-strong);
+}
+
+.pref-select:focus {
+  outline: none;
+  border-color: var(--mtv-color-brand-default);
+}
+
+.pref-select option {
+  background-color: var(--mtv-color-surface-raised);
+  color: var(--mtv-color-foreground-default);
+}
+
+/* ── Hint ── */
+.pref-hint {
+  font-size: var(--font-size-sm);
+  color: var(--mtv-color-foreground-subtle);
+  letter-spacing: var(--tracking-wider);
+  margin: 0;
+}
