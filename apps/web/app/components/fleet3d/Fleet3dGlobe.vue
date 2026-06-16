@@ -5,17 +5,8 @@ import type { Driver, Vehicle } from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
 import { mockDriverOriginsByRegion, mockDriverSpeedsByRegion } from '~/mocks/globe-animation'
 
-// Resolve CSS custom properties to computed color strings for MapLibre GL shaders.
-function readCSSColor(varName: string, fallback: string): string {
-  if (!import.meta.client) return fallback
-  const el = document.createElement('div')
-  el.style.display = 'none'
-  el.style.color = `var(${varName})`
-  document.body.appendChild(el)
-  const resolved = getComputedStyle(el).color
-  document.body.removeChild(el)
-  return resolved || fallback
-}
+// Resolve design tokens to computed color strings for MapLibre GL shaders.
+const { readCSSColor } = useCssColors()
 
 function getStatusColors(): Record<string, string> {
   return {

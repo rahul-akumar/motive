@@ -29,17 +29,8 @@ const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
 // ── Status colors ─────────────────────────────────────────────
-// Resolve CSS custom properties to computed color strings for Leaflet HTML markers.
-function readCSSColor(varName: string, fallback: string): string {
-  if (!import.meta.client) return fallback
-  const el = document.createElement('div')
-  el.style.display = 'none'
-  el.style.color = `var(${varName})`
-  document.body.appendChild(el)
-  const resolved = getComputedStyle(el).color
-  document.body.removeChild(el)
-  return resolved || fallback
-}
+// Resolve design tokens to computed color strings for Leaflet HTML markers.
+const { readCSSColor } = useCssColors()
 
 function getStatusColors(): Record<DriverStatus, string> {
   return {

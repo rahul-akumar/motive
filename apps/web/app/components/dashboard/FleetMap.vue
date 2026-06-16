@@ -47,19 +47,8 @@ const statusCounts = computed(() => {
   return counts
 })
 
-// Resolve a CSS custom property to a browser-computed RGB color.
-// Uses a temporary DOM element so the browser resolves OKLCH → rgb().
-// SVG presentation attributes don't support oklch() — this function bridges that gap.
-function readCSSColor(varName: string, fallback: string): string {
-  if (!import.meta.client) return fallback
-  const el = document.createElement('div')
-  el.style.display = 'none'
-  el.style.color = `var(${varName})`
-  document.body.appendChild(el)
-  const resolved = getComputedStyle(el).color
-  document.body.removeChild(el)
-  return resolved || fallback
-}
+// Resolve design tokens to browser-computed colors for D3 SVG attributes.
+const { readCSSColor, getCSSVar } = useCssColors()
 
 const STATUS_LABELS: Record<FleetDriverStatus, string> = {
   driving: 'Driving',
@@ -74,11 +63,6 @@ const activeLegendStatuses = computed(() => {
   const seen = new Set(props.drivers.map((d) => d.status))
   return (Object.keys(STATUS_LABELS) as FleetDriverStatus[]).filter((s) => seen.has(s))
 })
-
-function getCSSVar(name: string): string {
-  if (!import.meta.client) return '#333'
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
 
 function drawMap() {
   if (!svgRef.value || !containerRef.value || !geoData.value) return
