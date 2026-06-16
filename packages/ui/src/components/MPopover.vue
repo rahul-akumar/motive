@@ -8,6 +8,11 @@ export interface MPopoverProps {
   anchorEl?: HTMLElement | null
   /** Preferred placement relative to the anchor; flips if it would overflow. @default 'top' */
   placement?: 'top' | 'bottom' | 'left' | 'right'
+  /**
+   * Color treatment. `'inverse'` flips the surface against the theme (black-on-light,
+   * white-on-dark) for a high-contrast popover. @default 'default'
+   */
+  variant?: 'default' | 'inverse'
   /** Renders a pointing arrow toward the anchor. @default true */
   arrow?: boolean
   /** Gap in pixels between the anchor and the popover. @default 8 */
@@ -24,6 +29,7 @@ export interface MPopoverProps {
 
 const props = withDefaults(defineProps<MPopoverProps>(), {
   placement: 'top',
+  variant: 'default',
   arrow: true,
   offset: 8,
   maxWidth: 'none',
@@ -164,7 +170,12 @@ defineExpose({ reposition })
       <div
         v-if="open"
         ref="popoverRef"
-        :class="['m-popover', `m-popover--${currentPlacement}`, { 'm-popover--arrow': arrow }]"
+        :class="[
+          'm-popover',
+          `m-popover--${currentPlacement}`,
+          `m-popover--${variant}`,
+          { 'm-popover--arrow': arrow },
+        ]"
         :style="[popoverStyle, maxWidth !== 'none' ? { maxWidth } : {}]"
         role="dialog"
         :aria-label="ariaLabel"
@@ -182,13 +193,18 @@ defineExpose({ reposition })
   z-index: 9999;
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 8px;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.25),
-    0 1px 4px rgba(0, 0, 0, 0.15);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-overlay);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-default);
+}
+
+/* Inverse: high-contrast surface flipped against the theme. */
+.m-popover--inverse {
+  background-color: var(--mtv-color-surface-inverse);
+  color: var(--mtv-color-foreground-inverse);
+  border-color: transparent;
 }
 
 /* ── Arrow via ::before pseudo-element ── */
@@ -228,6 +244,20 @@ defineExpose({ reposition })
   top: 50%;
   transform: translateY(-50%);
   border-right-color: var(--mtv-color-surface-raised);
+}
+
+/* Inverse arrow colors — match the flipped surface. */
+.m-popover--arrow.m-popover--inverse.m-popover--top::before {
+  border-top-color: var(--mtv-color-surface-inverse);
+}
+.m-popover--arrow.m-popover--inverse.m-popover--bottom::before {
+  border-bottom-color: var(--mtv-color-surface-inverse);
+}
+.m-popover--arrow.m-popover--inverse.m-popover--left::before {
+  border-left-color: var(--mtv-color-surface-inverse);
+}
+.m-popover--arrow.m-popover--inverse.m-popover--right::before {
+  border-right-color: var(--mtv-color-surface-inverse);
 }
 
 /* ── Transitions ── */
