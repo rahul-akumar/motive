@@ -300,4 +300,13 @@ export const tokens = {
     '2xl': '1.5rem',
     full: '9999px',
   },
+
+  // Font stacks are defined once as CSS vars in theme.css; reference them here
+  // so Tailwind utilities (font-sans, font-mono, …) stay in sync with the source.
+  fontFamily: {
+    sans: ['var(--font-family-sans)'],
+    condensed: ['var(--font-family-condensed)'],
+    mono: ['var(--font-family-mono)'],
+    display: ['var(--font-family-display)'],
+  },
 } as const

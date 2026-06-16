@@ -16,6 +16,7 @@ export const motivePreset: Partial<Config> = {
       colors: {
         mtv: mtvColors,
       },
+      spacing: tokens.spacing,
       fontFamily: tokens.fontFamily,
       fontSize: tokens.fontSize,
       fontWeight: tokens.fontWeight,
