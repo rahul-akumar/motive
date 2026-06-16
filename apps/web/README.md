@@ -1,75 +1,49 @@
-# Nuxt Minimal Starter
+# @motive/web
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+The Motive fleet dashboard — a **mock-only Nuxt 4 / Vue 3 design prototype**. There is no
+backend: all data comes from the region-indexed fixtures under `app/mocks/`, and the app runs
+as a client-rendered SPA (`ssr: false`).
 
-## Setup
+This package is part of the Bun + Turbo monorepo. It uses **Bun** exclusively — do not use
+npm, pnpm, or yarn.
 
-Make sure to install dependencies:
+## Commands
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Run from the repo root:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+bun install        # install all workspace dependencies
+bun run dev:web    # start this app on http://localhost:3000
 ```
 
-## Production
-
-Build the application for production:
+Or from `apps/web/`:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+bun run dev        # dev server on :3000 (bun run dev:host to expose on the network)
+bun run build      # production build
+bun run preview    # preview the production build locally
+bun run typecheck  # nuxt typecheck (strict TS)
+bun run lint       # eslint
+bun run test       # vitest unit/composable tests
 ```
 
-Locally preview production build:
+## Environment
 
-```bash
-# npm
-npm run preview
+Copy any required values into `apps/web/.env`:
 
-# pnpm
-pnpm preview
+| Variable                     | Purpose                                                       |
+| ---------------------------- | ------------------------------------------------------------- |
+| `NUXT_PUBLIC_TOMTOM_API_KEY` | TomTom tiles for the live fleet map. Maps degrade without it. |
 
-# yarn
-yarn preview
+## Theming
 
-# bun
-bun run preview
-```
+Theming is driven by the design tokens in `@motive/tailwind-config` (`theme.css`) and the
+`useTheme()` composable (`app/composables/useTheme.ts`):
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Themes (`arc`, `console`, `legacy`) are applied by setting `data-theme` on `<html>`; the Arc
+  theme additionally supports a parametric hue/tint via the `--mtv-tint` / `--mtv-hue` vars.
+- Fleet-specific semantic tokens live in `app/assets/css/main.css`.
+- Components needing concrete colors (D3/Leaflet/MapLibre) resolve tokens through
+  `useCssColors()` and react to theme changes via `useThemeObserver()`.
+
+See the root `README` / design-system docs for the full token model.
