@@ -1,5 +1,5 @@
 import type { Driver, DriverStatus, Vehicle, FleetDriver } from '@motive/shared'
-import { useFleetDataV2 } from '~/composables/useFleetData'
+import { useFleetData } from '~/composables/useFleetData'
 
 const ALL_STATUSES: DriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
@@ -33,7 +33,7 @@ function toDriver(fd: FleetDriver): Driver {
 }
 
 export function useFleetView() {
-  const { fleetVehicles, fleetDrivers } = useFleetDataV2()
+  const { fleetVehicles, fleetDrivers } = useFleetData()
 
   // Map FleetDriver[] → Driver[] for legacy map/panel components
   const drivers = computed<Driver[]>(() => fleetDrivers.value.map(toDriver))

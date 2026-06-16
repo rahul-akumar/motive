@@ -1,8 +1,8 @@
 import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
-import { useFleetDataV2 } from '~/composables/useFleetData'
+import { useFleetData } from '~/composables/useFleetData'
 
 export function useDriversTable() {
-  const { fleetDrivers, loading } = useFleetDataV2()
+  const { fleetDrivers, loading } = useFleetData()
 
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')

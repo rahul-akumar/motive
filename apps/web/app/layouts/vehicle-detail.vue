@@ -2,7 +2,7 @@
 const { t } = useI18n()
 const route = useRoute()
 
-const { fleetVehicles } = useFleetDataV2()
+const { fleetVehicles } = useFleetData()
 
 const vehicleId = computed(() => (route.params.id as string) ?? '')
 
