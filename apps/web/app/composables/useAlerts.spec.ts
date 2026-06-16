@@ -1,5 +1,13 @@
-import { describe, it, expect } from 'vitest'
-import { useAlerts } from '~/composables/useAlerts'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+
+// useAlerts keeps dismissed state in module-level singletons, so each test gets a
+// fresh module instance to avoid dismiss/dismissAll leaking into later assertions.
+let useAlerts: typeof import('~/composables/useAlerts').useAlerts
+
+beforeEach(async () => {
+  vi.resetModules()
+  ;({ useAlerts } = await import('~/composables/useAlerts'))
+})
 
 describe('useAlerts', () => {
   it('returns a non-empty alerts array', () => {
