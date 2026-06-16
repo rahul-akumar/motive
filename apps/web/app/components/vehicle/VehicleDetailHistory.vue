@@ -102,18 +102,21 @@ function openTimelinePopover(markerEl: L.Marker, entry: TimelineDisplayEntry) {
   timelinePopoverOpen.value = true
 }
 
-const LIGHT_THEMES = new Set(['light', 'legacy'])
-
-function isDark(): boolean {
-  const theme = document.documentElement.getAttribute('data-theme') ?? 'dark'
-  return !LIGHT_THEMES.has(theme)
-}
-
 function getTileUrl(): string {
-  return isDark()
+  return isDarkTheme()
     ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
     : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
 }
+
+// Re-skin map tiles when the theme changes
+useThemeObserver(() => {
+  if (!map) return
+  map.eachLayer((layer) => {
+    if ((layer as L.TileLayer).setUrl) {
+      ;(layer as L.TileLayer).setUrl(getTileUrl())
+    }
+  })
+})
 
 async function initMap() {
   if (!mapContainer.value) return
@@ -148,16 +151,6 @@ async function initMap() {
   map.on('zoomstart', () => {
     timelinePopoverOpen.value = false
   })
-
-  const observer = new MutationObserver(() => {
-    if (!map) return
-    map.eachLayer((layer) => {
-      if ((layer as L.TileLayer).setUrl) {
-        ;(layer as L.TileLayer).setUrl(getTileUrl())
-      }
-    })
-  })
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 }
 
 function addMarkers(L: typeof import('leaflet')) {

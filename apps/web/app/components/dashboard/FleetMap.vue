@@ -209,7 +209,8 @@ watch(
   { deep: true },
 )
 
-let themeObserver: MutationObserver | null = null
+// Redraw when the theme changes
+useThemeObserver(drawMap)
 
 onMounted(() => {
   if (geoData.value) drawMap()
@@ -217,13 +218,6 @@ onMounted(() => {
   const ro = new ResizeObserver(() => drawMap())
   if (containerRef.value) ro.observe(containerRef.value)
   onUnmounted(() => ro.disconnect())
-
-  themeObserver = new MutationObserver(() => drawMap())
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
-  onUnmounted(() => themeObserver?.disconnect())
 })
 
 function formatHos(driver: FleetDriver): string {

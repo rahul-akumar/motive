@@ -184,20 +184,11 @@ function drawChart() {
     .text('VEHICLES')
 }
 
-// Watch for theme changes
-let themeObserver: MutationObserver | null = null
+// Redraw when the theme changes
+useThemeObserver(drawChart)
 
 onMounted(() => {
   drawChart()
-
-  themeObserver = new MutationObserver(() => {
-    drawChart()
-  })
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
-  onUnmounted(() => themeObserver?.disconnect())
 })
 
 watch(() => props.status, drawChart, { deep: true })

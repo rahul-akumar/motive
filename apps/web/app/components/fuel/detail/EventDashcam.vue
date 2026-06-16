@@ -257,20 +257,14 @@ function drawTimeline() {
     .text(formatTimeHHMMSS(props.event.endTime))
 }
 
-let themeObserver: MutationObserver | null = null
+// Redraw when the theme changes
+useThemeObserver(drawTimeline)
 
 onMounted(() => {
   drawTimeline()
   const ro = new ResizeObserver(() => drawTimeline())
   if (timelineRef.value) ro.observe(timelineRef.value)
   onUnmounted(() => ro.disconnect())
-
-  themeObserver = new MutationObserver(() => drawTimeline())
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
-  onUnmounted(() => themeObserver?.disconnect())
 })
 
 watch(currentTime, drawTimeline)

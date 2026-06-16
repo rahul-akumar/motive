@@ -78,8 +78,6 @@ const STATUS_COLORS: Record<FleetVehicleStatus, string> = {
   maintenance: '#94a3b8',
 }
 
-const LIGHT_THEMES = new Set(['light', 'legacy'])
-
 const SEARCH_ZONE_STYLES = {
   active: {
     circleColor: 'rgba(248, 113, 113, 0.3)',
@@ -99,16 +97,21 @@ const SEARCH_ZONE_STYLES = {
   },
 } as const
 
-function isDark(): boolean {
-  const theme = document.documentElement.getAttribute('data-theme') ?? 'dark'
-  return !LIGHT_THEMES.has(theme)
-}
-
 function getTileUrl(): string {
-  return isDark()
+  return isDarkTheme()
     ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
     : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
 }
+
+// Re-skin map tiles when the theme changes
+useThemeObserver(() => {
+  if (!map) return
+  map.eachLayer((layer) => {
+    if ((layer as L.TileLayer).setUrl) {
+      ;(layer as L.TileLayer).setUrl(getTileUrl())
+    }
+  })
+})
 
 function formatElapsed(seconds: number): string {
   const m = Math.floor(seconds / 60)
@@ -291,16 +294,6 @@ async function initMap() {
     popoverOpen.value = false
     incidentPopoverOpen.value = false
   })
-
-  const observer = new MutationObserver(() => {
-    if (!map) return
-    map.eachLayer((layer) => {
-      if ((layer as L.TileLayer).setUrl) {
-        ;(layer as L.TileLayer).setUrl(getTileUrl())
-      }
-    })
-  })
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 }
 
 function initNormalMarker(L: typeof import('leaflet')) {
