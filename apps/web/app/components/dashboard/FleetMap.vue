@@ -31,7 +31,11 @@ const isFiltering = computed(() => activeFilters.value.size > 0)
 
 function toggleFilter(status: FleetDriverStatus) {
   const next = new Set(activeFilters.value)
-  next.has(status) ? next.delete(status) : next.add(status)
+  if (next.has(status)) {
+    next.delete(status)
+  } else {
+    next.add(status)
+  }
   activeFilters.value = next
 }
 
