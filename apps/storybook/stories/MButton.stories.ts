@@ -12,7 +12,7 @@ const meta: Meta<typeof MButton> = {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     type: {
       control: 'select',
@@ -21,6 +21,7 @@ const meta: Meta<typeof MButton> = {
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
     iconOnly: { control: 'boolean' },
+    click: { action: 'click' },
   },
 }
 
@@ -66,6 +67,7 @@ export const Sizes: Story = {
     components: { MButton },
     template: `
       <div style="display: flex; align-items: center; gap: 8px;">
+        <MButton variant="primary" size="xs">Extra small</MButton>
         <MButton variant="primary" size="sm">Small</MButton>
         <MButton variant="primary" size="md">Medium</MButton>
         <MButton variant="primary" size="lg">Large</MButton>
@@ -85,34 +87,6 @@ export const AllVariants: Story = {
         <MButton variant="ghost">Ghost</MButton>
         <MButton variant="danger">Danger</MButton>
         <MButton variant="link">Link</MButton>
-      </div>
-    `,
-  }),
-}
-
-export const Loading: Story = {
-  args: {
-    variant: 'primary',
-    size: 'md',
-    loading: true,
-  },
-  render: (args) => ({
-    components: { MButton },
-    setup() {
-      return { args }
-    },
-    template: '<MButton v-bind="args">Loading...</MButton>',
-  }),
-}
-
-export const AllSizes: Story = {
-  render: () => ({
-    components: { MButton },
-    template: `
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <MButton size="sm">Small</MButton>
-        <MButton size="md">Medium</MButton>
-        <MButton size="lg">Large</MButton>
       </div>
     `,
   }),
