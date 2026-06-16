@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
+import { within, userEvent, expect } from '@storybook/test'
 import { MCheckbox } from '@motive/ui'
 
 const meta: Meta<typeof MCheckbox> = {
@@ -68,4 +69,24 @@ export const SlotLabel: Story = {
       </MCheckbox>
     `,
   }),
+}
+
+export const ToggleInteraction: Story = {
+  render: () => ({
+    components: { MCheckbox },
+    setup() {
+      const checked = ref(false)
+      return { checked }
+    },
+    template: `<MCheckbox v-model="checked" label="Toggle me" />`,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const checkbox = canvas.getByRole('checkbox')
+    await expect(checkbox).not.toBeChecked()
+    await userEvent.click(checkbox)
+    await expect(checkbox).toBeChecked()
+    await userEvent.click(checkbox)
+    await expect(checkbox).not.toBeChecked()
+  },
 }
