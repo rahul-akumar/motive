@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
+import { Search } from 'lucide-vue-next'
 import { MInput } from '@motive/ui'
 
 const meta: Meta<typeof MInput> = {
@@ -51,14 +52,14 @@ export const Sizes: Story = {
   }),
 }
 
-export const Search: Story = {
+export const WithLeadingIcon: Story = {
   render: () => ({
     components: { MInput },
     setup() {
       const value = ref('')
-      return { value }
+      return { value, Search }
     },
-    template: `<div style="width: 320px;"><MInput v-model="value" type="search" placeholder="Search vehicles, drivers…" /></div>`,
+    template: `<div style="width: 320px;"><MInput v-model="value" type="search" :leading-icon="Search" :clearable="true" placeholder="Search vehicles, drivers…" /></div>`,
   }),
 }
 
