@@ -110,14 +110,57 @@ The interpolation is done in oklch with `calc()`. For example, in
   slate `248`, violet `286` — which are the accent hues of the former standalone tinted
   themes that Arc absorbed.
 
+## Foundation scales beyond color
+
+Color is not the only themed primitive. The same "author once, consume by token" rule applies
+to elevation, motion, z-index, and radius. Reach for these instead of literal values:
+
+- **Elevation** — `var(--mtv-shadow-{xs,sm,md,lg,xl,overlay})`. Theme-dependent (defined per
+  theme in `themes/*.css`): Arc and Console are near-flat, Legacy is softly lifted. Cards sit
+  flush (`--shadow-card`); floating surfaces (menus, modals, drawers) use the scale.
+  `--mtv-color-surface-scrim` is the backdrop behind modals/drawers.
+- **Motion** — duration `var(--mtv-duration-{instant,fast,base,slow,slower})` and easing
+  `var(--mtv-ease-{standard,emphasized,linear})`. Theme-independent. Use these in every
+  `transition`/`animation` instead of literal `ms`/`ease`; all motion still respects
+  `prefers-reduced-motion`.
+- **Z-index** — the ordered ladder `var(--mtv-z-{base,raised,sticky,drawer,overlay,modal,popover,toast,tooltip})`.
+  Pick the rung that names a surface's role rather than an arbitrary integer.
+- **Radius** — `var(--radius-*)` plus the theme-semantic `var(--card-radius)` / `var(--badge-radius)`.
+
+All four (with shadow/motion/z mirrored in the JS `tokens` export for Tailwind utilities) render
+live in Storybook **Foundations/Tokens**.
+
 ## Consuming tokens
 
 - **Vue components / scoped CSS:** `@reference "@motive/tailwind-config/theme.css"`, then use
   Tailwind utilities (`@apply`) for layout and `var(--mtv-color-*)` for themeable color.
   Semantic tokens only — see [packages/ui/AUTHORING.md](./packages/ui/AUTHORING.md).
 - **Canvas / WebGL (Leaflet, MapLibre, D3):** these can't read CSS variables, so resolve
-  concrete values via `useCssColors()` and re-resolve on theme change via
-  `useThemeObserver()` / `isDarkTheme()` (`useTheme.ts`).
+  concrete values via `useCssColors().readCSSColor('--token', '#fallback')` and re-resolve on
+  theme change via `useThemeObserver()` / `isDarkTheme()` (`useTheme.ts`). Keep the original hex
+  as the fallback so SSR and the pre-resolution paint are correct.
+
+## Enforcement
+
+The "semantic tokens only" rule is enforced mechanically, not by convention alone:
+
+- **Stylelint** (`@motive/stylelint-config`, run via `bun run lint:css` and on staged
+  `*.{css,vue}` in the pre-commit hook) bans raw **hex / rgb / rgba / hsl / hsla** color literals
+  in `<style>` blocks and `.css` files. Author color in `var(--token)`, or `oklch(from
+var(--token) l c h / a)` for an alpha variant. Bare `oklch()` literals are allowed (the token
+  files and a few hand-tuned / color-picker surfaces need them) but discouraged in components.
+- **ESLint** warns (advisory, non-blocking) on raw `<button>`/`<input>`/`<select>` in the web app
+  (`vue/no-restricted-html-elements`) to steer new UI toward `@motive/ui` (`MButton`, `MInput`,
+  `MSelect`, …). Native elements stay valid for genuinely custom controls or native semantics
+  (e.g. a native `<select>` for locale/region) — silence locally with an
+  `eslint-disable-next-line` and a one-line reason.
+
+## Deprecating / renaming tokens
+
+Tokens are a shared contract. To retire or rename one: add the replacement first, repoint
+consumers, then keep the old token as an alias (`--old: var(--new)`) for one change cycle before
+deleting — mirroring how `useTheme` migrates removed/renamed theme ids. Never delete a token in
+the same change that introduces its replacement.
 
 ## Where tokens live — quick map
 
@@ -126,8 +169,11 @@ The interpolation is done in oklch with `calc()`. For example, in
 | Primitive palette + scales (hex, canonical)        | `packages/tailwind-config/src/tokens/index.ts`                 |
 | Primitives as CSS vars (oklch) + Tailwind `@theme` | `packages/tailwind-config/src/theme.css`                       |
 | Semantic tokens per theme                          | `packages/tailwind-config/src/themes/{arc,console,legacy}.css` |
+| Elevation/shadow scale (per theme)                 | `packages/tailwind-config/src/themes/{arc,console,legacy}.css` |
+| Motion + z-index scales (theme-independent)        | `packages/tailwind-config/src/theme.css`                       |
 | Fleet/domain tokens                                | `apps/web/app/assets/css/main.css`                             |
 | Theme/tint runtime + persistence                   | `apps/web/app/composables/useTheme.ts`                         |
+| Color-token enforcement (stylelint)                | `packages/stylelint-config/index.mjs`                          |
 | Live token gallery                                 | `apps/storybook/stories/Foundations.Tokens.mdx`                |
 
 > The Storybook **Foundations/Tokens** page renders every primitive and semantic token
