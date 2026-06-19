@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { MSelect } from '@motive/ui'
 import { useLocalePreferences } from '~/composables/useLocalePreferences'
 import { useFormatPreferences, type FormatPreferences } from '~/composables/useFormatPreferences'
 
@@ -25,8 +26,16 @@ interface SelectRow {
   id: string
   label: string
   key: keyof FormatPreferences
-  options: ReadonlyArray<{ value: string; label: string }>
+  options: { value: string; label: string }[]
 }
+
+// Map the locale/region domain objects to MSelect's { value, label } shape.
+const regionOptions = computed(() =>
+  availableRegions.map((r) => ({ value: r.code, label: `${r.flag} ${r.name}` })),
+)
+const localeOptions = computed(() =>
+  availableLocales.map((l) => ({ value: l.code, label: l.name })),
+)
 
 // Date & time formatting selects — all driven by applyFormatPreferences.
 const dateTimeRows = computed<SelectRow[]>(() => [
@@ -102,8 +111,8 @@ const unitRows = computed<SelectRow[]>(() => [
   },
 ])
 
-function onFormatChange(key: keyof FormatPreferences, event: Event) {
-  const value = (event.target as HTMLSelectElement).value
+function onFormatSelect(key: keyof FormatPreferences, value: string | number | null) {
+  if (value == null) return
   applyFormatPreferences({ [key]: value } as Partial<FormatPreferences>)
 }
 </script>
@@ -118,66 +127,48 @@ function onFormatChange(key: keyof FormatPreferences, event: Event) {
       <!-- ── Locale ── -->
       <p class="pref-group-label">{{ t('preferences.language.groupLocale') }}</p>
       <div class="pref-row">
-        <label class="pref-row__label" for="pref-region-select">{{
-          t('preferences.language.region')
-        }}</label>
-        <select
-          id="pref-region-select"
-          class="pref-select"
-          :value="currentRegion"
-          @change="applyRegion(($event.target as HTMLSelectElement).value as any)"
-        >
-          <option v-for="region in availableRegions" :key="region.code" :value="region.code">
-            {{ region.flag }} {{ region.name }}
-          </option>
-        </select>
+        <span class="pref-row__label">{{ t('preferences.language.region') }}</span>
+        <MSelect
+          :model-value="currentRegion"
+          :options="regionOptions"
+          :aria-label="t('preferences.language.region')"
+          @update:model-value="(v) => v != null && applyRegion(v as any)"
+        />
       </div>
       <div class="pref-row">
-        <label class="pref-row__label" for="pref-language-select">{{
-          t('preferences.language.language')
-        }}</label>
-        <select
-          id="pref-language-select"
-          class="pref-select"
-          :value="currentLocale"
-          @change="applyLocale(($event.target as HTMLSelectElement).value as any)"
-        >
-          <option v-for="locale in availableLocales" :key="locale.code" :value="locale.code">
-            {{ locale.name }}
-          </option>
-        </select>
+        <span class="pref-row__label">{{ t('preferences.language.language') }}</span>
+        <MSelect
+          :model-value="currentLocale"
+          :options="localeOptions"
+          :aria-label="t('preferences.language.language')"
+          @update:model-value="(v) => v != null && applyLocale(v as any)"
+        />
       </div>
 
       <!-- ── Date & Time ── -->
       <p class="pref-group-label">{{ t('preferences.language.groupDateTime') }}</p>
       <div v-for="row in dateTimeRows" :key="row.id" class="pref-row">
-        <label class="pref-row__label" :for="row.id">{{ row.label }}</label>
-        <select
-          :id="row.id"
-          class="pref-select"
-          :value="formatPreferences[row.key]"
-          @change="onFormatChange(row.key, $event)"
-        >
-          <option v-for="opt in row.options" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
+        <span class="pref-row__label">{{ row.label }}</span>
+        <MSelect
+          :model-value="formatPreferences[row.key]"
+          :options="row.options"
+          :searchable="row.options.length > 10"
+          :aria-label="row.label"
+          @update:model-value="(v) => onFormatSelect(row.key, v)"
+        />
       </div>
 
       <!-- ── Units ── -->
       <p class="pref-group-label">{{ t('preferences.language.groupUnits') }}</p>
       <div v-for="row in unitRows" :key="row.id" class="pref-row">
-        <label class="pref-row__label" :for="row.id">{{ row.label }}</label>
-        <select
-          :id="row.id"
-          class="pref-select"
-          :value="formatPreferences[row.key]"
-          @change="onFormatChange(row.key, $event)"
-        >
-          <option v-for="opt in row.options" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
+        <span class="pref-row__label">{{ row.label }}</span>
+        <MSelect
+          :model-value="formatPreferences[row.key]"
+          :options="row.options"
+          :searchable="row.options.length > 10"
+          :aria-label="row.label"
+          @update:model-value="(v) => onFormatSelect(row.key, v)"
+        />
       </div>
     </div>
   </div>
