@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
-import { MIcon, MSelect } from '@motive/ui'
+import { MInput, MSelect } from '@motive/ui'
 import type { CameraType, KpiFilter } from '~/composables/useCameraData'
 
 export interface CameraFilterBarProps {
@@ -54,14 +54,15 @@ const STATUS_OPTIONS = [
     </div>
 
     <div class="filter-bar__search">
-      <MIcon :icon="Search" :size="14" class="filter-bar__search-icon" />
-      <!-- eslint-disable-next-line vue/no-restricted-html-elements -- native search input: MInput has no leading-icon slot; styling is tokenized -->
-      <input
-        class="filter-input"
+      <MInput
+        :model-value="search"
         type="search"
+        size="sm"
+        :leading-icon="Search"
+        :clearable="true"
         placeholder="Search vehicles..."
-        :value="search"
-        @input="emit('update:search', ($event.target as HTMLInputElement).value)"
+        aria-label="Search vehicles"
+        @update:model-value="(v) => emit('update:search', v)"
       />
     </div>
   </div>
@@ -81,43 +82,7 @@ const STATUS_OPTIONS = [
 }
 
 .filter-bar__search {
-  position: relative;
   margin-left: auto;
-}
-
-.filter-bar__search-icon {
-  position: absolute;
-  left: 0.625rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--mtv-color-foreground-subtle);
-  pointer-events: none;
-}
-
-.filter-input {
-  height: 32px;
-  background-color: var(--mtv-color-surface-raised);
-  border: 1px solid var(--mtv-color-border-default);
-  border-radius: var(--radius);
-  color: var(--mtv-color-foreground-default);
-  font-size: var(--font-size-sm);
-  font-family: inherit;
-  outline: none;
-  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
-  padding: 0 0.75rem 0 2rem;
   width: 220px;
-}
-
-.filter-input:focus {
-  border-color: var(--mtv-color-foreground-subtle);
-}
-
-.filter-input::placeholder {
-  color: var(--mtv-color-foreground-subtle);
-}
-
-/* Remove default search cancel button */
-.filter-input::-webkit-search-cancel-button {
-  display: none;
 }
 </style>
