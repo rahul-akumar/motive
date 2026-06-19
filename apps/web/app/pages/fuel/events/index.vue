@@ -6,6 +6,7 @@ import {
   MButton,
   MBadge,
   MSelect,
+  MInput,
   MIcon,
   MDrawer,
   type MSelectOption,
@@ -142,10 +143,6 @@ function row(r: unknown): FuelEventRow {
   return r as FuelEventRow
 }
 
-function handleSearchInput(e: Event) {
-  filterSearch.value = (e.target as HTMLInputElement).value
-}
-
 function setFilterEventType(v: string | number | null) {
   filterEventType.value = v as FuelEventType | null
 }
@@ -208,26 +205,17 @@ const STATUS_BADGE: Record<
     <div class="fe-page__filters">
       <div class="fe-page__filters-left">
         <!-- Search -->
-        <div class="fe-page__search">
-          <MIcon :icon="Search" :size="14" class="fe-page__search-icon" />
-          <input
-            :value="filterSearch"
-            type="text"
-            class="fe-page__search-input"
-            placeholder="Search vehicle or driver…"
-            aria-label="Search vehicle or driver"
-            @input="handleSearchInput"
-          />
-          <button
-            v-if="filterSearch"
-            type="button"
-            class="fe-page__search-clear"
-            aria-label="Clear search"
-            @click="filterSearch = ''"
-          >
-            <MIcon :icon="X" :size="12" :stroke-width="2.5" />
-          </button>
-        </div>
+        <MInput
+          :model-value="filterSearch"
+          type="search"
+          size="sm"
+          :leading-icon="Search"
+          :clearable="true"
+          placeholder="Search vehicle or driver…"
+          aria-label="Search vehicle or driver"
+          class="fe-page__search"
+          @update:model-value="(v) => (filterSearch = v)"
+        />
 
         <!-- Event type filter -->
         <MSelect
@@ -437,51 +425,7 @@ const STATUS_BADGE: Record<
 }
 
 .fe-page__search {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.fe-page__search-icon {
-  position: absolute;
-  left: 0.5rem;
-  color: var(--mtv-color-foreground-muted);
-  pointer-events: none;
-}
-
-.fe-page__search-input {
-  @apply h-8 rounded-sm border text-base pl-7 pr-7 w-52;
-  background: var(--mtv-color-background-card);
-  border-color: var(--mtv-color-border-default);
-  color: var(--mtv-color-foreground-default);
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.fe-page__search-input:focus {
-  border-color: var(--mtv-color-brand-default);
-}
-
-.fe-page__search-input::placeholder {
-  color: var(--mtv-color-foreground-muted);
-}
-
-.fe-page__search-clear {
-  position: absolute;
-  right: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  color: var(--mtv-color-foreground-muted);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.fe-page__search-clear:hover {
-  background: var(--mtv-color-background-hover);
+  width: 13rem;
 }
 
 .fe-page__content {
