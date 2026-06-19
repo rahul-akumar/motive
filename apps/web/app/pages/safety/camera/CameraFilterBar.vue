@@ -102,12 +102,12 @@ const emit = defineEmits<{
   height: 32px;
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 5px;
+  border-radius: var(--radius);
   color: var(--mtv-color-foreground-default);
   font-size: var(--font-size-sm);
   font-family: inherit;
   outline: none;
-  transition: border-color 120ms ease;
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .filter-select:focus,

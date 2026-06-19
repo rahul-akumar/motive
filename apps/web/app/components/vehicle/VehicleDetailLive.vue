@@ -160,7 +160,7 @@ const {
   inset: 0;
   border-radius: 50%;
   border: 2px solid var(--fleet-severity-critical);
-  animation: jammed-pulse 1.5s ease-out infinite;
+  animation: jammed-pulse var(--mtv-duration-slower) var(--mtv-ease-standard) infinite;
 }
 
 @keyframes jammed-pulse {
@@ -179,8 +179,8 @@ const {
   height: 28px;
   border-radius: 50%;
   background: var(--fleet-severity-critical);
-  border: 3px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--mtv-color-border-default);
+  box-shadow: var(--mtv-shadow-sm);
   display: flex;
   align-items: center;
   justify-content: center;

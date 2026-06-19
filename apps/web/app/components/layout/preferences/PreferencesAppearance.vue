@@ -167,8 +167,8 @@ function cardStyle(theme: (typeof themes)[number]) {
 .theme-card {
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
-  transition: border-color 100ms ease;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -309,7 +309,7 @@ function cardStyle(theme: (typeof themes)[number]) {
 .theme-info__check {
   width: 16px;
   height: 16px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background-color: var(--mtv-color-brand-default);
   color: var(--mtv-color-surface-base);
   display: flex;
@@ -366,12 +366,12 @@ function cardStyle(theme: (typeof themes)[number]) {
 .theme-hue__chip {
   height: 20px;
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   background: transparent;
   transition:
-    border-color 100ms ease,
-    box-shadow 100ms ease;
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    box-shadow var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .theme-hue__chip:hover {
@@ -389,6 +389,7 @@ function cardStyle(theme: (typeof themes)[number]) {
 
 .theme-hue__chip--swatch {
   width: 24px;
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   background-color: oklch(0.62 0.2 var(--chip-hue, 0));
 }
 
@@ -402,8 +403,9 @@ function cardStyle(theme: (typeof themes)[number]) {
   appearance: none;
   width: 100%;
   height: 8px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  /* stylelint-disable declaration-property-value-no-unknown */
   background: linear-gradient(
     to right,
     oklch(0.62 0.2 0),
@@ -414,6 +416,7 @@ function cardStyle(theme: (typeof themes)[number]) {
     oklch(0.62 0.2 300),
     oklch(0.62 0.2 360)
   );
+  /* stylelint-enable declaration-property-value-no-unknown */
 }
 
 .theme-hue__slider::-webkit-slider-thumb {

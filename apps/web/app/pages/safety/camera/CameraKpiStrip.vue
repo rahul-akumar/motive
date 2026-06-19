@@ -64,10 +64,10 @@ function handleClick(key: KpiFilter) {
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
   border-left-width: 3px;
-  border-radius: var(--card-radius, 6px);
+  border-radius: var(--card-radius);
   cursor: pointer;
   text-align: left;
-  transition: background-color 120ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .kpi-card:hover {
@@ -84,7 +84,7 @@ function handleClick(key: KpiFilter) {
   font-weight: var(--font-weight-bold);
   color: var(--mtv-color-foreground-default);
   line-height: var(--leading-none);
-  transition: color 120ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .kpi-card__label {
