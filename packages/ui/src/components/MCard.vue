@@ -19,10 +19,8 @@ withDefaults(defineProps<MCardProps>(), {
 .m-card {
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 8px;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.25),
-    0 1px 4px rgba(0, 0, 0, 0.15);
+  border-radius: var(--card-radius);
+  box-shadow: var(--mtv-shadow-md);
 }
 
 .m-card--pad-none {
