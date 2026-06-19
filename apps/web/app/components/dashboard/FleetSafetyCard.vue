@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TrendingUp } from 'lucide-vue-next'
-import { MButton, MIcon } from '@motive/ui'
+import { MButton, MCard, MIcon } from '@motive/ui'
 
 const router = useRouter()
 
@@ -12,7 +12,7 @@ const actionItems = [
 </script>
 
 <template>
-  <DashboardCard title="Safety score" class="fleet-safety">
+  <MCard padding="lg" title="Safety score" class="fleet-safety">
     <template #action>
       <MButton variant="link" size="sm" @click="router.push('/safety/overview')"
         >View details</MButton
@@ -43,7 +43,7 @@ const actionItems = [
         </span>
       </NuxtLink>
     </nav>
-  </DashboardCard>
+  </MCard>
 </template>
 
 <style scoped>

@@ -10,7 +10,7 @@ import {
   Minus,
 } from 'lucide-vue-next'
 import type { KpiMetric } from '@motive/shared'
-import { MIcon } from '@motive/ui'
+import { MCard, MIcon } from '@motive/ui'
 
 const props = defineProps<{
   metric: KpiMetric
@@ -32,7 +32,7 @@ const deltaColor = computed(() => {
 </script>
 
 <template>
-  <article class="kpi-card fleet-card">
+  <MCard padding="md" class="kpi-card">
     <!-- Header row -->
     <div class="kpi-card__header">
       <span class="kpi-card__title">{{ metric.title }}</span>
@@ -71,12 +71,11 @@ const deltaColor = computed(() => {
       <MIcon v-else :icon="Minus" :size="16" :color="deltaColor" :stroke-width="2" />
       <span class="kpi-card__delta-label">{{ metric.deltaLabel }}</span>
     </div>
-  </article>
+  </MCard>
 </template>
 
 <style scoped>
 .kpi-card {
-  padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

@@ -4,7 +4,7 @@ import 'd3-transition'
 import { geoAlbersUsa, geoMercator, geoPath } from 'd3-geo'
 import { easeBackOut } from 'd3-ease'
 import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
-import { MButton } from '@motive/ui'
+import { MButton, MCard, MPopover } from '@motive/ui'
 
 const router = useRouter()
 
@@ -17,14 +17,33 @@ const { geoData, loading } = useFleetMap()
 const svgRef = ref<SVGSVGElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 
-interface TooltipState {
-  visible: boolean
-  x: number
-  y: number
-  data: { driver: FleetDriver } | null
+// Tooltip is rendered via the shared MPopover primitive, anchored to the hovered pin.
+const popoverRef = ref<InstanceType<typeof MPopover> | null>(null)
+const tooltipAnchor = ref<HTMLElement | null>(null)
+const tooltipDriver = ref<FleetDriver | null>(null)
+const tooltipOpen = computed(() => tooltipDriver.value !== null)
+
+// Hover-intent: keep the popover open while moving from the pin into it (so links stay clickable).
+let closeTimer: ReturnType<typeof setTimeout> | null = null
+function cancelClose() {
+  if (closeTimer) {
+    clearTimeout(closeTimer)
+    closeTimer = null
+  }
+}
+function scheduleClose() {
+  cancelClose()
+  closeTimer = setTimeout(() => {
+    tooltipDriver.value = null
+  }, 200)
 }
 
-const tooltip = ref<TooltipState>({ visible: false, x: 0, y: 0, data: null })
+function goToDriver() {
+  router.push('/fleet/drivers')
+}
+function goToVehicle(vehicleId: string) {
+  router.push(`/fleet/vehicles/${vehicleId}/summary`)
+}
 
 const activeFilters = ref<Set<FleetDriverStatus>>(new Set())
 const isFiltering = computed(() => activeFilters.value.size > 0)
@@ -143,10 +162,15 @@ function drawMap() {
 
   const pinsGroup = svg.append('g').attr('class', 'pins')
 
-  // Alert pulse rings (drawn behind pins)
+  // Alert pulse rings (drawn behind pins). Hidden until the matching pin has finished
+  // animating in (delay i*40 + duration 250), then the pulse starts via animation-delay.
+  const alertRings = pinData
+    .map((d, i) => ({ ...d, appearMs: i * 40 + 250 }))
+    .filter((d) => d.driver.status === 'alert')
+
   pinsGroup
     .selectAll('.pin-ring')
-    .data(pinData.filter((d) => d.driver.status === 'alert'))
+    .data(alertRings)
     .join('circle')
     .attr('class', 'pin-ring')
     .attr('cx', (d) => d.x)
@@ -155,7 +179,8 @@ function drawMap() {
     .attr('fill', 'none')
     .attr('stroke', statusColors.alert)
     .attr('stroke-width', 1.5)
-    .attr('opacity', 0.5)
+    .attr('opacity', 0)
+    .style('animation-delay', (d) => `${d.appearMs}ms`)
 
   // Driver pins — circles by status color
   pinsGroup
@@ -188,22 +213,21 @@ function drawMap() {
     .attr('fill', 'transparent')
     .style('cursor', 'pointer')
     .on('mouseenter', (event, d) => {
-      const rect = containerRef.value?.getBoundingClientRect()
-      if (!rect) return
-      // Keep tooltip inside container bounds
-      const tx = Math.min(Math.max(event.clientX - rect.left, 80), rect.width - 80)
-      const ty = Math.max(event.clientY - rect.top - 70, 4)
-      tooltip.value = {
-        visible: true,
-        x: tx,
-        y: ty,
-        data: { driver: d.driver },
-      }
+      cancelClose()
+      tooltipAnchor.value = event.currentTarget as unknown as HTMLElement
+      tooltipDriver.value = d.driver
     })
     .on('mouseleave', () => {
-      tooltip.value.visible = false
+      scheduleClose()
     })
 }
+
+// Reposition when moving between pins (popover stays open, only the anchor changes).
+watch(tooltipDriver, async (val) => {
+  if (!val) return
+  await nextTick()
+  popoverRef.value?.reposition()
+})
 
 watch(
   [geoData, () => props.drivers, activeFilters],
@@ -221,7 +245,10 @@ onMounted(() => {
 
   const ro = new ResizeObserver(() => drawMap())
   if (containerRef.value) ro.observe(containerRef.value)
-  onUnmounted(() => ro.disconnect())
+  onUnmounted(() => {
+    ro.disconnect()
+    cancelClose()
+  })
 })
 
 function formatHos(driver: FleetDriver): string {
@@ -232,7 +259,7 @@ function formatHos(driver: FleetDriver): string {
 </script>
 
 <template>
-  <DashboardCard title="Fleet" class="fleet-map">
+  <MCard padding="lg" title="Fleet" class="fleet-map">
     <template #action>
       <MButton variant="link" size="sm" @click="router.push('/fleet/live')">Fleet view</MButton>
     </template>
@@ -250,33 +277,47 @@ function formatHos(driver: FleetDriver): string {
       </div>
 
       <svg v-show="!loading" ref="svgRef" class="fleet-map__svg" />
-
-      <!-- Tooltip -->
-      <Transition name="map-tooltip">
-        <div
-          v-if="tooltip.visible && tooltip.data"
-          class="chart-tooltip fleet-map__tooltip"
-          :style="{ left: `${tooltip.x}px`, top: `${tooltip.y}px`, transform: 'translateX(-50%)' }"
-          role="tooltip"
-          aria-live="polite"
-        >
-          <div class="fleet-map__tooltip-name">{{ tooltip.data.driver.name }}</div>
-          <div class="fleet-map__tooltip-location">
-            {{ tooltip.data.driver.currentLocation.city }},
-            {{ tooltip.data.driver.currentLocation.state }}
-          </div>
-          <div v-if="tooltip.data.driver.vehicleUnitNumber" class="fleet-map__tooltip-load">
-            Unit {{ tooltip.data.driver.vehicleUnitNumber }}
-          </div>
-          <div
-            class="fleet-map__tooltip-hos"
-            :class="{ 'fleet-map__tooltip-hos--violation': tooltip.data.driver.hos.hasViolation }"
-          >
-            {{ formatHos(tooltip.data.driver) }}
-          </div>
-        </div>
-      </Transition>
     </div>
+
+    <!-- Driver tooltip, anchored to the hovered pin -->
+    <MPopover
+      ref="popoverRef"
+      :open="tooltipOpen"
+      :anchor-el="tooltipAnchor"
+      placement="top"
+      :arrow="false"
+      max-width="220px"
+      :aria-label="tooltipDriver ? `${tooltipDriver.name} status` : undefined"
+    >
+      <div
+        v-if="tooltipDriver"
+        class="fleet-map__tooltip"
+        @mouseenter="cancelClose"
+        @mouseleave="scheduleClose"
+      >
+        <MButton variant="link" size="sm" class="fleet-map__tooltip-link" @click="goToDriver">
+          {{ tooltipDriver.name }}
+        </MButton>
+        <div class="fleet-map__tooltip-location">
+          {{ tooltipDriver.currentLocation.city }}, {{ tooltipDriver.currentLocation.state }}
+        </div>
+        <MButton
+          v-if="tooltipDriver.vehicleId"
+          variant="link"
+          size="sm"
+          class="fleet-map__tooltip-link"
+          @click="goToVehicle(tooltipDriver.vehicleId)"
+        >
+          Unit {{ tooltipDriver.vehicleUnitNumber }}
+        </MButton>
+        <div
+          class="fleet-map__tooltip-hos"
+          :class="{ 'fleet-map__tooltip-hos--violation': tooltipDriver.hos.hasViolation }"
+        >
+          {{ formatHos(tooltipDriver) }}
+        </div>
+      </div>
+    </MPopover>
 
     <!-- Legend -->
     <div class="fleet-map__legend" aria-label="Map legend">
@@ -297,7 +338,7 @@ function formatHos(driver: FleetDriver): string {
         <span class="fleet-map__legend-count">{{ statusCounts[status] }}</span>
       </button>
     </div>
-  </DashboardCard>
+  </MCard>
 </template>
 
 <style scoped>
@@ -365,35 +406,21 @@ function formatHos(driver: FleetDriver): string {
   }
 }
 
-/* Tooltip */
+/* Tooltip content (shell comes from MPopover) */
 .fleet-map__tooltip {
-  position: absolute;
-  pointer-events: none;
-  z-index: 10;
-  min-width: 140px;
-}
-
-.fleet-map__tooltip-name {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  color: var(--mtv-color-foreground-default);
-  margin-bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1875rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .fleet-map__tooltip-location {
-  font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-muted);
-  margin-bottom: 4px;
-}
-
-.fleet-map__tooltip-load {
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  margin-bottom: 2px;
 }
 
 .fleet-map__tooltip-hos {
-  font-size: var(--font-size-xs);
+  margin-top: 0.125rem;
   color: var(--fleet-severity-success);
 }
 
@@ -439,16 +466,5 @@ function formatHos(driver: FleetDriver): string {
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
   letter-spacing: var(--tracking-normal);
-}
-
-/* Tooltip transition */
-.map-tooltip-enter-active,
-.map-tooltip-leave-active {
-  transition: opacity 100ms ease;
-}
-
-.map-tooltip-enter-from,
-.map-tooltip-leave-to {
-  opacity: 0;
 }
 </style>

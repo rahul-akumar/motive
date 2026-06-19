@@ -8,6 +8,8 @@ html[data-theme='legacy'] {
   --mtv-color-foreground-subtle: oklch(0.627 0 0);
   --mtv-color-foreground-disabled: oklch(0.845 0 0);
   --mtv-color-foreground-inverse: oklch(0.979 0 0);
+  /* Inverse surface — pairs with --mtv-color-foreground-inverse (near-black in a light theme). */
+  --mtv-color-surface-inverse: oklch(0.2 0 0);
   --mtv-color-foreground-on-accent: oklch(1 0 0);
   --mtv-color-foreground-critical: var(--mtv-color-rose-600);
   --mtv-color-foreground-critical-inverted: var(--mtv-color-rose-50);

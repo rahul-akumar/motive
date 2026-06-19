@@ -36,14 +36,8 @@ const { metrics } = useKPIMetrics()
       <DashboardFleetSafetyCard
         class="charts-row__safety animate-card-enter animate-card-enter-6"
       />
-    </section>
 
-    <!-- HOS Compliance -->
-    <section class="hos-row" aria-label="HOS compliance">
-      <DashboardHosComplianceBar
-        :drivers="fleetDrivers"
-        class="animate-card-enter animate-card-enter-7"
-      />
+      <DashboardFuelScoreCard class="charts-row__fuel animate-card-enter animate-card-enter-7" />
     </section>
   </div>
 </template>
@@ -70,7 +64,7 @@ const { metrics } = useKPIMetrics()
 }
 
 .charts-row__map {
-  grid-column: span 3;
+  grid-column: span 2;
   min-height: 280px;
 }
 
@@ -79,10 +73,9 @@ const { metrics } = useKPIMetrics()
   min-height: 280px;
 }
 
-/* HOS Row */
-.hos-row {
-  display: grid;
-  grid-template-columns: 1fr;
+.charts-row__fuel {
+  grid-column: span 1;
+  min-height: 280px;
 }
 
 /* Chart skeleton */
