@@ -154,13 +154,13 @@ function clear() {
 .m-input--xs {
   height: 28px;
   padding: 0 0.5rem;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .m-input--sm {
   height: 32px;
   padding: 0 0.625rem;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
 }
 
 .m-input--md {
