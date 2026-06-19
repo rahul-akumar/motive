@@ -15,6 +15,8 @@ html[data-theme='arc'] {
   --mtv-color-foreground-subtle: oklch(0.465 0 0);
   --mtv-color-foreground-disabled: oklch(0.371 0 0);
   --mtv-color-foreground-inverse: oklch(0.216 0 0);
+  /* Inverse surface — pairs with --mtv-color-foreground-inverse (light in a dark theme). */
+  --mtv-color-surface-inverse: oklch(0.979 0 0);
   /* Contrast flip: dark text on a near-white accent → white text on a vivid accent */
   --mtv-color-foreground-on-accent: oklch(calc(0.216 + 0.784 * var(--mtv-tint, 0)) 0 0);
 
@@ -119,6 +121,8 @@ html[data-theme='arc'] {
   --mtv-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.4);
   --mtv-shadow-overlay: 0 24px 64px oklch(0 0 0 / 0.7);
   --shadow-card: none;
+  /* Elevation for floating overlays (popovers, tooltips, dropdowns) — not flat cards. */
+  --shadow-overlay: 0 4px 16px oklch(0 0 0 / 0.25), 0 1px 4px oklch(0 0 0 / 0.15);
   --main-margin: 0.5rem 0.5rem 0.5rem 0;
   --main-radius: var(--card-radius);
 }

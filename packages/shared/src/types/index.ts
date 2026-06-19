@@ -160,6 +160,15 @@ export interface DailyMilesData {
   trips: number
 }
 
+export interface DailyFuelWasteData {
+  date: string
+  label: string
+  /** Fuel wasted to unproductive idling (gal / L). */
+  idling: number
+  /** Fuel lost to drops/theft/leaks (gal / L). */
+  fuelLoss: number
+}
+
 export interface FleetStatusCount {
   driving: number
   idle: number

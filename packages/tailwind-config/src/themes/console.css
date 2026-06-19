@@ -8,6 +8,8 @@ html[data-theme='console'] {
   --mtv-color-foreground-subtle: oklch(0.418 0 0);
   --mtv-color-foreground-disabled: oklch(0.321 0 0);
   --mtv-color-foreground-inverse: oklch(0.218 0 0);
+  /* Inverse surface — pairs with --mtv-color-foreground-inverse (light in a dark theme). */
+  --mtv-color-surface-inverse: oklch(0.979 0 0);
   --mtv-color-foreground-on-accent: oklch(1 0 0);
 
   /* Surface */
@@ -85,6 +87,8 @@ html[data-theme='console'] {
   --mtv-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.6);
   --mtv-shadow-overlay: 0 24px 64px oklch(0 0 0 / 0.8);
   --shadow-card: none;
+  /* Elevation for floating overlays (popovers, tooltips, dropdowns) — not flat cards. */
+  --shadow-overlay: 0 4px 16px oklch(0 0 0 / 0.25), 0 1px 4px oklch(0 0 0 / 0.15);
   --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-family-display: 'Eroded', Georgia, serif;
   /* Layout geometry — flat, edge-to-edge */
