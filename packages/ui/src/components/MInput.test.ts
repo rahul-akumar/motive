@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { Search } from 'lucide-vue-next'
 import MInput from './MInput.vue'
 
 describe('MInput', () => {
@@ -46,5 +47,36 @@ describe('MInput', () => {
     const input = wrapper.find('input')
     expect(input.classes()).toContain('m-input--invalid')
     expect(input.attributes('aria-invalid')).toBe('true')
+  })
+
+  it('renders a leading icon and reserves room for it', () => {
+    const wrapper = mount(MInput, { props: { leadingIcon: Search } })
+    expect(wrapper.find('.m-input__leading').exists()).toBe(true)
+    expect(wrapper.find('input').classes()).toContain('m-input--has-leading')
+  })
+
+  it('renders no clear button by default', () => {
+    const wrapper = mount(MInput, { props: { modelValue: 'hi' } })
+    expect(wrapper.find('.m-input__clear').exists()).toBe(false)
+  })
+
+  it('shows a clear button only when clearable and non-empty', async () => {
+    const wrapper = mount(MInput, { props: { modelValue: '', clearable: true } })
+    expect(wrapper.find('.m-input__clear').exists()).toBe(false)
+    await wrapper.setProps({ modelValue: 'hi' })
+    expect(wrapper.find('.m-input__clear').exists()).toBe(true)
+  })
+
+  it('emits an empty value when cleared', async () => {
+    const wrapper = mount(MInput, { props: { modelValue: 'hi', clearable: true } })
+    await wrapper.find('.m-input__clear').trigger('click')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([''])
+  })
+
+  it('hides the clear button when disabled', () => {
+    const wrapper = mount(MInput, {
+      props: { modelValue: 'hi', clearable: true, disabled: true },
+    })
+    expect(wrapper.find('.m-input__clear').exists()).toBe(false)
   })
 })
