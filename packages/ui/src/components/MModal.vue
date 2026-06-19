@@ -105,8 +105,8 @@ function handlePanelKeydown(e: KeyboardEvent) {
 .m-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 200;
-  background: rgba(0, 0, 0, 0.8);
+  z-index: var(--mtv-z-modal);
+  background: var(--mtv-color-surface-scrim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,15 +116,15 @@ function handlePanelKeydown(e: KeyboardEvent) {
 .m-modal-panel {
   background-color: var(--mtv-color-surface-default);
   border: 1px solid var(--mtv-color-border-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   width: 100%;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--mtv-shadow-overlay);
   overflow: hidden;
 }
 
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 150ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .modal-enter-from,

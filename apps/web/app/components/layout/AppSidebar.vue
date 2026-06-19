@@ -346,8 +346,8 @@ function toggleCollapsed() {
   transform: translateZ(0);
   backface-visibility: hidden;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* ── Header (logo) ── */
@@ -367,14 +367,14 @@ function toggleCollapsed() {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
   border: none;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   flex-shrink: 0;
 }
 
@@ -432,7 +432,7 @@ function toggleCollapsed() {
   grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
   height: 36px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -441,8 +441,8 @@ function toggleCollapsed() {
   white-space: nowrap;
   overflow: hidden;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .sidebar-nav-item:hover {
@@ -472,8 +472,8 @@ function toggleCollapsed() {
   transform: translateX(0);
   /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    opacity 160ms ease-out 60ms,
-    transform 180ms ease-out 60ms;
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard) 60ms,
+    transform var(--mtv-duration-base) var(--mtv-ease-standard) 60ms;
 }
 
 .sidebar__bottom {
@@ -497,13 +497,13 @@ function toggleCollapsed() {
   margin-top: 0.25rem;
   cursor: pointer;
   position: relative;
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   gap: 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .sidebar__user:hover {
-  background-color: oklab(100% 0 -0.00011 / 0.09);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .sidebar__user-avatar {
@@ -529,8 +529,8 @@ function toggleCollapsed() {
   transform: translateX(0);
   /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    opacity 160ms ease-out 60ms,
-    transform 180ms ease-out 60ms;
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard) 60ms,
+    transform var(--mtv-duration-base) var(--mtv-ease-standard) 60ms;
 }
 
 .sidebar__user-name {
@@ -560,8 +560,8 @@ function toggleCollapsed() {
 /* Collapsing: sidebar shrinks — width handled by useMotion spring */
 .sidebar--collapsed {
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* Collapsing: labels + user-info slide left and fade out immediately */
@@ -572,8 +572,8 @@ function toggleCollapsed() {
   pointer-events: none;
   /* Exit: no delay, fast ease-in so it's out of the way before sidebar shrinks */
   transition:
-    opacity 100ms ease-in 0ms,
-    transform 110ms ease-in 0ms;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard) 0ms,
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard) 0ms;
 }
 
 /* ── Mobile: sidebar becomes a fixed overlay drawer ── */

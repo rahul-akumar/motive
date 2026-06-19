@@ -183,7 +183,7 @@ const quickLinks = [
   background-color: color-mix(in oklch, var(--fleet-severity-critical) 12%, transparent);
   color: var(--fleet-severity-critical);
   border: 1px solid color-mix(in oklch, var(--fleet-severity-critical) 20%, transparent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 0 0.3rem;
   line-height: var(--leading-relaxed);
 }
@@ -195,7 +195,7 @@ const quickLinks = [
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-subtle);
   text-decoration: none;
-  transition: color 100ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .panel-view-all:hover {

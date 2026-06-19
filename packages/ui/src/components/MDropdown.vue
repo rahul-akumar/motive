@@ -306,7 +306,7 @@ onUnmounted(() => {
 <style scoped>
 .m-dropdown {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--mtv-z-popover);
   min-width: 200px;
   padding: 4px;
 }
@@ -327,7 +327,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   padding: 7px 10px;
-  border-radius: 5px;
+  border-radius: var(--radius);
   border: none;
   background: transparent;
   color: var(--mtv-color-foreground-default);
@@ -338,20 +338,20 @@ onUnmounted(() => {
   text-align: left;
   width: 100%;
   white-space: nowrap;
-  transition: background-color 80ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-dropdown__item:hover,
 .m-dropdown__item--active {
-  background-color: hsla(0, 0%, 100%, 0.08);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .m-dropdown__item--danger {
-  color: var(--color-danger, #ef4444);
+  color: var(--mtv-color-status-critical);
 }
 
 .m-dropdown__item--danger:hover {
-  background-color: hsla(0, 70%, 50%, 0.1);
+  background-color: var(--mtv-color-status-critical-subtle);
 }
 
 .m-dropdown__item-icon {
@@ -360,7 +360,7 @@ onUnmounted(() => {
 }
 
 .m-dropdown__item--danger .m-dropdown__item-icon {
-  color: var(--color-danger, #ef4444);
+  color: var(--mtv-color-status-critical);
 }
 
 .m-dropdown__item-label {
@@ -377,8 +377,8 @@ onUnmounted(() => {
 .m-dropdown-enter-active,
 .m-dropdown-leave-active {
   transition:
-    opacity 120ms ease-out,
-    transform 120ms ease-out;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-dropdown-enter-from,
@@ -391,8 +391,8 @@ onUnmounted(() => {
 .m-dropdown-sub-enter-active,
 .m-dropdown-sub-leave-active {
   transition:
-    opacity 120ms ease-out,
-    transform 120ms ease-out;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-dropdown-sub-enter-from,

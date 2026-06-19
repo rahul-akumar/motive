@@ -135,7 +135,7 @@ const localSearch = computed({
   position: absolute;
   top: 1rem;
   left: 0;
-  z-index: 20;
+  z-index: var(--mtv-z-sticky);
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -143,12 +143,12 @@ const localSearch = computed({
   background: var(--mtv-color-surface-default) / 0.85;
   border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
   border-left: none;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .f3d-panel-toggle:hover {
@@ -170,7 +170,7 @@ const localSearch = computed({
   left: 0;
   bottom: 0;
   width: 300px;
-  z-index: 20;
+  z-index: var(--mtv-z-sticky);
   display: flex;
   flex-direction: column;
   background: color-mix(in srgb, var(--mtv-color-surface-default) 96%, transparent);
@@ -218,7 +218,7 @@ const localSearch = computed({
   color: var(--mtv-color-foreground-subtle);
   background: color-mix(in oklch, var(--mtv-color-blue-400) 8%, transparent);
   border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 1px 5px;
   letter-spacing: var(--tracking-wide);
 }
@@ -231,12 +231,12 @@ const localSearch = computed({
   height: 24px;
   background: transparent;
   border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 20%, transparent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .f3d-panel__collapse-btn:hover {
@@ -261,14 +261,14 @@ const localSearch = computed({
   padding: 0.1875rem 0.5rem;
   background: transparent;
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-wider);
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
-  transition: all 120ms ease;
+  transition: all var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .f3d-filter-chip:hover {
@@ -315,11 +315,11 @@ const localSearch = computed({
   padding: 0.375rem 0.5rem 0.375rem 1.75rem;
   background: color-mix(in oklch, var(--mtv-color-blue-400) 5%, transparent);
   border: 1px solid color-mix(in oklch, var(--mtv-color-blue-400) 15%, transparent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-size: var(--font-size-md);
   color: var(--mtv-color-foreground-default);
   outline: none;
-  transition: border-color 120ms ease;
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .f3d-panel__search-input::placeholder {
@@ -348,8 +348,8 @@ const localSearch = computed({
 .f3d-panel-enter-active,
 .f3d-panel-leave-active {
   transition:
-    transform 220ms ease,
-    opacity 220ms ease;
+    transform var(--mtv-duration-base) var(--mtv-ease-standard),
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .f3d-panel-enter-from,
@@ -360,7 +360,7 @@ const localSearch = computed({
 
 .f3d-panel-toggle-enter-active,
 .f3d-panel-toggle-leave-active {
-  transition: opacity 150ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .f3d-panel-toggle-enter-from,

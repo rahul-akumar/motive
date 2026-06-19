@@ -44,7 +44,7 @@ defineEmits<{
   @apply w-full rounded text-sm font-normal transition-colors;
   padding: 0.5rem 0.625rem;
   color: var(--mtv-color-foreground-default);
-  background: var(--mtv-color-background-card);
+  background: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
   outline: none;
 }

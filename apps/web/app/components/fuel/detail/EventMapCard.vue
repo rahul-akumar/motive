@@ -240,7 +240,7 @@ watch(
 }
 
 .event-map-card__popover-label {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -251,9 +251,9 @@ watch(
 <style>
 /* Custom marker dot */
 .event-map-marker {
-  background: var(--mtv-color-brand-default, #1b4dff);
-  border: 2px solid oklch(0.95 0 0);
+  background: var(--mtv-color-brand-default);
+  border: 2px solid var(--mtv-color-foreground-default);
   border-radius: 50%;
-  box-shadow: 0 2px 6px oklch(0 0 0 / 0.3);
+  box-shadow: var(--mtv-shadow-sm);
 }
 </style>

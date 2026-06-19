@@ -6,6 +6,7 @@ import {
   MBadge,
   MButton,
   MSelect,
+  MInput,
   MDropdown,
   MIcon,
   type MTableColumn,
@@ -102,26 +103,17 @@ function openMenu(id: string, el: HTMLElement) {
     <!-- Filter bar -->
     <div class="fleet-filter-bar">
       <div class="fleet-filter-bar__left">
-        <div class="fleet-filter-bar__search">
-          <MIcon :icon="Search" :size="14" class="fleet-filter-bar__search-icon" />
-          <input
-            :value="searchQuery"
-            type="text"
-            class="fleet-filter-bar__input"
-            placeholder="Search driver, vehicle…"
-            aria-label="Search drivers"
-            @input="searchQuery = ($event.target as HTMLInputElement).value"
-          />
-          <button
-            v-if="searchQuery"
-            type="button"
-            class="fleet-filter-bar__clear-input"
-            aria-label="Clear search"
-            @click="searchQuery = ''"
-          >
-            <MIcon :icon="X" :size="12" :stroke-width="2.5" />
-          </button>
-        </div>
+        <MInput
+          :model-value="searchQuery"
+          type="search"
+          size="sm"
+          :leading-icon="Search"
+          :clearable="true"
+          placeholder="Search driver, vehicle…"
+          aria-label="Search drivers"
+          class="fleet-filter-bar__search"
+          @update:model-value="(v) => (searchQuery = v)"
+        />
 
         <MSelect
           :model-value="statusFilter"
@@ -317,62 +309,9 @@ function openMenu(id: string, el: HTMLElement) {
 }
 
 .fleet-filter-bar__search {
-  position: relative;
-  display: flex;
-  align-items: center;
   flex: 1;
   min-width: 200px;
   max-width: 320px;
-}
-
-.fleet-filter-bar__search-icon {
-  position: absolute;
-  left: 0.625rem;
-  color: var(--mtv-color-foreground-subtle);
-  pointer-events: none;
-}
-
-.fleet-filter-bar__input {
-  width: 100%;
-  height: 32px;
-  padding: 0 2rem 0 2rem;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-default);
-  background-color: var(--mtv-color-surface-raised);
-  border: 1px solid var(--mtv-color-border-default);
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 150ms ease;
-}
-
-.fleet-filter-bar__input::placeholder {
-  color: var(--mtv-color-foreground-subtle);
-}
-
-.fleet-filter-bar__input:focus {
-  border-color: var(--mtv-color-brand-default);
-}
-
-.fleet-filter-bar__clear-input {
-  position: absolute;
-  right: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--mtv-color-foreground-subtle);
-  border-radius: 3px;
-  padding: 0;
-  transition: all 100ms ease;
-}
-
-.fleet-filter-bar__clear-input:hover {
-  color: var(--mtv-color-foreground-default);
-  background-color: var(--mtv-color-surface-hover);
 }
 
 /* ── Cell styles ─────────────────────────────────────────── */
@@ -393,12 +332,12 @@ function openMenu(id: string, el: HTMLElement) {
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color var(--mtv-duration-fast);
 }
 
 .action-btn:hover {

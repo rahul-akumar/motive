@@ -167,7 +167,7 @@ async function initLayers() {
     type: 'line',
     source: 'routes',
     paint: {
-      'line-color': '#4ade80',
+      'line-color': readCSSColor('--fleet-status-driving', '#4ade80'),
       'line-width': 3,
       'line-dasharray': [4, 3],
       'line-opacity': 0.65,
@@ -189,15 +189,15 @@ async function initLayers() {
         ['linear'],
         ['get', 'fuelLevel'],
         0,
-        '#ef4444',
+        readCSSColor('--fleet-status-alert', '#ef4444'),
         25,
-        '#f97316',
+        readCSSColor('--mtv-color-status-warning', '#f97316'),
         50,
-        '#eab308',
+        readCSSColor('--fleet-status-idle', '#eab308'),
         75,
         '#84cc16',
         100,
-        '#22c55e',
+        readCSSColor('--fleet-status-driving', '#22c55e'),
       ],
       'circle-opacity': 0,
       'circle-stroke-opacity': 0.55,
@@ -212,7 +212,7 @@ async function initLayers() {
     filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'status'], 'alert']],
     paint: {
       'circle-radius': 8,
-      'circle-color': '#f87171',
+      'circle-color': readCSSColor('--fleet-status-alert', '#f87171'),
       'circle-opacity': 0.4,
       'circle-stroke-width': 0,
     },
@@ -255,14 +255,14 @@ async function initLayers() {
         'match',
         ['get', 'status'],
         'driving',
-        '#4ade80',
+        readCSSColor('--fleet-status-driving', '#4ade80'),
         'idle',
-        '#fbbf24',
+        readCSSColor('--fleet-status-idle', '#fbbf24'),
         'alert',
-        '#f87171',
+        readCSSColor('--fleet-status-alert', '#f87171'),
         'sleeper',
-        '#a78bfa',
-        '#525252',
+        readCSSColor('--mtv-color-chart-series-4', '#a78bfa'),
+        readCSSColor('--mtv-color-foreground-muted', '#525252'),
       ],
       'icon-opacity': 1,
     },
@@ -283,7 +283,7 @@ async function initLayers() {
       'text-allow-overlap': false,
     },
     paint: {
-      'text-color': '#e2e2e2',
+      'text-color': readCSSColor('--mtv-color-foreground-default', '#e2e2e2'),
       'text-halo-color': 'rgba(0,0,0,0.7)',
       'text-halo-width': 1,
     },
@@ -314,7 +314,7 @@ async function initLayers() {
       'text-size': 11,
     },
     paint: {
-      'text-color': '#ffffff',
+      'text-color': readCSSColor('--mtv-color-foreground-default', '#ffffff'),
     },
   })
 
@@ -586,10 +586,10 @@ watch(
 <!-- Global: override MapLibre popup chrome and inject popup content styles -->
 <style>
 .f3d-maplibre-popup .maplibregl-popup-content {
-  background: oklch(0.218 0 0);
-  border: 1px solid oklch(1 0 0 / 0.12);
-  border-radius: 2px;
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
+  background: var(--mtv-color-surface-default);
+  border: 1px solid oklch(from var(--mtv-color-border-default) l c h / 0.12);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--mtv-shadow-md);
   padding: 0;
 }
 
@@ -606,7 +606,7 @@ watch(
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: oklch(0.913 0 0);
+  color: var(--mtv-color-foreground-default);
   margin-bottom: 2px;
 }
 
@@ -620,7 +620,7 @@ watch(
 
 .f3d-popup__location {
   font-size: var(--font-size-xs);
-  color: oklch(0.627 0 0);
+  color: var(--mtv-color-foreground-muted);
   margin-bottom: 2px;
 }
 
