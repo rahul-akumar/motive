@@ -280,13 +280,13 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
   gap: 0.375rem;
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 5px;
+  border-radius: var(--radius);
   color: var(--mtv-color-foreground-default);
   cursor: pointer;
   white-space: nowrap;
   transition:
-    border-color 120ms ease,
-    background-color 120ms ease;
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   outline: none;
   font-size: var(--font-size-base);
   font-family: inherit;
@@ -325,7 +325,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 100ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-select__value--transitioning {
@@ -339,7 +339,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
 .m-select__chevron {
   color: var(--mtv-color-foreground-subtle);
   flex-shrink: 0;
-  transition: transform 150ms ease;
+  transition: transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-select--open .m-select__chevron {
@@ -364,16 +364,14 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
 /* ── Listbox ─────────────────────────────────────────────── */
 .m-select__listbox {
   position: fixed;
-  z-index: 9000;
+  z-index: var(--mtv-z-popover);
   list-style: none;
   margin: 0;
   padding: 0.25rem 0;
   background-color: var(--mtv-color-surface-overlay);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 6px;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.22),
-    0 1px 4px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  box-shadow: var(--mtv-shadow-md);
   outline: none;
   overflow-y: auto;
   max-height: 260px;
@@ -391,8 +389,8 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
   cursor: pointer;
   outline: none;
   transition:
-    background-color 80ms ease,
-    color 80ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
   user-select: none;
 }
 
@@ -425,14 +423,14 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
 /* ── Animation ───────────────────────────────────────────── */
 .m-select-menu-enter-active {
   transition:
-    opacity 120ms ease,
-    transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .m-select-menu-leave-active {
   transition:
-    opacity 80ms ease,
-    transform 80ms ease;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-select-menu-enter-from,
