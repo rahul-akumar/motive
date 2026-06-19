@@ -55,6 +55,10 @@ refactor(web): extract useSearchPanelTransition composable
 docs(docs): add ARCHITECTURE and CONTRIBUTING guides
 ```
 
+**Never add AI/assistant co-authorship or attribution to commits.** Do not include
+`Co-Authored-By:` trailers for any AI tool, "Generated with …" footers, or similar
+attribution lines. Commits are attributed to the human author only.
+
 ## Pre-commit hooks
 
 [Husky](https://typicode.github.io/husky/) installs two hooks (via `bun run prepare`):
