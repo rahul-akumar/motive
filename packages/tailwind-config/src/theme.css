@@ -346,6 +346,55 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-full: 9999px;
+
+  /* ================================================================
+     Motion — duration + easing (theme-independent)
+     Use these instead of literal ms/ease values in transitions and
+     animations so timing stays consistent across the app. Respect the
+     prefers-reduced-motion override in apps/web/.../main.css.
+     ================================================================ */
+  --mtv-duration-instant: 30ms;
+  --mtv-duration-fast: 120ms;
+  --mtv-duration-base: 200ms;
+  --mtv-duration-slow: 400ms;
+  --mtv-duration-slower: 600ms;
+
+  --mtv-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --mtv-ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --mtv-ease-linear: linear;
+
+  /* Tailwind ease-* / duration-* utilities follow the motion scale */
+  --ease-standard: var(--mtv-ease-standard);
+  --ease-emphasized: var(--mtv-ease-emphasized);
+
+  /* ================================================================
+     Z-index — ordered stacking ladder (theme-independent)
+     Replaces ad-hoc integers. Every layered surface picks the rung that
+     names its role rather than an arbitrary number.
+     ================================================================ */
+  --mtv-z-base: 0;
+  --mtv-z-raised: 10;
+  --mtv-z-sticky: 20;
+  --mtv-z-drawer: 30;
+  --mtv-z-overlay: 40;
+  --mtv-z-modal: 50;
+  --mtv-z-popover: 60;
+  --mtv-z-toast: 70;
+  --mtv-z-tooltip: 80;
+
+  /* ================================================================
+     Elevation — Tailwind shadow-* utility bridge
+     The concrete shadow values are theme-dependent and defined as
+     --mtv-shadow-* in themes/{arc,console,legacy}.css. These aliases let
+     `shadow-sm`/`shadow-md`/… utilities resolve to the active theme's
+     elevation. Components in scoped CSS should use var(--mtv-shadow-*).
+     ================================================================ */
+  --shadow-xs: var(--mtv-shadow-xs);
+  --shadow-sm: var(--mtv-shadow-sm);
+  --shadow-md: var(--mtv-shadow-md);
+  --shadow-lg: var(--mtv-shadow-lg);
+  --shadow-xl: var(--mtv-shadow-xl);
+  --shadow-overlay: var(--mtv-shadow-overlay);
 }
 
 /* ============================================================

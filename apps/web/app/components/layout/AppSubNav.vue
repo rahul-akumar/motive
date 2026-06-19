@@ -126,18 +126,18 @@ onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
   bottom: -1px;
   left: 0;
   height: 2px;
-  border-radius: 2px 2px 0 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   background-color: var(--mtv-color-foreground-default);
   pointer-events: none;
-  z-index: 1;
+  z-index: var(--mtv-z-raised);
 }
 
 /* Transitions enabled only after first position is set */
 .app-sub-nav__indicator--ready {
   transition:
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.15s ease;
+    transform var(--mtv-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1),
+    width var(--mtv-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .app-sub-nav__divider {
@@ -148,7 +148,7 @@ onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
   margin: 0 0.5rem;
   flex-shrink: 0;
   position: relative;
-  z-index: 1;
+  z-index: var(--mtv-z-raised);
 }
 
 .app-sub-nav__tab {
@@ -158,7 +158,7 @@ onMounted(() => nextTick(() => requestAnimationFrame(updateIndicator)))
   color: var(--mtv-color-foreground-muted);
   text-decoration: none;
   white-space: nowrap;
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .app-sub-nav__tab:hover {

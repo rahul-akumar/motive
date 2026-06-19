@@ -35,8 +35,8 @@ defineProps<{
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-base);
   transition:
-    background-color 100ms ease,
-    color 100ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .panel-action-row:hover {
@@ -50,7 +50,7 @@ defineProps<{
   justify-content: center;
   width: 22px;
   height: 22px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
 
@@ -76,7 +76,7 @@ defineProps<{
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 0 0.3rem;
   line-height: var(--leading-relaxed);
   flex-shrink: 0;

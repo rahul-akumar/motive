@@ -23,6 +23,10 @@ export const motivePreset: Partial<Config> = {
       lineHeight: tokens.lineHeight,
       letterSpacing: tokens.letterSpacing,
       borderRadius: tokens.borderRadius,
+      transitionDuration: tokens.transitionDuration,
+      transitionTimingFunction: tokens.transitionTimingFunction,
+      zIndex: tokens.zIndex,
+      boxShadow: tokens.boxShadow,
     },
   },
 }

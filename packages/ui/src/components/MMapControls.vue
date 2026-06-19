@@ -255,7 +255,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: var(--mtv-z-overlay);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -287,8 +287,8 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
   flex-shrink: 0;
 }
 
@@ -352,8 +352,8 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   cursor: pointer;
   white-space: nowrap;
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
   text-align: left;
 }
 
@@ -414,11 +414,11 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
   margin-left: auto;
   background: transparent;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background-color 120ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-map-controls__layer-expand:hover {
@@ -426,7 +426,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 }
 
 .m-map-controls__layer-chevron {
-  transition: transform 150ms ease;
+  transition: transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-map-controls__layer-chevron--open {
@@ -437,8 +437,8 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside, true))
 .m-map-layers-enter-active,
 .m-map-layers-leave-active {
   transition:
-    opacity 120ms ease,
-    transform 120ms ease;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-map-layers-enter-from,

@@ -81,7 +81,7 @@ const transitionName = computed(() => {
 <style scoped>
 .toast-container {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--mtv-z-tooltip);
   pointer-events: none;
 }
 
@@ -92,10 +92,10 @@ const transitionName = computed(() => {
 
 /* ── Right-side: slide in from right ── */
 .toast-right-enter-active {
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all var(--mtv-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .toast-right-leave-active {
-  transition: all 0.2s ease;
+  transition: all var(--mtv-duration-base) var(--mtv-ease-standard);
   position: absolute;
 }
 .toast-right-enter-from {
@@ -107,15 +107,15 @@ const transitionName = computed(() => {
   transform: translateX(16px);
 }
 .toast-right-move {
-  transition: transform 0.25s ease;
+  transition: transform var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* ── Left-side: slide in from left ── */
 .toast-left-enter-active {
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all var(--mtv-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .toast-left-leave-active {
-  transition: all 0.2s ease;
+  transition: all var(--mtv-duration-base) var(--mtv-ease-standard);
   position: absolute;
 }
 .toast-left-enter-from {
@@ -127,15 +127,15 @@ const transitionName = computed(() => {
   transform: translateX(-16px);
 }
 .toast-left-move {
-  transition: transform 0.25s ease;
+  transition: transform var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* ── Center: slide in from top ── */
 .toast-center-enter-active {
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all var(--mtv-duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .toast-center-leave-active {
-  transition: all 0.2s ease;
+  transition: all var(--mtv-duration-base) var(--mtv-ease-standard);
   position: absolute;
 }
 .toast-center-enter-from {
@@ -147,6 +147,6 @@ const transitionName = computed(() => {
   transform: translateY(-8px);
 }
 .toast-center-move {
-  transition: transform 0.25s ease;
+  transition: transform var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 </style>

@@ -91,7 +91,7 @@ withDefaults(defineProps<AppMainDetailProps>(), {
 .detail-main__breadcrumb-link {
   color: var(--mtv-color-foreground-muted);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .detail-main__breadcrumb-link:hover {

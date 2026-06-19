@@ -198,7 +198,7 @@ const severityConfig = computed(() => {
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--tracking-widest);
   padding: 1px 5px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-family: var(--font-family-mono);
 }
 
@@ -221,7 +221,7 @@ const severityConfig = computed(() => {
   border: none;
   cursor: pointer;
   font-family: var(--font-family-sans);
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
   padding: 0;
 }
 
@@ -250,7 +250,7 @@ const severityConfig = computed(() => {
 }
 
 .alert-card {
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 0.875rem;
   border-left: 2px solid;
 }
@@ -311,14 +311,14 @@ const severityConfig = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background: transparent;
   border: none;
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .alert-card__dismiss:hover {
@@ -357,7 +357,7 @@ const severityConfig = computed(() => {
   cursor: pointer;
   padding: 0;
   font-family: var(--font-family-sans);
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .alert-card__action-btn:hover {
@@ -366,11 +366,11 @@ const severityConfig = computed(() => {
 
 /* TransitionGroup animations */
 .alert-item-enter-active {
-  transition: all 0.3s ease;
+  transition: all var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .alert-item-leave-active {
-  transition: all 0.25s ease;
+  transition: all var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .alert-item-enter-from {

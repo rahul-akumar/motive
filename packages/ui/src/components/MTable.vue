@@ -240,7 +240,7 @@ function cellValue(row: T, key: string): unknown {
   width: 100%;
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 6px;
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -278,7 +278,7 @@ function cellValue(row: T, key: string): unknown {
 .m-table__head--sticky {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: var(--mtv-z-sticky);
 }
 
 .m-table__head-row {
@@ -308,7 +308,7 @@ function cellValue(row: T, key: string): unknown {
 
 .m-table__th--sortable {
   cursor: pointer;
-  transition: color 100ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-table__th--sortable:hover {
@@ -329,7 +329,7 @@ function cellValue(row: T, key: string): unknown {
   display: inline-flex;
   align-items: center;
   opacity: 0.45;
-  transition: opacity 100ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-table__th--active .m-table__sort-icon {
@@ -341,7 +341,7 @@ function cellValue(row: T, key: string): unknown {
 .m-table__row {
   border-bottom: 1px solid var(--mtv-color-border-default);
   cursor: pointer;
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   outline: none;
 }
 
@@ -424,11 +424,11 @@ function cellValue(row: T, key: string): unknown {
   width: 26px;
   height: 26px;
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background-color: transparent;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
-  transition: all 100ms ease;
+  transition: all var(--mtv-duration-fast) var(--mtv-ease-standard);
   padding: 0;
 }
 

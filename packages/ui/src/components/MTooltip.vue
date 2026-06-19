@@ -118,19 +118,19 @@ function hide() {
 
 .m-tooltip {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--mtv-z-tooltip);
   pointer-events: none;
   white-space: nowrap;
   /* High-contrast: white bg, dark text — reads clearly on any dark map/surface */
-  background: #ffffff;
-  color: #111111;
+  background: var(--mtv-color-surface-overlay);
+  color: var(--mtv-color-foreground-default);
   font-size: var(--font-size-sm);
   font-family: var(--font-family-sans);
   font-weight: var(--font-weight-normal);
   letter-spacing: var(--tracking-tight);
   padding: 0.25rem 0.5rem;
-  border-radius: 3px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--mtv-shadow-md);
 }
 
 /* ── Arrow via ::before pseudo-element ── */
@@ -145,7 +145,7 @@ function hide() {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  border-right-color: #ffffff;
+  border-right-color: var(--mtv-color-surface-overlay);
 }
 
 /* left: arrow points right, sits on the right edge */
@@ -153,7 +153,7 @@ function hide() {
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  border-left-color: #ffffff;
+  border-left-color: var(--mtv-color-surface-overlay);
 }
 
 /* top: arrow points down, sits on the bottom edge */
@@ -161,7 +161,7 @@ function hide() {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-top-color: #ffffff;
+  border-top-color: var(--mtv-color-surface-overlay);
 }
 
 /* bottom: arrow points up, sits on the top edge */
@@ -169,6 +169,6 @@ function hide() {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-bottom-color: #ffffff;
+  border-bottom-color: var(--mtv-color-surface-overlay);
 }
 </style>

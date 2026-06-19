@@ -24,6 +24,8 @@ html[data-theme='legacy'] {
   --mtv-color-surface-active: oklch(0.919 0 0);
   --mtv-color-surface-accent: oklch(0.624 0.202 263.1 / 0.08);
   --mtv-color-surface-accent-subtle: oklch(0.624 0.202 263.1 / 0.04);
+  /* Scrim behind modals/drawers */
+  --mtv-color-surface-scrim: oklch(0 0 0 / 0.4);
   --mtv-color-surface-critical: var(--mtv-color-rose-100);
   --mtv-color-surface-critical-subtle: var(--mtv-color-rose-50);
   --mtv-color-surface-critical-strong: var(--mtv-color-rose-200);
@@ -84,9 +86,15 @@ html[data-theme='legacy'] {
   --search-focus-shadow: none;
   --card-radius: 8px;
   --badge-radius: 4px;
-  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
-  /* Elevation for floating overlays (popovers, tooltips, dropdowns) — not flat cards. */
-  --shadow-overlay: 0 4px 16px oklch(0 0 0 / 0.16), 0 1px 4px oklch(0 0 0 / 0.1);
+
+  /* Elevation scale — soft black alpha tuned for a light surface. */
+  --mtv-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+  --mtv-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08);
+  --mtv-shadow-md: 0 4px 12px oklch(0 0 0 / 0.1), 0 1px 3px oklch(0 0 0 / 0.06);
+  --mtv-shadow-lg: 0 8px 24px oklch(0 0 0 / 0.12);
+  --mtv-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.16);
+  --mtv-shadow-overlay: 0 24px 64px oklch(0 0 0 / 0.2);
+  --shadow-card: var(--mtv-shadow-sm);
   --font-size-base: 0.875rem; /* 14px */
   --font-size-sm: 0.75rem; /* 12px — keeps the 2px step below base, matching the default 15/13 scale */
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;

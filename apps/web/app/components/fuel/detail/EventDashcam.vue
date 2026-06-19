@@ -7,6 +7,9 @@ import { MIcon } from '@motive/ui'
 import { Video, Pause, Play, Gauge, ArrowDown, Cog, Clock, ArrowRight } from 'lucide-vue-next'
 import type { FuelEventRow } from '~/composables/useFuelEventMappers'
 
+// Resolve design tokens to computed colors for the D3 fuel timeline.
+const { readCSSColor } = useCssColors()
+
 const props = defineProps<{
   event: FuelEventRow
 }>()
@@ -116,10 +119,17 @@ function generateFuelData(): FuelPoint[] {
 function drawTimeline() {
   if (!timelineSvg.value || !timelineRef.value) return
 
-  // Always dark palette — this component is dark regardless of theme
-  const accentColor = '#5b9cf6'
-  const textMuted = '#6b7280'
-  const dangerColor = '#f97316'
+  // Token-aware with the original dark-palette hex as fallback (this component is dark regardless of theme).
+  // readCSSColor returns an rgb() string, so it is only used for SOLID fills/strokes.
+  const accentColor = readCSSColor('--mtv-color-status-info', '#5b9cf6')
+  const textMuted = readCSSColor('--mtv-color-foreground-muted', '#6b7280')
+  const dangerColor = readCSSColor('--mtv-color-status-warning', '#f97316')
+  // Translucent glow/fill variants — kept as 8-digit hex (alpha suffix) since rgb() can't take a hex alpha suffix.
+  const accentColorFaint = '#5b9cf610'
+  const dangerColorFaint = '#f973160a'
+  const dangerColorDashed = '#f9731640'
+  // Dark dot stroke (matches the timeline's dark surface)
+  const dotStroke = readCSSColor('--mtv-color-surface-base', '#1c1c1c')
 
   const container = timelineRef.value
   const width = container.clientWidth
@@ -157,7 +167,7 @@ function drawTimeline() {
     .attr('y', 0)
     .attr('width', eventEndX - eventStartX)
     .attr('height', innerHeight)
-    .attr('fill', `${dangerColor}0a`)
+    .attr('fill', dangerColorFaint)
 
   // Event boundary dashed lines
   const boundaries = [props.event.startTime, props.event.endTime]
@@ -167,7 +177,7 @@ function drawTimeline() {
       .attr('x2', xScale(t))
       .attr('y1', 0)
       .attr('y2', innerHeight)
-      .attr('stroke', `${dangerColor}40`)
+      .attr('stroke', dangerColorDashed)
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '2,2')
   })
@@ -179,7 +189,7 @@ function drawTimeline() {
     .y1((d) => yScale(d.level))
     .curve(curveLinear)
 
-  g.append('path').datum(data).attr('fill', `${accentColor}10`).attr('d', areaGen)
+  g.append('path').datum(data).attr('fill', accentColorFaint).attr('d', areaGen)
 
   // Fuel level line
   const lineGen = line<FuelPoint>()
@@ -204,7 +214,7 @@ function drawTimeline() {
     .attr('cy', yScale(posPoint.level))
     .attr('r', 4)
     .attr('fill', accentColor)
-    .attr('stroke', '#1c1c1c')
+    .attr('stroke', dotStroke)
     .attr('stroke-width', 2)
 
   // Start/end markers
@@ -371,13 +381,13 @@ watch(currentTime, drawTimeline)
 
 <style scoped>
 .dashcam {
-  border: 1px solid oklch(0.25 0 0);
+  border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--radius);
-  background: oklch(0.13 0 0);
+  background: var(--mtv-color-surface-base);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  color: oklch(0.9 0 0);
+  color: var(--mtv-color-foreground-default);
 }
 
 /* ── Video panels ─────────────────────────────── */
@@ -385,12 +395,12 @@ watch(currentTime, drawTimeline)
   display: grid;
   grid-template-columns: 1fr 200px;
   gap: 1px;
-  background: oklch(0.2 0 0);
+  background: var(--mtv-color-surface-default);
 }
 
 .dashcam__video-panel {
   position: relative;
-  background: oklch(0.1 0 0);
+  background: var(--mtv-color-surface-sunken);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -409,7 +419,7 @@ watch(currentTime, drawTimeline)
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  color: oklch(0.5 0 0);
+  color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-xs);
 }
 
@@ -420,7 +430,7 @@ watch(currentTime, drawTimeline)
   display: flex;
   align-items: baseline;
   gap: 0.25rem;
-  background: oklch(0.15 0 0 / 0.85);
+  background: oklch(from var(--mtv-color-surface-base) l c h / 0.85);
   padding: 0.375rem 0.625rem;
   border-radius: var(--radius-sm);
 }
@@ -428,17 +438,17 @@ watch(currentTime, drawTimeline)
 .dashcam__speed-value {
   font-size: var(--font-size-lg);
   font-weight: 700;
-  color: oklch(0.97 0 0);
+  color: var(--mtv-color-foreground-default);
 }
 
 .dashcam__speed-unit {
   font-size: var(--font-size-xs);
-  color: oklch(0.65 0 0);
+  color: var(--mtv-color-foreground-muted);
 }
 
 .dashcam__speed-limit {
   font-size: var(--font-size-xs);
-  color: oklch(0.55 0 0);
+  color: var(--mtv-color-foreground-muted);
   margin-left: 0.5rem;
 }
 
@@ -448,8 +458,8 @@ watch(currentTime, drawTimeline)
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  border-top: 1px solid oklch(0.25 0 0);
-  background: oklch(0.15 0 0);
+  border-top: 1px solid var(--mtv-color-border-default);
+  background: var(--mtv-color-surface-base);
 }
 
 .dashcam__btn {
@@ -460,7 +470,7 @@ watch(currentTime, drawTimeline)
   height: 28px;
   border: none;
   background: transparent;
-  color: oklch(0.85 0 0);
+  color: var(--mtv-color-foreground-default);
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: var(--font-size-xs);
@@ -468,12 +478,12 @@ watch(currentTime, drawTimeline)
 }
 
 .dashcam__btn:hover {
-  background: oklch(0.22 0 0);
+  background: var(--mtv-color-surface-default);
 }
 
 .dashcam__time {
   font-size: var(--font-size-xs);
-  color: oklch(0.6 0 0);
+  color: var(--mtv-color-foreground-muted);
   font-variant-numeric: tabular-nums;
   min-width: 5rem;
 }
@@ -481,16 +491,16 @@ watch(currentTime, drawTimeline)
 .dashcam__seekbar {
   flex: 1;
   height: 4px;
-  background: oklch(0.3 0 0);
-  border-radius: 2px;
+  background: var(--mtv-color-border-default);
+  border-radius: var(--radius-sm);
   position: relative;
   cursor: pointer;
 }
 
 .dashcam__seekbar-fill {
   height: 100%;
-  background: oklch(0.65 0 0);
-  border-radius: 2px;
+  background: var(--mtv-color-foreground-muted);
+  border-radius: var(--radius-sm);
 }
 
 .dashcam__seekbar-thumb {
@@ -500,8 +510,8 @@ watch(currentTime, drawTimeline)
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: oklch(0.9 0 0);
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.4);
+  background: var(--mtv-color-foreground-default);
+  box-shadow: var(--mtv-shadow-sm);
 }
 
 /* ── Telematics strip ─────────────────────────── */
@@ -510,8 +520,8 @@ watch(currentTime, drawTimeline)
   align-items: center;
   gap: 1.25rem;
   padding: 0.5rem 0.75rem;
-  border-top: 1px solid oklch(0.25 0 0);
-  background: oklch(0.13 0 0);
+  border-top: 1px solid var(--mtv-color-border-default);
+  background: var(--mtv-color-surface-base);
   flex-wrap: wrap;
 }
 
@@ -524,12 +534,12 @@ watch(currentTime, drawTimeline)
 .dashcam__metric-value {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: oklch(0.92 0 0);
+  color: var(--mtv-color-foreground-default);
 }
 
 .dashcam__metric-label {
-  font-size: 9px;
-  color: oklch(0.55 0 0);
+  font-size: var(--font-size-2xs);
+  color: var(--mtv-color-foreground-muted);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -537,8 +547,8 @@ watch(currentTime, drawTimeline)
 /* ── Timeline ─────────────────────────────────── */
 .dashcam__timeline {
   padding: 0.5rem 0.75rem 0.75rem;
-  border-top: 1px solid oklch(0.25 0 0);
-  background: oklch(0.11 0 0);
+  border-top: 1px solid var(--mtv-color-border-default);
+  background: var(--mtv-color-surface-base);
 }
 
 .dashcam__timeline-header {
@@ -551,7 +561,7 @@ watch(currentTime, drawTimeline)
 .dashcam__timeline-title {
   font-size: var(--font-size-xs);
   font-weight: 600;
-  color: oklch(0.85 0 0);
+  color: var(--mtv-color-foreground-default);
 }
 
 .dashcam__timeline-labels {
@@ -560,10 +570,10 @@ watch(currentTime, drawTimeline)
 }
 
 .dashcam__timeline-label {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 600;
   text-transform: uppercase;
-  color: oklch(0.55 0 0);
+  color: var(--mtv-color-foreground-muted);
   letter-spacing: 0.05em;
 }
 

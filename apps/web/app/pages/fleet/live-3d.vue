@@ -88,10 +88,10 @@ const {
   position: absolute;
   bottom: 24px;
   right: 24px;
-  z-index: 10;
+  z-index: var(--mtv-z-raised);
   background: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-strong);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-default);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
@@ -100,8 +100,8 @@ const {
   cursor: pointer;
   backdrop-filter: blur(8px);
   transition:
-    background 0.15s,
-    border-color 0.15s;
+    background var(--mtv-duration-fast),
+    border-color var(--mtv-duration-fast);
 }
 
 .f3d-fit-btn:hover {

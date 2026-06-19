@@ -190,11 +190,11 @@ defineExpose({ reposition })
 <style scoped>
 .m-popover {
   position: fixed;
-  z-index: 9999;
+  z-index: var(--mtv-z-popover);
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--card-radius);
-  box-shadow: var(--shadow-overlay);
+  box-shadow: var(--mtv-shadow-md);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-default);
@@ -264,8 +264,8 @@ defineExpose({ reposition })
 .m-popover-enter-active,
 .m-popover-leave-active {
   transition:
-    opacity 120ms ease-out,
-    transform 120ms ease-out;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .m-popover-enter-from,

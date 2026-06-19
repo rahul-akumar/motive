@@ -125,7 +125,7 @@ const quickLinks = [
 .camera-panel__coverage-bar {
   height: 4px;
   background-color: var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   margin-bottom: 0.4rem;
 }
@@ -133,8 +133,8 @@ const quickLinks = [
 .camera-panel__coverage-fill {
   height: 100%;
   background-color: var(--fleet-severity-success);
-  border-radius: 2px;
-  transition: width 400ms ease;
+  border-radius: var(--radius-sm);
+  transition: width var(--mtv-duration-slow) var(--mtv-ease-standard);
 }
 
 .camera-panel__coverage-pct {
@@ -149,7 +149,7 @@ const quickLinks = [
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-subtle);
   text-decoration: none;
-  transition: color 100ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .panel-view-all:hover {
