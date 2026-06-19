@@ -146,35 +146,16 @@ function openUserMenu(e: MouseEvent) {
   userMenuRef.value?.open(e.currentTarget as HTMLElement)
 }
 
-const logoLetterM = ref<SVGElement | null>(null)
-const logoLetterO = ref<SVGElement | null>(null)
-const logoLetterT = ref<SVGElement | null>(null)
-const logoLetterIStem = ref<SVGElement | null>(null)
-const logoLetterIDot = ref<SVGElement | null>(null)
-const logoLetterV = ref<SVGElement | null>(null)
-const logoLetterE = ref<SVGElement | null>(null)
-
-function letterVariantsFor(index: number) {
-  const startsCollapsed = collapsed.value
-  return {
-    initial: startsCollapsed ? { opacity: 0, y: 4 } : { opacity: 1, y: 0 },
-    expanded: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 300,
-        damping: 22,
-        mass: 0.8,
-        delay: index * 35,
-      },
-    },
-    collapsed: {
-      opacity: 0,
-      transition: { type: 'tween' as const, duration: 120, ease: 'easeIn' as const, delay: 0 },
-    },
-  }
-}
+const {
+  logoLetterM,
+  logoLetterO,
+  logoLetterT,
+  logoLetterIStem,
+  logoLetterIDot,
+  logoLetterV,
+  logoLetterE,
+  setLetterVariants,
+} = useLogoAnimation(collapsed)
 
 const { variant: sidebarVariant } = useMotion(sidebarRef, {
   initial: { width: collapsed.value ? 48 : 220 },
@@ -188,31 +169,17 @@ const { variant: sidebarVariant } = useMotion(sidebarRef, {
   },
 })
 
-const { variant: variantM } = useMotion(logoLetterM, letterVariantsFor(0))
-const { variant: variantO } = useMotion(logoLetterO, letterVariantsFor(1))
-const { variant: variantT } = useMotion(logoLetterT, letterVariantsFor(2))
-const { variant: variantIStem } = useMotion(logoLetterIStem, letterVariantsFor(3))
-const { variant: variantIDot } = useMotion(logoLetterIDot, letterVariantsFor(4))
-const { variant: variantV } = useMotion(logoLetterV, letterVariantsFor(5))
-const { variant: variantE } = useMotion(logoLetterE, letterVariantsFor(6))
-
-const letterVariants = [variantM, variantO, variantT, variantIStem, variantIDot, variantV, variantE]
-
 onMounted(() => {
   const v = collapsed.value ? 'collapsed' : 'expanded'
   sidebarVariant.value = v
-  letterVariants.forEach((lv) => {
-    lv.value = v
-  })
+  setLetterVariants(v)
 })
 
 function toggleCollapsed() {
   collapsed.value = !collapsed.value
   const target = collapsed.value ? 'collapsed' : 'expanded'
   sidebarVariant.value = target
-  letterVariants.forEach((lv) => {
-    lv.value = target
-  })
+  setLetterVariants(target)
   localStorage.setItem('sidebar-collapsed', String(collapsed.value))
 }
 </script>
