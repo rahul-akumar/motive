@@ -1,0 +1,16 @@
+{
+  "name": "@motive/stylelint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "peerDependencies": {
+    "stylelint": "^16.0.0"
+  },
+  "dependencies": {
+    "postcss-html": "^1.6.0"
+  }
+}
