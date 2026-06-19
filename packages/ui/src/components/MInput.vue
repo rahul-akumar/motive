@@ -130,9 +130,9 @@ function clear() {
   color: var(--mtv-color-foreground-muted);
 }
 
+/* Active/focus: a 1px brand border, matching MSelect's open trigger (no ring). */
 .m-input:focus {
   border-color: var(--mtv-color-brand-default);
-  box-shadow: 0 0 0 1px var(--mtv-color-brand-default);
 }
 
 .m-input:disabled {
@@ -144,32 +144,34 @@ function clear() {
   color: var(--mtv-color-foreground-muted);
 }
 
-.m-input--invalid {
+.m-input--invalid,
+.m-input--invalid:focus {
   border-color: var(--mtv-color-status-critical);
 }
 
-.m-input--invalid:focus {
-  box-shadow: 0 0 0 1px var(--mtv-color-status-critical);
-}
-
-/* Size scale — mirrors MButton's xs/sm/md/lg */
+/* Size scale — fixed heights matching MSelect's trigger (sm 32 / md 36) so the
+   two controls line up when used side by side. Horizontal padding only. */
 .m-input--xs {
-  padding: 0.125rem 0.375rem;
+  height: 28px;
+  padding: 0 0.5rem;
   font-size: var(--font-size-xs);
 }
 
 .m-input--sm {
-  padding: 0.25rem 0.5rem;
+  height: 32px;
+  padding: 0 0.625rem;
   font-size: var(--font-size-sm);
 }
 
 .m-input--md {
-  padding: 0.375rem 0.625rem;
+  height: 36px;
+  padding: 0 0.75rem;
   font-size: var(--font-size-base);
 }
 
 .m-input--lg {
-  padding: 0.5rem 0.75rem;
+  height: 40px;
+  padding: 0 0.875rem;
   font-size: var(--font-size-md);
 }
 
