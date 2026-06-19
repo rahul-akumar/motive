@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import MSelect from './MSelect.vue'
 
@@ -9,6 +9,12 @@ const OPTIONS = [
 ]
 
 describe('MSelect', () => {
+  // Menus teleport to <body> and aren't auto-removed between mounts; clear so
+  // document-wide queries (esp. searchable filtering) see only the active menu.
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
   it('renders the trigger button', () => {
     const wrapper = mount(MSelect, {
       props: { modelValue: 'alpha', options: OPTIONS },
@@ -92,5 +98,72 @@ describe('MSelect', () => {
       attachTo: document.body,
     })
     expect(wrapper.find('button').attributes('aria-label')).toBe('Region')
+  })
+
+  describe('searchable', () => {
+    it('renders no search field by default', async () => {
+      const wrapper = mount(MSelect, {
+        props: { modelValue: 'alpha', options: OPTIONS },
+        attachTo: document.body,
+      })
+      await wrapper.find('button').trigger('click')
+      expect(document.querySelector('.m-select__search')).toBeNull()
+    })
+
+    it('renders a search field when searchable', async () => {
+      const wrapper = mount(MSelect, {
+        props: { modelValue: 'alpha', options: OPTIONS, searchable: true },
+        attachTo: document.body,
+      })
+      await wrapper.find('button').trigger('click')
+      expect(document.querySelector('.m-select__search-input')).toBeTruthy()
+    })
+
+    it('filters options by query (case-insensitive)', async () => {
+      const wrapper = mount(MSelect, {
+        props: { modelValue: 'alpha', options: OPTIONS, searchable: true },
+        attachTo: document.body,
+      })
+      await wrapper.find('button').trigger('click')
+      const input = document.querySelector('.m-select__search-input') as HTMLInputElement
+      input.value = 'be'
+      input.dispatchEvent(new Event('input'))
+      await wrapper.vm.$nextTick()
+      const opts = document.querySelectorAll('[role="option"]')
+      expect(opts.length).toBe(1)
+      expect(opts[0]?.textContent?.trim()).toBe('Beta')
+    })
+
+    it('shows an empty state when nothing matches', async () => {
+      const wrapper = mount(MSelect, {
+        props: { modelValue: 'alpha', options: OPTIONS, searchable: true },
+        attachTo: document.body,
+      })
+      await wrapper.find('button').trigger('click')
+      const input = document.querySelector('.m-select__search-input') as HTMLInputElement
+      input.value = 'zzz'
+      input.dispatchEvent(new Event('input'))
+      await wrapper.vm.$nextTick()
+      expect(document.querySelectorAll('[role="option"]').length).toBe(0)
+      expect(document.querySelector('.m-select__empty')).toBeTruthy()
+    })
+
+    it('resets the query after closing', async () => {
+      const wrapper = mount(MSelect, {
+        props: { modelValue: 'alpha', options: OPTIONS, searchable: true },
+        attachTo: document.body,
+      })
+      await wrapper.find('button').trigger('click')
+      const input = document.querySelector('.m-select__search-input') as HTMLInputElement
+      input.value = 'be'
+      input.dispatchEvent(new Event('input'))
+      await wrapper.vm.$nextTick()
+      // close and reopen
+      await wrapper.find('button').trigger('click')
+      await wrapper.find('button').trigger('click')
+      const reopened = document.querySelector('.m-select__search-input') as HTMLInputElement
+      expect(reopened.value).toBe('')
+      expect(document.querySelectorAll('[role="option"]').length).toBe(OPTIONS.length)
+    })
   })
 })

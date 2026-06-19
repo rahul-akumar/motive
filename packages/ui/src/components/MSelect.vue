@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends string | number">
-import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
-import { ChevronDown, Check, X } from 'lucide-vue-next'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ChevronDown, Check, X, Search } from 'lucide-vue-next'
 import MButton from './MButton.vue'
 
 export interface MSelectOption<V extends string | number = string | number> {
@@ -24,6 +24,8 @@ export interface MSelectProps<V extends string | number = string | number> {
   disabled?: boolean
   /** Shows a clear button to reset the selection. @default false */
   clearable?: boolean
+  /** Adds a text filter at the top of the listbox. Recommended for >10 options. @default false */
+  searchable?: boolean
   /** Form field name associated with the select. */
   name?: string
   /** Accessible label — required if no visible label surrounds the component */
@@ -34,6 +36,7 @@ const props = withDefaults(defineProps<MSelectProps<T>>(), {
   size: 'sm',
   disabled: false,
   clearable: false,
+  searchable: false,
 })
 
 const emit = defineEmits<{
@@ -43,7 +46,10 @@ const emit = defineEmits<{
 
 const open = ref(false)
 const triggerRef = ref<HTMLButtonElement | null>(null)
+const menuRef = ref<HTMLDivElement | null>(null)
 const listboxRef = ref<HTMLUListElement | null>(null)
+const searchInputRef = ref<HTMLInputElement | null>(null)
+const searchQuery = ref('')
 const menuStyle = ref<Record<string, string>>({})
 
 const selectedOption = computed(() =>
@@ -53,6 +59,22 @@ const selectedOption = computed(() =>
 )
 
 const hasValue = computed(() => selectedOption.value !== null)
+
+const filteredOptions = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  if (!props.searchable || !q) return props.options
+  return props.options.filter((o) => o.label.toLowerCase().includes(q))
+})
+
+// Reset the query each time the menu closes so reopening starts fresh.
+watch(open, (isOpen) => {
+  if (!isOpen) searchQuery.value = ''
+})
+
+// Re-position as the filtered list grows/shrinks (height changes).
+watch(searchQuery, () => {
+  if (open.value) nextTick(positionMenu)
+})
 
 function clearValue(e: MouseEvent) {
   e.stopPropagation()
@@ -66,7 +88,12 @@ async function openMenu() {
   open.value = true
   await nextTick()
   positionMenu()
-  // Focus first matching option
+  // Searchable: focus the filter input so the user can type immediately.
+  // Otherwise focus the selected (or first) option.
+  if (props.searchable) {
+    searchInputRef.value?.focus()
+    return
+  }
   const listEl = listboxRef.value
   if (listEl) {
     const active =
@@ -77,9 +104,9 @@ async function openMenu() {
 }
 
 function positionMenu() {
-  if (!triggerRef.value || !listboxRef.value) return
+  if (!triggerRef.value || !menuRef.value) return
   const trigger = triggerRef.value.getBoundingClientRect()
-  const list = listboxRef.value
+  const list = menuRef.value
 
   const vw = window.innerWidth
   const vh = window.innerHeight
@@ -131,8 +158,13 @@ function handleOptionKeydown(e: KeyboardEvent, value: T, index: number) {
   } else if (e.key === 'ArrowUp') {
     e.preventDefault()
     if (index === 0) {
-      open.value = false
-      triggerRef.value?.focus()
+      // Back to the search field if present, otherwise close.
+      if (props.searchable) {
+        searchInputRef.value?.focus()
+      } else {
+        open.value = false
+        triggerRef.value?.focus()
+      }
       return
     }
     focusOption(index - 1)
@@ -141,7 +173,21 @@ function handleOptionKeydown(e: KeyboardEvent, value: T, index: number) {
     focusOption(0)
   } else if (e.key === 'End') {
     e.preventDefault()
-    focusOption(props.options.length - 1)
+    focusOption(filteredOptions.value.length - 1)
+  }
+}
+
+function handleSearchKeydown(e: KeyboardEvent) {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    focusOption(0)
+  } else if (e.key === 'Enter') {
+    e.preventDefault()
+    const first = filteredOptions.value.find((o) => !o.disabled)
+    if (first) selectOption(first.value as T)
+  } else if (e.key === 'Escape') {
+    open.value = false
+    triggerRef.value?.focus()
   }
 }
 
@@ -158,8 +204,8 @@ function handleClickOutside(e: MouseEvent) {
   if (
     triggerRef.value &&
     !triggerRef.value.contains(e.target as Node) &&
-    listboxRef.value &&
-    !listboxRef.value.contains(e.target as Node)
+    menuRef.value &&
+    !menuRef.value.contains(e.target as Node)
   ) {
     open.value = false
   }
@@ -223,44 +269,59 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
       />
     </button>
 
-    <!-- Listbox — teleported to body for correct z-index/overflow stacking -->
+    <!-- Menu — teleported to body for correct z-index/overflow stacking -->
     <Teleport to="body">
       <Transition name="m-select-menu">
-        <ul
-          v-if="open"
-          ref="listboxRef"
-          role="listbox"
-          class="m-select__listbox"
-          :style="menuStyle"
-          :aria-label="ariaLabel"
-        >
-          <li
-            v-for="(opt, i) in options"
-            :key="String(opt.value)"
-            role="option"
-            :tabindex="opt.disabled ? -1 : 0"
-            :aria-selected="opt.value === modelValue"
-            :aria-disabled="opt.disabled || undefined"
-            :class="[
-              'm-select__option',
-              {
-                'm-select__option--selected': opt.value === modelValue,
-                'm-select__option--disabled': opt.disabled,
-              },
-            ]"
-            @click="!opt.disabled && selectOption(opt.value as T)"
-            @keydown="!opt.disabled && handleOptionKeydown($event, opt.value as T, i)"
-          >
-            <span class="m-select__option-label">{{ opt.label }}</span>
-            <Check
-              v-if="opt.value === modelValue"
-              :size="12"
-              :stroke-width="2.5"
-              class="m-select__option-check"
+        <div v-if="open" ref="menuRef" class="m-select__menu" :style="menuStyle">
+          <div v-if="searchable" class="m-select__search">
+            <Search
+              :size="13"
+              :stroke-width="2.25"
+              class="m-select__search-icon"
               aria-hidden="true"
             />
-          </li>
-        </ul>
+            <input
+              ref="searchInputRef"
+              v-model="searchQuery"
+              type="text"
+              class="m-select__search-input"
+              :placeholder="placeholder ?? 'Search…'"
+              :aria-label="ariaLabel ? `Filter ${ariaLabel}` : 'Filter options'"
+              @keydown="handleSearchKeydown"
+            />
+          </div>
+          <ul ref="listboxRef" role="listbox" class="m-select__listbox" :aria-label="ariaLabel">
+            <li
+              v-for="(opt, i) in filteredOptions"
+              :key="String(opt.value)"
+              role="option"
+              :tabindex="opt.disabled ? -1 : 0"
+              :aria-selected="opt.value === modelValue"
+              :aria-disabled="opt.disabled || undefined"
+              :class="[
+                'm-select__option',
+                {
+                  'm-select__option--selected': opt.value === modelValue,
+                  'm-select__option--disabled': opt.disabled,
+                },
+              ]"
+              @click="!opt.disabled && selectOption(opt.value as T)"
+              @keydown="!opt.disabled && handleOptionKeydown($event, opt.value as T, i)"
+            >
+              <span class="m-select__option-label">{{ opt.label }}</span>
+              <Check
+                v-if="opt.value === modelValue"
+                :size="12"
+                :stroke-width="2.5"
+                class="m-select__option-check"
+                aria-hidden="true"
+              />
+            </li>
+            <li v-if="!filteredOptions.length" class="m-select__empty" role="presentation">
+              No matches
+            </li>
+          </ul>
+        </div>
       </Transition>
     </Teleport>
   </div>
@@ -361,20 +422,64 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
   border-color: var(--mtv-color-border-strong);
 }
 
-/* ── Listbox ─────────────────────────────────────────────── */
-.m-select__listbox {
+/* ── Menu (positioned wrapper) ───────────────────────────── */
+.m-select__menu {
   position: fixed;
   z-index: var(--mtv-z-popover);
-  list-style: none;
-  margin: 0;
-  padding: 0.25rem 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
   background-color: var(--mtv-color-surface-overlay);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--radius);
   box-shadow: var(--mtv-shadow-md);
+  overflow: hidden;
+}
+
+/* ── Search field ────────────────────────────────────────── */
+.m-select__search {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border-bottom: 1px solid var(--mtv-color-border-default);
+  flex-shrink: 0;
+}
+
+.m-select__search-icon {
+  color: var(--mtv-color-foreground-subtle);
+  flex-shrink: 0;
+}
+
+.m-select__search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  color: var(--mtv-color-foreground-default);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+}
+
+.m-select__search-input::placeholder {
+  color: var(--mtv-color-foreground-subtle);
+}
+
+/* ── Listbox ─────────────────────────────────────────────── */
+.m-select__listbox {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
   outline: none;
   overflow-y: auto;
-  max-height: 260px;
+  flex: 1;
+}
+
+.m-select__empty {
+  padding: 0.4375rem 0.75rem;
+  font-size: var(--font-size-base);
+  color: var(--mtv-color-foreground-subtle);
 }
 
 /* ── Option ──────────────────────────────────────────────── */
