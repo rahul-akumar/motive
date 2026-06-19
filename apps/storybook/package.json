@@ -9,7 +9,8 @@
   "dependencies": {
     "@motive/tailwind-config": "*",
     "@motive/ui": "*",
-    "@vueuse/motion": "^3.0.3"
+    "@vueuse/motion": "^3.0.3",
+    "lucide-vue-next": "^0.577.0"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.5.0",
