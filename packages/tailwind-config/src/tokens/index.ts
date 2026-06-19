@@ -301,6 +301,46 @@ export const tokens = {
     full: '9999px',
   },
 
+  // Motion — duration + easing. Mirrors the --mtv-duration-* / --mtv-ease-*
+  // CSS vars in theme.css so Tailwind duration-*/ease-* utilities stay in sync.
+  transitionDuration: {
+    instant: '30ms',
+    fast: '120ms',
+    base: '200ms',
+    slow: '400ms',
+    slower: '600ms',
+  },
+
+  transitionTimingFunction: {
+    standard: 'var(--mtv-ease-standard)',
+    emphasized: 'var(--mtv-ease-emphasized)',
+    linear: 'var(--mtv-ease-linear)',
+  },
+
+  // Ordered stacking ladder. Mirrors the --mtv-z-* CSS vars in theme.css.
+  zIndex: {
+    base: '0',
+    raised: '10',
+    sticky: '20',
+    drawer: '30',
+    overlay: '40',
+    modal: '50',
+    popover: '60',
+    toast: '70',
+    tooltip: '80',
+  },
+
+  // Elevation. Values are theme-dependent (defined as --mtv-shadow-* in
+  // themes/*.css); these utilities reference the active theme's elevation.
+  boxShadow: {
+    xs: 'var(--mtv-shadow-xs)',
+    sm: 'var(--mtv-shadow-sm)',
+    md: 'var(--mtv-shadow-md)',
+    lg: 'var(--mtv-shadow-lg)',
+    xl: 'var(--mtv-shadow-xl)',
+    overlay: 'var(--mtv-shadow-overlay)',
+  },
+
   // Font stacks are defined once as CSS vars in theme.css; reference them here
   // so Tailwind utilities (font-sans, font-mono, …) stay in sync with the source.
   fontFamily: {
