@@ -245,6 +245,7 @@ const STATUS_BADGE: Record<
           :options="VEHICLE_OPTIONS"
           label="Vehicle"
           :clearable="true"
+          :searchable="true"
           aria-label="Filter by vehicle"
           @update:model-value="setFilterVehicle"
         />
@@ -255,6 +256,7 @@ const STATUS_BADGE: Record<
           :options="DRIVER_OPTIONS"
           label="Driver"
           :clearable="true"
+          :searchable="true"
           aria-label="Filter by driver"
           @update:model-value="setFilterDriver"
         />
