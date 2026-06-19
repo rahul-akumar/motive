@@ -93,7 +93,7 @@
   flex-shrink: 0;
   margin-top: 1px;
   position: relative;
-  transition: border-color 100ms ease;
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .pref-radio-row:has(.pref-radio__input:checked) .pref-radio__dot {
@@ -157,7 +157,7 @@
   appearance: none;
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-default);
   font-family: inherit;
   font-size: var(--font-size-sm);
@@ -167,7 +167,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
-  transition: border-color 100ms ease;
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .pref-select:hover {

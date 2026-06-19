@@ -8,6 +8,8 @@ const props = defineProps<{
 const mapContainer = ref<HTMLElement | null>(null)
 let map: import('leaflet').Map | null = null
 
+const { readCSSColor } = useCssColors()
+
 const TILE_DARK = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
 
@@ -36,9 +38,9 @@ async function initMap() {
 
   L.circleMarker([lat, lng], {
     radius: 7,
-    fillColor: '#ef4444',
+    fillColor: readCSSColor('--fleet-status-alert', '#ef4444'),
     fillOpacity: 0.9,
-    color: '#fff',
+    color: readCSSColor('--mtv-color-foreground-default', '#fff'),
     weight: 2,
   }).addTo(map)
 }

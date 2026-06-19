@@ -65,7 +65,9 @@ function createMarkerIcon(
   const color = hasFuelLoss ? STATUS_COLORS.alert : STATUS_COLORS[driver.status]
   const size = isSelected ? 36 : 28
   const borderWidth = isSelected ? 3 : 2
-  const borderColor = isSelected ? '#ffffff' : 'rgba(0,0,0,0.5)'
+  const borderColor = isSelected
+    ? readCSSColor('--mtv-color-foreground-default', '#ffffff')
+    : 'rgba(0,0,0,0.5)'
   const pulseRing =
     hasFuelLoss || driver.status === 'alert'
       ? `<div class="fv-marker-ring" style="border-color:${color}"></div>`
@@ -192,8 +194,12 @@ function updateTileLayer() {
   syncOverlays(props.overlays)
 }
 
-// Re-skin tiles/overlays when the theme changes
-useThemeObserver(updateTileLayer)
+// Re-skin tiles/overlays + re-resolve marker colors when the theme changes
+useThemeObserver(() => {
+  STATUS_COLORS = getStatusColors()
+  updateTileLayer()
+  syncMarkers()
+})
 
 function syncOverlays(overlays: typeof props.overlays) {
   if (!map) return

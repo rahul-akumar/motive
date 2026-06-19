@@ -258,7 +258,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   right: 0;
   bottom: 0;
   width: 320px;
-  z-index: 20;
+  z-index: var(--mtv-z-sticky);
   display: flex;
   flex-direction: column;
   background: var(--mtv-color-surface-base);
@@ -282,7 +282,7 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 .fv-detail__avatar {
   width: 36px;
   height: 36px;
-  border-radius: 6px;
+  border-radius: var(--radius);
   border: 2px solid;
   display: flex;
   align-items: center;
@@ -334,13 +334,13 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
   width: 28px;
   height: 29px;
   background: transparent;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fv-detail__close:hover {
@@ -442,14 +442,14 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 .fv-detail__hos-track {
   height: 4px;
   background: var(--mtv-color-rose-100);
-  border-radius: 1px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
 .fv-detail__hos-fill {
   height: 100%;
-  border-radius: 1px;
-  transition: width 400ms ease;
+  border-radius: var(--radius-sm);
+  transition: width var(--mtv-duration-slow) var(--mtv-ease-standard);
 }
 
 /* HOS breakdown grid */
@@ -511,14 +511,14 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 .fv-detail__fuel-track {
   height: 4px;
   background: var(--mtv-color-rose-200);
-  border-radius: 1px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
 .fv-detail__fuel-fill {
   height: 100%;
-  border-radius: 1px;
-  transition: width 400ms ease;
+  border-radius: var(--radius-sm);
+  transition: width var(--mtv-duration-slow) var(--mtv-ease-standard);
 }
 
 /* Info rows */
@@ -548,8 +548,8 @@ const statusLabel = computed(() => (props.driver ? FLEET_STATUS_LABELS[props.dri
 .fv-detail-enter-active,
 .fv-detail-leave-active {
   transition:
-    transform 250ms ease,
-    opacity 250ms ease;
+    transform var(--mtv-duration-base) var(--mtv-ease-standard),
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .fv-detail-enter-from,

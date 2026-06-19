@@ -44,16 +44,18 @@ export function speedToColor(speed: number): string {
 
 /** Solid status dot for a non-jammed vehicle. */
 export function createVehicleStatusIcon(L: Leaflet, color: string) {
+  const { readCSSColor } = useCssColors()
+  const dotColor = readCSSColor('--mtv-color-foreground-default', '#ffffff')
   return L.divIcon({
     className: '',
     html: `<div style="
       width: 28px; height: 28px;
       border-radius: 50%;
       background: ${color};
-      border: 3px solid white;
+      border: 3px solid ${dotColor};
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       display: flex; align-items: center; justify-content: center;
-    "><div style="width: 8px; height: 8px; background: white; border-radius: 50%;"></div></div>`,
+    "><div style="width: 8px; height: 8px; background: ${dotColor}; border-radius: 50%;"></div></div>`,
     iconSize: [28, 28],
     iconAnchor: [14, 14],
   })
@@ -61,12 +63,14 @@ export function createVehicleStatusIcon(L: Leaflet, color: string) {
 
 /** Pulsing red "jammed" last-known-location marker. */
 export function createJammedIcon(L: Leaflet) {
+  const { readCSSColor } = useCssColors()
+  const fg = readCSSColor('--mtv-color-foreground-default', '#ffffff')
   return L.divIcon({
     className: '',
     html: `<div class="jammed-marker">
       <div class="jammed-marker__ring"></div>
       <div class="jammed-marker__dot">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${fg}" stroke-width="2.5">
           <path d="M2 12 L22 12 M12 2 L12 22" transform="rotate(45 12 12)"/>
           <circle cx="12" cy="12" r="8"/>
         </svg>
@@ -79,13 +83,15 @@ export function createJammedIcon(L: Leaflet) {
 
 /** Triangular heading-arrow tip, rotated to the last-known heading. */
 export function createArrowIcon(L: Leaflet, heading: number) {
+  const { readCSSColor } = useCssColors()
+  const arrowColor = readCSSColor('--fleet-status-idle', '#fbbf24')
   return L.divIcon({
     className: '',
     html: `<div style="
       width: 0; height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-bottom: 12px solid #fbbf24;
+      border-bottom: 12px solid ${arrowColor};
       transform: rotate(${heading}deg);
     "></div>`,
     iconSize: [12, 12],
@@ -113,6 +119,8 @@ export function createIncidentIcon(L: Leaflet, hex: string) {
 
 /** "CONTAINED" badge shown at the top of a frozen search zone. */
 export function createContainedBadgeIcon(L: Leaflet) {
+  const { readCSSColor } = useCssColors()
+  const driving = readCSSColor('--fleet-status-driving', '#4ade80')
   return L.divIcon({
     className: '',
     html: `<div style="
@@ -126,11 +134,11 @@ export function createContainedBadgeIcon(L: Leaflet) {
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.04em;
-      color: #4ade80;
+      color: ${driving};
       white-space: nowrap;
       pointer-events: none;
     ">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${driving}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         <path d="m9 12 2 2 4-4"/>
       </svg>

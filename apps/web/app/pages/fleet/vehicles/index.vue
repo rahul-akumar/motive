@@ -309,9 +309,9 @@ function openMenu(id: string, el: HTMLElement) {
   color: var(--mtv-color-foreground-default);
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 5px;
+  border-radius: var(--radius);
   outline: none;
-  transition: border-color 150ms ease;
+  transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fleet-filter-bar__input::placeholder {
@@ -334,9 +334,9 @@ function openMenu(id: string, el: HTMLElement) {
   border: none;
   cursor: pointer;
   color: var(--mtv-color-foreground-subtle);
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   padding: 0;
-  transition: all 100ms ease;
+  transition: all var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fleet-filter-bar__clear-input:hover {
@@ -357,12 +357,12 @@ function openMenu(id: string, el: HTMLElement) {
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color var(--mtv-duration-fast);
 }
 
 .action-btn:hover {

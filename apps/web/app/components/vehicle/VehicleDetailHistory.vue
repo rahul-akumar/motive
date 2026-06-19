@@ -157,6 +157,9 @@ function addMarkers(L: typeof import('leaflet')) {
   const entries = allEntries.value
   if (entries.length === 0) return
 
+  const { readCSSColor } = useCssColors()
+  const markerBorder = readCSSColor('--mtv-color-foreground-default', '#ffffff')
+
   // Draw route polyline connecting all timeline points
   const routeCoords = entries
     .filter((e) => e.location)
@@ -184,7 +187,7 @@ function addMarkers(L: typeof import('leaflet')) {
         width: 14px; height: 14px;
         border-radius: 50%;
         background: ${cssColor};
-        border: 2px solid white;
+        border: 2px solid ${markerBorder};
         box-shadow: 0 1px 4px rgba(0,0,0,0.3);
       "></div>`,
       iconSize: [14, 14],
@@ -328,7 +331,7 @@ onUnmounted(() => {
 .vehicle-history__search {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: var(--mtv-z-sticky);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -371,7 +374,7 @@ onUnmounted(() => {
   text-align: left;
   cursor: pointer;
   border-bottom: 1px solid var(--mtv-color-border-default);
-  transition: background-color 150ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .vehicle-history__entry:hover {
@@ -428,12 +431,12 @@ onUnmounted(() => {
 }
 
 .vehicle-history__entry-date {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-subtle);
 }
 
 .vehicle-history__entry-signal {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-subtle);
 }
 

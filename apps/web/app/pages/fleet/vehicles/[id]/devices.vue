@@ -69,9 +69,9 @@ const { formatTime } = useFormatters()
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem 1.25rem;
-  background: rgba(248, 113, 113, 0.1);
+  background: var(--fleet-severity-critical-subtle);
   border: 1px solid var(--mtv-color-status-critical);
-  border-radius: 8px;
+  border-radius: var(--card-radius);
   color: var(--mtv-color-status-critical);
 }
 

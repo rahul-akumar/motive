@@ -66,7 +66,7 @@ function openPreferences(section?: string) {
   flex-direction: row;
   height: 100vh;
   background-color: var(--mtv-color-surface-base);
-  transition: background-color 0.25s ease;
+  transition: background-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 @media (max-width: 768px) {
@@ -85,14 +85,14 @@ function openPreferences(section?: string) {
 .sidebar-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.55);
-  z-index: 40;
+  background-color: var(--mtv-color-surface-scrim);
+  z-index: var(--mtv-z-overlay);
   backdrop-filter: blur(1px);
 }
 
 .overlay-enter-active,
 .overlay-leave-active {
-  transition: opacity 0.25s ease;
+  transition: opacity var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .overlay-enter-from,

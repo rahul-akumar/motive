@@ -170,7 +170,7 @@ function hosStatusColor(driver: FleetDriver): string {
   top: 0;
   height: 100%;
   border-radius: 0;
-  transition: width 600ms ease;
+  transition: width var(--mtv-duration-slower) var(--mtv-ease-standard);
 }
 
 .hos-bar__remaining {
