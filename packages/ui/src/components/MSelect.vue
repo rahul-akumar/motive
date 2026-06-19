@@ -2,6 +2,7 @@
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { ChevronDown, Check, X, Search } from 'lucide-vue-next'
 import MButton from './MButton.vue'
+import MIcon from './MIcon.vue'
 
 export interface MSelectOption<V extends string | number = string | number> {
   label: string
@@ -274,12 +275,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
       <Transition name="m-select-menu">
         <div v-if="open" ref="menuRef" class="m-select__menu" :style="menuStyle">
           <div v-if="searchable" class="m-select__search">
-            <Search
-              :size="13"
-              :stroke-width="2.25"
-              class="m-select__search-icon"
-              aria-hidden="true"
-            />
+            <MIcon :icon="Search" :size="13" :stroke-width="2.25" class="m-select__search-icon" />
             <input
               ref="searchInputRef"
               v-model="searchQuery"
