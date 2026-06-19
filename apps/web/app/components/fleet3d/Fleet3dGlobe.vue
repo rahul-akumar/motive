@@ -4,6 +4,7 @@ import maplibregl from 'maplibre-gl'
 import type { FleetDriver, FleetVehicle } from '@motive/shared'
 import { currentRegion } from '~/composables/useRegion'
 import { mockDriverOriginsByRegion, mockDriverSpeedsByRegion } from '~/mocks/globe-animation'
+import { ARROW_SVG, DOT_SVG } from '~/composables/useFleet3dGeoJSON'
 
 // Resolve design tokens to computed color strings for MapLibre GL shaders.
 const { readCSSColor } = useCssColors()
@@ -33,173 +34,30 @@ let hosAbortController: AbortController | null = null
 const US_STATES_URL =
   'https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'
 
-const STATE_ABBR_TO_NAME: Record<string, string> = {
-  AL: 'Alabama',
-  AK: 'Alaska',
-  AZ: 'Arizona',
-  AR: 'Arkansas',
-  CA: 'California',
-  CO: 'Colorado',
-  CT: 'Connecticut',
-  DE: 'Delaware',
-  FL: 'Florida',
-  GA: 'Georgia',
-  HI: 'Hawaii',
-  ID: 'Idaho',
-  IL: 'Illinois',
-  IN: 'Indiana',
-  IA: 'Iowa',
-  KS: 'Kansas',
-  KY: 'Kentucky',
-  LA: 'Louisiana',
-  ME: 'Maine',
-  MD: 'Maryland',
-  MA: 'Massachusetts',
-  MI: 'Michigan',
-  MN: 'Minnesota',
-  MS: 'Mississippi',
-  MO: 'Missouri',
-  MT: 'Montana',
-  NE: 'Nebraska',
-  NV: 'Nevada',
-  NH: 'New Hampshire',
-  NJ: 'New Jersey',
-  NM: 'New Mexico',
-  NY: 'New York',
-  NC: 'North Carolina',
-  ND: 'North Dakota',
-  OH: 'Ohio',
-  OK: 'Oklahoma',
-  OR: 'Oregon',
-  PA: 'Pennsylvania',
-  RI: 'Rhode Island',
-  SC: 'South Carolina',
-  SD: 'South Dakota',
-  TN: 'Tennessee',
-  TX: 'Texas',
-  UT: 'Utah',
-  VT: 'Vermont',
-  VA: 'Virginia',
-  WA: 'Washington',
-  WV: 'West Virginia',
-  WI: 'Wisconsin',
-  WY: 'Wyoming',
-  DC: 'District of Columbia',
-}
-
 const MOCK_DRIVER_ORIGINS = computed(() => mockDriverOriginsByRegion[currentRegion.value])
 
 // Mock speeds (mph) for driving drivers
 const MOCK_DRIVER_SPEEDS = computed(() => mockDriverSpeedsByRegion[currentRegion.value])
 
-// Navigation arrow pointing north (up). Rotated by icon-rotate per heading.
-const ARROW_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <polygon points="16,3 27,29 16,23 5,29" fill="white"/>
-</svg>`
-
-// Filled circle for stationary drivers (idle/sleeper/offline/alert).
-const DOT_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <circle cx="16" cy="16" r="9" fill="white"/>
-</svg>`
-
-// Compute geodesic bearing (degrees, 0=north, clockwise)
-function computeBearing(from: [number, number], to: [number, number]): number {
-  const toRad = (d: number) => (d * Math.PI) / 180
-  const lng1 = toRad(from[0]),
-    lat1 = toRad(from[1])
-  const lng2 = toRad(to[0]),
-    lat2 = toRad(to[1])
-  const dLng = lng2 - lng1
-  const x = Math.sin(dLng) * Math.cos(lat2)
-  const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng)
-  return ((Math.atan2(x, y) * 180) / Math.PI + 360) % 360
-}
-
+// Cached OSRM route FeatureCollection — reused as the routes source on prop updates
 let cachedOSRMRoutes: GeoJSON.FeatureCollection | null = null
-let routeAbortController: AbortController | null = null
 
-// ── Route animation state ─────────────────────────────────────────────────────
+// Route fetching + along-route animation (owns live positions / route geometry state)
+const {
+  livePositions,
+  routeGeometries,
+  routeProgress,
+  startMovement,
+  fetchOSRMRoutes,
+  abortRoutes,
+} = useFleet3dRouteAnimation(MOCK_DRIVER_ORIGINS)
 
-// Live interpolated positions for driving drivers (overrides mock currentLocation)
-const livePositions = new Map<string, { lng: number; lat: number; heading: number }>()
-// Route polyline coordinates per driver (from OSRM)
-const routeGeometries = new Map<string, [number, number][]>()
-// Current progress 0–1 along the route for each driver
-const routeProgress = new Map<string, number>()
-let moveInterval: ReturnType<typeof setInterval> | null = null
-
-// Each driving driver completes their full route in this many ms (demo speed)
-const DEMO_CYCLE_MS = 7_200_000
-
-// Interpolate a position and heading at fraction t (0–1) along a polyline
-function interpolateRoute(
-  coords: [number, number][],
-  t: number,
-): { position: [number, number]; heading: number } {
-  const ct = Math.max(0, Math.min(1, t))
-  const totalSegs = coords.length - 1
-  if (totalSegs <= 0) return { position: coords[0]!, heading: 0 }
-  const segT = ct * totalSegs
-  const segIdx = Math.min(Math.floor(segT), totalSegs - 1)
-  const frac = segT - segIdx
-  const a = coords[segIdx]!
-  const b = coords[segIdx + 1]!
-  return {
-    position: [a[0] + (b[0] - a[0]) * frac, a[1] + (b[1] - a[1]) * frac],
-    heading: computeBearing(a, b),
-  }
-}
-
-function startMovement(onTick: () => void) {
-  if (moveInterval !== null) clearInterval(moveInterval)
-  let lastTick = Date.now()
-  moveInterval = setInterval(() => {
-    const now = Date.now()
-    const dt = now - lastTick
-    lastTick = now
-    for (const [driverId, coords] of routeGeometries) {
-      const prev = routeProgress.get(driverId) ?? 0
-      const next = (prev + dt / DEMO_CYCLE_MS) % 1
-      routeProgress.set(driverId, next)
-      const { position, heading } = interpolateRoute(coords, next)
-      livePositions.set(driverId, { lng: position[0], lat: position[1], heading })
-    }
-    onTick()
-  }, 50)
-}
-
-async function fetchOSRMRoutes(drivers: FleetDriver[]): Promise<GeoJSON.FeatureCollection> {
-  const features: GeoJSON.Feature[] = []
-  await Promise.allSettled(
-    drivers
-      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS.value[d.id])
-      .map(async (d) => {
-        const origin = MOCK_DRIVER_ORIGINS.value[d.id]!
-        const dest: [number, number] = [d.currentLocation.lng, d.currentLocation.lat]
-        const url = `https://router.project-osrm.org/route/v1/driving/${origin[0]},${origin[1]};${dest[0]},${dest[1]}?overview=full&geometries=geojson`
-        try {
-          const res = await fetch(url, { signal: routeAbortController?.signal })
-          const data = (await res.json()) as { routes?: Array<{ geometry: GeoJSON.LineString }> }
-          if (data.routes?.[0]?.geometry) {
-            features.push({
-              type: 'Feature',
-              geometry: data.routes[0].geometry,
-              properties: { driverId: d.id },
-            })
-          }
-        } catch (e) {
-          if ((e as Error).name === 'AbortError') return
-          // Fallback: straight line
-          features.push({
-            type: 'Feature',
-            geometry: { type: 'LineString', coordinates: [origin, dest] },
-            properties: { driverId: d.id },
-          })
-        }
-      }),
-  )
-  return { type: 'FeatureCollection', features }
-}
+// GeoJSON source builders (read live positions + region origins/speeds)
+const { driversToGeoJSON, buildStraightRoutes, computeHosGeoJSON } = useFleet3dGeoJSON({
+  origins: MOCK_DRIVER_ORIGINS,
+  speeds: MOCK_DRIVER_SPEEDS,
+  livePositions,
+})
 
 const props = defineProps<{
   drivers: FleetDriver[]
@@ -217,88 +75,6 @@ let map: maplibregl.Map | null = null
 let popup: maplibregl.Popup | null = null
 let animFrame: number | null = null
 let animStart: number | null = null
-
-// ── GeoJSON builders ──────────────────────────────────────────────────────────
-
-function driversToGeoJSON(
-  drivers: FleetDriver[],
-  vehicles: FleetVehicle[],
-): GeoJSON.FeatureCollection {
-  const vehicleMap = new Map(vehicles.map((v) => [v.id, v]))
-  return {
-    type: 'FeatureCollection',
-    features: drivers.map((d) => {
-      const live = livePositions.get(d.id)
-      const lng = live ? live.lng : d.currentLocation.lng
-      const lat = live ? live.lat : d.currentLocation.lat
-      const origin = MOCK_DRIVER_ORIGINS.value[d.id]
-      const staticHeading =
-        origin && d.status === 'driving'
-          ? computeBearing(origin, [d.currentLocation.lng, d.currentLocation.lat])
-          : 0
-      const heading = live ? live.heading : staticHeading
-      const speed = MOCK_DRIVER_SPEEDS.value[d.id] ?? 0
-      return {
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [lng, lat] },
-        properties: {
-          id: d.id,
-          name: d.name,
-          status: d.status,
-          city: d.currentLocation.city,
-          state: d.currentLocation.state,
-          hosViolation: d.hos.hasViolation,
-          hosDrivingRemaining: d.hos.driveRemaining,
-          fuelLevel: vehicleMap.get(d.vehicleId ?? '')?.fuelLevel ?? 50,
-          heading,
-          speed,
-        },
-      }
-    }),
-  }
-}
-
-function buildStraightRoutes(drivers: FleetDriver[]): GeoJSON.FeatureCollection {
-  return {
-    type: 'FeatureCollection',
-    features: drivers
-      .filter((d) => d.status === 'driving' && MOCK_DRIVER_ORIGINS.value[d.id])
-      .map((d) => ({
-        type: 'Feature' as const,
-        geometry: {
-          type: 'LineString' as const,
-          coordinates: [
-            MOCK_DRIVER_ORIGINS.value[d.id]!,
-            [d.currentLocation.lng, d.currentLocation.lat],
-          ],
-        },
-        properties: { driverId: d.id },
-      })),
-  }
-}
-
-function computeHosGeoJSON(
-  statesGeoJSON: GeoJSON.FeatureCollection,
-  drivers: FleetDriver[],
-): GeoJSON.FeatureCollection {
-  return {
-    ...statesGeoJSON,
-    features: statesGeoJSON.features.map((f) => {
-      const stateName = f.properties?.name as string
-      const stateDrivers = drivers.filter(
-        (d) => STATE_ABBR_TO_NAME[d.currentLocation.state] === stateName,
-      )
-      const hasViolation = stateDrivers.some((d) => d.hos.hasViolation)
-      const hosScore = hasViolation
-        ? 0
-        : stateDrivers.length === 0
-          ? null
-          : stateDrivers.reduce((sum, d) => sum + d.hos.driveRemaining / 11, 0) /
-            stateDrivers.length
-      return { ...f, properties: { ...f.properties, hosScore } }
-    }),
-  }
-}
 
 // ── Popup ─────────────────────────────────────────────────────────────────────
 
@@ -391,7 +167,7 @@ async function initLayers() {
     type: 'line',
     source: 'routes',
     paint: {
-      'line-color': '#4ade80',
+      'line-color': readCSSColor('--fleet-status-driving', '#4ade80'),
       'line-width': 3,
       'line-dasharray': [4, 3],
       'line-opacity': 0.65,
@@ -413,15 +189,15 @@ async function initLayers() {
         ['linear'],
         ['get', 'fuelLevel'],
         0,
-        '#ef4444',
+        readCSSColor('--fleet-status-alert', '#ef4444'),
         25,
-        '#f97316',
+        readCSSColor('--mtv-color-status-warning', '#f97316'),
         50,
-        '#eab308',
+        readCSSColor('--fleet-status-idle', '#eab308'),
         75,
         '#84cc16',
         100,
-        '#22c55e',
+        readCSSColor('--fleet-status-driving', '#22c55e'),
       ],
       'circle-opacity': 0,
       'circle-stroke-opacity': 0.55,
@@ -436,7 +212,7 @@ async function initLayers() {
     filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'status'], 'alert']],
     paint: {
       'circle-radius': 8,
-      'circle-color': '#f87171',
+      'circle-color': readCSSColor('--fleet-status-alert', '#f87171'),
       'circle-opacity': 0.4,
       'circle-stroke-width': 0,
     },
@@ -479,14 +255,14 @@ async function initLayers() {
         'match',
         ['get', 'status'],
         'driving',
-        '#4ade80',
+        readCSSColor('--fleet-status-driving', '#4ade80'),
         'idle',
-        '#fbbf24',
+        readCSSColor('--fleet-status-idle', '#fbbf24'),
         'alert',
-        '#f87171',
+        readCSSColor('--fleet-status-alert', '#f87171'),
         'sleeper',
-        '#a78bfa',
-        '#525252',
+        readCSSColor('--mtv-color-chart-series-4', '#a78bfa'),
+        readCSSColor('--mtv-color-foreground-muted', '#525252'),
       ],
       'icon-opacity': 1,
     },
@@ -507,7 +283,7 @@ async function initLayers() {
       'text-allow-overlap': false,
     },
     paint: {
-      'text-color': '#e2e2e2',
+      'text-color': readCSSColor('--mtv-color-foreground-default', '#e2e2e2'),
       'text-halo-color': 'rgba(0,0,0,0.7)',
       'text-halo-width': 1,
     },
@@ -538,7 +314,7 @@ async function initLayers() {
       'text-size': 11,
     },
     paint: {
-      'text-color': '#ffffff',
+      'text-color': readCSSColor('--mtv-color-foreground-default', '#ffffff'),
     },
   })
 
@@ -594,7 +370,6 @@ async function initLayers() {
   animFrame = requestAnimationFrame(animateAlertPulse)
 
   // Fetch real street routes from OSRM, then start animating trucks along them
-  routeAbortController = new AbortController()
   fetchOSRMRoutes(props.drivers).then((geojson) => {
     cachedOSRMRoutes = geojson
     ;(map?.getSource('routes') as maplibregl.GeoJSONSource | undefined)?.setData(geojson)
@@ -704,7 +479,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (animFrame !== null) cancelAnimationFrame(animFrame)
-  routeAbortController?.abort()
+  abortRoutes()
   hosAbortController?.abort()
   popup?.remove()
   map?.remove()
@@ -811,10 +586,10 @@ watch(
 <!-- Global: override MapLibre popup chrome and inject popup content styles -->
 <style>
 .f3d-maplibre-popup .maplibregl-popup-content {
-  background: oklch(0.218 0 0);
-  border: 1px solid oklch(1 0 0 / 0.12);
-  border-radius: 2px;
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
+  background: var(--mtv-color-surface-default);
+  border: 1px solid oklch(from var(--mtv-color-border-default) l c h / 0.12);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--mtv-shadow-md);
   padding: 0;
 }
 
@@ -831,7 +606,7 @@ watch(
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: oklch(0.913 0 0);
+  color: var(--mtv-color-foreground-default);
   margin-bottom: 2px;
 }
 
@@ -845,7 +620,7 @@ watch(
 
 .f3d-popup__location {
   font-size: var(--font-size-xs);
-  color: oklch(0.627 0 0);
+  color: var(--mtv-color-foreground-muted);
   margin-bottom: 2px;
 }
 

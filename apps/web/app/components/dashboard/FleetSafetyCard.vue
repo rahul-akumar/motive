@@ -83,7 +83,7 @@ const actionItems = [
   align-items: center;
   gap: 0.625rem;
   text-decoration: none;
-  transition: opacity 150ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fleet-safety__action-row:hover {

@@ -27,6 +27,7 @@ export const SEMANTIC_GROUPS = [
       'surface-active',
       'surface-accent',
       'surface-accent-subtle',
+      'surface-scrim',
     ],
   },
   {
@@ -217,6 +218,64 @@ export const Radii = () => (
   </div>
 )
 
+export const Elevation = () => (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28 }}>
+    {Object.keys(tokens.boxShadow).map((name) => (
+      <div key={name} style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            width: 96,
+            height: 72,
+            background: 'var(--mtv-color-surface-raised)',
+            borderRadius: 8,
+            boxShadow: `var(--mtv-shadow-${name})`,
+          }}
+        />
+        <Caption>--mtv-shadow-{name}</Caption>
+      </div>
+    ))}
+  </div>
+)
+
+export const Motion = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    {Object.entries(tokens.transitionDuration).map(([name, value]) => (
+      <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <span style={{ ...mono, width: 150 }}>
+          duration-{name} · {value}
+        </span>
+        <div
+          style={{
+            height: 12,
+            width: 12,
+            borderRadius: 6,
+            background: 'var(--mtv-color-brand-default)',
+            animation: `mtvSlide ${value} var(--mtv-ease-standard) infinite alternate`,
+          }}
+        />
+      </div>
+    ))}
+    <style>{`@keyframes mtvSlide { from { transform: translateX(0) } to { transform: translateX(180px) } }`}</style>
+    <div style={{ ...mono, marginTop: 12 }}>
+      Easings:{' '}
+      {Object.keys(tokens.transitionTimingFunction)
+        .map((e) => `ease-${e}`)
+        .join(' · ')}
+    </div>
+  </div>
+)
+
+export const ZIndex = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    {Object.entries(tokens.zIndex).map(([name, value]) => (
+      <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <span style={{ ...mono, width: 150 }}>--mtv-z-{name}</span>
+        <span style={{ ...mono, color: 'var(--mtv-color-foreground-default)' }}>{value}</span>
+      </div>
+    ))}
+  </div>
+)
+
 # Design Tokens
 
 Motive's design system is a **three-layer token model**:
@@ -256,3 +315,25 @@ and Arc tint toolbar controls to watch the **semantic** swatches react.
 ## Radius
 
 <Radii />
+
+## Elevation
+
+Shadow values are **theme-dependent** — Arc and Console are near-flat, Legacy is softly lifted.
+Components reference `var(--mtv-shadow-*)` in scoped CSS (or `shadow-*` utilities); switch the
+theme toolbar to watch them react.
+
+<Elevation />
+
+## Motion
+
+Duration and easing tokens are theme-independent. Use them in place of literal `ms`/`ease`
+values so timing stays consistent. All motion respects `prefers-reduced-motion`.
+
+<Motion />
+
+## Z-index
+
+An ordered stacking ladder — pick the rung that names a surface's role instead of an arbitrary
+integer.
+
+<ZIndex />

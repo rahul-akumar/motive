@@ -146,35 +146,16 @@ function openUserMenu(e: MouseEvent) {
   userMenuRef.value?.open(e.currentTarget as HTMLElement)
 }
 
-const logoLetterM = ref<SVGElement | null>(null)
-const logoLetterO = ref<SVGElement | null>(null)
-const logoLetterT = ref<SVGElement | null>(null)
-const logoLetterIStem = ref<SVGElement | null>(null)
-const logoLetterIDot = ref<SVGElement | null>(null)
-const logoLetterV = ref<SVGElement | null>(null)
-const logoLetterE = ref<SVGElement | null>(null)
-
-function letterVariantsFor(index: number) {
-  const startsCollapsed = collapsed.value
-  return {
-    initial: startsCollapsed ? { opacity: 0, y: 4 } : { opacity: 1, y: 0 },
-    expanded: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 300,
-        damping: 22,
-        mass: 0.8,
-        delay: index * 35,
-      },
-    },
-    collapsed: {
-      opacity: 0,
-      transition: { type: 'tween' as const, duration: 120, ease: 'easeIn' as const, delay: 0 },
-    },
-  }
-}
+const {
+  logoLetterM,
+  logoLetterO,
+  logoLetterT,
+  logoLetterIStem,
+  logoLetterIDot,
+  logoLetterV,
+  logoLetterE,
+  setLetterVariants,
+} = useLogoAnimation(collapsed)
 
 const { variant: sidebarVariant } = useMotion(sidebarRef, {
   initial: { width: collapsed.value ? 48 : 220 },
@@ -188,31 +169,17 @@ const { variant: sidebarVariant } = useMotion(sidebarRef, {
   },
 })
 
-const { variant: variantM } = useMotion(logoLetterM, letterVariantsFor(0))
-const { variant: variantO } = useMotion(logoLetterO, letterVariantsFor(1))
-const { variant: variantT } = useMotion(logoLetterT, letterVariantsFor(2))
-const { variant: variantIStem } = useMotion(logoLetterIStem, letterVariantsFor(3))
-const { variant: variantIDot } = useMotion(logoLetterIDot, letterVariantsFor(4))
-const { variant: variantV } = useMotion(logoLetterV, letterVariantsFor(5))
-const { variant: variantE } = useMotion(logoLetterE, letterVariantsFor(6))
-
-const letterVariants = [variantM, variantO, variantT, variantIStem, variantIDot, variantV, variantE]
-
 onMounted(() => {
   const v = collapsed.value ? 'collapsed' : 'expanded'
   sidebarVariant.value = v
-  letterVariants.forEach((lv) => {
-    lv.value = v
-  })
+  setLetterVariants(v)
 })
 
 function toggleCollapsed() {
   collapsed.value = !collapsed.value
   const target = collapsed.value ? 'collapsed' : 'expanded'
   sidebarVariant.value = target
-  letterVariants.forEach((lv) => {
-    lv.value = target
-  })
+  setLetterVariants(target)
   localStorage.setItem('sidebar-collapsed', String(collapsed.value))
 }
 </script>
@@ -379,8 +346,8 @@ function toggleCollapsed() {
   transform: translateZ(0);
   backface-visibility: hidden;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* ── Header (logo) ── */
@@ -400,14 +367,14 @@ function toggleCollapsed() {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
   border: none;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   flex-shrink: 0;
 }
 
@@ -465,7 +432,7 @@ function toggleCollapsed() {
   grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
   height: 36px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -474,8 +441,8 @@ function toggleCollapsed() {
   white-space: nowrap;
   overflow: hidden;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .sidebar-nav-item:hover {
@@ -505,8 +472,8 @@ function toggleCollapsed() {
   transform: translateX(0);
   /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    opacity 160ms ease-out 60ms,
-    transform 180ms ease-out 60ms;
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard) 60ms,
+    transform var(--mtv-duration-base) var(--mtv-ease-standard) 60ms;
 }
 
 .sidebar__bottom {
@@ -530,13 +497,13 @@ function toggleCollapsed() {
   margin-top: 0.25rem;
   cursor: pointer;
   position: relative;
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   gap: 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .sidebar__user:hover {
-  background-color: oklab(100% 0 -0.00011 / 0.09);
+  background-color: var(--mtv-color-surface-hover);
 }
 
 .sidebar__user-avatar {
@@ -562,8 +529,8 @@ function toggleCollapsed() {
   transform: translateX(0);
   /* Enter: delay 60ms so sidebar has started widening first */
   transition:
-    opacity 160ms ease-out 60ms,
-    transform 180ms ease-out 60ms;
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard) 60ms,
+    transform var(--mtv-duration-base) var(--mtv-ease-standard) 60ms;
 }
 
 .sidebar__user-name {
@@ -593,8 +560,8 @@ function toggleCollapsed() {
 /* Collapsing: sidebar shrinks — width handled by useMotion spring */
 .sidebar--collapsed {
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* Collapsing: labels + user-info slide left and fade out immediately */
@@ -605,8 +572,8 @@ function toggleCollapsed() {
   pointer-events: none;
   /* Exit: no delay, fast ease-in so it's out of the way before sidebar shrinks */
   transition:
-    opacity 100ms ease-in 0ms,
-    transform 110ms ease-in 0ms;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard) 0ms,
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard) 0ms;
 }
 
 /* ── Mobile: sidebar becomes a fixed overlay drawer ── */

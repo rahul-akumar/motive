@@ -193,14 +193,14 @@ function handleKeydown(e: KeyboardEvent) {
 .m-drawer-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 100;
-  background: rgba(0, 0, 0, 0.5);
+  z-index: var(--mtv-z-drawer);
+  background: var(--mtv-color-surface-scrim);
   display: flex;
 }
 
 .m-drawer-backdrop-enter-active,
 .m-drawer-backdrop-leave-active {
-  transition: opacity 200ms ease;
+  transition: opacity var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .m-drawer-backdrop-enter-from,
@@ -213,27 +213,27 @@ function handleKeydown(e: KeyboardEvent) {
   position: fixed;
   top: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: var(--mtv-z-drawer);
   display: flex;
   flex-direction: column;
   max-width: 100vw;
   background-color: var(--mtv-color-surface-default);
   border: 1px solid var(--mtv-color-border-default);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--mtv-shadow-xl);
   overflow: hidden;
 }
 
 .m-drawer--right {
   right: 0;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
+  border-top-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
   border-right: none;
 }
 
 .m-drawer--left {
   left: 0;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
   border-left: none;
 }
 
@@ -276,7 +276,7 @@ function handleKeydown(e: KeyboardEvent) {
 /* ── Slide transitions ───────────────────────────────────── */
 .m-drawer-slide-right-enter-active,
 .m-drawer-slide-right-leave-active {
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .m-drawer-slide-right-enter-from,
@@ -286,7 +286,7 @@ function handleKeydown(e: KeyboardEvent) {
 
 .m-drawer-slide-left-enter-active,
 .m-drawer-slide-left-leave-active {
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .m-drawer-slide-left-enter-from,

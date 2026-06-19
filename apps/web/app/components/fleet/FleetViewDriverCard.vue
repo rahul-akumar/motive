@@ -87,7 +87,7 @@ const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
   border-bottom: 1px solid var(--mtv-color-border-default);
   cursor: pointer;
   text-align: left;
-  transition: background-color 120ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   overflow: hidden;
 }
 
@@ -107,7 +107,7 @@ const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
   bottom: 0;
   width: 3px;
   opacity: 0;
-  transition: opacity 120ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fv-driver-card--selected .fv-driver-card__accent {
@@ -118,7 +118,7 @@ const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
 .fv-driver-card__avatar {
   width: 30px;
   height: 30px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   border: 1.5px solid;
   display: none;
   align-items: center;
@@ -185,14 +185,14 @@ const statusLabel = computed(() => FLEET_STATUS_LABELS[props.driver.status])
   flex: 1;
   height: 3px;
   background: var(--mtv-color-surface-accent);
-  border-radius: 1px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
 .fv-driver-card__hos-bar-fill {
   height: 100%;
-  border-radius: 1px;
-  transition: width 300ms ease;
+  border-radius: var(--radius-sm);
+  transition: width var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .fv-driver-card__hos-label {

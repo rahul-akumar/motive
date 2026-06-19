@@ -195,7 +195,7 @@ const rootAriaLabel = computed(() => {
 /* ── Text variant ─────────────────────────────────────────── */
 .m-badge--text {
   @apply gap-1;
-  border-radius: 4px;
+  border-radius: var(--badge-radius);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-normal);
   max-width: 100%;
@@ -219,7 +219,7 @@ const rootAriaLabel = computed(() => {
 
 /* ── Number variant ──────────────────────────────────────── */
 .m-badge--number {
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
 }
 
 .m-badge--number.m-badge--sm {
@@ -257,7 +257,7 @@ const rootAriaLabel = computed(() => {
   @apply font-bold;
   line-height: var(--leading-none);
   pointer-events: none;
-  color: #fff;
+  color: var(--mtv-color-foreground-on-accent);
 }
 
 .m-badge--score.m-badge--score--sm {

@@ -48,7 +48,7 @@ const hasHeader = computed(() => Boolean(slots.title || slots.action))
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
   border-radius: var(--card-radius);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--mtv-shadow-md);
 }
 
 /* Header + content stack only when the card has a header. */

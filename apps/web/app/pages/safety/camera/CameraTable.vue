@@ -244,7 +244,7 @@ function openMenu(index: number, el: HTMLElement) {
 .camera-table-wrap {
   background-color: var(--mtv-color-surface-raised);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: var(--card-radius, 6px);
+  border-radius: var(--card-radius);
   overflow: hidden;
 }
 
@@ -269,7 +269,7 @@ function openMenu(index: number, el: HTMLElement) {
 
 .camera-table tbody tr {
   border-bottom: 1px solid var(--mtv-color-border-default);
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .camera-table tbody tr:last-child {
@@ -311,9 +311,9 @@ function openMenu(index: number, el: HTMLElement) {
   border: none;
   background: none;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  transition: opacity 120ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .thumb-btn:hover {
@@ -325,14 +325,14 @@ function openMenu(index: number, el: HTMLElement) {
   width: 112px;
   height: 63px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--mtv-color-border-default);
 }
 
 .thumb-offline {
   width: 112px;
   height: 63px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--mtv-color-border-default);
   background-color: var(--mtv-color-surface-base);
   display: flex;
@@ -355,12 +355,12 @@ function openMenu(index: number, el: HTMLElement) {
   height: 28px;
   border: none;
   background: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-subtle);
   cursor: pointer;
   transition:
-    background-color 100ms ease,
-    color 100ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .action-btn:hover {
@@ -394,10 +394,10 @@ function openMenu(index: number, el: HTMLElement) {
   color: var(--mtv-color-foreground-muted);
   background: none;
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: 0.3rem 0.75rem;
   cursor: pointer;
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .camera-table-empty__clear:hover {
@@ -408,8 +408,8 @@ function openMenu(index: number, el: HTMLElement) {
 .preview-overlay {
   position: fixed;
   inset: 0;
-  z-index: 10000;
-  background-color: color-mix(in oklch, black 80%, transparent);
+  z-index: var(--mtv-z-popover);
+  background-color: var(--mtv-color-surface-scrim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -418,8 +418,8 @@ function openMenu(index: number, el: HTMLElement) {
 .preview-overlay__img {
   max-width: min(900px, 90vw);
   max-height: 85vh;
-  border-radius: 6px;
-  box-shadow: 0 24px 80px color-mix(in oklch, black 60%, transparent);
+  border-radius: var(--radius);
+  box-shadow: var(--mtv-shadow-overlay);
 }
 
 .preview-overlay__close {
@@ -436,7 +436,7 @@ function openMenu(index: number, el: HTMLElement) {
   background-color: var(--mtv-color-surface-hover);
   color: var(--mtv-color-foreground-default);
   cursor: pointer;
-  transition: background-color 120ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .preview-overlay__close:hover {
@@ -446,7 +446,7 @@ function openMenu(index: number, el: HTMLElement) {
 /* ── Transitions ───────────────────────────────────────────────────────────── */
 .preview-enter-active,
 .preview-leave-active {
-  transition: opacity 150ms ease;
+  transition: opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .preview-enter-from,

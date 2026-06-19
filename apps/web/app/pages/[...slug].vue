@@ -58,7 +58,7 @@ const path = route.path
   font-family: var(--font-family-mono);
   background-color: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: 0 0.25rem;
   font-size: 0.9em;
 }
@@ -66,13 +66,13 @@ const path = route.path
 .not-found__link {
   display: inline-block;
   padding: 0.5rem 1.25rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background-color: var(--mtv-color-brand-primary);
   color: var(--mtv-color-foreground-on-brand);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
-  transition: opacity 150ms;
+  transition: opacity var(--mtv-duration-fast);
 }
 
 .not-found__link:hover {

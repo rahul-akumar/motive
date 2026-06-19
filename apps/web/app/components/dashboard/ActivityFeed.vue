@@ -252,7 +252,7 @@ function getConfig(type: ActivityEventType) {
 .activity-feed__dot {
   width: 24px;
   height: 24px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,14 +319,14 @@ function getConfig(type: ActivityEventType) {
   padding: 0.5rem;
   background: transparent;
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
   font-family: var(--font-family-mono);
   letter-spacing: var(--tracking-wider);
 }
