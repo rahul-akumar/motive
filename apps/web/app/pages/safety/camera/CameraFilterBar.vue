@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
-import { MIcon } from '@motive/ui'
+import { MIcon, MSelect } from '@motive/ui'
 import type { CameraType, KpiFilter } from '~/composables/useCameraData'
 
 export interface CameraFilterBarProps {
@@ -16,49 +16,46 @@ const emit = defineEmits<{
   'update:statusFilter': [value: KpiFilter | null]
   'update:search': [value: string]
 }>()
+
+const TYPE_OPTIONS = [
+  { value: 'all', label: 'All Types' },
+  { value: 'dashcam', label: 'Dashcam' },
+  { value: 'ai-omnicam', label: 'AI Omnicam' },
+  { value: 'multi-cam-dvr', label: 'Multi-Cam DVR' },
+]
+
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All Statuses' },
+  { value: 'online', label: 'Online' },
+  { value: 'offline', label: 'Offline' },
+  { value: 'pending', label: 'Pending Setup' },
+  { value: 'issues', label: 'Issues' },
+]
 </script>
 
 <template>
   <div class="filter-bar">
     <div class="filter-bar__selects">
-      <select
-        class="filter-select"
-        :value="typeFilter"
-        @change="
-          emit(
-            'update:typeFilter',
-            ($event.target as HTMLSelectElement).value as 'all' | CameraType,
-          )
-        "
-      >
-        <option value="all">All Types</option>
-        <option value="dashcam">Dashcam</option>
-        <option value="ai-omnicam">AI Omnicam</option>
-        <option value="multi-cam-dvr">Multi-Cam DVR</option>
-      </select>
+      <MSelect
+        :model-value="typeFilter"
+        :options="TYPE_OPTIONS"
+        aria-label="Camera type"
+        @update:model-value="(v) => emit('update:typeFilter', v as 'all' | CameraType)"
+      />
 
-      <select
-        class="filter-select"
-        :value="statusFilter ?? 'all'"
-        @change="
-          emit(
-            'update:statusFilter',
-            ($event.target as HTMLSelectElement).value === 'all'
-              ? null
-              : (($event.target as HTMLSelectElement).value as KpiFilter),
-          )
+      <MSelect
+        :model-value="statusFilter ?? 'all'"
+        :options="STATUS_OPTIONS"
+        aria-label="Camera status"
+        @update:model-value="
+          (v) => emit('update:statusFilter', v == null || v === 'all' ? null : (v as KpiFilter))
         "
-      >
-        <option value="all">All Statuses</option>
-        <option value="online">Online</option>
-        <option value="offline">Offline</option>
-        <option value="pending">Pending Setup</option>
-        <option value="issues">Issues</option>
-      </select>
+      />
     </div>
 
     <div class="filter-bar__search">
       <MIcon :icon="Search" :size="14" class="filter-bar__search-icon" />
+      <!-- eslint-disable-next-line vue/no-restricted-html-elements -- native search input: MInput has no leading-icon slot; styling is tokenized -->
       <input
         class="filter-input"
         type="search"
@@ -97,7 +94,6 @@ const emit = defineEmits<{
   pointer-events: none;
 }
 
-.filter-select,
 .filter-input {
   height: 32px;
   background-color: var(--mtv-color-surface-raised);
@@ -108,25 +104,12 @@ const emit = defineEmits<{
   font-family: inherit;
   outline: none;
   transition: border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
-}
-
-.filter-select:focus,
-.filter-input:focus {
-  border-color: var(--mtv-color-foreground-subtle);
-}
-
-.filter-select {
-  padding: 0 2rem 0 0.625rem;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-}
-
-.filter-input {
   padding: 0 0.75rem 0 2rem;
   width: 220px;
+}
+
+.filter-input:focus {
+  border-color: var(--mtv-color-foreground-subtle);
 }
 
 .filter-input::placeholder {
