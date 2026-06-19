@@ -32,6 +32,8 @@ html[data-theme='arc'] {
   --mtv-color-surface-accent-subtle: oklch(
     calc(1 - 0.423 * var(--mtv-tint, 0)) calc(0.215 * var(--mtv-tint, 0)) var(--mtv-hue, 0) / 0.03
   );
+  /* Scrim behind modals/drawers */
+  --mtv-color-surface-scrim: oklch(0 0 0 / 0.6);
 
   /* Border (neutral white-alpha → accent-alpha, alpha preserved) */
   --mtv-color-border-default: oklch(
@@ -107,6 +109,15 @@ html[data-theme='arc'] {
   --search-focus-shadow: none;
   --card-radius: 8px;
   --badge-radius: 0px;
+
+  /* Elevation scale — deep black alpha for a dark surface. Cards sit flush
+     (--shadow-card: none); floating surfaces (menus, modals) use the scale. */
+  --mtv-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.3);
+  --mtv-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.4);
+  --mtv-shadow-md: 0 4px 16px oklch(0 0 0 / 0.25), 0 1px 4px oklch(0 0 0 / 0.15);
+  --mtv-shadow-lg: 0 8px 24px oklch(0 0 0 / 0.5);
+  --mtv-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.4);
+  --mtv-shadow-overlay: 0 24px 64px oklch(0 0 0 / 0.7);
   --shadow-card: none;
   --main-margin: 0.5rem 0.5rem 0.5rem 0;
   --main-radius: var(--card-radius);

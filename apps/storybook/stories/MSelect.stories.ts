@@ -9,6 +9,8 @@ const meta: Meta<typeof MSelect> = {
   argTypes: {
     size: { control: 'select', options: ['sm', 'md'] },
     disabled: { control: 'boolean' },
+    searchable: { control: 'boolean' },
+    clearable: { control: 'boolean' },
   },
   parameters: { layout: 'centered' },
 }
@@ -86,6 +88,31 @@ export const WithDisabledOption: Story = {
       return { value, opts }
     },
     template: `<MSelect v-model="value" :options="opts" aria-label="Availability" />`,
+  }),
+}
+
+export const Searchable: Story = {
+  render: () => ({
+    components: { MSelect },
+    setup() {
+      const TIMEZONES = [
+        'America/New_York',
+        'America/Chicago',
+        'America/Denver',
+        'America/Los_Angeles',
+        'America/Sao_Paulo',
+        'Europe/London',
+        'Europe/Paris',
+        'Europe/Berlin',
+        'Europe/Madrid',
+        'Asia/Tokyo',
+        'Asia/Singapore',
+        'Australia/Sydney',
+      ].map((tz) => ({ label: tz, value: tz }))
+      const value = ref('Europe/London')
+      return { value, options: TIMEZONES }
+    },
+    template: `<MSelect v-model="value" :options="options" :searchable="true" aria-label="Timezone" />`,
   }),
 }
 

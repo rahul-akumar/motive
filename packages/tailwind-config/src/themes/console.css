@@ -20,6 +20,8 @@ html[data-theme='console'] {
   --mtv-color-surface-active: oklch(0.252 0 0);
   --mtv-color-surface-accent: oklch(0.624 0.202 263.1 / 0.08);
   --mtv-color-surface-accent-subtle: oklch(0.624 0.202 263.1 / 0.04);
+  /* Scrim behind modals/drawers */
+  --mtv-color-surface-scrim: oklch(0 0 0 / 0.7);
 
   /* Border */
   --mtv-color-border-default: oklch(1 0 0 / 0.09);
@@ -73,6 +75,15 @@ html[data-theme='console'] {
   --search-focus-shadow: none;
   --card-radius: 12px;
   --badge-radius: 4px;
+
+  /* Elevation scale — flat by design: in-flow surfaces have no shadow;
+     only true overlays (menus, modals) lift off the black canvas. */
+  --mtv-shadow-xs: none;
+  --mtv-shadow-sm: none;
+  --mtv-shadow-md: none;
+  --mtv-shadow-lg: 0 8px 24px oklch(0 0 0 / 0.6);
+  --mtv-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.6);
+  --mtv-shadow-overlay: 0 24px 64px oklch(0 0 0 / 0.8);
   --shadow-card: none;
   --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-family-display: 'Eroded', Georgia, serif;

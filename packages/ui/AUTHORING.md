@@ -63,10 +63,17 @@ defineEmits<{
 - **Semantic tokens only.** Reference `var(--mtv-color-*)` semantic tokens
   (`--mtv-color-brand-default`, `--mtv-color-foreground-on-accent`,
   `--mtv-color-surface-raised`, …) — never a raw primitive (`--mtv-color-blue-500`) and
-  never a hardcoded hex/oklch literal. This is what makes components theme-aware across
+  never a hardcoded hex/rgb/oklch literal. This is what makes components theme-aware across
   Arc/Console/Legacy and the Arc tint slider. See
-  [../../DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md).
+  [../../DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md). For an alpha variant of a token, use
+  `oklch(from var(--mtv-color-…) l c h / 0.12)` rather than a literal.
+- **No raw values for the other scales either.** Shadows → `var(--mtv-shadow-*)`; transitions
+  /animations → `var(--mtv-duration-*)` + `var(--mtv-ease-*)`; stacking → `var(--mtv-z-*)`;
+  corners → `var(--radius-*)` / `var(--card-radius)`. These keep timing, elevation, and layering
+  consistent across the app.
 - Use `@apply` for layout/spacing/typography utilities; use `var()` for themeable colors.
+- **Enforcement:** `bun run lint:css` (stylelint, also on the pre-commit hook) fails on raw
+  hex/rgb/hsl color literals. Run it before pushing.
 
 ## 5. Export from the barrel
 
@@ -93,7 +100,9 @@ Add a story to `apps/storybook/stories/MFoo.stories.ts`:
 - [ ] `M`-prefixed file in `src/components/`, BEM scoped classes
 - [ ] Exported `MFooProps` interface + `withDefaults`
 - [ ] JSDoc on every prop (with `@default`) and emit
-- [ ] `<style scoped>` with `@reference`, semantic `--mtv-color-*` tokens only
+- [ ] `<style scoped>` with `@reference`, semantic `--mtv-color-*` tokens only — and
+      `--mtv-shadow-*` / `--mtv-duration-*` / `--mtv-ease-*` / `--mtv-z-*` / `--radius-*` for
+      elevation, motion, stacking, and corners (no raw values)
 - [ ] Component + types exported from `src/index.ts`
 - [ ] `MFoo.stories.ts` with `tags: ['autodocs']` covering the key states
-- [ ] `bun run lint && bun run typecheck` clean
+- [ ] `bun run lint && bun run typecheck && bun run lint:css` clean

@@ -288,7 +288,7 @@ function formatElapsed(seconds: number): string {
 /* Collapsible card sections */
 .vehicle-live__card {
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 8px;
+  border-radius: var(--card-radius);
   overflow: hidden;
 }
 
@@ -362,11 +362,11 @@ function formatElapsed(seconds: number): string {
   border: none;
   border-top: 1px solid var(--mtv-color-border-default);
   cursor: pointer;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--mtv-color-foreground-muted);
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .vehicle-live__show-more:hover {
@@ -390,7 +390,7 @@ function formatElapsed(seconds: number): string {
 }
 
 .vehicle-live__metric-label {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--mtv-color-foreground-muted);

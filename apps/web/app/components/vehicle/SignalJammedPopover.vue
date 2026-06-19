@@ -150,11 +150,11 @@ onUnmounted(cancelHold)
   align-items: center;
   gap: 6px;
   font-weight: var(--font-weight-semibold);
-  color: var(--color-red-9, #f87171);
+  color: var(--mtv-color-status-critical);
 }
 
 .signal-jammed-popover__icon {
-  color: var(--color-red-9, #f87171);
+  color: var(--mtv-color-status-critical);
 }
 
 .signal-jammed-popover__grid {
@@ -172,7 +172,7 @@ onUnmounted(cancelHold)
 }
 
 .signal-jammed-popover__metric-label {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -180,13 +180,13 @@ onUnmounted(cancelHold)
 }
 
 .signal-jammed-popover__metric-value {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--mtv-color-foreground-default);
 }
 
 .signal-jammed-popover__metric-value--critical {
-  color: var(--color-red-9, #f87171);
+  color: var(--mtv-color-status-critical);
 }
 
 .signal-jammed-popover__info {
@@ -213,7 +213,7 @@ onUnmounted(cancelHold)
   width: 100%;
   height: 32px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--mtv-color-brand-default);
   overflow: hidden;
   cursor: pointer;
@@ -225,14 +225,14 @@ onUnmounted(cancelHold)
   position: absolute;
   inset: 0;
   width: 0;
-  background: rgba(255, 255, 255, 0.2);
-  transition: width 30ms linear;
+  background: var(--mtv-color-surface-accent);
+  transition: width var(--mtv-duration-instant) var(--mtv-ease-linear);
   pointer-events: none;
 }
 
 .signal-jammed-popover__hold-label {
   position: relative;
-  z-index: 1;
+  z-index: var(--mtv-z-raised);
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--mtv-color-foreground-on-accent);

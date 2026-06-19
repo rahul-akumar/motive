@@ -28,8 +28,8 @@ defineProps<{
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-base);
   transition:
-    background-color 100ms ease,
-    color 100ms ease;
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .panel-link-row:hover {

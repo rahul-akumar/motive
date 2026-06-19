@@ -145,7 +145,7 @@ watch(
 .pref-header__close {
   width: 28px;
   height: 28px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--mtv-color-foreground-muted);
   cursor: pointer;
@@ -153,9 +153,9 @@ watch(
   align-items: center;
   justify-content: center;
   transition:
-    color 100ms ease,
-    border-color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .pref-header__close:hover {
@@ -202,9 +202,9 @@ watch(
   cursor: pointer;
   text-align: left;
   transition:
-    color 100ms ease,
-    background-color 100ms ease,
-    border-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .pref-nav__item:hover {

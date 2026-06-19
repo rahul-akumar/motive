@@ -65,8 +65,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    color var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 /* ============================================================
@@ -78,9 +78,9 @@ body {
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-card);
   transition:
-    border-color 150ms ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-base) var(--mtv-ease-standard),
+    box-shadow var(--mtv-duration-base) var(--mtv-ease-standard);
 }
 
 .fleet-card:hover {
@@ -89,52 +89,6 @@ body {
 
 .fleet-card--elevated {
   background-color: var(--mtv-color-surface-raised);
-}
-
-/* ============================================================
-   STATUS BADGE STYLES
-   ============================================================ */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.125rem 0.5rem;
-  border-radius: var(--badge-radius);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-}
-
-.status-badge--driving {
-  background-color: oklch(1 0 0 / 0.04);
-  color: oklch(0.913 0 0);
-  border: 1px solid oklch(1 0 0 / 0.12);
-}
-
-.status-badge--idle {
-  background-color: oklch(0.666 0.157 58.3 / 0.08);
-  color: oklch(0.666 0.157 58.3);
-  border: 1px solid oklch(0.666 0.157 58.3 / 0.2);
-}
-
-.status-badge--offline {
-  background-color: oklch(1 0 0 / 0.03);
-  color: oklch(0.633 0 0);
-  border: 1px solid oklch(1 0 0 / 0.1);
-}
-
-.status-badge--alert {
-  background-color: oklch(0.577 0.215 27.3 / 0.08);
-  color: oklch(0.577 0.215 27.3);
-  border: 1px solid oklch(0.577 0.215 27.3 / 0.2);
-}
-
-.status-badge--active {
-  background-color: oklch(1 0 0 / 0.04);
-  color: oklch(0.686 0 0);
-  border: 1px solid oklch(1 0 0 / 0.12);
 }
 
 /* ============================================================
@@ -164,7 +118,7 @@ body {
 }
 
 .status-dot--active {
-  background-color: oklch(0.633 0 0);
+  background-color: var(--mtv-color-foreground-muted);
 }
 
 .status-dot--sleeper {
@@ -184,43 +138,6 @@ body {
 
 .font-display {
   font-family: var(--font-family-display);
-}
-
-.text-fleet-primary {
-  color: var(--mtv-color-foreground-default);
-}
-
-.text-fleet-secondary {
-  color: var(--mtv-color-foreground-muted);
-}
-
-.text-fleet-muted {
-  color: var(--mtv-color-foreground-subtle);
-}
-
-.text-fleet-cyan {
-  color: oklch(0.686 0 0);
-}
-
-.text-fleet-amber {
-  color: oklch(0.666 0.157 58.3);
-}
-
-.text-fleet-emerald {
-  color: oklch(0.686 0 0);
-}
-
-.text-fleet-red {
-  color: oklch(0.577 0.215 27.3);
-}
-
-.text-fleet-accent {
-  color: var(--mtv-color-brand-default);
-}
-
-/* Legacy alias */
-.text-fleet-blue {
-  color: var(--mtv-color-brand-default);
 }
 
 /* ============================================================
@@ -259,7 +176,7 @@ body {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.2s ease forwards;
+  animation: fade-in var(--mtv-duration-base) var(--mtv-ease-standard) forwards;
 }
 
 /* Slide in from right (activity feed items) */
@@ -275,7 +192,7 @@ body {
 }
 
 .animate-slide-in-right {
-  animation: slide-in-right 0.2s ease forwards;
+  animation: slide-in-right var(--mtv-duration-base) var(--mtv-ease-standard) forwards;
 }
 
 /* Slide out (dismiss alerts) */
@@ -296,7 +213,7 @@ body {
 }
 
 .animate-slide-out {
-  animation: slide-out-left 0.2s ease forwards;
+  animation: slide-out-left var(--mtv-duration-base) var(--mtv-ease-standard) forwards;
 }
 
 /* Reduced motion support */
@@ -340,7 +257,7 @@ body {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-  transition: color 150ms ease;
+  transition: color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fleet-table th:hover {
@@ -353,7 +270,7 @@ body {
 
 .fleet-table td {
   padding: 0.875rem 1rem;
-  border-bottom: 1px solid oklch(1 0 0 / 0.04);
+  border-bottom: 1px solid var(--mtv-color-border-subtle);
   font-size: var(--font-size-sm);
   color: var(--mtv-color-foreground-default);
   white-space: nowrap;
@@ -364,7 +281,7 @@ body {
 }
 
 .fleet-table tbody tr {
-  transition: background-color 100ms ease;
+  transition: background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .fleet-table tbody tr:hover {
@@ -383,7 +300,7 @@ body {
   font-size: var(--font-size-xs);
   color: var(--mtv-color-foreground-default);
   pointer-events: none;
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.5);
+  box-shadow: var(--mtv-shadow-md);
 }
 
 /* ============================================================
@@ -394,22 +311,22 @@ body {
   padding: 0.875rem 1rem;
   border-left: 2px solid;
   transition:
-    opacity 150ms ease,
-    transform 150ms ease;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    transform var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .alert-card--critical {
-  background-color: oklch(0.577 0.215 27.3 / 0.06);
-  border-left-color: oklch(0.577 0.215 27.3);
+  background-color: oklch(from var(--fleet-severity-critical) l c h / 0.06);
+  border-left-color: var(--fleet-severity-critical);
 }
 
 .alert-card--warning {
-  background-color: oklch(0.666 0.157 58.3 / 0.06);
-  border-left-color: oklch(0.666 0.157 58.3);
+  background-color: oklch(from var(--fleet-severity-warning) l c h / 0.06);
+  border-left-color: var(--fleet-severity-warning);
 }
 
 .alert-card--info {
-  background-color: oklch(1 0 0 / 0.03);
+  background-color: var(--mtv-color-surface-accent-subtle);
   border-left-color: var(--mtv-color-border-strong);
 }
 
@@ -417,5 +334,5 @@ body {
    THEME TRANSITION
    ============================================================ */
 html {
-  transition: background-color 0.2s ease;
+  transition: background-color var(--mtv-duration-base) var(--mtv-ease-standard);
 }

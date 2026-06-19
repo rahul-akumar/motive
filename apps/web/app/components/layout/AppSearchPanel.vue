@@ -239,8 +239,8 @@ const quickActions = computed(() => [
   padding: 0 0.5rem;
   height: 36px;
   transition:
-    border-color 100ms ease,
-    opacity 80ms ease;
+    border-color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .search-trigger__bar:hover {
@@ -276,7 +276,7 @@ const quickActions = computed(() => [
   color: var(--mtv-color-foreground-subtle);
   background-color: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 1px 4px;
   flex-shrink: 0;
 }
@@ -284,13 +284,13 @@ const quickActions = computed(() => [
 /* ── Morphing overlay (teleported to body) ── */
 .search-overlay {
   position: fixed;
-  z-index: 200;
+  z-index: var(--mtv-z-modal);
   background-color: var(--mtv-color-surface-default);
   border: 1px solid var(--search-focus-border);
   border-radius: var(--card-radius);
   box-shadow:
     0 0 0 1px var(--mtv-color-border-subtle) inset,
-    0 8px 40px color-mix(in oklch, black 55%, transparent),
+    var(--mtv-shadow-lg),
     var(--search-focus-shadow);
   /* width/height/opacity animated by JS hooks — no CSS transition here */
 }
@@ -335,7 +335,7 @@ const quickActions = computed(() => [
   color: var(--mtv-color-foreground-subtle);
   background-color: var(--mtv-color-surface-accent);
   border: 1px solid var(--mtv-color-border-default);
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   padding: 2px 6px;
   flex-shrink: 0;
   letter-spacing: var(--tracking-tight);
@@ -363,14 +363,14 @@ const quickActions = computed(() => [
   padding: 0 8px;
   height: 34px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin: 0 4px;
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   outline: none;
   transition:
-    color 80ms ease,
-    background-color 80ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .search-overlay__row:hover,
@@ -399,7 +399,7 @@ const quickActions = computed(() => [
   justify-content: center;
   width: 20px;
   height: 20px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   background: transparent;
   border: none;
   color: var(--mtv-color-foreground-subtle);
@@ -407,9 +407,9 @@ const quickActions = computed(() => [
   padding: 0;
   opacity: 0;
   transition:
-    opacity 80ms ease,
-    color 80ms ease,
-    background-color 80ms ease;
+    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .search-overlay__row:hover .search-overlay__row-remove,
@@ -441,7 +441,7 @@ const quickActions = computed(() => [
   grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
   height: 36px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--mtv-color-foreground-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -450,8 +450,8 @@ const quickActions = computed(() => [
   white-space: nowrap;
   overflow: hidden;
   transition:
-    color 100ms ease,
-    background-color 100ms ease;
+    color var(--mtv-duration-fast) var(--mtv-ease-standard),
+    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
 }
 
 .sidebar-nav-item:hover {
@@ -478,8 +478,8 @@ const quickActions = computed(() => [
   opacity: 1;
   transform: translateX(0);
   transition:
-    opacity 160ms ease-out 60ms,
-    transform 180ms ease-out 60ms;
+    opacity var(--mtv-duration-base) var(--mtv-ease-standard) 60ms,
+    transform var(--mtv-duration-base) var(--mtv-ease-standard) 60ms;
 }
 
 .sr-only {

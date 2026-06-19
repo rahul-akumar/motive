@@ -154,9 +154,7 @@ function handleAction() {
   border: 1px solid;
   border-radius: var(--mtv-border-radius);
   backdrop-filter: blur(8px);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.28),
-    0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--mtv-shadow-md);
   pointer-events: all;
   position: relative;
   overflow: hidden;

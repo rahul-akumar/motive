@@ -107,12 +107,12 @@ const { formatDate } = useFormatters()
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: border-color 0.2s;
+  transition: border-color var(--mtv-duration-base);
 }
 
 .device-card--critical {
   border-color: var(--mtv-color-status-critical);
-  animation: pulse-border 2s ease-in-out infinite;
+  animation: pulse-border var(--mtv-duration-slower) var(--mtv-ease-standard) infinite;
 }
 
 @keyframes pulse-border {
@@ -121,7 +121,7 @@ const { formatDate } = useFormatters()
     border-color: var(--mtv-color-status-critical);
   }
   50% {
-    border-color: rgba(248, 113, 113, 0.4);
+    border-color: var(--mtv-color-status-critical);
   }
 }
 
@@ -134,7 +134,7 @@ const { formatDate } = useFormatters()
 .device-card__icon {
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: var(--card-radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +144,7 @@ const { formatDate } = useFormatters()
 }
 
 .device-card__icon--critical {
-  background: rgba(248, 113, 113, 0.1);
+  background: var(--fleet-severity-critical-subtle);
   color: var(--mtv-color-status-critical);
 }
 
@@ -231,11 +231,11 @@ const { formatDate } = useFormatters()
   gap: 0.125rem;
   padding: 0.5rem;
   background: var(--mtv-color-surface-raised);
-  border-radius: 6px;
+  border-radius: var(--radius);
 }
 
 .device-card__sensor-label {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--mtv-color-foreground-muted);
