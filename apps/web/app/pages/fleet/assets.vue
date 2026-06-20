@@ -26,6 +26,8 @@ definePageMeta({
   moduleName: 'Fleet',
 })
 
+const { t } = useI18n()
+
 const {
   assets,
   loading,
@@ -40,42 +42,66 @@ const {
 } = useAssetsTable()
 
 // ── Filter options ──────────────────────────────────────
-const AVAILABILITY_OPTIONS: MSelectOption<FleetAssetAvailability>[] = [
-  { label: 'In Use', value: 'in-use' },
-  { label: 'Available', value: 'available' },
-  { label: 'Maintenance', value: 'maintenance' },
-  { label: 'Decommissioned', value: 'decommissioned' },
-]
+const AVAILABILITY_OPTIONS = computed<MSelectOption<FleetAssetAvailability>[]>(() => [
+  { label: t('fleet.assets.availability.inUse'), value: 'in-use' },
+  { label: t('fleet.assets.availability.available'), value: 'available' },
+  { label: t('fleet.assets.availability.maintenance'), value: 'maintenance' },
+  { label: t('fleet.assets.availability.decommissioned'), value: 'decommissioned' },
+])
 
-const TYPE_OPTIONS: MSelectOption<FleetAssetType>[] = [
-  { label: 'Trailer', value: 'trailer' },
-  { label: 'Container', value: 'container' },
-  { label: 'Generator', value: 'generator' },
-]
+const TYPE_OPTIONS = computed<MSelectOption<FleetAssetType>[]>(() => [
+  { label: t('fleet.assets.type.trailer'), value: 'trailer' },
+  { label: t('fleet.assets.type.container'), value: 'container' },
+  { label: t('fleet.assets.type.generator'), value: 'generator' },
+])
 
 // ── Columns ─────────────────────────────────────────────
-const columns: MTableColumn[] = [
-  { key: 'name', label: 'Asset ID', sortable: true, width: '120px' },
-  { key: 'type', label: 'Type', sortable: true, width: '100px' },
-  { key: 'driverName', label: 'Driver', sortable: true, minWidth: '140px' },
-  { key: 'vehicleUnitNumber', label: 'Vehicle', sortable: true, width: '110px' },
-  { key: 'location', label: 'Location', sortable: true, minWidth: '140px' },
-  { key: 'source', label: 'Source', sortable: true, align: 'center', width: '90px' },
-  { key: 'availability', label: 'Availability', sortable: true, width: '140px' },
-  { key: 'cameras', label: 'Camera', sortable: true, align: 'center', width: '80px' },
+const columns = computed<MTableColumn[]>(() => [
+  { key: 'name', label: t('fleet.assets.columns.assetId'), sortable: true, width: '120px' },
+  { key: 'type', label: t('fleet.assets.columns.type'), sortable: true, width: '100px' },
+  { key: 'driverName', label: t('fleet.assets.columns.driver'), sortable: true, minWidth: '140px' },
+  {
+    key: 'vehicleUnitNumber',
+    label: t('fleet.assets.columns.vehicle'),
+    sortable: true,
+    width: '110px',
+  },
+  { key: 'location', label: t('fleet.assets.columns.location'), sortable: true, minWidth: '140px' },
+  {
+    key: 'source',
+    label: t('fleet.assets.columns.source'),
+    sortable: true,
+    align: 'center',
+    width: '90px',
+  },
+  {
+    key: 'availability',
+    label: t('fleet.assets.columns.availability'),
+    sortable: true,
+    width: '140px',
+  },
+  {
+    key: 'cameras',
+    label: t('fleet.assets.columns.camera'),
+    sortable: true,
+    align: 'center',
+    width: '80px',
+  },
   { key: 'actions', label: '', width: '50px' },
-]
+])
 
 // ── Availability badge mapping ──────────────────────────
-const AVAILABILITY_BADGE: Record<
-  FleetAssetAvailability,
-  { color: 'success' | 'info' | 'warning' | 'default'; label: string }
-> = {
-  'in-use': { color: 'info', label: 'In Use' },
-  available: { color: 'success', label: 'Available' },
-  maintenance: { color: 'warning', label: 'Maintenance' },
-  decommissioned: { color: 'default', label: 'Decommissioned' },
-}
+const AVAILABILITY_BADGE = computed<
+  Record<
+    FleetAssetAvailability,
+    { color: 'success' | 'info' | 'warning' | 'default'; label: string }
+  >
+>(() => ({
+  'in-use': { color: 'info', label: t('fleet.assets.availability.inUse') },
+  available: { color: 'success', label: t('fleet.assets.availability.available') },
+  maintenance: { color: 'warning', label: t('fleet.assets.availability.maintenance') },
+  decommissioned: { color: 'default', label: t('fleet.assets.availability.decommissioned') },
+}))
 
 // ── Source badge mapping ────────────────────────────────
 const SOURCE_BADGE: Record<
@@ -99,12 +125,12 @@ function formatType(asset: FleetAsset): string {
 const openMenuIndex = ref<string | null>(null)
 const menuAnchor = ref<HTMLElement | null>(null)
 
-const actionItems: MDropdownItem[] = [
-  { label: 'View Details', icon: Eye },
-  { label: 'Link to Vehicle', icon: Link },
+const actionItems = computed<MDropdownItem[]>(() => [
+  { label: t('fleet.assets.actions.viewDetails'), icon: Eye },
+  { label: t('fleet.assets.actions.linkToVehicle'), icon: Link },
   { divider: true, label: '' },
-  { label: 'Schedule Maintenance', icon: Wrench },
-]
+  { label: t('fleet.assets.actions.scheduleMaintenance'), icon: Wrench },
+])
 
 function openMenu(id: string, el: HTMLElement) {
   if (openMenuIndex.value === id) {
@@ -128,8 +154,8 @@ function openMenu(id: string, el: HTMLElement) {
           size="sm"
           :leading-icon="Search"
           :clearable="true"
-          placeholder="Search asset, driver…"
-          aria-label="Search assets"
+          :placeholder="t('fleet.assets.search.placeholder')"
+          :aria-label="t('fleet.assets.search.aria')"
           class="fleet-filter-bar__search"
           @update:model-value="(v) => (searchQuery = v)"
         />
@@ -137,24 +163,24 @@ function openMenu(id: string, el: HTMLElement) {
         <MSelect
           :model-value="availabilityFilter"
           :options="AVAILABILITY_OPTIONS"
-          label="Availability"
+          :label="t('fleet.filters.availability')"
           :clearable="true"
-          aria-label="Filter by availability"
+          :aria-label="t('fleet.filters.filterByAvailability')"
           @update:model-value="availabilityFilter = $event as FleetAssetAvailability | null"
         />
 
         <MSelect
           :model-value="typeFilter"
           :options="TYPE_OPTIONS"
-          label="Type"
+          :label="t('fleet.filters.type')"
           :clearable="true"
-          aria-label="Filter by type"
+          :aria-label="t('fleet.filters.filterByType')"
           @update:model-value="typeFilter = $event as FleetAssetType | null"
         />
 
         <MButton v-if="hasActiveFilters" variant="ghost" size="sm" @click="clearFilters">
           <MIcon :icon="X" :size="13" :stroke-width="2" />
-          Clear
+          {{ t('fleet.filters.clear') }}
         </MButton>
       </div>
     </div>
@@ -233,7 +259,7 @@ function openMenu(id: string, el: HTMLElement) {
           <button
             class="action-btn"
             type="button"
-            aria-label="Asset actions"
+            :aria-label="t('fleet.assets.actions.menuAria')"
             @click.stop="openMenu((row as FleetAsset).id, $event.currentTarget as HTMLElement)"
           >
             <MIcon :icon="MoreVertical" :size="16" />
@@ -242,8 +268,8 @@ function openMenu(id: string, el: HTMLElement) {
 
         <template #empty>
           <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">No assets match your filters.</span>
-            <span class="fleet-table-empty__sub">Try adjusting the filters or search term.</span>
+            <span class="fleet-table-empty__title">{{ t('fleet.assets.empty.title') }}</span>
+            <span class="fleet-table-empty__sub">{{ t('fleet.assets.empty.sub') }}</span>
           </div>
         </template>
       </MTable>

@@ -22,6 +22,8 @@ definePageMeta({
   moduleName: 'Fleet',
 })
 
+const { t } = useI18n()
+
 const {
   vehicles,
   loading,
@@ -35,37 +37,73 @@ const {
 } = useVehiclesTable()
 
 // ── Filter options ──────────────────────────────────────
-const STATUS_OPTIONS: MSelectOption<FleetVehicleStatus>[] = [
-  { label: 'Active', value: 'active' },
-  { label: 'Idle', value: 'idle' },
-  { label: 'Out of Service', value: 'out-of-service' },
-  { label: 'Maintenance', value: 'maintenance' },
-]
+const STATUS_OPTIONS = computed<MSelectOption<FleetVehicleStatus>[]>(() => [
+  { label: t('fleet.vehicles.status.active'), value: 'active' },
+  { label: t('fleet.vehicles.status.idle'), value: 'idle' },
+  { label: t('fleet.vehicles.status.outOfService'), value: 'out-of-service' },
+  { label: t('fleet.vehicles.status.maintenance'), value: 'maintenance' },
+])
 
 const { formatDate, formatTime } = useFormatters()
 
 // ── Columns ─────────────────────────────────────────
-const columns: MTableColumn[] = [
-  { key: 'unitNumber', label: 'Vehicle ID / MMY', sortable: true, minWidth: '180px' },
-  { key: 'driverName', label: 'Driver Name / ID', sortable: true, minWidth: '160px' },
-  { key: 'assetName', label: 'Asset ID', sortable: true, minWidth: '120px' },
-  { key: 'location', label: 'Location', sortable: true, minWidth: '200px' },
-  { key: 'status', label: 'Availability', sortable: true, width: '140px' },
-  { key: 'defects', label: 'Defects / Faults', sortable: true, align: 'center', width: '110px' },
-  { key: 'cameras', label: 'Cameras', sortable: true, align: 'center', width: '90px' },
+const columns = computed<MTableColumn[]>(() => [
+  {
+    key: 'unitNumber',
+    label: t('fleet.vehicles.columns.vehicleIdMmy'),
+    sortable: true,
+    minWidth: '180px',
+  },
+  {
+    key: 'driverName',
+    label: t('fleet.vehicles.columns.driverNameId'),
+    sortable: true,
+    minWidth: '160px',
+  },
+  {
+    key: 'assetName',
+    label: t('fleet.vehicles.columns.assetId'),
+    sortable: true,
+    minWidth: '120px',
+  },
+  {
+    key: 'location',
+    label: t('fleet.vehicles.columns.location'),
+    sortable: true,
+    minWidth: '200px',
+  },
+  {
+    key: 'status',
+    label: t('fleet.vehicles.columns.availability'),
+    sortable: true,
+    width: '140px',
+  },
+  {
+    key: 'defects',
+    label: t('fleet.vehicles.columns.defectsFaults'),
+    sortable: true,
+    align: 'center',
+    width: '110px',
+  },
+  {
+    key: 'cameras',
+    label: t('fleet.vehicles.columns.cameras'),
+    sortable: true,
+    align: 'center',
+    width: '90px',
+  },
   { key: 'actions', label: '', width: '50px' },
-]
+])
 
 // ── Status badge mapping ────────────────────────────────
-const STATUS_BADGE: Record<
-  FleetVehicleStatus,
-  { color: 'success' | 'warning' | 'danger' | 'default'; label: string }
-> = {
-  active: { color: 'success', label: 'Active' },
-  idle: { color: 'warning', label: 'Idle' },
-  'out-of-service': { color: 'danger', label: 'Out of Service' },
-  maintenance: { color: 'default', label: 'Maintenance' },
-}
+const STATUS_BADGE = computed<
+  Record<FleetVehicleStatus, { color: 'success' | 'warning' | 'danger' | 'default'; label: string }>
+>(() => ({
+  active: { color: 'success', label: t('fleet.vehicles.status.active') },
+  idle: { color: 'warning', label: t('fleet.vehicles.status.idle') },
+  'out-of-service': { color: 'danger', label: t('fleet.vehicles.status.outOfService') },
+  maintenance: { color: 'default', label: t('fleet.vehicles.status.maintenance') },
+}))
 
 // ── Actions dropdown ────────────────────────────────────
 const openMenuIndex = ref<string | null>(null)
@@ -74,13 +112,13 @@ const menuAnchor = ref<HTMLElement | null>(null)
 function getActionItems(vehicleId: string): MDropdownItem[] {
   return [
     {
-      label: 'View Details',
+      label: t('fleet.vehicles.actions.viewDetails'),
       icon: Truck,
       action: () => navigateTo(`/fleet/vehicles/${vehicleId}/live`),
     },
-    { label: 'Assign Driver', icon: UserCheck },
+    { label: t('fleet.vehicles.actions.assignDriver'), icon: UserCheck },
     { divider: true, label: '' },
-    { label: 'Service History', icon: Wrench },
+    { label: t('fleet.vehicles.actions.serviceHistory'), icon: Wrench },
   ]
 }
 
@@ -108,8 +146,8 @@ function openMenu(id: string, el: HTMLElement) {
           size="sm"
           :leading-icon="Search"
           :clearable="true"
-          placeholder="Search vehicle, driver…"
-          aria-label="Search vehicles"
+          :placeholder="t('fleet.vehicles.search.placeholder')"
+          :aria-label="t('fleet.vehicles.search.aria')"
           class="fleet-filter-bar__search"
           @update:model-value="(v) => (searchQuery = v)"
         />
@@ -117,15 +155,15 @@ function openMenu(id: string, el: HTMLElement) {
         <MSelect
           :model-value="statusFilter"
           :options="STATUS_OPTIONS"
-          label="Status"
+          :label="t('fleet.filters.status')"
           :clearable="true"
-          aria-label="Filter by status"
+          :aria-label="t('fleet.filters.filterByStatus')"
           @update:model-value="statusFilter = $event as FleetVehicleStatus | null"
         />
 
         <MButton v-if="hasActiveFilters" variant="ghost" size="sm" @click="clearFilters">
           <MIcon :icon="X" :size="13" :stroke-width="2" />
-          Clear
+          {{ t('fleet.filters.clear') }}
         </MButton>
       </div>
     </div>
@@ -211,7 +249,7 @@ function openMenu(id: string, el: HTMLElement) {
           <button
             class="action-btn"
             type="button"
-            aria-label="Vehicle actions"
+            :aria-label="t('fleet.vehicles.actions.menuAria')"
             @click.stop="openMenu((row as FleetVehicle).id, $event.currentTarget as HTMLElement)"
           >
             <MIcon :icon="MoreVertical" :size="16" />
@@ -220,10 +258,8 @@ function openMenu(id: string, el: HTMLElement) {
 
         <template #empty>
           <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">No vehicles match your filters.</span>
-            <span class="fleet-table-empty__sub"
-              >Try adjusting the status filter or search term.</span
-            >
+            <span class="fleet-table-empty__title">{{ t('fleet.vehicles.empty.title') }}</span>
+            <span class="fleet-table-empty__sub">{{ t('fleet.vehicles.empty.sub') }}</span>
           </div>
         </template>
       </MTable>
