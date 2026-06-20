@@ -67,7 +67,161 @@
       "fuelLossEvents": "Eventos de Perda de Combustível"
     }
   },
+  "fleet": {
+    "filters": {
+      "clear": "Limpar",
+      "status": "Status",
+      "availability": "Disponibilidade",
+      "type": "Tipo",
+      "filterByStatus": "Filtrar por status",
+      "filterByAvailability": "Filtrar por disponibilidade",
+      "filterByType": "Filtrar por tipo"
+    },
+    "drivers": {
+      "search": { "placeholder": "Buscar motorista, veículo…", "aria": "Buscar motoristas" },
+      "columns": {
+        "name": "Nome do Motorista",
+        "vehicle": "Veículo",
+        "asset": "Ativo",
+        "location": "Localização",
+        "break": "Pausa",
+        "drive": "Condução",
+        "shift": "Jornada",
+        "cycle": "Ciclo",
+        "hrsToday": "Hrs Hoje",
+        "hrsWeek": "Hrs/Semana"
+      },
+      "status": {
+        "driving": "Dirigindo",
+        "idle": "Ocioso",
+        "alert": "Alerta",
+        "offline": "Offline",
+        "sleeper": "Descanso"
+      },
+      "actions": {
+        "viewProfile": "Ver Perfil",
+        "assignVehicle": "Atribuir Veículo",
+        "hosLogs": "Registros HOS",
+        "menuAria": "Ações do motorista"
+      },
+      "empty": {
+        "title": "Nenhum motorista corresponde aos seus filtros.",
+        "sub": "Tente ajustar o filtro de status ou o termo de busca."
+      }
+    },
+    "vehicles": {
+      "search": { "placeholder": "Buscar veículo, motorista…", "aria": "Buscar veículos" },
+      "columns": {
+        "vehicleIdMmy": "ID do Veículo / MMA",
+        "driverNameId": "Nome / ID do Motorista",
+        "assetId": "ID do Ativo",
+        "location": "Localização",
+        "availability": "Disponibilidade",
+        "defectsFaults": "Defeitos / Falhas",
+        "cameras": "Câmeras"
+      },
+      "status": {
+        "active": "Ativo",
+        "idle": "Ocioso",
+        "outOfService": "Fora de Serviço",
+        "maintenance": "Manutenção"
+      },
+      "actions": {
+        "viewDetails": "Ver Detalhes",
+        "assignDriver": "Atribuir Motorista",
+        "serviceHistory": "Histórico de Serviços",
+        "menuAria": "Ações do veículo"
+      },
+      "empty": {
+        "title": "Nenhum veículo corresponde aos seus filtros.",
+        "sub": "Tente ajustar o filtro de status ou o termo de busca."
+      }
+    },
+    "assets": {
+      "search": { "placeholder": "Buscar ativo, motorista…", "aria": "Buscar ativos" },
+      "columns": {
+        "assetId": "ID do Ativo",
+        "type": "Tipo",
+        "driver": "Motorista",
+        "vehicle": "Veículo",
+        "location": "Localização",
+        "source": "Origem",
+        "availability": "Disponibilidade",
+        "camera": "Câmera"
+      },
+      "availability": {
+        "inUse": "Em Uso",
+        "available": "Disponível",
+        "maintenance": "Manutenção",
+        "decommissioned": "Desativado"
+      },
+      "type": {
+        "trailer": "Reboque",
+        "container": "Contêiner",
+        "generator": "Gerador"
+      },
+      "actions": {
+        "viewDetails": "Ver Detalhes",
+        "linkToVehicle": "Vincular ao Veículo",
+        "scheduleMaintenance": "Agendar Manutenção",
+        "menuAria": "Ações do ativo"
+      },
+      "empty": {
+        "title": "Nenhum ativo corresponde aos seus filtros.",
+        "sub": "Tente ajustar os filtros ou o termo de busca."
+      }
+    }
+  },
   "fuel": {
+    "events": {
+      "search": {
+        "placeholder": "Buscar veículo ou motorista…",
+        "aria": "Buscar veículo ou motorista"
+      },
+      "columns": {
+        "behavior": "Comportamento",
+        "driverNameId": "Nome / ID do Motorista",
+        "vehicleIdMmy": "ID do Veículo / MMA",
+        "dateLocation": "Data / Local / Cerca virtual",
+        "status": "Status"
+      },
+      "behavior": {
+        "fuelLoss": "Perda de Combustível",
+        "idling": "Marcha Lenta"
+      },
+      "status": {
+        "pendingReview": "Revisão pendente",
+        "coachable": "Treinável",
+        "coached": "Treinado",
+        "dismissed": "Descartado"
+      },
+      "filters": {
+        "behavior": "Comportamento",
+        "vehicle": "Veículo",
+        "driver": "Motorista",
+        "status": "Status",
+        "clear": "Limpar",
+        "filterByBehavior": "Filtrar por tipo de evento",
+        "filterByVehicle": "Filtrar por veículo",
+        "filterByDriver": "Filtrar por motorista",
+        "filterByStatus": "Filtrar por status"
+      },
+      "actions": {
+        "viewDetails": "Ver detalhes"
+      },
+      "drawer": {
+        "fuelLossTitle": "Evento de perda de combustível",
+        "idlingTitle": "Evento de marcha lenta",
+        "prev": "Evento anterior",
+        "next": "Próximo evento",
+        "changeStatus": "Alterar status do evento",
+        "detailsAria": "Detalhes do evento"
+      },
+      "empty": {
+        "title": "Nenhum evento corresponde aos seus filtros.",
+        "sub": "Tente ajustar o filtro de tipo de evento ou status."
+      }
+    },
     "lossEvents": {
       "title": "Eventos de Perda de Combustível",
       "description": "Quedas de combustível detectadas durante paradas do veículo",
