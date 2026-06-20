@@ -21,6 +21,8 @@ definePageMeta({
   moduleName: 'Fleet',
 })
 
+const { t } = useI18n()
+
 const {
   drivers,
   loading,
@@ -34,40 +36,88 @@ const {
 } = useDriversTable()
 
 // ── Filter options ──────────────────────────────────────
-const STATUS_OPTIONS: MSelectOption<FleetDriverStatus>[] = [
-  { label: 'Driving', value: 'driving' },
-  { label: 'Idle', value: 'idle' },
-  { label: 'Alert', value: 'alert' },
-  { label: 'Offline', value: 'offline' },
-  { label: 'Sleeper', value: 'sleeper' },
-]
+const STATUS_OPTIONS = computed<MSelectOption<FleetDriverStatus>[]>(() => [
+  { label: t('fleet.drivers.status.driving'), value: 'driving' },
+  { label: t('fleet.drivers.status.idle'), value: 'idle' },
+  { label: t('fleet.drivers.status.alert'), value: 'alert' },
+  { label: t('fleet.drivers.status.offline'), value: 'offline' },
+  { label: t('fleet.drivers.status.sleeper'), value: 'sleeper' },
+])
 
 // ── Columns ─────────────────────────────────────────────
-const columns: MTableColumn[] = [
-  { key: 'name', label: 'Driver Name', sortable: true, minWidth: '160px' },
-  { key: 'vehicleUnitNumber', label: 'Vehicle', sortable: true, width: '110px' },
-  { key: 'assetName', label: 'Asset', sortable: true, width: '110px' },
-  { key: 'location', label: 'Location', sortable: true, minWidth: '140px' },
-  { key: 'hos.breakRemaining', label: 'Break', sortable: true, align: 'center', width: '80px' },
-  { key: 'hos.driveRemaining', label: 'Drive', sortable: true, align: 'center', width: '80px' },
-  { key: 'hos.shiftRemaining', label: 'Shift', sortable: true, align: 'center', width: '80px' },
-  { key: 'hos.cycleRemaining', label: 'Cycle', sortable: true, align: 'center', width: '80px' },
-  { key: 'hos.hoursToday', label: 'Hrs Today', sortable: true, align: 'center', width: '90px' },
-  { key: 'hos.hoursThisWeek', label: 'Hrs/Week', sortable: true, align: 'center', width: '90px' },
+const columns = computed<MTableColumn[]>(() => [
+  { key: 'name', label: t('fleet.drivers.columns.name'), sortable: true, minWidth: '160px' },
+  {
+    key: 'vehicleUnitNumber',
+    label: t('fleet.drivers.columns.vehicle'),
+    sortable: true,
+    width: '110px',
+  },
+  { key: 'assetName', label: t('fleet.drivers.columns.asset'), sortable: true, width: '110px' },
+  {
+    key: 'location',
+    label: t('fleet.drivers.columns.location'),
+    sortable: true,
+    minWidth: '140px',
+  },
+  {
+    key: 'hos.breakRemaining',
+    label: t('fleet.drivers.columns.break'),
+    sortable: true,
+    align: 'center',
+    width: '80px',
+  },
+  {
+    key: 'hos.driveRemaining',
+    label: t('fleet.drivers.columns.drive'),
+    sortable: true,
+    align: 'center',
+    width: '80px',
+  },
+  {
+    key: 'hos.shiftRemaining',
+    label: t('fleet.drivers.columns.shift'),
+    sortable: true,
+    align: 'center',
+    width: '80px',
+  },
+  {
+    key: 'hos.cycleRemaining',
+    label: t('fleet.drivers.columns.cycle'),
+    sortable: true,
+    align: 'center',
+    width: '80px',
+  },
+  {
+    key: 'hos.hoursToday',
+    label: t('fleet.drivers.columns.hrsToday'),
+    sortable: true,
+    align: 'center',
+    width: '90px',
+  },
+  {
+    key: 'hos.hoursThisWeek',
+    label: t('fleet.drivers.columns.hrsWeek'),
+    sortable: true,
+    align: 'center',
+    width: '90px',
+  },
   { key: 'actions', label: '', width: '50px' },
-]
+])
 
 // ── Status badge mapping ────────────────────────────────
-const STATUS_BADGE: Record<
-  FleetDriverStatus,
-  { color: 'success' | 'warning' | 'danger' | 'default' | 'info'; label: string }
-> = {
-  driving: { color: 'success', label: 'Driving' },
-  idle: { color: 'warning', label: 'Idle' },
-  alert: { color: 'danger', label: 'Alert' },
-  offline: { color: 'default', label: 'Offline' },
-  sleeper: { color: 'info', label: 'Sleeper' },
-}
+const STATUS_BADGE = computed<
+  Record<
+    FleetDriverStatus,
+    { color: 'success' | 'warning' | 'danger' | 'default' | 'info'; label: string }
+  >
+>(() => ({
+  driving: { color: 'success', label: t('fleet.drivers.status.driving') },
+  idle: { color: 'warning', label: t('fleet.drivers.status.idle') },
+  alert: { color: 'danger', label: t('fleet.drivers.status.alert') },
+  offline: { color: 'default', label: t('fleet.drivers.status.offline') },
+  sleeper: { color: 'info', label: t('fleet.drivers.status.sleeper') },
+}))
 
 // ── HOS color helpers ───────────────────────────────────
 function hosColor(hours: number): string {
@@ -80,12 +130,12 @@ function hosColor(hours: number): string {
 const openMenuIndex = ref<string | null>(null)
 const menuAnchor = ref<HTMLElement | null>(null)
 
-const actionItems: MDropdownItem[] = [
-  { label: 'View Profile', icon: User },
-  { label: 'Assign Vehicle', icon: Truck },
+const actionItems = computed<MDropdownItem[]>(() => [
+  { label: t('fleet.drivers.actions.viewProfile'), icon: User },
+  { label: t('fleet.drivers.actions.assignVehicle'), icon: Truck },
   { divider: true, label: '' },
-  { label: 'HOS Logs', icon: FileText },
-]
+  { label: t('fleet.drivers.actions.hosLogs'), icon: FileText },
+])
 
 function openMenu(id: string, el: HTMLElement) {
   if (openMenuIndex.value === id) {
@@ -109,8 +159,8 @@ function openMenu(id: string, el: HTMLElement) {
           size="sm"
           :leading-icon="Search"
           :clearable="true"
-          placeholder="Search driver, vehicle…"
-          aria-label="Search drivers"
+          :placeholder="t('fleet.drivers.search.placeholder')"
+          :aria-label="t('fleet.drivers.search.aria')"
           class="fleet-filter-bar__search"
           @update:model-value="(v) => (searchQuery = v)"
         />
@@ -118,15 +168,15 @@ function openMenu(id: string, el: HTMLElement) {
         <MSelect
           :model-value="statusFilter"
           :options="STATUS_OPTIONS"
-          label="Status"
+          :label="t('fleet.filters.status')"
           :clearable="true"
-          aria-label="Filter by status"
+          :aria-label="t('fleet.filters.filterByStatus')"
           @update:model-value="statusFilter = $event as FleetDriverStatus | null"
         />
 
         <MButton v-if="hasActiveFilters" variant="ghost" size="sm" @click="clearFilters">
           <MIcon :icon="X" :size="13" :stroke-width="2" />
-          Clear
+          {{ t('fleet.filters.clear') }}
         </MButton>
       </div>
     </div>
@@ -242,7 +292,7 @@ function openMenu(id: string, el: HTMLElement) {
           <button
             class="action-btn"
             type="button"
-            aria-label="Driver actions"
+            :aria-label="t('fleet.drivers.actions.menuAria')"
             @click.stop="openMenu((row as FleetDriver).id, $event.currentTarget as HTMLElement)"
           >
             <MIcon :icon="MoreVertical" :size="16" />
@@ -251,10 +301,8 @@ function openMenu(id: string, el: HTMLElement) {
 
         <template #empty>
           <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">No drivers match your filters.</span>
-            <span class="fleet-table-empty__sub"
-              >Try adjusting the status filter or search term.</span
-            >
+            <span class="fleet-table-empty__title">{{ t('fleet.drivers.empty.title') }}</span>
+            <span class="fleet-table-empty__sub">{{ t('fleet.drivers.empty.sub') }}</span>
           </div>
         </template>
       </MTable>

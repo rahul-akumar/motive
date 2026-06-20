@@ -1,6 +1,3 @@
-import { currentRegion } from '~/composables/useRegion'
-import { camerasByRegion } from '~/mocks/cameras'
-
 export type CameraType = 'dashcam' | 'ai-omnicam' | 'multi-cam-dvr'
 export type CameraFacing = 'road' | 'dual'
 export type CameraStatus =
@@ -40,6 +37,6 @@ export function getStatusGroup(status: CameraStatus): KpiFilter {
 }
 
 export function useCameraData() {
-  const cameras = computed<Camera[]>(() => camerasByRegion[currentRegion.value])
+  const cameras = ref<Camera[]>([])
   return { cameras }
 }

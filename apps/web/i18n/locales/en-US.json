@@ -67,7 +67,158 @@
       "fuelLossEvents": "Fuel Loss Events"
     }
   },
+  "fleet": {
+    "filters": {
+      "clear": "Clear",
+      "status": "Status",
+      "availability": "Availability",
+      "type": "Type",
+      "filterByStatus": "Filter by status",
+      "filterByAvailability": "Filter by availability",
+      "filterByType": "Filter by type"
+    },
+    "drivers": {
+      "search": { "placeholder": "Search driver, vehicle…", "aria": "Search drivers" },
+      "columns": {
+        "name": "Driver Name",
+        "vehicle": "Vehicle",
+        "asset": "Asset",
+        "location": "Location",
+        "break": "Break",
+        "drive": "Drive",
+        "shift": "Shift",
+        "cycle": "Cycle",
+        "hrsToday": "Hrs Today",
+        "hrsWeek": "Hrs/Week"
+      },
+      "status": {
+        "driving": "Driving",
+        "idle": "Idle",
+        "alert": "Alert",
+        "offline": "Offline",
+        "sleeper": "Sleeper"
+      },
+      "actions": {
+        "viewProfile": "View Profile",
+        "assignVehicle": "Assign Vehicle",
+        "hosLogs": "HOS Logs",
+        "menuAria": "Driver actions"
+      },
+      "empty": {
+        "title": "No drivers match your filters.",
+        "sub": "Try adjusting the status filter or search term."
+      }
+    },
+    "vehicles": {
+      "search": { "placeholder": "Search vehicle, driver…", "aria": "Search vehicles" },
+      "columns": {
+        "vehicleIdMmy": "Vehicle ID / MMY",
+        "driverNameId": "Driver Name / ID",
+        "assetId": "Asset ID",
+        "location": "Location",
+        "availability": "Availability",
+        "defectsFaults": "Defects / Faults",
+        "cameras": "Cameras"
+      },
+      "status": {
+        "active": "Active",
+        "idle": "Idle",
+        "outOfService": "Out of Service",
+        "maintenance": "Maintenance"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "assignDriver": "Assign Driver",
+        "serviceHistory": "Service History",
+        "menuAria": "Vehicle actions"
+      },
+      "empty": {
+        "title": "No vehicles match your filters.",
+        "sub": "Try adjusting the status filter or search term."
+      }
+    },
+    "assets": {
+      "search": { "placeholder": "Search asset, driver…", "aria": "Search assets" },
+      "columns": {
+        "assetId": "Asset ID",
+        "type": "Type",
+        "driver": "Driver",
+        "vehicle": "Vehicle",
+        "location": "Location",
+        "source": "Source",
+        "availability": "Availability",
+        "camera": "Camera"
+      },
+      "availability": {
+        "inUse": "In Use",
+        "available": "Available",
+        "maintenance": "Maintenance",
+        "decommissioned": "Decommissioned"
+      },
+      "type": {
+        "trailer": "Trailer",
+        "container": "Container",
+        "generator": "Generator"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "linkToVehicle": "Link to Vehicle",
+        "scheduleMaintenance": "Schedule Maintenance",
+        "menuAria": "Asset actions"
+      },
+      "empty": {
+        "title": "No assets match your filters.",
+        "sub": "Try adjusting the filters or search term."
+      }
+    }
+  },
   "fuel": {
+    "events": {
+      "search": { "placeholder": "Search vehicle or driver…", "aria": "Search vehicle or driver" },
+      "columns": {
+        "behavior": "Behavior",
+        "driverNameId": "Driver Name / ID",
+        "vehicleIdMmy": "Vehicle ID / MMY",
+        "dateLocation": "Date / Location / Geofence",
+        "status": "Status"
+      },
+      "behavior": {
+        "fuelLoss": "Fuel Loss",
+        "idling": "Idling"
+      },
+      "status": {
+        "pendingReview": "Pending review",
+        "coachable": "Coachable",
+        "coached": "Coached",
+        "dismissed": "Dismissed"
+      },
+      "filters": {
+        "behavior": "Behavior",
+        "vehicle": "Vehicle",
+        "driver": "Driver",
+        "status": "Status",
+        "clear": "Clear",
+        "filterByBehavior": "Filter by event type",
+        "filterByVehicle": "Filter by vehicle",
+        "filterByDriver": "Filter by driver",
+        "filterByStatus": "Filter by status"
+      },
+      "actions": {
+        "viewDetails": "View details"
+      },
+      "drawer": {
+        "fuelLossTitle": "Fuel loss event",
+        "idlingTitle": "Idling event",
+        "prev": "Previous event",
+        "next": "Next event",
+        "changeStatus": "Change event status",
+        "detailsAria": "Event details"
+      },
+      "empty": {
+        "title": "No events match your filters.",
+        "sub": "Try adjusting the event type or status filter."
+      }
+    },
     "lossEvents": {
       "title": "Fuel Loss Events",
       "description": "Detected fuel drops during vehicle stops",

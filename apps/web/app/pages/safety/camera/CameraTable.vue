@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Film, Truck, Wrench, Phone, VideoOff, X, MoreHorizontal } from 'lucide-vue-next'
-import { MBadge, MDropdown, MIcon } from '@motive/ui'
-import type { MDropdownItem, MBadgeColor } from '@motive/ui'
+import { VideoOff, X } from 'lucide-vue-next'
+import { MBadge, MIcon } from '@motive/ui'
+import type { MBadgeColor } from '@motive/ui'
 import {
   useCameraData,
   getStatusGroup,
@@ -87,29 +87,6 @@ function closePreview() {
 function handleOverlayKey(e: KeyboardEvent) {
   if (e.key === 'Escape') closePreview()
 }
-
-// ── Actions dropdown ─────────────────────────────────────────────────────────
-
-const openMenuIndex = ref<number | null>(null)
-const menuAnchor = ref<HTMLElement | null>(null)
-
-const actionItems: MDropdownItem[] = [
-  { label: 'View footage', icon: Film },
-  { label: 'Reassign vehicle', icon: Truck },
-  { label: 'Mark for service', icon: Wrench },
-  { divider: true, label: '' },
-  { label: 'Contact driver', icon: Phone },
-]
-
-function openMenu(index: number, el: HTMLElement) {
-  if (openMenuIndex.value === index) {
-    openMenuIndex.value = null
-    menuAnchor.value = null
-  } else {
-    openMenuIndex.value = index
-    menuAnchor.value = el
-  }
-}
 </script>
 
 <template>
@@ -124,11 +101,10 @@ function openMenu(index: number, el: HTMLElement) {
           <th>Status</th>
           <th>Last Location</th>
           <th>Preview</th>
-          <th aria-label="Actions" />
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(cam, index) in filtered" :key="cam.id">
+        <tr v-for="cam in filtered" :key="cam.id">
           <!-- Vehicle -->
           <td>
             <span class="cell-primary">{{ cam.vehicle }}</span>
@@ -173,19 +149,6 @@ function openMenu(index: number, el: HTMLElement) {
               <MIcon :icon="VideoOff" :size="16" />
             </div>
           </td>
-
-          <!-- Actions -->
-          <td class="cell-actions">
-            <button
-              :ref="(el) => {}"
-              class="action-btn"
-              type="button"
-              aria-label="Camera actions"
-              @click="openMenu(index, $event.currentTarget as HTMLElement)"
-            >
-              <MIcon :icon="MoreHorizontal" :size="16" />
-            </button>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -198,19 +161,6 @@ function openMenu(index: number, el: HTMLElement) {
         Clear filters
       </button>
     </div>
-
-    <!-- Actions dropdown (single instance, repositioned per row) -->
-    <MDropdown
-      :items="actionItems"
-      :open="openMenuIndex !== null"
-      :anchor-el="menuAnchor"
-      placement="right"
-      @update:open="
-        (v) => {
-          if (!v) openMenuIndex = null
-        }
-      "
-    />
 
     <!-- Preview overlay -->
     <Teleport to="body">
@@ -339,33 +289,6 @@ function openMenu(index: number, el: HTMLElement) {
   align-items: center;
   justify-content: center;
   color: var(--mtv-color-foreground-subtle);
-}
-
-/* ── Actions cell ──────────────────────────────────────────────────────────── */
-.cell-actions {
-  width: 44px;
-  text-align: center;
-}
-
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: none;
-  border-radius: var(--radius-sm);
-  color: var(--mtv-color-foreground-subtle);
-  cursor: pointer;
-  transition:
-    background-color var(--mtv-duration-fast) var(--mtv-ease-standard),
-    color var(--mtv-duration-fast) var(--mtv-ease-standard);
-}
-
-.action-btn:hover {
-  background-color: var(--mtv-color-surface-hover);
-  color: var(--mtv-color-foreground-default);
 }
 
 /* ── Empty state ───────────────────────────────────────────────────────────── */

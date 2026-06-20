@@ -21,6 +21,8 @@ definePageMeta({
   moduleName: 'Fuel',
 })
 
+const { t } = useI18n()
+
 const {
   filteredRows,
   filterSearch,
@@ -42,14 +44,14 @@ const sortDir = ref<'asc' | 'desc'>('desc')
 
 // All columns hug their content; Status takes width:100% so it absorbs the
 // remaining width (the table is width:100%, table-layout:auto).
-const columns: MTableColumn[] = [
-  { key: 'type', label: 'Behavior', sortable: true },
-  { key: 'driverName', label: 'Driver Name / ID', sortable: true },
-  { key: 'vehicleId', label: 'Vehicle ID / MMY', sortable: true },
-  { key: 'startTime', label: 'Date / Location / Geofence', sortable: true },
-  { key: 'status', label: 'Status', sortable: true, width: '100%' },
+const columns = computed<MTableColumn[]>(() => [
+  { key: 'type', label: t('fuel.events.columns.behavior'), sortable: true },
+  { key: 'driverName', label: t('fuel.events.columns.driverNameId'), sortable: true },
+  { key: 'vehicleId', label: t('fuel.events.columns.vehicleIdMmy'), sortable: true },
+  { key: 'startTime', label: t('fuel.events.columns.dateLocation'), sortable: true },
+  { key: 'status', label: t('fuel.events.columns.status'), sortable: true, width: '100%' },
   { key: 'actions', label: '', align: 'right' },
-]
+])
 
 // ── Sorted rows ──────────────────────────────────────────────
 const sorted = computed<FuelEventRow[]>(() => {
@@ -160,21 +162,21 @@ function setFilterStatus(v: string | number | null) {
 }
 
 // ── Filter options ───────────────────────────────────────────
-const EVENT_TYPE_OPTIONS: MSelectOption<FuelEventType>[] = [
-  { label: 'Fuel Loss', value: 'fuel-loss' },
-  { label: 'Idling', value: 'idling' },
-]
+const EVENT_TYPE_OPTIONS = computed<MSelectOption<FuelEventType>[]>(() => [
+  { label: t('fuel.events.behavior.fuelLoss'), value: 'fuel-loss' },
+  { label: t('fuel.events.behavior.idling'), value: 'idling' },
+])
 
 const VEHICLE_OPTIONS = computed<MSelectOption<string>[]>(() => [...vehicleOptions.value])
 
 const DRIVER_OPTIONS = computed<MSelectOption<string>[]>(() => [...driverOptions.value])
 
-const STATUS_OPTIONS: MSelectOption<FuelDropStatus>[] = [
-  { label: 'Pending review', value: 'pending-review' },
-  { label: 'Coachable', value: 'coachable' },
-  { label: 'Coached', value: 'coached' },
-  { label: 'Dismissed', value: 'dismissed' },
-]
+const STATUS_OPTIONS = computed<MSelectOption<FuelDropStatus>[]>(() => [
+  { label: t('fuel.events.status.pendingReview'), value: 'pending-review' },
+  { label: t('fuel.events.status.coachable'), value: 'coachable' },
+  { label: t('fuel.events.status.coached'), value: 'coached' },
+  { label: t('fuel.events.status.dismissed'), value: 'dismissed' },
+])
 
 // ── Formatting helpers ───────────────────────────────────────
 const { formatDate, formatTime } = useFormatters()
@@ -183,20 +185,19 @@ function formatDateLine(row: FuelEventRow): string {
   return `${formatDate(row.startTime)} ${formatTime(row.startTime)} EDT`
 }
 
-const TYPE_LABEL: Record<FuelEventType, string> = {
-  'fuel-loss': 'Fuel Loss',
-  idling: 'Idling',
-}
+const TYPE_LABEL = computed<Record<FuelEventType, string>>(() => ({
+  'fuel-loss': t('fuel.events.behavior.fuelLoss'),
+  idling: t('fuel.events.behavior.idling'),
+}))
 
-const STATUS_BADGE: Record<
-  FuelDropStatus,
-  { color: 'warning' | 'success' | 'info' | 'default'; label: string }
-> = {
-  'pending-review': { color: 'warning', label: 'Pending review' },
-  coachable: { color: 'info', label: 'Coachable' },
-  coached: { color: 'success', label: 'Coached' },
-  dismissed: { color: 'default', label: 'Dismissed' },
-}
+const STATUS_BADGE = computed<
+  Record<FuelDropStatus, { color: 'warning' | 'success' | 'info' | 'default'; label: string }>
+>(() => ({
+  'pending-review': { color: 'warning', label: t('fuel.events.status.pendingReview') },
+  coachable: { color: 'info', label: t('fuel.events.status.coachable') },
+  coached: { color: 'success', label: t('fuel.events.status.coached') },
+  dismissed: { color: 'default', label: t('fuel.events.status.dismissed') },
+}))
 </script>
 
 <template>
@@ -211,8 +212,8 @@ const STATUS_BADGE: Record<
           size="sm"
           :leading-icon="Search"
           :clearable="true"
-          placeholder="Search vehicle or driver…"
-          aria-label="Search vehicle or driver"
+          :placeholder="t('fuel.events.search.placeholder')"
+          :aria-label="t('fuel.events.search.aria')"
           class="fe-page__search"
           @update:model-value="(v) => (filterSearch = v)"
         />
@@ -221,9 +222,9 @@ const STATUS_BADGE: Record<
         <MSelect
           :model-value="filterEventType"
           :options="EVENT_TYPE_OPTIONS"
-          label="Behavior"
+          :label="t('fuel.events.filters.behavior')"
           :clearable="true"
-          aria-label="Filter by event type"
+          :aria-label="t('fuel.events.filters.filterByBehavior')"
           @update:model-value="setFilterEventType"
         />
 
@@ -231,10 +232,10 @@ const STATUS_BADGE: Record<
         <MSelect
           :model-value="filterVehicle"
           :options="VEHICLE_OPTIONS"
-          label="Vehicle"
+          :label="t('fuel.events.filters.vehicle')"
           :clearable="true"
           :searchable="true"
-          aria-label="Filter by vehicle"
+          :aria-label="t('fuel.events.filters.filterByVehicle')"
           @update:model-value="setFilterVehicle"
         />
 
@@ -242,10 +243,10 @@ const STATUS_BADGE: Record<
         <MSelect
           :model-value="filterDriver"
           :options="DRIVER_OPTIONS"
-          label="Driver"
+          :label="t('fuel.events.filters.driver')"
           :clearable="true"
           :searchable="true"
-          aria-label="Filter by driver"
+          :aria-label="t('fuel.events.filters.filterByDriver')"
           @update:model-value="setFilterDriver"
         />
 
@@ -253,9 +254,9 @@ const STATUS_BADGE: Record<
         <MSelect
           :model-value="filterStatus"
           :options="STATUS_OPTIONS"
-          label="Status"
+          :label="t('fuel.events.filters.status')"
           :clearable="true"
-          aria-label="Filter by status"
+          :aria-label="t('fuel.events.filters.filterByStatus')"
           @update:model-value="setFilterStatus"
         />
 
@@ -268,7 +269,7 @@ const STATUS_BADGE: Record<
           @click="clearFilters"
         >
           <MIcon :icon="X" :size="12" :stroke-width="2.5" />
-          Clear
+          {{ t('fuel.events.filters.clear') }}
         </MButton>
       </div>
     </div>
@@ -334,29 +335,29 @@ const STATUS_BADGE: Record<
              (row-click opens the drawer; this button must not). -->
         <template #cell-actions="{ row: r }">
           <MButton variant="ghost" size="sm" @click.stop="viewDetails(row(r).id)">
-            View details
+            {{ t('fuel.events.actions.viewDetails') }}
           </MButton>
         </template>
 
         <!-- Empty state -->
         <template #empty>
           <div class="fe-empty">
-            <span class="fe-empty__title">No events match your filters.</span>
-            <span class="fe-empty__sub">Try adjusting the event type or status filter.</span>
+            <span class="fe-empty__title">{{ t('fuel.events.empty.title') }}</span>
+            <span class="fe-empty__sub">{{ t('fuel.events.empty.sub') }}</span>
           </div>
         </template>
       </MTable>
     </div>
 
     <!-- Event detail drawer -->
-    <MDrawer
-      v-model:open="drawerOpen"
-      persistent
-      :aria-label="selectedEvent ? `${selectedEvent.type} event details` : 'Event details'"
-    >
+    <MDrawer v-model:open="drawerOpen" persistent :aria-label="t('fuel.events.drawer.detailsAria')">
       <template #header>
         <span class="fe-drawer-title">
-          {{ selectedEvent?.type === 'fuel-loss' ? 'Fuel loss event' : 'Idling event' }}
+          {{
+            selectedEvent?.type === 'fuel-loss'
+              ? t('fuel.events.drawer.fuelLossTitle')
+              : t('fuel.events.drawer.idlingTitle')
+          }}
         </span>
         <div class="fe-drawer-nav">
           <MButton
@@ -364,7 +365,7 @@ const STATUS_BADGE: Record<
             size="sm"
             icon-only
             :disabled="!canGoPrev"
-            aria-label="Previous event"
+            :aria-label="t('fuel.events.drawer.prev')"
             @click="goToPrev"
           >
             <MIcon :icon="ChevronLeft" />
@@ -374,7 +375,7 @@ const STATUS_BADGE: Record<
             size="sm"
             icon-only
             :disabled="!canGoNext"
-            aria-label="Next event"
+            :aria-label="t('fuel.events.drawer.next')"
             @click="goToNext"
           >
             <MIcon :icon="ChevronRight" />
@@ -389,10 +390,12 @@ const STATUS_BADGE: Record<
           label=""
           :clearable="false"
           class="fe-drawer-status-select"
-          aria-label="Change event status"
+          :aria-label="t('fuel.events.drawer.changeStatus')"
           @update:model-value="handleStatusChange"
         />
-        <MButton variant="link" size="sm" @click="goToEventDetail"> View details </MButton>
+        <MButton variant="link" size="sm" @click="goToEventDetail">
+          {{ t('fuel.events.actions.viewDetails') }}
+        </MButton>
       </template>
 
       <FuelEventDrawer :event="selectedEvent" />
