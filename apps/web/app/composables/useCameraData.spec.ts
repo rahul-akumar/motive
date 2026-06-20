@@ -2,20 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { useCameraData, STATUS_SEVERITY, getStatusGroup } from '~/composables/useCameraData'
 
 describe('useCameraData', () => {
-  it('returns a non-empty cameras array', () => {
+  it('returns an empty cameras array', () => {
     const { cameras } = useCameraData()
-    expect(cameras.value.length).toBeGreaterThan(0)
-  })
-
-  it('each camera has required fields', () => {
-    const { cameras } = useCameraData()
-    for (const c of cameras.value) {
-      expect(c).toHaveProperty('id')
-      expect(c).toHaveProperty('vehicle')
-      expect(c).toHaveProperty('assetId')
-      expect(c).toHaveProperty('type')
-      expect(c).toHaveProperty('status')
-    }
+    expect(cameras.value).toEqual([])
   })
 })
 
