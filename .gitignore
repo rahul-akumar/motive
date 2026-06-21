@@ -38,6 +38,9 @@ Thumbs.db
 # Turbo
 .turbo/
 
+# Vercel
+.vercel/
+
 # Storybook
 storybook-static/
 
