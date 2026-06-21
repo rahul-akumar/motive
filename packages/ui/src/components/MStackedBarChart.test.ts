@@ -28,8 +28,8 @@ describe('MStackedBarChart', () => {
     const wrapper = mount(MStackedBarChart, { props: { data, series } })
     const items = wrapper.findAll('.m-stacked-bar-chart__legend-item')
     expect(items).toHaveLength(2)
-    expect(items[0].text()).toContain('Loss')
-    expect(items[1].text()).toContain('Waste')
+    expect(items[0]!.text()).toContain('Loss')
+    expect(items[1]!.text()).toContain('Waste')
   })
 
   it('hides the legend when showLegend is false', () => {
