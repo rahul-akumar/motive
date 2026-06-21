@@ -2,7 +2,11 @@
 import { ChevronLeft, ChevronRight, Globe, Search } from 'lucide-vue-next'
 import { MIcon } from '@motive/ui'
 import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
-import { FLEET_STATUS_COLORS, FLEET_STATUS_LABELS } from '~/composables/useFleetStatus'
+import {
+  FLEET_STATUS_COLORS,
+  FLEET_STATUS_FILTER_ORDER,
+  FLEET_STATUS_LABELS,
+} from '~/composables/useFleetStatus'
 
 const props = defineProps<{
   drivers: FleetDriver[]
@@ -22,8 +26,6 @@ const emit = defineEmits<{
   togglePanel: []
   'update:searchQuery': [value: string]
 }>()
-
-const FILTER_ORDER: FleetDriverStatus[] = ['driving', 'idle', 'alert', 'offline', 'sleeper']
 
 const localSearch = computed({
   get: () => props.searchQuery,
@@ -78,7 +80,7 @@ const localSearch = computed({
           All
         </button>
         <button
-          v-for="status in FILTER_ORDER"
+          v-for="status in FLEET_STATUS_FILTER_ORDER"
           :key="status"
           type="button"
           :class="['f3d-filter-chip', { 'f3d-filter-chip--active': activeFilters.has(status) }]"

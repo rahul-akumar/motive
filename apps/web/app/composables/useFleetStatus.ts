@@ -24,6 +24,15 @@ export const FLEET_STATUS_LABELS: DriverStatusMap = {
   sleeper: 'Sleeper',
 }
 
+/** Canonical display order for fleet driver status filters. */
+export const FLEET_STATUS_FILTER_ORDER: FleetDriverStatus[] = [
+  'driving',
+  'idle',
+  'alert',
+  'offline',
+  'sleeper',
+]
+
 /** Returns the appropriate HOS bar color token based on remaining percentage. */
 export function hosBarColor(percent: number, hasViolation: boolean): string {
   if (hasViolation || percent <= 0) return 'var(--fleet-status-alert)'
