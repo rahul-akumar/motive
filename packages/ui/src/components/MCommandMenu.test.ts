@@ -71,6 +71,18 @@ describe('MCommandMenu', () => {
     expect(wrapper.emitted('select')?.[0]?.[0]).toMatchObject({ id: 'theme' })
   })
 
+  // Regression: options aren't focusable, so a bare mousedown would move focus
+  // off the input to <body>, firing focusout on the consumer's overlay and
+  // closing the menu before the click's select lands. Preventing the mousedown
+  // default keeps focus in the input so the click can select. See AppSearchPanel.
+  it('prevents the mousedown default on options so the input keeps focus', () => {
+    const wrapper = mount(MCommandMenu, { props: { groups } })
+    const option = wrapper.findAll('[role="option"]')[0]!.element
+    const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true })
+    option.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(true)
+  })
+
   it('emits close on Escape', async () => {
     const wrapper = mount(MCommandMenu, { props: { groups } })
     await wrapper.find('input').trigger('keydown', { key: 'Escape' })

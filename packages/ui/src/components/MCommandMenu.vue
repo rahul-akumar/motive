@@ -162,6 +162,7 @@ defineExpose({ focus })
             :aria-selected="flatIndexOf(item) === activeIndex"
             class="m-command__option"
             :class="{ 'm-command__option--active': flatIndexOf(item) === activeIndex }"
+            @mousedown.prevent
             @click="emit('select', item)"
             @mousemove="activeIndex = flatIndexOf(item)"
           >
