@@ -40,17 +40,37 @@ function simulateLatency(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, MOCK_LATENCY_MS))
 }
 
+/**
+ * Dev-only fault injection. Defaults to 0 (off) so normal UX is untouched; set a
+ * probability (0–1) to make the async getters fail, exercising the error/retry
+ * states rendered by <AsyncBoundary>. A real backend would surface real errors.
+ */
+let mockFailureRate = 0
+
+export function setFleetMockFailureRate(rate: number): void {
+  mockFailureRate = Math.min(1, Math.max(0, rate))
+}
+
+function maybeFail(): void {
+  if (mockFailureRate > 0 && Math.random() < mockFailureRate) {
+    throw new Error('Simulated fleet fetch failure')
+  }
+}
+
 export async function getVehicles(region: RegionCode): Promise<FleetVehicle[]> {
   await simulateLatency()
+  maybeFail()
   return vehiclesForRegion(region)
 }
 
 export async function getDrivers(region: RegionCode): Promise<FleetDriver[]> {
   await simulateLatency()
+  maybeFail()
   return driversForRegion(region)
 }
 
 export async function getAssets(region: RegionCode): Promise<FleetAsset[]> {
   await simulateLatency()
+  maybeFail()
   return assetsForRegion(region)
 }

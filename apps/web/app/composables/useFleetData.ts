@@ -1,4 +1,5 @@
 import type { FleetStatusCount, FleetVehicle, FleetDriver, FleetAsset } from '@motive/shared'
+import type { AsyncStatus } from '@motive/ui'
 import { currentRegion } from '~/composables/useRegion'
 import {
   vehiclesForRegion,
@@ -14,6 +15,7 @@ export function useFleetData() {
   const fleetDrivers = computed<FleetDriver[]>(() => driversForRegion(currentRegion.value))
   const fleetAssets = computed<FleetAsset[]>(() => assetsForRegion(currentRegion.value))
   const loading = ref(false)
+  const error = ref<unknown>(null)
 
   const fleetStatus = computed<FleetStatusCount>(() => {
     const counts = {
@@ -36,10 +38,16 @@ export function useFleetData() {
 
   async function refresh() {
     loading.value = true
+    error.value = null
     // Re-fetch the active region's data through the repository seam.
     const region = currentRegion.value
-    await Promise.all([getVehicles(region), getDrivers(region), getAssets(region)])
-    loading.value = false
+    try {
+      await Promise.all([getVehicles(region), getDrivers(region), getAssets(region)])
+    } catch (err) {
+      error.value = err
+    } finally {
+      loading.value = false
+    }
   }
 
   // Switching region is a deliberate selection — surface the loading state while
@@ -49,5 +57,14 @@ export function useFleetData() {
     refresh()
   })
 
-  return { fleetVehicles, fleetDrivers, fleetAssets, fleetStatus, loading, refresh }
+  // AsyncBoundary status for the loading/error window. Resolves to 'success'
+  // even with zero rows so tables can render their own filter-aware empty state
+  // (keeping the filter chrome usable) rather than blanking the whole surface.
+  const status = computed<AsyncStatus>(() => {
+    if (loading.value) return 'pending'
+    if (error.value) return 'error'
+    return 'success'
+  })
+
+  return { fleetVehicles, fleetDrivers, fleetAssets, fleetStatus, loading, error, status, refresh }
 }

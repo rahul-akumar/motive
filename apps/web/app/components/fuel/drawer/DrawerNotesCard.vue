@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { MTextarea, MCheckbox } from '@motive/ui'
 import type { FuelEventRow } from '~/composables/useFuelEventMappers'
+import { saveNote } from '~/services/notesRepository'
 
 const props = defineProps<{
   event: FuelEventRow
@@ -19,26 +20,51 @@ const notesByEvent = reactive<Map<string, Note[]>>(new Map())
 const newNoteText = ref('')
 const visibleToDriver = ref(false)
 
+const { run, isPending } = useOptimisticAction()
+
 const notes = computed(() => {
   return notesByEvent.get(props.event.id) ?? []
 })
 
-function addNote() {
-  if (!newNoteText.value.trim()) return
-  const existing = notesByEvent.get(props.event.id) ?? []
-  existing.push({
+async function addNote() {
+  const text = newNoteText.value.trim()
+  if (!text || isPending.value) return
+
+  const note: Note = {
     id: `note-${Date.now()}`,
     author: 'You',
-    text: newNoteText.value.trim(),
+    text,
     date: new Date().toLocaleDateString('en-US', {
       month: 'short',
       day: '2-digit',
       year: 'numeric',
     }),
+  }
+  // Snapshot for rollback if the save fails.
+  const previousText = newNoteText.value
+  const previousVisible = visibleToDriver.value
+
+  await run({
+    apply: () => {
+      const existing = notesByEvent.get(props.event.id) ?? []
+      existing.push(note)
+      notesByEvent.set(props.event.id, existing)
+      newNoteText.value = ''
+      visibleToDriver.value = false
+    },
+    rollback: () => {
+      const existing = notesByEvent.get(props.event.id) ?? []
+      notesByEvent.set(
+        props.event.id,
+        existing.filter((n) => n.id !== note.id),
+      )
+      newNoteText.value = previousText
+      visibleToDriver.value = previousVisible
+    },
+    action: () => saveNote({ eventId: props.event.id, text, visibleToDriver: previousVisible }),
+    successMessage: 'Note added',
+    errorMessage: 'Could not save note. Please try again.',
   })
-  notesByEvent.set(props.event.id, existing)
-  newNoteText.value = ''
-  visibleToDriver.value = false
 }
 
 function handleKeydown(e: KeyboardEvent) {
@@ -60,7 +86,7 @@ function handleKeydown(e: KeyboardEvent) {
         @update:model-value="newNoteText = $event"
         @keydown="handleKeydown"
       />
-      <span class="drawer-notes__hint">Enter ↵ to Save</span>
+      <span class="drawer-notes__hint">{{ isPending ? 'Saving…' : 'Enter ↵ to Save' }}</span>
     </div>
     <MCheckbox
       :model-value="visibleToDriver"

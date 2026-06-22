@@ -2,7 +2,7 @@ import type { FleetAsset, FleetAssetAvailability, FleetAssetType } from '@motive
 import { useFleetData } from '~/composables/useFleetData'
 
 export function useAssetsTable() {
-  const { fleetAssets, loading } = useFleetData()
+  const { fleetAssets, loading, status, refresh } = useFleetData()
 
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')
@@ -70,6 +70,8 @@ export function useAssetsTable() {
   return {
     assets: filteredAssets,
     loading,
+    status,
+    refresh,
     sortKey,
     sortDir,
     searchQuery,

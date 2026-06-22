@@ -2,7 +2,7 @@ import type { FleetDriver, FleetDriverStatus } from '@motive/shared'
 import { useFleetData } from '~/composables/useFleetData'
 
 export function useDriversTable() {
-  const { fleetDrivers, loading } = useFleetData()
+  const { fleetDrivers, loading, status, refresh } = useFleetData()
 
   const sortKey = ref<string>('name')
   const sortDir = ref<'asc' | 'desc'>('asc')
@@ -71,6 +71,8 @@ export function useDriversTable() {
   return {
     drivers: filteredDrivers,
     loading,
+    status,
+    refresh,
     sortKey,
     sortDir,
     searchQuery,

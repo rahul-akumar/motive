@@ -2,7 +2,7 @@ import type { FleetVehicle, FleetVehicleStatus } from '@motive/shared'
 import { useFleetData } from '~/composables/useFleetData'
 
 export function useVehiclesTable() {
-  const { fleetVehicles, loading } = useFleetData()
+  const { fleetVehicles, loading, status, refresh } = useFleetData()
 
   const sortKey = ref<string>('unitNumber')
   const sortDir = ref<'asc' | 'desc'>('asc')
@@ -60,6 +60,8 @@ export function useVehiclesTable() {
   return {
     vehicles: filteredVehicles,
     loading,
+    status,
+    refresh,
     sortKey,
     sortDir,
     searchQuery,

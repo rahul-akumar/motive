@@ -9,6 +9,7 @@ import {
   MInput,
   MDropdown,
   MIcon,
+  AsyncBoundary,
   type MTableColumn,
   type MDropdownItem,
   type MSelectOption,
@@ -31,6 +32,8 @@ const { t } = useI18n()
 const {
   assets,
   loading,
+  status,
+  refresh,
   sortKey,
   sortDir,
   searchQuery,
@@ -187,92 +190,99 @@ function openMenu(id: string, el: HTMLElement) {
 
     <!-- Table -->
     <div class="fleet-table-page__content">
-      <MTable
-        :columns="columns"
-        :rows="assets"
-        :sort-key="sortKey"
-        :sort-dir="sortDir"
-        row-key="id"
-        :loading="loading"
-        infinite
-        @sort="handleSort"
+      <AsyncBoundary
+        :status="status === 'error' ? 'error' : 'success'"
+        error-title="Couldn’t load assets"
+        error-description="There was a problem loading your assets. Please try again."
+        @retry="refresh"
       >
-        <!-- Asset Name -->
-        <template #cell-name="{ row }">
-          <MTableCell variant="mono">{{ (row as FleetAsset).name }}</MTableCell>
-        </template>
+        <MTable
+          :columns="columns"
+          :rows="assets"
+          :sort-key="sortKey"
+          :sort-dir="sortDir"
+          row-key="id"
+          :loading="loading"
+          infinite
+          @sort="handleSort"
+        >
+          <!-- Asset Name -->
+          <template #cell-name="{ row }">
+            <MTableCell variant="mono">{{ (row as FleetAsset).name }}</MTableCell>
+          </template>
 
-        <!-- Type -->
-        <template #cell-type="{ row }">
-          <MTableCell>{{ formatType(row as FleetAsset) }}</MTableCell>
-        </template>
+          <!-- Type -->
+          <template #cell-type="{ row }">
+            <MTableCell>{{ formatType(row as FleetAsset) }}</MTableCell>
+          </template>
 
-        <!-- Driver -->
-        <template #cell-driverName="{ row }">
-          <MTableCell v-if="(row as FleetAsset).driverName">
-            {{ (row as FleetAsset).driverName }}
-          </MTableCell>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
+          <!-- Driver -->
+          <template #cell-driverName="{ row }">
+            <MTableCell v-if="(row as FleetAsset).driverName">
+              {{ (row as FleetAsset).driverName }}
+            </MTableCell>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Vehicle -->
-        <template #cell-vehicleUnitNumber="{ row }">
-          <MTableCell v-if="(row as FleetAsset).vehicleUnitNumber" variant="mono">
-            {{ (row as FleetAsset).vehicleUnitNumber }}
-          </MTableCell>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
+          <!-- Vehicle -->
+          <template #cell-vehicleUnitNumber="{ row }">
+            <MTableCell v-if="(row as FleetAsset).vehicleUnitNumber" variant="mono">
+              {{ (row as FleetAsset).vehicleUnitNumber }}
+            </MTableCell>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Location -->
-        <template #cell-location="{ row }">
-          <MTableCell>{{ (row as FleetAsset).currentLocation.city }}</MTableCell>
-          <MTableCell variant="secondary">{{
-            (row as FleetAsset).currentLocation.state
-          }}</MTableCell>
-        </template>
+          <!-- Location -->
+          <template #cell-location="{ row }">
+            <MTableCell>{{ (row as FleetAsset).currentLocation.city }}</MTableCell>
+            <MTableCell variant="secondary">{{
+              (row as FleetAsset).currentLocation.state
+            }}</MTableCell>
+          </template>
 
-        <!-- Source -->
-        <template #cell-source="{ row }">
-          <MBadge
-            :label="SOURCE_BADGE[(row as FleetAsset).source].label"
-            :color="SOURCE_BADGE[(row as FleetAsset).source].color"
-            size="sm"
-          />
-        </template>
+          <!-- Source -->
+          <template #cell-source="{ row }">
+            <MBadge
+              :label="SOURCE_BADGE[(row as FleetAsset).source].label"
+              :color="SOURCE_BADGE[(row as FleetAsset).source].color"
+              size="sm"
+            />
+          </template>
 
-        <!-- Availability -->
-        <template #cell-availability="{ row }">
-          <MBadge
-            :label="AVAILABILITY_BADGE[(row as FleetAsset).availability].label"
-            :color="AVAILABILITY_BADGE[(row as FleetAsset).availability].color"
-            size="sm"
-          />
-        </template>
+          <!-- Availability -->
+          <template #cell-availability="{ row }">
+            <MBadge
+              :label="AVAILABILITY_BADGE[(row as FleetAsset).availability].label"
+              :color="AVAILABILITY_BADGE[(row as FleetAsset).availability].color"
+              size="sm"
+            />
+          </template>
 
-        <!-- Cameras -->
-        <template #cell-cameras="{ row }">
-          <MTableCell variant="mono">{{ (row as FleetAsset).cameras }}</MTableCell>
-        </template>
+          <!-- Cameras -->
+          <template #cell-cameras="{ row }">
+            <MTableCell variant="mono">{{ (row as FleetAsset).cameras }}</MTableCell>
+          </template>
 
-        <!-- Actions -->
-        <template #cell-actions="{ row }">
-          <button
-            class="action-btn"
-            type="button"
-            :aria-label="t('fleet.assets.actions.menuAria')"
-            @click.stop="openMenu((row as FleetAsset).id, $event.currentTarget as HTMLElement)"
-          >
-            <MIcon :icon="MoreVertical" :size="16" />
-          </button>
-        </template>
+          <!-- Actions -->
+          <template #cell-actions="{ row }">
+            <button
+              class="action-btn"
+              type="button"
+              :aria-label="t('fleet.assets.actions.menuAria')"
+              @click.stop="openMenu((row as FleetAsset).id, $event.currentTarget as HTMLElement)"
+            >
+              <MIcon :icon="MoreVertical" :size="16" />
+            </button>
+          </template>
 
-        <template #empty>
-          <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">{{ t('fleet.assets.empty.title') }}</span>
-            <span class="fleet-table-empty__sub">{{ t('fleet.assets.empty.sub') }}</span>
-          </div>
-        </template>
-      </MTable>
+          <template #empty>
+            <div class="fleet-table-empty">
+              <span class="fleet-table-empty__title">{{ t('fleet.assets.empty.title') }}</span>
+              <span class="fleet-table-empty__sub">{{ t('fleet.assets.empty.sub') }}</span>
+            </div>
+          </template>
+        </MTable>
+      </AsyncBoundary>
     </div>
 
     <!-- Actions dropdown -->

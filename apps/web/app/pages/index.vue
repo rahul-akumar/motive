@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { TriangleAlert } from 'lucide-vue-next'
+import { MSkeleton, MEmptyState, MButton, AsyncBoundary } from '@motive/ui'
+
 definePageMeta({
   title: 'Overview',
   moduleName: 'Dashboard',
 })
 
-const { fleetDrivers } = useFleetData()
+const { fleetDrivers, status, refresh } = useFleetData()
 const { metrics } = useKPIMetrics()
 </script>
 
@@ -24,12 +27,31 @@ const { metrics } = useKPIMetrics()
     <!-- Charts Row -->
     <section class="charts-row" aria-label="Fleet analytics charts">
       <ClientOnly>
-        <DashboardFleetMap
-          :drivers="fleetDrivers"
-          class="charts-row__map animate-card-enter animate-card-enter-5"
-        />
+        <AsyncBoundary :status="status" @retry="refresh">
+          <template #pending>
+            <MSkeleton variant="block" height="280px" class="charts-row__map" />
+          </template>
+          <template #error="{ retry }">
+            <div class="charts-row__map chart-error">
+              <MEmptyState
+                variant="error"
+                :icon="TriangleAlert"
+                title="Couldn’t load the fleet map"
+                description="There was a problem loading live fleet data."
+              >
+                <template #action>
+                  <MButton variant="secondary" size="sm" @click="retry">Try again</MButton>
+                </template>
+              </MEmptyState>
+            </div>
+          </template>
+          <DashboardFleetMap
+            :drivers="fleetDrivers"
+            class="charts-row__map animate-card-enter animate-card-enter-5"
+          />
+        </AsyncBoundary>
         <template #fallback>
-          <div class="chart-skeleton fleet-card charts-row__map" aria-hidden="true" />
+          <MSkeleton variant="block" height="280px" class="charts-row__map" />
         </template>
       </ClientOnly>
 
@@ -78,27 +100,15 @@ const { metrics } = useKPIMetrics()
   min-height: 280px;
 }
 
-/* Chart skeleton */
-.chart-skeleton {
-  height: 280px;
-  background: linear-gradient(
-    90deg,
-    var(--mtv-color-surface-accent-subtle) 25%,
-    var(--mtv-color-surface-accent-subtle) 50%,
-    var(--mtv-color-surface-accent-subtle) 75%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-}
-
-@keyframes skeleton-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-
-  100% {
-    background-position: -200% 0;
-  }
+/* Fleet map error state — keeps the grid slot filled with a retriable card */
+.chart-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  background-color: var(--mtv-color-surface-raised);
+  border: 1px solid var(--mtv-color-border-default);
+  border-radius: var(--card-radius);
 }
 
 /* Responsive */

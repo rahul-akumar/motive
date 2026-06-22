@@ -9,6 +9,7 @@ import {
   MInput,
   MDropdown,
   MIcon,
+  AsyncBoundary,
   type MTableColumn,
   type MDropdownItem,
   type MSelectOption,
@@ -26,6 +27,8 @@ const { t } = useI18n()
 const {
   drivers,
   loading,
+  status,
+  refresh,
   sortKey,
   sortDir,
   searchQuery,
@@ -183,129 +186,136 @@ function openMenu(id: string, el: HTMLElement) {
 
     <!-- Table -->
     <div class="fleet-table-page__content">
-      <MTable
-        :columns="columns"
-        :rows="drivers"
-        :sort-key="sortKey"
-        :sort-dir="sortDir"
-        row-key="id"
-        :loading="loading"
-        infinite
-        @sort="handleSort"
+      <AsyncBoundary
+        :status="status === 'error' ? 'error' : 'success'"
+        error-title="Couldn’t load drivers"
+        error-description="There was a problem loading your drivers. Please try again."
+        @retry="refresh"
       >
-        <!-- Driver Name + Status -->
-        <template #cell-name="{ row }">
-          <div class="cell-name-group">
-            <MTableCell>{{ (row as FleetDriver).name }}</MTableCell>
-            <MBadge
-              :label="STATUS_BADGE[(row as FleetDriver).status].label"
-              :color="STATUS_BADGE[(row as FleetDriver).status].color"
-              size="sm"
-            />
-          </div>
-        </template>
+        <MTable
+          :columns="columns"
+          :rows="drivers"
+          :sort-key="sortKey"
+          :sort-dir="sortDir"
+          row-key="id"
+          :loading="loading"
+          infinite
+          @sort="handleSort"
+        >
+          <!-- Driver Name + Status -->
+          <template #cell-name="{ row }">
+            <div class="cell-name-group">
+              <MTableCell>{{ (row as FleetDriver).name }}</MTableCell>
+              <MBadge
+                :label="STATUS_BADGE[(row as FleetDriver).status].label"
+                :color="STATUS_BADGE[(row as FleetDriver).status].color"
+                size="sm"
+              />
+            </div>
+          </template>
 
-        <!-- Vehicle -->
-        <template #cell-vehicleUnitNumber="{ row }">
-          <MTableCell v-if="(row as FleetDriver).vehicleUnitNumber" variant="mono">
-            {{ (row as FleetDriver).vehicleUnitNumber }}
-          </MTableCell>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
+          <!-- Vehicle -->
+          <template #cell-vehicleUnitNumber="{ row }">
+            <MTableCell v-if="(row as FleetDriver).vehicleUnitNumber" variant="mono">
+              {{ (row as FleetDriver).vehicleUnitNumber }}
+            </MTableCell>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Asset -->
-        <template #cell-assetName="{ row }">
-          <MTableCell v-if="(row as FleetDriver).assetName" variant="mono">
-            {{ (row as FleetDriver).assetName }}
-          </MTableCell>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
+          <!-- Asset -->
+          <template #cell-assetName="{ row }">
+            <MTableCell v-if="(row as FleetDriver).assetName" variant="mono">
+              {{ (row as FleetDriver).assetName }}
+            </MTableCell>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Location -->
-        <template #cell-location="{ row }">
-          <MTableCell>{{ (row as FleetDriver).currentLocation.city }}</MTableCell>
-          <MTableCell variant="secondary">{{
-            (row as FleetDriver).currentLocation.state
-          }}</MTableCell>
-        </template>
+          <!-- Location -->
+          <template #cell-location="{ row }">
+            <MTableCell>{{ (row as FleetDriver).currentLocation.city }}</MTableCell>
+            <MTableCell variant="secondary">{{
+              (row as FleetDriver).currentLocation.state
+            }}</MTableCell>
+          </template>
 
-        <!-- Break -->
-        <template #[`cell-hos.breakRemaining`]="{ row }">
-          <MTableCell
-            variant="mono"
-            class="cell-hos"
-            :style="{ color: hosColor((row as FleetDriver).hos.breakRemaining) }"
-          >
-            {{ (row as FleetDriver).hos.breakRemaining.toFixed(1) }}h
-          </MTableCell>
-        </template>
+          <!-- Break -->
+          <template #[`cell-hos.breakRemaining`]="{ row }">
+            <MTableCell
+              variant="mono"
+              class="cell-hos"
+              :style="{ color: hosColor((row as FleetDriver).hos.breakRemaining) }"
+            >
+              {{ (row as FleetDriver).hos.breakRemaining.toFixed(1) }}h
+            </MTableCell>
+          </template>
 
-        <!-- Drive -->
-        <template #[`cell-hos.driveRemaining`]="{ row }">
-          <MTableCell
-            variant="mono"
-            class="cell-hos"
-            :style="{ color: hosColor((row as FleetDriver).hos.driveRemaining) }"
-          >
-            {{ (row as FleetDriver).hos.driveRemaining.toFixed(1) }}h
-          </MTableCell>
-        </template>
+          <!-- Drive -->
+          <template #[`cell-hos.driveRemaining`]="{ row }">
+            <MTableCell
+              variant="mono"
+              class="cell-hos"
+              :style="{ color: hosColor((row as FleetDriver).hos.driveRemaining) }"
+            >
+              {{ (row as FleetDriver).hos.driveRemaining.toFixed(1) }}h
+            </MTableCell>
+          </template>
 
-        <!-- Shift -->
-        <template #[`cell-hos.shiftRemaining`]="{ row }">
-          <MTableCell
-            variant="mono"
-            class="cell-hos"
-            :style="{ color: hosColor((row as FleetDriver).hos.shiftRemaining) }"
-          >
-            {{ (row as FleetDriver).hos.shiftRemaining.toFixed(1) }}h
-          </MTableCell>
-        </template>
+          <!-- Shift -->
+          <template #[`cell-hos.shiftRemaining`]="{ row }">
+            <MTableCell
+              variant="mono"
+              class="cell-hos"
+              :style="{ color: hosColor((row as FleetDriver).hos.shiftRemaining) }"
+            >
+              {{ (row as FleetDriver).hos.shiftRemaining.toFixed(1) }}h
+            </MTableCell>
+          </template>
 
-        <!-- Cycle -->
-        <template #[`cell-hos.cycleRemaining`]="{ row }">
-          <MTableCell
-            variant="mono"
-            class="cell-hos"
-            :style="{ color: hosColor((row as FleetDriver).hos.cycleRemaining) }"
-          >
-            {{ (row as FleetDriver).hos.cycleRemaining.toFixed(1) }}h
-          </MTableCell>
-        </template>
+          <!-- Cycle -->
+          <template #[`cell-hos.cycleRemaining`]="{ row }">
+            <MTableCell
+              variant="mono"
+              class="cell-hos"
+              :style="{ color: hosColor((row as FleetDriver).hos.cycleRemaining) }"
+            >
+              {{ (row as FleetDriver).hos.cycleRemaining.toFixed(1) }}h
+            </MTableCell>
+          </template>
 
-        <!-- Hrs Today -->
-        <template #[`cell-hos.hoursToday`]="{ row }">
-          <MTableCell variant="mono"
-            >{{ (row as FleetDriver).hos.hoursToday.toFixed(1) }}h</MTableCell
-          >
-        </template>
+          <!-- Hrs Today -->
+          <template #[`cell-hos.hoursToday`]="{ row }">
+            <MTableCell variant="mono"
+              >{{ (row as FleetDriver).hos.hoursToday.toFixed(1) }}h</MTableCell
+            >
+          </template>
 
-        <!-- Hrs This Week -->
-        <template #[`cell-hos.hoursThisWeek`]="{ row }">
-          <MTableCell variant="mono"
-            >{{ (row as FleetDriver).hos.hoursThisWeek.toFixed(1) }}h</MTableCell
-          >
-        </template>
+          <!-- Hrs This Week -->
+          <template #[`cell-hos.hoursThisWeek`]="{ row }">
+            <MTableCell variant="mono"
+              >{{ (row as FleetDriver).hos.hoursThisWeek.toFixed(1) }}h</MTableCell
+            >
+          </template>
 
-        <!-- Actions -->
-        <template #cell-actions="{ row }">
-          <button
-            class="action-btn"
-            type="button"
-            :aria-label="t('fleet.drivers.actions.menuAria')"
-            @click.stop="openMenu((row as FleetDriver).id, $event.currentTarget as HTMLElement)"
-          >
-            <MIcon :icon="MoreVertical" :size="16" />
-          </button>
-        </template>
+          <!-- Actions -->
+          <template #cell-actions="{ row }">
+            <button
+              class="action-btn"
+              type="button"
+              :aria-label="t('fleet.drivers.actions.menuAria')"
+              @click.stop="openMenu((row as FleetDriver).id, $event.currentTarget as HTMLElement)"
+            >
+              <MIcon :icon="MoreVertical" :size="16" />
+            </button>
+          </template>
 
-        <template #empty>
-          <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">{{ t('fleet.drivers.empty.title') }}</span>
-            <span class="fleet-table-empty__sub">{{ t('fleet.drivers.empty.sub') }}</span>
-          </div>
-        </template>
-      </MTable>
+          <template #empty>
+            <div class="fleet-table-empty">
+              <span class="fleet-table-empty__title">{{ t('fleet.drivers.empty.title') }}</span>
+              <span class="fleet-table-empty__sub">{{ t('fleet.drivers.empty.sub') }}</span>
+            </div>
+          </template>
+        </MTable>
+      </AsyncBoundary>
     </div>
 
     <!-- Actions dropdown -->

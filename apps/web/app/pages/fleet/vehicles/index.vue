@@ -9,6 +9,7 @@ import {
   MInput,
   MDropdown,
   MIcon,
+  AsyncBoundary,
   type MTableColumn,
   type MDropdownItem,
   type MSelectOption,
@@ -27,6 +28,8 @@ const { t } = useI18n()
 const {
   vehicles,
   loading,
+  status,
+  refresh,
   sortKey,
   sortDir,
   searchQuery,
@@ -170,99 +173,109 @@ function openMenu(id: string, el: HTMLElement) {
 
     <!-- Table -->
     <div class="fleet-table-page__content">
-      <MTable
-        :columns="columns"
-        :rows="vehicles"
-        :sort-key="sortKey"
-        :sort-dir="sortDir"
-        row-key="id"
-        :loading="loading"
-        infinite
-        @sort="handleSort"
+      <AsyncBoundary
+        :status="status === 'error' ? 'error' : 'success'"
+        error-title="Couldn’t load vehicles"
+        error-description="There was a problem loading your fleet. Please try again."
+        @retry="refresh"
       >
-        <!-- Vehicle ID / MMY -->
-        <template #cell-unitNumber="{ row }">
-          <MTableCell
-            variant="link"
-            :tag="NuxtLinkLocale"
-            :to="`/fleet/vehicles/${(row as FleetVehicle).id}/live`"
-          >
-            {{ (row as FleetVehicle).unitNumber }}
-          </MTableCell>
-          <MTableCell variant="secondary"
-            >{{ (row as FleetVehicle).make }} · {{ (row as FleetVehicle).model }} ·
-            {{ (row as FleetVehicle).year }}</MTableCell
-          >
-        </template>
-
-        <!-- Driver Name / ID -->
-        <template #cell-driverName="{ row }">
-          <template v-if="(row as FleetVehicle).driverName">
-            <MTableCell variant="link">{{ (row as FleetVehicle).driverName }}</MTableCell>
-            <MTableCell variant="secondary">{{ (row as FleetVehicle).driverId }}</MTableCell>
+        <MTable
+          :columns="columns"
+          :rows="vehicles"
+          :sort-key="sortKey"
+          :sort-dir="sortDir"
+          row-key="id"
+          :loading="loading"
+          infinite
+          @sort="handleSort"
+        >
+          <!-- Vehicle ID / MMY -->
+          <template #cell-unitNumber="{ row }">
+            <MTableCell
+              variant="link"
+              :tag="NuxtLinkLocale"
+              :to="`/fleet/vehicles/${(row as FleetVehicle).id}/live`"
+            >
+              {{ (row as FleetVehicle).unitNumber }}
+            </MTableCell>
+            <MTableCell variant="secondary"
+              >{{ (row as FleetVehicle).make }} · {{ (row as FleetVehicle).model }} ·
+              {{ (row as FleetVehicle).year }}</MTableCell
+            >
           </template>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
 
-        <!-- Asset ID -->
-        <template #cell-assetName="{ row }">
-          <MTableCell v-if="(row as FleetVehicle).assetName" variant="link">
-            {{ (row as FleetVehicle).assetName }}
-          </MTableCell>
-          <MTableCell v-else variant="muted">—</MTableCell>
-        </template>
+          <!-- Driver Name / ID -->
+          <template #cell-driverName="{ row }">
+            <template v-if="(row as FleetVehicle).driverName">
+              <MTableCell variant="link">{{ (row as FleetVehicle).driverName }}</MTableCell>
+              <MTableCell variant="secondary">{{ (row as FleetVehicle).driverId }}</MTableCell>
+            </template>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Location / Updated -->
-        <template #cell-location="{ row }">
-          <MTableCell
-            >{{ (row as FleetVehicle).currentLocation.city }},
-            {{ (row as FleetVehicle).currentLocation.state }}</MTableCell
-          >
-          <MTableCell variant="secondary"
-            >{{ formatDate(new Date()) }} · {{ formatTime(new Date()) }}</MTableCell
-          >
-        </template>
+          <!-- Asset ID -->
+          <template #cell-assetName="{ row }">
+            <MTableCell v-if="(row as FleetVehicle).assetName" variant="link">
+              {{ (row as FleetVehicle).assetName }}
+            </MTableCell>
+            <MTableCell v-else variant="muted">—</MTableCell>
+          </template>
 
-        <!-- Availability -->
-        <template #cell-status="{ row }">
-          <MBadge
-            :label="STATUS_BADGE[(row as FleetVehicle).status].label"
-            :color="STATUS_BADGE[(row as FleetVehicle).status].color"
-            size="sm"
-          />
-        </template>
+          <!-- Location / Updated -->
+          <template #cell-location="{ row }">
+            <MTableCell
+              >{{ (row as FleetVehicle).currentLocation.city }},
+              {{ (row as FleetVehicle).currentLocation.state }}</MTableCell
+            >
+            <MTableCell variant="secondary"
+              >{{ formatDate(new Date()) }} · {{ formatTime(new Date()) }}</MTableCell
+            >
+          </template>
 
-        <!-- Defects / Faults -->
-        <template #cell-defects="{ row }">
-          <MTableCell variant="mono" :class="{ 'cell-danger': (row as FleetVehicle).defects > 0 }">
-            {{ (row as FleetVehicle).defects }}
-          </MTableCell>
-        </template>
+          <!-- Availability -->
+          <template #cell-status="{ row }">
+            <MBadge
+              :label="STATUS_BADGE[(row as FleetVehicle).status].label"
+              :color="STATUS_BADGE[(row as FleetVehicle).status].color"
+              size="sm"
+            />
+          </template>
 
-        <!-- Cameras -->
-        <template #cell-cameras="{ row }">
-          <MTableCell variant="mono">{{ (row as FleetVehicle).cameras }}</MTableCell>
-        </template>
+          <!-- Defects / Faults -->
+          <template #cell-defects="{ row }">
+            <MTableCell
+              variant="mono"
+              :class="{ 'cell-danger': (row as FleetVehicle).defects > 0 }"
+            >
+              {{ (row as FleetVehicle).defects }}
+            </MTableCell>
+          </template>
 
-        <!-- Actions -->
-        <template #cell-actions="{ row }">
-          <button
-            class="action-btn"
-            type="button"
-            :aria-label="t('fleet.vehicles.actions.menuAria')"
-            @click.stop="openMenu((row as FleetVehicle).id, $event.currentTarget as HTMLElement)"
-          >
-            <MIcon :icon="MoreVertical" :size="16" />
-          </button>
-        </template>
+          <!-- Cameras -->
+          <template #cell-cameras="{ row }">
+            <MTableCell variant="mono">{{ (row as FleetVehicle).cameras }}</MTableCell>
+          </template>
 
-        <template #empty>
-          <div class="fleet-table-empty">
-            <span class="fleet-table-empty__title">{{ t('fleet.vehicles.empty.title') }}</span>
-            <span class="fleet-table-empty__sub">{{ t('fleet.vehicles.empty.sub') }}</span>
-          </div>
-        </template>
-      </MTable>
+          <!-- Actions -->
+          <template #cell-actions="{ row }">
+            <button
+              class="action-btn"
+              type="button"
+              :aria-label="t('fleet.vehicles.actions.menuAria')"
+              @click.stop="openMenu((row as FleetVehicle).id, $event.currentTarget as HTMLElement)"
+            >
+              <MIcon :icon="MoreVertical" :size="16" />
+            </button>
+          </template>
+
+          <template #empty>
+            <div class="fleet-table-empty">
+              <span class="fleet-table-empty__title">{{ t('fleet.vehicles.empty.title') }}</span>
+              <span class="fleet-table-empty__sub">{{ t('fleet.vehicles.empty.sub') }}</span>
+            </div>
+          </template>
+        </MTable>
+      </AsyncBoundary>
     </div>
 
     <!-- Actions dropdown -->
