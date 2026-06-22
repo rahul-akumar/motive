@@ -117,8 +117,9 @@ const { metrics } = useKPIMetrics()
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* Two columns: map spans the full width, safety + fuel take half each */
   .charts-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -127,8 +128,14 @@ const { metrics } = useKPIMetrics()
     grid-template-columns: 1fr 1fr;
   }
 
+  /* Single column: reset the map span so it doesn't create an implicit
+     auto-sized column that would unbalance the stacked cards */
   .charts-row {
     grid-template-columns: 1fr;
+  }
+
+  .charts-row__map {
+    grid-column: span 1;
   }
 }
 
