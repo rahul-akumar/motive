@@ -45,6 +45,21 @@ describe('MTable', () => {
     expect(skeletonRows[0]!.findAll('.m-skeleton')).toHaveLength(COLUMNS.length)
   })
 
+  it('reserves a populated two-line row height on skeleton cells (no layout shift)', () => {
+    const wrapper = mount(MTable, {
+      props: { columns: COLUMNS, rows: [], loading: true, skeletonRows: 4 },
+    })
+    const cells = wrapper.findAll('.m-table__skeleton-cell')
+    expect(cells).toHaveLength(COLUMNS.length * 4)
+    // Height is derived from the font/line-height tokens, applied inline so it's
+    // observable under jsdom (which performs no layout).
+    const style = cells[0]!.attributes('style') ?? ''
+    expect(style).toContain('min-height')
+    expect(style).toContain('--font-size-base')
+    expect(style).toContain('--font-size-sm')
+    expect(style).toContain('--leading-normal')
+  })
+
   it('honors a custom #loading slot over the default skeleton', () => {
     const wrapper = mount(MTable, {
       props: { columns: COLUMNS, rows: [], loading: true },

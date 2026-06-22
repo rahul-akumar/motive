@@ -91,6 +91,12 @@ function nextPage() {
 function cellValue(row: T, key: string): unknown {
   return (row as Record<string, unknown>)[key]
 }
+
+// Skeleton cells reserve the height of a populated two-line cell (a base-size
+// line + a secondary sm-size line at the normal line-height) so loading rows
+// match real rows — zero layout shift when data arrives.
+const SKELETON_CELL_MIN_HEIGHT =
+  'calc((var(--font-size-base) + var(--font-size-sm)) * var(--leading-normal))'
 </script>
 
 <template>
@@ -209,7 +215,12 @@ function cellValue(row: T, key: string): unknown {
                 :key="col.key"
                 :class="['m-table__td', `m-table__td--${col.align ?? 'left'}`]"
               >
-                <MSkeleton height="0.75rem" />
+                <div
+                  class="m-table__skeleton-cell"
+                  :style="{ minHeight: SKELETON_CELL_MIN_HEIGHT }"
+                >
+                  <MSkeleton height="0.75rem" />
+                </div>
               </td>
             </tr>
           </template>
@@ -394,6 +405,12 @@ function cellValue(row: T, key: string): unknown {
 
 .m-table__row--skeleton:hover {
   background-color: transparent;
+}
+
+/* Reserve a populated two-line cell's content height; center the shimmer bar. */
+.m-table__skeleton-cell {
+  display: flex;
+  align-items: center;
 }
 
 .m-table__td {
