@@ -151,7 +151,7 @@ function handleSelect(item: MCommandItemView) {
 
 .search-trigger__placeholder {
   flex: 1;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-subtle);
   font-family: var(--font-family-sans);
   user-select: none;
@@ -159,7 +159,7 @@ function handleSelect(item: MCommandItemView) {
 
 .search-trigger__kbd {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--mtv-color-foreground-subtle);
   background-color: var(--mtv-color-surface-accent-subtle);
   border: 1px solid var(--mtv-color-border-default);
