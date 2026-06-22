@@ -33,9 +33,25 @@ describe('MTable', () => {
     expect(wrapper.text()).toContain('No results found.')
   })
 
-  it('shows loading state', () => {
-    const wrapper = mount(MTable, { props: { columns: COLUMNS, rows: [], loading: true } })
-    expect(wrapper.text()).toContain('Loading')
+  it('shows a structured skeleton while loading (header + per-column cells preserved)', () => {
+    const wrapper = mount(MTable, {
+      props: { columns: COLUMNS, rows: [], loading: true, skeletonRows: 4 },
+    })
+    // Header still renders during loading
+    expect(wrapper.text()).toContain('Name')
+    const skeletonRows = wrapper.findAll('.m-table__row--skeleton')
+    expect(skeletonRows).toHaveLength(4)
+    // Each skeleton row has one shimmer cell per column
+    expect(skeletonRows[0]!.findAll('.m-skeleton')).toHaveLength(COLUMNS.length)
+  })
+
+  it('honors a custom #loading slot over the default skeleton', () => {
+    const wrapper = mount(MTable, {
+      props: { columns: COLUMNS, rows: [], loading: true },
+      slots: { loading: '<span class="custom-loading">Loading…</span>' },
+    })
+    expect(wrapper.find('.custom-loading').exists()).toBe(true)
+    expect(wrapper.find('.m-table__row--skeleton').exists()).toBe(false)
   })
 
   it('emits sort event when sortable header is clicked', async () => {

@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="T extends object">
 import { computed } from 'vue'
 import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import MSkeleton from './MSkeleton.vue'
 
 export interface MTableColumn {
   key: string
@@ -30,6 +31,8 @@ export interface MTableProps<T extends object = Record<string, unknown>> {
   selectedKey?: string | number
   /** Shows a loading state when true. @default false */
   loading?: boolean
+  /** Number of placeholder rows rendered while loading. @default 6 */
+  skeletonRows?: number
   /** Keeps the header fixed while the body scrolls. @default true */
   stickyHeader?: boolean
   /** Renders all rows without pagination (infinite scroll mode). @default false */
@@ -42,6 +45,7 @@ const props = withDefaults(defineProps<MTableProps<T>>(), {
   pageSize: 8,
   rowKey: 'id',
   loading: false,
+  skeletonRows: 6,
   stickyHeader: true,
   infinite: false,
 })
@@ -186,13 +190,29 @@ function cellValue(row: T, key: string): unknown {
             </td>
           </tr>
 
-          <tr v-else>
+          <tr v-else-if="$slots.loading">
             <td :colspan="columns.length" class="m-table__empty">
-              <slot name="loading">
-                <span class="m-table__empty-text">Loading…</span>
-              </slot>
+              <slot name="loading" />
             </td>
           </tr>
+
+          <!-- Structured skeleton: keeps headers + column widths, shimmers the cells -->
+          <template v-else>
+            <tr
+              v-for="r in skeletonRows"
+              :key="`m-table-skeleton-${r}`"
+              class="m-table__row m-table__row--skeleton"
+              aria-hidden="true"
+            >
+              <td
+                v-for="col in columns"
+                :key="col.key"
+                :class="['m-table__td', `m-table__td--${col.align ?? 'left'}`]"
+              >
+                <MSkeleton height="0.75rem" />
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -365,6 +385,15 @@ function cellValue(row: T, key: string): unknown {
 
 .m-table__row--selected:hover {
   background-color: var(--mtv-color-surface-hover);
+}
+
+/* Skeleton rows are not interactive */
+.m-table__row--skeleton {
+  cursor: default;
+}
+
+.m-table__row--skeleton:hover {
+  background-color: transparent;
 }
 
 .m-table__td {
