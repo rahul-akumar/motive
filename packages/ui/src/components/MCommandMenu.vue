@@ -245,7 +245,7 @@ defineExpose({ focus })
   border-radius: var(--radius-sm);
   cursor: pointer;
   color: var(--mtv-color-foreground-muted);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
 }
 
 .m-command__option--active {
