@@ -264,6 +264,7 @@
     "inputLabel": "Buscar motoristas, veículos, cargas",
     "recent": "Recente",
     "noRecentSearches": "Nenhuma pesquisa recente",
+    "noResults": "Nenhum resultado encontrado",
     "quickActions": "Ações Rápidas",
     "removeRecent": "Remover {query} das pesquisas recentes"
   },

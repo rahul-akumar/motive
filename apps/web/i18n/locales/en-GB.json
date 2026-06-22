@@ -261,6 +261,7 @@
     "inputLabel": "Search drivers, vehicles, loads",
     "recent": "Recent",
     "noRecentSearches": "No recent searches",
+    "noResults": "No results found",
     "quickActions": "Quick Actions",
     "removeRecent": "Remove {query} from recent searches"
   },

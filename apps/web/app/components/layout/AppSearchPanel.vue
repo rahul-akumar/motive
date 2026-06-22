@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Search, Clock, X, Truck, Bell, Users, Fuel, Globe } from 'lucide-vue-next'
-import { MIcon, MTooltip } from '@motive/ui'
+import { Search } from 'lucide-vue-next'
+import { MIcon, MTooltip, MCommandMenu, type MCommandItemView } from '@motive/ui'
 
 export interface AppSearchPanelProps {
   collapsed?: boolean
@@ -10,22 +10,16 @@ const props = withDefaults(defineProps<AppSearchPanelProps>(), {
   collapsed: false,
 })
 
-const emit = defineEmits<{
-  search: [query: string]
-}>()
-
 const { t } = useI18n()
-const router = useRouter()
-const { recentSearches, loadRecentSearches, addRecentSearch, removeRecentSearch } = useSearch()
+const { query, groups, runById, recordSearch, loadRecentSearches } = useCommandPalette()
+const { isOpen, open, close } = useCommandPaletteState()
 
 onMounted(loadRecentSearches)
 
-const query = ref('')
-const isOpen = ref(false)
 const buttonRef = ref<HTMLElement | null>(null) // collapsed icon button
 const triggerRef = ref<HTMLElement | null>(null) // expanded bar wrapper
 const overlayRef = ref<HTMLElement | null>(null)
-const inputRef = ref<HTMLInputElement | null>(null)
+const menuRef = ref<InstanceType<typeof MCommandMenu> | null>(null)
 
 // Position only — width/height driven by transition hooks
 const overlayStyle = ref<Record<string, string>>({})
@@ -33,89 +27,33 @@ const overlayStyle = ref<Record<string, string>>({})
 // Morphing open/close transition — hooks for the <Transition :css="false"> below
 const { captureTriggerRect, onBeforeEnter, onEnter, onLeave } = useSearchPanelTransition(triggerRef)
 
-async function openPanel() {
-  // Use whichever element is visible as the morph origin
-  const anchor = props.collapsed ? buttonRef.value : triggerRef.value
-  if (!anchor) return
-  const rect = captureTriggerRect(anchor)
-  overlayStyle.value = {
-    left: `${rect.left}px`,
-    top: `${rect.top}px`,
+// The overlay is bound directly to the shared `isOpen` (single source of truth),
+// so the trigger, ⌘K, and "/" can't desync. The watcher runs pre-flush, so we
+// position the morph origin before the element renders (no flash), then focus.
+watch(isOpen, (val) => {
+  if (val) {
+    const anchor = props.collapsed ? buttonRef.value : triggerRef.value
+    if (anchor) {
+      const rect = captureTriggerRect(anchor)
+      overlayStyle.value = { left: `${rect.left}px`, top: `${rect.top}px` }
+    }
+    nextTick(() => menuRef.value?.focus())
+  } else {
+    query.value = ''
   }
-  isOpen.value = true
-  await nextTick()
-  inputRef.value?.focus()
-}
-
-function closePanel() {
-  isOpen.value = false
-  query.value = ''
-}
-
-function focus() {
-  nextTick(() => openPanel())
-}
-
-defineExpose({ focus })
+})
 
 function handleFocusOut(e: FocusEvent) {
   const el = overlayRef.value
   if (!el) return
-  if (!el.contains(e.relatedTarget as Node | null)) {
-    closePanel()
-  }
+  if (!el.contains(e.relatedTarget as Node | null)) close()
 }
 
-function handleEnter() {
-  const q = query.value.trim()
-  if (!q) return
-  addRecentSearch(q)
-  emit('search', q)
-  closePanel()
+function handleSelect(item: MCommandItemView) {
+  recordSearch()
+  runById(item.id)
+  close()
 }
-
-function handleEscape() {
-  closePanel()
-}
-
-function handleInputArrowDown() {
-  const items = overlayRef.value?.querySelectorAll<HTMLElement>('[data-panel-item]')
-  items?.item(0)?.focus()
-}
-
-function handleItemKeydown(e: KeyboardEvent, index: number) {
-  const items = overlayRef.value?.querySelectorAll<HTMLElement>('[data-panel-item]')
-  if (!items) return
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    items.item(index + 1)?.focus()
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    if (index === 0) inputRef.value?.focus()
-    else items.item(index - 1)?.focus()
-  } else if (e.key === 'Escape') {
-    handleEscape()
-  }
-}
-
-function handleRecentClick(q: string) {
-  addRecentSearch(q)
-  emit('search', q)
-  closePanel()
-}
-
-async function handleQuickAction(href: string) {
-  closePanel()
-  await router.push(href)
-}
-
-const quickActions = computed(() => [
-  { label: t('nav.fleet'), href: '/fleet', icon: Truck },
-  { label: t('nav.alerts'), href: '/alerts', icon: Bell },
-  { label: t('nav.workforce'), href: '/workforce', icon: Users },
-  { label: t('nav.fuel'), href: '/fuel', icon: Fuel },
-  { label: t('pages.titles.fleet3d'), href: '/fleet-3d', icon: Globe },
-])
 </script>
 
 <template>
@@ -126,7 +64,7 @@ const quickActions = computed(() => [
       type="button"
       class="sidebar-nav-item sidebar-nav-item--btn"
       :aria-label="t('search.label')"
-      @click="openPanel"
+      @click="open"
     >
       <MIcon :icon="Search" class="sidebar__icon" />
       <span class="sidebar__label">{{ t('search.label') }}</span>
@@ -134,11 +72,11 @@ const quickActions = computed(() => [
   </MTooltip>
 
   <!-- Expanded: in-flow trigger bar (keeps sidebar layout space) -->
-  <div v-else ref="triggerRef" class="search-trigger" @click="openPanel">
+  <div v-else ref="triggerRef" class="search-trigger" @click="open">
     <div :class="['search-trigger__bar', { 'search-trigger__bar--hidden': isOpen }]">
       <MIcon :icon="Search" class="search-trigger__icon" />
       <span class="search-trigger__placeholder">{{ t('search.placeholder') }}</span>
-      <kbd class="search-trigger__kbd" aria-label="Keyboard shortcut: Command F">F</kbd>
+      <kbd class="search-trigger__kbd" aria-label="Keyboard shortcut: Command K">⌘K</kbd>
     </div>
   </div>
 
@@ -153,69 +91,18 @@ const quickActions = computed(() => [
         :style="overlayStyle"
         @focusout="handleFocusOut"
       >
-        <!-- Input row -->
-        <div class="search-overlay__bar">
-          <MIcon :icon="Search" class="search-overlay__icon" />
-          <label for="app-search" class="sr-only">{{ t('search.inputLabel') }}</label>
-          <input
-            id="app-search"
-            ref="inputRef"
-            v-model="query"
-            type="search"
-            :placeholder="t('search.inputPlaceholder')"
-            class="search-overlay__input"
-            autocomplete="off"
-            @keydown.enter.prevent="handleEnter"
-            @keydown.escape.prevent="handleEscape"
-            @keydown.arrow-down.prevent="handleInputArrowDown"
-          />
-          <kbd class="search-overlay__esc">Esc</kbd>
-        </div>
-
-        <!-- Results (animated separately inside onEnter/onLeave) -->
+        <!-- Command palette (results animated separately inside onEnter/onLeave) -->
         <div class="search-overlay__body">
-          <div class="search-overlay__section-label">{{ t('search.recent') }}</div>
-          <template v-if="recentSearches.length > 0">
-            <div
-              v-for="(item, i) in recentSearches"
-              :key="item"
-              class="search-overlay__row"
-              tabindex="0"
-              data-panel-item
-              @click="handleRecentClick(item)"
-              @keydown.enter.prevent="handleRecentClick(item)"
-              @keydown="handleItemKeydown($event, i)"
-            >
-              <MIcon :icon="Clock" class="search-overlay__row-icon" />
-              <span class="search-overlay__row-label">{{ item }}</span>
-              <button
-                type="button"
-                class="search-overlay__row-remove"
-                :aria-label="t('search.removeRecent', { query: item })"
-                @click.stop="removeRecentSearch(item)"
-              >
-                <MIcon :icon="X" :size="12" />
-              </button>
-            </div>
-          </template>
-          <div v-else class="search-overlay__empty">{{ t('search.noRecentSearches') }}</div>
-
-          <div class="search-overlay__divider" />
-
-          <div class="search-overlay__section-label">{{ t('search.quickActions') }}</div>
-          <div
-            v-for="(action, i) in quickActions"
-            :key="action.href"
-            class="search-overlay__row"
-            tabindex="0"
-            data-panel-item
-            @click="handleQuickAction(action.href)"
-            @keydown.enter.prevent="handleQuickAction(action.href)"
-            @keydown="handleItemKeydown($event, recentSearches.length + i)"
-          >
-            <MIcon :icon="action.icon" class="search-overlay__row-icon" />
-            <span class="search-overlay__row-label">{{ action.label }}</span>
-          </div>
+          <MCommandMenu
+            ref="menuRef"
+            v-model="query"
+            :groups="groups"
+            :placeholder="t('search.inputPlaceholder')"
+            :empty-text="t('search.noResults')"
+            class="search-overlay__menu"
+            @select="handleSelect"
+            @close="close"
+          />
         </div>
       </div>
     </Transition>
@@ -285,6 +172,9 @@ const quickActions = computed(() => [
 .search-overlay {
   position: fixed;
   z-index: var(--mtv-z-modal);
+  display: flex;
+  flex-direction: column;
+  max-height: min(60vh, 460px);
   background-color: var(--mtv-color-surface-default);
   border: 1px solid var(--search-focus-border);
   border-radius: var(--card-radius);
@@ -295,144 +185,17 @@ const quickActions = computed(() => [
   /* width/height/opacity animated by JS hooks — no CSS transition here */
 }
 
-.search-overlay__bar {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0 0.75rem;
-  height: 40px;
-  border-bottom: 1px solid var(--mtv-color-border-default);
-  flex-shrink: 0;
-}
-
-.search-overlay__icon {
-  color: var(--mtv-color-foreground-subtle);
-  flex-shrink: 0;
-}
-
-.search-overlay__input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: var(--font-size-base);
-  color: var(--mtv-color-foreground-default);
-  font-family: var(--font-family-sans);
-  min-width: 0;
-}
-
-.search-overlay__input::placeholder {
-  color: var(--mtv-color-foreground-subtle);
-}
-
-.search-overlay__input::-webkit-search-cancel-button {
-  display: none;
-}
-
-.search-overlay__esc {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  color: var(--mtv-color-foreground-subtle);
-  background-color: var(--mtv-color-surface-accent);
-  border: 1px solid var(--mtv-color-border-default);
-  border-radius: var(--radius-sm);
-  padding: 2px 6px;
-  flex-shrink: 0;
-  letter-spacing: var(--tracking-tight);
-  white-space: nowrap;
-}
-
 .search-overlay__body {
-  padding: 4px 0 6px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   /* opacity/transform driven by JS hooks */
 }
 
-.search-overlay__section-label {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--mtv-color-foreground-subtle);
-  padding: 6px 12px 3px;
-}
-
-.search-overlay__row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 8px;
-  height: 34px;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  margin: 0 4px;
-  color: var(--mtv-color-foreground-muted);
-  font-size: var(--font-size-sm);
-  outline: none;
-  transition:
-    color var(--mtv-duration-fast) var(--mtv-ease-standard),
-    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
-}
-
-.search-overlay__row:hover,
-.search-overlay__row:focus {
-  background-color: var(--mtv-color-surface-hover);
-  color: var(--mtv-color-foreground-default);
-}
-
-.search-overlay__row-icon {
-  flex-shrink: 0;
-  color: var(--mtv-color-foreground-subtle);
-  width: 15px;
-  height: 15px;
-}
-
-.search-overlay__row-label {
+.search-overlay__menu {
   flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-overlay__row-remove {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  border: none;
-  color: var(--mtv-color-foreground-subtle);
-  cursor: pointer;
-  padding: 0;
-  opacity: 0;
-  transition:
-    opacity var(--mtv-duration-fast) var(--mtv-ease-standard),
-    color var(--mtv-duration-fast) var(--mtv-ease-standard),
-    background-color var(--mtv-duration-fast) var(--mtv-ease-standard);
-}
-
-.search-overlay__row:hover .search-overlay__row-remove,
-.search-overlay__row:focus .search-overlay__row-remove {
-  opacity: 1;
-}
-
-.search-overlay__row-remove:hover {
-  color: var(--mtv-color-foreground-default);
-  background-color: var(--mtv-color-surface-active);
-}
-
-.search-overlay__empty {
-  padding: 4px 12px 2px;
-  font-size: var(--font-size-sm);
-  color: var(--mtv-color-foreground-subtle);
-  font-style: italic;
-}
-
-.search-overlay__divider {
-  height: 1px;
-  background-color: var(--mtv-color-border-default);
-  margin: 5px 8px;
+  min-height: 0;
 }
 
 /* ── Collapsed button (replicates sidebar nav-item styles) ── */
